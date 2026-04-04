@@ -55,15 +55,23 @@ async function importGtfsCity(sourceConfig) {
 
   const selectedRoutes = selectRoutes(routes, sourceConfig);
   const selectedRouteIds = new Set(selectedRoutes.map((route) => route.route_id));
+  const routeCanonicalById = new Map(
+    selectedRoutes.map((route) => [route.route_id, getCanonicalLineId(route, sourceConfig)])
+  );
   const shapePointsById = groupShapesById(shapes, sourceConfig);
-  const routeShapeIds = collectShapeIdsByRoute(trips, selectedRouteIds);
+  const shapeCountsByCanonicalLine = collectShapeCountsByCanonicalLine(
+    trips,
+    selectedRouteIds,
+    routeCanonicalById
+  );
   const routesByCanonicalId = groupRoutesByCanonicalLine(selectedRoutes, sourceConfig);
 
   const features = [];
 
   for (const [canonicalLineId, groupedRoutes] of routesByCanonicalId.entries()) {
-    const shapeIds = groupedRoutes.flatMap((route) => routeShapeIds.get(route.route_id) ?? []);
-    const multiLineCoordinates = uniqueShapeIds(shapeIds)
+    const shapeCounts = shapeCountsByCanonicalLine.get(canonicalLineId) ?? new Map();
+    const selectedShapeIds = selectDisplayShapeIds(shapeCounts, sourceConfig);
+    const multiLineCoordinates = selectedShapeIds
       .map((shapeId) => shapePointsById.get(shapeId))
       .filter((points) => points && points.length > 1)
       .map((points) => points.map(({ lon, lat }) => [lon, lat]));
@@ -199,24 +207,42 @@ function groupShapesById(shapeRows, sourceConfig) {
   return grouped;
 }
 
-function collectShapeIdsByRoute(trips, selectedRouteIds) {
-  const routeShapeIds = new Map();
+function collectShapeCountsByCanonicalLine(trips, selectedRouteIds, routeCanonicalById) {
+  const shapeCountsByCanonicalLine = new Map();
 
   for (const trip of trips) {
     if (!selectedRouteIds.has(trip.route_id) || !trip.shape_id) {
       continue;
     }
 
-    const shapeIds = routeShapeIds.get(trip.route_id) ?? [];
-    shapeIds.push(trip.shape_id);
-    routeShapeIds.set(trip.route_id, shapeIds);
+    const canonicalLineId = routeCanonicalById.get(trip.route_id);
+    const shapeCounts = shapeCountsByCanonicalLine.get(canonicalLineId) ?? new Map();
+    shapeCounts.set(trip.shape_id, (shapeCounts.get(trip.shape_id) ?? 0) + 1);
+    shapeCountsByCanonicalLine.set(canonicalLineId, shapeCounts);
   }
 
-  return routeShapeIds;
+  return shapeCountsByCanonicalLine;
 }
 
-function uniqueShapeIds(shapeIds) {
-  return [...new Set(shapeIds)];
+function selectDisplayShapeIds(shapeCounts, sourceConfig) {
+  const sortedEntries = [...shapeCounts.entries()].sort((left, right) => right[1] - left[1]);
+
+  if (sortedEntries.length === 0) {
+    return [];
+  }
+
+  const maxTripCount = sortedEntries[0][1];
+  const minShapeTrips = sourceConfig.minShapeTrips ?? 1;
+  const shapeTripShareThreshold = sourceConfig.shapeTripShareThreshold ?? 0;
+
+  const selectedShapeIds = sortedEntries
+    .filter(([, tripCount]) => {
+      const tripShare = tripCount / maxTripCount;
+      return tripCount >= minShapeTrips && tripShare >= shapeTripShareThreshold;
+    })
+    .map(([shapeId]) => shapeId);
+
+  return selectedShapeIds.length > 0 ? selectedShapeIds : [sortedEntries[0][0]];
 }
 
 function dedupeAdjacentPoints(points) {
