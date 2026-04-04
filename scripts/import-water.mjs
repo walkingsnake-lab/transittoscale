@@ -114,12 +114,7 @@ out skel qt;
 }
 
 function isSupportedGeometry(type) {
-  return (
-    type === 'Polygon' ||
-    type === 'MultiPolygon' ||
-    type === 'LineString' ||
-    type === 'MultiLineString'
-  );
+  return type === 'Polygon' || type === 'MultiPolygon';
 }
 
 function shouldKeepFeature(feature, sourceConfig) {
@@ -156,16 +151,6 @@ function shouldKeepFeature(feature, sourceConfig) {
     }
 
     return polygonAreaSquareMeters(feature.geometry) >= (sourceConfig.minAreaSquareMeters ?? 0);
-  }
-
-  if (feature.geometry.type === 'LineString' || feature.geometry.type === 'MultiLineString') {
-    const isCoastline = natural === 'coastline';
-    const isIncludedWaterway = waterway && includeWaterwayValues.has(waterway);
-    if (!isCoastline && !isIncludedWaterway) {
-      return false;
-    }
-
-    return lineLengthMeters(feature.geometry) >= (sourceConfig.minLineLengthMeters ?? 0);
   }
 
   return false;
@@ -211,19 +196,6 @@ function simplifyGeometry(geometry, minPointSpacingMeters) {
       .filter((polygon) => polygon.length > 0);
 
     return coordinates.length > 0 ? { type: 'MultiPolygon', coordinates } : null;
-  }
-
-  if (geometry.type === 'LineString') {
-    const coordinates = simplifyLine(geometry.coordinates, minPointSpacingMeters);
-    return coordinates.length > 1 ? { type: 'LineString', coordinates } : null;
-  }
-
-  if (geometry.type === 'MultiLineString') {
-    const coordinates = geometry.coordinates
-      .map((line) => simplifyLine(line, minPointSpacingMeters))
-      .filter((line) => line.length > 1);
-
-    return coordinates.length > 0 ? { type: 'MultiLineString', coordinates } : null;
   }
 
   return null;
@@ -311,18 +283,6 @@ function ringAreaSquareMeters(ring) {
   }
 
   return Math.abs(area) / 2;
-}
-
-function lineLengthMeters(geometry) {
-  const lines = geometry.type === 'LineString' ? [geometry.coordinates] : geometry.coordinates;
-
-  return lines.reduce((total, line) => {
-    let length = 0;
-    for (let index = 1; index < line.length; index += 1) {
-      length += distanceMeters(line[index - 1], line[index]);
-    }
-    return total + length;
-  }, 0);
 }
 
 function projectToMeters(origin, coordinate) {
