@@ -214,11 +214,14 @@ function projectLines(city, width, height) {
   const centerX = CARD_PADDING + frameWidth / 2;
   const centerY = CARD_PADDING + HEADER_OFFSET + frameHeight / 2;
   const projectedFeatures = projectFeatureCollection(city.geojson, city.centroid);
+  const projectedBounds = computeProjectedBounds(projectedFeatures);
+  const offsetX = centerX - (projectedBounds.minX + projectedBounds.maxX) / 2;
+  const offsetY = centerY - (projectedBounds.minY + projectedBounds.maxY) / 2;
 
   return projectedFeatures.map((feature) => ({
     ...feature,
     paths: feature.paths
-      .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
+      .map((path) => path.map(([x, y]) => [offsetX + x, offsetY + y]))
       .map((translatedPath) => buildPathMetrics(translatedPath))
   }));
 }
@@ -255,17 +258,18 @@ function drawCard({
     ctx.restore();
   }
 
-  const circleCenterX = CARD_PADDING + REFERENCE_RADIUS_PIXELS + 4;
-  const circleCenterY = height - CARD_PADDING - REFERENCE_RADIUS_PIXELS - 6;
+  const circleCenterX = width / 2;
+  const circleCenterY = height / 2;
 
   ctx.save();
   ctx.strokeStyle = CARD_STYLE.referenceStroke;
-  ctx.globalAlpha = 0.4 + emphasis * 0.35 - dimmed * 0.14;
+  ctx.globalAlpha = 0.24 + emphasis * 0.22 - dimmed * 0.1;
   ctx.lineWidth = 1.1;
   strokeCircleProgress(ctx, circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, circleValue);
   ctx.fillStyle = CARD_STYLE.referenceStroke;
   ctx.font = '500 11px "IBM Plex Sans Condensed", sans-serif';
-  ctx.fillText('5 mi', circleCenterX + REFERENCE_RADIUS_PIXELS + 10, circleCenterY + 4);
+  ctx.textAlign = 'center';
+  ctx.fillText('5 mi', circleCenterX, circleCenterY + REFERENCE_RADIUS_PIXELS + 16);
   ctx.restore();
 
   ctx.save();
@@ -358,4 +362,24 @@ class Animator {
       this.lastFrame = 0;
     }
   }
+}
+
+function computeProjectedBounds(projectedFeatures) {
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+
+  for (const feature of projectedFeatures) {
+    for (const path of feature.paths) {
+      for (const [x, y] of path) {
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+      }
+    }
+  }
+
+  return { minX, minY, maxX, maxY };
 }
