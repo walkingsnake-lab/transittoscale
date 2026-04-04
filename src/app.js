@@ -215,15 +215,12 @@ function projectLines(city, width, height) {
   const centerY = CARD_PADDING + HEADER_OFFSET + frameHeight / 2;
   const projectedFeatures = projectFeatureCollection(city.geojson, city.centroid);
 
-  return projectedFeatures.flatMap((feature) =>
-    feature.paths.map((path) => {
-      const translatedPath = path.map(([x, y]) => [centerX + x, centerY + y]);
-      return {
-        ...feature,
-        metrics: buildPathMetrics(translatedPath)
-      };
-    })
-  );
+  return projectedFeatures.map((feature) => ({
+    ...feature,
+    paths: feature.paths
+      .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
+      .map((translatedPath) => buildPathMetrics(translatedPath))
+  }));
 }
 
 function drawCard({
@@ -285,7 +282,10 @@ function drawCard({
   projectedLines.forEach((line, index) => {
     const offset = lineCount > 1 ? (index / lineCount) * REVEAL_LINE_OFFSET * lineCount : 0;
     const progress = easeOutCubic(clamp((lineWindow - offset) / Math.max(0.12, 1 - offset)));
-    drawProgressPath(ctx, line.metrics, progress);
+
+    for (const metrics of line.paths) {
+      drawProgressPath(ctx, metrics, progress);
+    }
   });
 
   ctx.restore();

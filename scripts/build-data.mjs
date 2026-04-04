@@ -14,52 +14,49 @@ const normalized = await readNormalizedCities();
 
 await mkdir(cityDir, { recursive: true });
 
-const manifest = raw.map((city) => {
-  const normalizedCity = normalized.get(city.slug);
+const manifest =
+  normalized.size > 0
+    ? [...normalized.values()]
+    : raw.map((city) => {
+        const features = city.lines.map((line) => ({
+          type: 'Feature',
+          properties: {
+            lineId: line.lineId,
+            lineName: line.lineName,
+            systemName: city.name
+          },
+          geometry: {
+            type: 'LineString',
+            coordinates: line.coordinates
+          }
+        }));
 
-  if (normalizedCity) {
-    return normalizedCity;
-  }
+        const bounds = computeBounds(city.lines);
+        const centroid = city.centroid ?? computeCentroid(city.lines);
 
-  const features = city.lines.map((line) => ({
-    type: 'Feature',
-    properties: {
-      lineId: line.lineId,
-      lineName: line.lineName,
-      systemName: city.name
-    },
-    geometry: {
-      type: 'LineString',
-      coordinates: line.coordinates
-    }
-  }));
+        const featureCollection = {
+          type: 'FeatureCollection',
+          properties: {
+            slug: city.slug,
+            name: city.name,
+            region: city.region,
+            centroid,
+            bounds
+          },
+          features
+        };
 
-  const bounds = computeBounds(city.lines);
-  const centroid = city.centroid ?? computeCentroid(city.lines);
-
-  const featureCollection = {
-    type: 'FeatureCollection',
-    properties: {
-      slug: city.slug,
-      name: city.name,
-      region: city.region,
-      centroid,
-      bounds
-    },
-    features
-  };
-
-  return {
-    slug: city.slug,
-    name: city.name,
-    region: city.region,
-    dataPath: `data/cities/${city.slug}.geojson`,
-    centroid,
-    bounds,
-    lineCount: features.length,
-    featureCollection
-  };
-});
+        return {
+          slug: city.slug,
+          name: city.name,
+          region: city.region,
+          dataPath: `data/cities/${city.slug}.geojson`,
+          centroid,
+          bounds,
+          lineCount: features.length,
+          featureCollection
+        };
+      });
 
 for (const city of manifest) {
   const cityPath = path.join(cityDir, `${city.slug}.geojson`);
