@@ -354,7 +354,13 @@ function drawWaterLayer(ctx, projectedWater, revealValue, emphasis, dimmed) {
   ctx.globalAlpha = alpha;
 
   ctx.beginPath();
+  const coastlinePaths = [];
   for (const feature of projectedWater) {
+    if (feature.featureKind === 'coastline') {
+      coastlinePaths.push(...feature.paths);
+      continue;
+    }
+
     for (const polygon of feature.polygons) {
       for (const ring of polygon) {
         traceClosedRing(ctx, ring);
@@ -362,6 +368,19 @@ function drawWaterLayer(ctx, projectedWater, revealValue, emphasis, dimmed) {
     }
   }
   ctx.fill('evenodd');
+
+  if (coastlinePaths.length > 0) {
+    ctx.beginPath();
+    ctx.strokeStyle = CARD_STYLE.coastlineStroke;
+    ctx.lineWidth = CARD_STYLE.coastlineLineWidth;
+
+    for (const path of coastlinePaths) {
+      traceOpenPath(ctx, path);
+    }
+
+    ctx.stroke();
+  }
+
   ctx.restore();
 }
 

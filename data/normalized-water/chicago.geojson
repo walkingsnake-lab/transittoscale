@@ -9,6 +9,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "Lake Michigan",
         "natural": "water",
         "water": "lake",
@@ -151481,6 +151482,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "",
         "natural": "water",
         "water": "river",
@@ -152725,6 +152727,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "",
         "natural": "water",
         "water": "river",
@@ -155105,6 +155108,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "",
         "natural": "water",
         "water": "river",
@@ -155531,6 +155535,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "",
         "natural": "water",
         "water": "river",
@@ -155977,6 +155982,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "",
         "natural": "water",
         "water": "canal",
@@ -157101,6 +157107,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "",
         "natural": "water",
         "water": "river",
@@ -157879,6 +157886,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "Diversey Harbor",
         "natural": "water",
         "water": "harbour",
@@ -158041,6 +158049,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "Belmont Harbor",
         "natural": "water",
         "water": "harbour",
@@ -158263,6 +158272,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "Montrose Harbor",
         "natural": "water",
         "water": "harbour",
@@ -158429,6 +158439,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "Monroe Harbor",
         "natural": "water",
         "water": "harbour",
@@ -158685,6 +158696,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "Burnham Harbor South Basin",
         "natural": "water",
         "water": "harbour",
@@ -158827,6 +158839,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "Burnham Harbor North Basin",
         "natural": "water",
         "water": "harbour",
@@ -158957,6 +158970,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "31st Street Harbor",
         "natural": "water",
         "water": "harbour",
@@ -159103,6 +159117,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "",
         "natural": "water",
         "water": "canal",
@@ -159509,6 +159524,7 @@
     {
       "type": "Feature",
       "properties": {
+        "featureKind": "water",
         "name": "",
         "natural": "water",
         "water": "canal",

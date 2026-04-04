@@ -64,6 +64,7 @@ async function importWaterContext(sourceConfig) {
     .filter((feature) => shouldKeepFeature(feature, sourceConfig))
     .map((feature) => normalizeFeature(feature, sourceConfig))
     .filter(Boolean);
+  const selectedFeatures = selectDisplayFeatures(features, sourceConfig);
 
   return {
     type: 'FeatureCollection',
@@ -72,7 +73,7 @@ async function importWaterContext(sourceConfig) {
       sourceName: sourceConfig.sourceName,
       sourceUrl: sourceConfig.sourceUrl
     },
-    features
+    features: selectedFeatures
   };
 }
 
@@ -114,7 +115,12 @@ out skel qt;
 }
 
 function isSupportedGeometry(type) {
-  return type === 'Polygon' || type === 'MultiPolygon';
+  return (
+    type === 'Polygon' ||
+    type === 'MultiPolygon' ||
+    type === 'LineString' ||
+    type === 'MultiLineString'
+  );
 }
 
 function shouldKeepFeature(feature, sourceConfig) {
@@ -153,6 +159,15 @@ function shouldKeepFeature(feature, sourceConfig) {
     return polygonAreaSquareMeters(feature.geometry) >= (sourceConfig.minAreaSquareMeters ?? 0);
   }
 
+  const isCoastline =
+    sourceConfig.includeCoastline &&
+    (feature.geometry.type === 'LineString' || feature.geometry.type === 'MultiLineString') &&
+    natural === 'coastline';
+
+  if (isCoastline) {
+    return lineLengthMeters(feature.geometry) >= (sourceConfig.minLineLengthMeters ?? 0);
+  }
+
   return false;
 }
 
@@ -166,6 +181,7 @@ function normalizeFeature(feature, sourceConfig) {
   return {
     type: 'Feature',
     properties: {
+      featureKind: getFeatureKind(feature),
       name: normalizeValue(feature.properties?.name),
       natural: normalizeValue(feature.properties?.natural),
       water: normalizeValue(feature.properties?.water),
@@ -196,6 +212,19 @@ function simplifyGeometry(geometry, minPointSpacingMeters) {
       .filter((polygon) => polygon.length > 0);
 
     return coordinates.length > 0 ? { type: 'MultiPolygon', coordinates } : null;
+  }
+
+  if (geometry.type === 'LineString') {
+    const coordinates = simplifyLine(geometry.coordinates, minPointSpacingMeters);
+    return coordinates.length > 1 ? { type: 'LineString', coordinates } : null;
+  }
+
+  if (geometry.type === 'MultiLineString') {
+    const coordinates = geometry.coordinates
+      .map((line) => simplifyLine(line, minPointSpacingMeters))
+      .filter((line) => line.length > 1);
+
+    return coordinates.length > 0 ? { type: 'MultiLineString', coordinates } : null;
   }
 
   return null;
@@ -294,6 +323,18 @@ function projectToMeters(origin, coordinate) {
   return [x, y];
 }
 
+function lineLengthMeters(geometry) {
+  const lines = geometry.type === 'LineString' ? [geometry.coordinates] : geometry.coordinates;
+
+  return lines.reduce((total, line) => {
+    let length = 0;
+    for (let index = 1; index < line.length; index += 1) {
+      length += distanceMeters(line[index - 1], line[index]);
+    }
+    return total + length;
+  }, 0);
+}
+
 function distanceMeters(left, right) {
   const [x1, y1] = projectToMeters(left, left);
   const [x2, y2] = projectToMeters(left, right);
@@ -302,6 +343,24 @@ function distanceMeters(left, right) {
 
 function isPolygonGeometry(type) {
   return type === 'Polygon' || type === 'MultiPolygon';
+}
+
+function getFeatureKind(feature) {
+  if (feature.properties?.natural === 'coastline') {
+    return 'coastline';
+  }
+
+  return 'water';
+}
+
+function selectDisplayFeatures(features, sourceConfig) {
+  const polygons = features.filter((feature) => feature.properties.featureKind !== 'coastline');
+  const coastline = features
+    .filter((feature) => feature.properties.featureKind === 'coastline')
+    .sort((left, right) => lineLengthMeters(right.geometry) - lineLengthMeters(left.geometry));
+
+  const coastlineLimit = sourceConfig.maxCoastlineFeatures ?? coastline.length;
+  return [...polygons, ...coastline.slice(0, coastlineLimit)];
 }
 
 function normalizeValue(value) {
