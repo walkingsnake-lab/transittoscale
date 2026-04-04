@@ -1,0 +1,164 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "barcelona",
+    "name": "Barcelona",
+    "region": "Spain",
+    "centroid": [
+      2.1734,
+      41.3851
+    ],
+    "bounds": [
+      1.99,
+      41.29,
+      2.33,
+      41.5
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "north-south",
+        "lineName": "North-South",
+        "systemName": "Barcelona"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.17,
+            41.5
+          ],
+          [
+            2.171,
+            41.44
+          ],
+          [
+            2.173,
+            41.385
+          ],
+          [
+            2.176,
+            41.34
+          ],
+          [
+            2.179,
+            41.29
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "west-east",
+        "lineName": "West-East",
+        "systemName": "Barcelona"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            1.99,
+            41.392
+          ],
+          [
+            2.06,
+            41.391
+          ],
+          [
+            2.14,
+            41.387
+          ],
+          [
+            2.23,
+            41.385
+          ],
+          [
+            2.33,
+            41.383
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "northwest-southeast",
+        "lineName": "Northwest-Southeast",
+        "systemName": "Barcelona"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.04,
+            41.45
+          ],
+          [
+            2.1,
+            41.42
+          ],
+          [
+            2.17,
+            41.385
+          ],
+          [
+            2.25,
+            41.35
+          ],
+          [
+            2.33,
+            41.32
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "coastal-ring",
+        "lineName": "Coastal Ring",
+        "systemName": "Barcelona"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.08,
+            41.44
+          ],
+          [
+            2.2,
+            41.46
+          ],
+          [
+            2.31,
+            41.42
+          ],
+          [
+            2.33,
+            41.35
+          ],
+          [
+            2.26,
+            41.3
+          ],
+          [
+            2.14,
+            41.31
+          ],
+          [
+            2.06,
+            41.36
+          ],
+          [
+            2.08,
+            41.44
+          ]
+        ]
+      }
+    }
+  ]
+}

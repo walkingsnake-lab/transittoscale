@@ -1,0 +1,164 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "moscow",
+    "name": "Moscow",
+    "region": "Russia",
+    "centroid": [
+      37.6173,
+      55.7558
+    ],
+    "bounds": [
+      37.45,
+      55.64,
+      37.78,
+      55.88
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "north-south",
+        "lineName": "North-South",
+        "systemName": "Moscow"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            37.61,
+            55.88
+          ],
+          [
+            37.612,
+            55.82
+          ],
+          [
+            37.617,
+            55.756
+          ],
+          [
+            37.622,
+            55.7
+          ],
+          [
+            37.628,
+            55.64
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "west-east",
+        "lineName": "West-East",
+        "systemName": "Moscow"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            37.45,
+            55.762
+          ],
+          [
+            37.52,
+            55.76
+          ],
+          [
+            37.6,
+            55.756
+          ],
+          [
+            37.68,
+            55.753
+          ],
+          [
+            37.78,
+            55.751
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "northwest-southeast",
+        "lineName": "Northwest-Southeast",
+        "systemName": "Moscow"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            37.49,
+            55.83
+          ],
+          [
+            37.55,
+            55.8
+          ],
+          [
+            37.62,
+            55.756
+          ],
+          [
+            37.7,
+            55.71
+          ],
+          [
+            37.78,
+            55.67
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "circle",
+        "lineName": "Circle",
+        "systemName": "Moscow"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            37.53,
+            55.81
+          ],
+          [
+            37.63,
+            55.83
+          ],
+          [
+            37.73,
+            55.79
+          ],
+          [
+            37.75,
+            55.72
+          ],
+          [
+            37.68,
+            55.67
+          ],
+          [
+            37.58,
+            55.68
+          ],
+          [
+            37.51,
+            55.73
+          ],
+          [
+            37.53,
+            55.81
+          ]
+        ]
+      }
+    }
+  ]
+}

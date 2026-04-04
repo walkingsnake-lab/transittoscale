@@ -1,0 +1,164 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "seoul",
+    "name": "Seoul",
+    "region": "South Korea",
+    "centroid": [
+      126.978,
+      37.5665
+    ],
+    "bounds": [
+      126.84,
+      37.47,
+      127.12,
+      37.67
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "north-south",
+        "lineName": "North-South",
+        "systemName": "Seoul"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.97,
+            37.67
+          ],
+          [
+            126.972,
+            37.62
+          ],
+          [
+            126.978,
+            37.57
+          ],
+          [
+            126.985,
+            37.52
+          ],
+          [
+            126.995,
+            37.47
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "west-east",
+        "lineName": "West-East",
+        "systemName": "Seoul"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.84,
+            37.57
+          ],
+          [
+            126.9,
+            37.57
+          ],
+          [
+            126.97,
+            37.566
+          ],
+          [
+            127.04,
+            37.565
+          ],
+          [
+            127.12,
+            37.564
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "northwest-southeast",
+        "lineName": "Northwest-Southeast",
+        "systemName": "Seoul"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.87,
+            37.63
+          ],
+          [
+            126.92,
+            37.61
+          ],
+          [
+            126.98,
+            37.57
+          ],
+          [
+            127.05,
+            37.53
+          ],
+          [
+            127.11,
+            37.49
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ring",
+        "lineName": "Ring",
+        "systemName": "Seoul"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            126.91,
+            37.62
+          ],
+          [
+            126.98,
+            37.64
+          ],
+          [
+            127.06,
+            37.61
+          ],
+          [
+            127.07,
+            37.55
+          ],
+          [
+            127.02,
+            37.5
+          ],
+          [
+            126.94,
+            37.51
+          ],
+          [
+            126.9,
+            37.56
+          ],
+          [
+            126.91,
+            37.62
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "madrid",
+    "name": "Madrid",
+    "region": "Spain",
+    "centroid": [
+      -3.7038,
+      40.4168
+    ],
+    "bounds": [
+      -3.84,
+      40.34,
+      -3.58,
+      40.51
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "north-south",
+        "lineName": "North-South",
+        "systemName": "Madrid"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -3.71,
+            40.51
+          ],
+          [
+            -3.709,
+            40.46
+          ],
+          [
+            -3.704,
+            40.418
+          ],
+          [
+            -3.699,
+            40.38
+          ],
+          [
+            -3.694,
+            40.34
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "west-east",
+        "lineName": "West-East",
+        "systemName": "Madrid"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -3.84,
+            40.423
+          ],
+          [
+            -3.78,
+            40.422
+          ],
+          [
+            -3.72,
+            40.418
+          ],
+          [
+            -3.66,
+            40.416
+          ],
+          [
+            -3.59,
+            40.415
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "northwest-southeast",
+        "lineName": "Northwest-Southeast",
+        "systemName": "Madrid"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -3.79,
+            40.48
+          ],
+          [
+            -3.75,
+            40.455
+          ],
+          [
+            -3.7,
+            40.42
+          ],
+          [
+            -3.64,
+            40.39
+          ],
+          [
+            -3.58,
+            40.36
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "inner-ring",
+        "lineName": "Inner Ring",
+        "systemName": "Madrid"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -3.75,
+            40.45
+          ],
+          [
+            -3.69,
+            40.47
+          ],
+          [
+            -3.63,
+            40.44
+          ],
+          [
+            -3.62,
+            40.39
+          ],
+          [
+            -3.67,
+            40.36
+          ],
+          [
+            -3.73,
+            40.37
+          ],
+          [
+            -3.76,
+            40.41
+          ],
+          [
+            -3.75,
+            40.45
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "santiago",
+    "name": "Santiago",
+    "region": "Chile",
+    "centroid": [
+      -70.6693,
+      -33.4489
+    ],
+    "bounds": [
+      -70.89,
+      -33.58,
+      -70.47,
+      -33.31
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "north-south",
+        "lineName": "North-South",
+        "systemName": "Santiago"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -70.67,
+            -33.31
+          ],
+          [
+            -70.67,
+            -33.38
+          ],
+          [
+            -70.669,
+            -33.449
+          ],
+          [
+            -70.668,
+            -33.51
+          ],
+          [
+            -70.667,
+            -33.58
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "west-east",
+        "lineName": "West-East",
+        "systemName": "Santiago"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -70.89,
+            -33.452
+          ],
+          [
+            -70.8,
+            -33.451
+          ],
+          [
+            -70.7,
+            -33.449
+          ],
+          [
+            -70.59,
+            -33.447
+          ],
+          [
+            -70.47,
+            -33.446
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "northwest-southeast",
+        "lineName": "Northwest-Southeast",
+        "systemName": "Santiago"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -70.82,
+            -33.36
+          ],
+          [
+            -70.76,
+            -33.39
+          ],
+          [
+            -70.67,
+            -33.449
+          ],
+          [
+            -70.58,
+            -33.5
+          ],
+          [
+            -70.49,
+            -33.55
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ring",
+        "lineName": "Ring",
+        "systemName": "Santiago"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -70.77,
+            -33.38
+          ],
+          [
+            -70.64,
+            -33.35
+          ],
+          [
+            -70.53,
+            -33.4
+          ],
+          [
+            -70.52,
+            -33.49
+          ],
+          [
+            -70.6,
+            -33.56
+          ],
+          [
+            -70.73,
+            -33.55
+          ],
+          [
+            -70.8,
+            -33.48
+          ],
+          [
+            -70.77,
+            -33.38
+          ]
+        ]
+      }
+    }
+  ]
+}

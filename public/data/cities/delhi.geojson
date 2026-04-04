@@ -1,0 +1,164 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "delhi",
+    "name": "Delhi",
+    "region": "India",
+    "centroid": [
+      77.209,
+      28.6139
+    ],
+    "bounds": [
+      77.04,
+      28.5,
+      77.38,
+      28.73
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "north-south",
+        "lineName": "North-South",
+        "systemName": "Delhi"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2,
+            28.73
+          ],
+          [
+            77.204,
+            28.67
+          ],
+          [
+            77.209,
+            28.614
+          ],
+          [
+            77.214,
+            28.56
+          ],
+          [
+            77.219,
+            28.5
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "west-east",
+        "lineName": "West-East",
+        "systemName": "Delhi"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.04,
+            28.62
+          ],
+          [
+            77.11,
+            28.619
+          ],
+          [
+            77.19,
+            28.615
+          ],
+          [
+            77.28,
+            28.613
+          ],
+          [
+            77.38,
+            28.611
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "northwest-southeast",
+        "lineName": "Northwest-Southeast",
+        "systemName": "Delhi"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.08,
+            28.69
+          ],
+          [
+            77.14,
+            28.66
+          ],
+          [
+            77.21,
+            28.614
+          ],
+          [
+            77.29,
+            28.57
+          ],
+          [
+            77.37,
+            28.53
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ring",
+        "lineName": "Ring",
+        "systemName": "Delhi"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.11,
+            28.67
+          ],
+          [
+            77.22,
+            28.7
+          ],
+          [
+            77.33,
+            28.66
+          ],
+          [
+            77.35,
+            28.58
+          ],
+          [
+            77.28,
+            28.53
+          ],
+          [
+            77.16,
+            28.54
+          ],
+          [
+            77.09,
+            28.59
+          ],
+          [
+            77.11,
+            28.67
+          ]
+        ]
+      }
+    }
+  ]
+}

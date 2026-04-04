@@ -1,0 +1,168 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "new-york",
+    "name": "New York",
+    "region": "United States",
+    "centroid": [
+      -73.9857,
+      40.7484
+    ],
+    "bounds": [
+      -74.09,
+      40.66,
+      -73.84,
+      40.88
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "uptown-downtown",
+        "lineName": "Uptown-Downtown",
+        "systemName": "New York"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.02,
+            40.88
+          ],
+          [
+            -74.01,
+            40.82
+          ],
+          [
+            -73.99,
+            40.76
+          ],
+          [
+            -73.98,
+            40.71
+          ],
+          [
+            -73.97,
+            40.66
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "crosstown",
+        "lineName": "Crosstown",
+        "systemName": "New York"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.09,
+            40.75
+          ],
+          [
+            -74.04,
+            40.75
+          ],
+          [
+            -73.99,
+            40.748
+          ],
+          [
+            -73.94,
+            40.747
+          ],
+          [
+            -73.88,
+            40.745
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "brooklyn-queens",
+        "lineName": "Brooklyn-Queens",
+        "systemName": "New York"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.03,
+            40.68
+          ],
+          [
+            -73.99,
+            40.705
+          ],
+          [
+            -73.95,
+            40.735
+          ],
+          [
+            -73.9,
+            40.76
+          ],
+          [
+            -73.84,
+            40.79
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "outer-arc",
+        "lineName": "Outer Arc",
+        "systemName": "New York"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.05,
+            40.82
+          ],
+          [
+            -74,
+            40.86
+          ],
+          [
+            -73.93,
+            40.84
+          ],
+          [
+            -73.9,
+            40.79
+          ],
+          [
+            -73.91,
+            40.72
+          ],
+          [
+            -73.96,
+            40.67
+          ],
+          [
+            -74.03,
+            40.69
+          ],
+          [
+            -74.05,
+            40.75
+          ],
+          [
+            -74.05,
+            40.82
+          ]
+        ]
+      }
+    }
+  ]
+}

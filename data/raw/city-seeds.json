@@ -1,0 +1,206 @@
+[
+  {
+    "slug": "london",
+    "name": "London",
+    "region": "United Kingdom",
+    "centroid": [-0.1276, 51.5072],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[-0.18, 51.59], [-0.16, 51.55], [-0.14, 51.51], [-0.12, 51.47], [-0.1, 51.43]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[-0.31, 51.515], [-0.24, 51.513], [-0.16, 51.509], [-0.06, 51.507], [0.06, 51.506]] },
+      { "lineId": "southwest-northeast", "lineName": "Southwest-Northeast", "coordinates": [[-0.26, 51.455], [-0.19, 51.48], [-0.11, 51.505], [-0.02, 51.535], [0.09, 51.565]] },
+      { "lineId": "orbital", "lineName": "Orbital", "coordinates": [[-0.24, 51.55], [-0.18, 51.58], [-0.07, 51.58], [0.01, 51.55], [0.02, 51.48], [-0.04, 51.44], [-0.16, 51.45], [-0.24, 51.5], [-0.24, 51.55]] }
+    ]
+  },
+  {
+    "slug": "paris",
+    "name": "Paris",
+    "region": "France",
+    "centroid": [2.3522, 48.8566],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[2.33, 48.93], [2.34, 48.89], [2.35, 48.85], [2.36, 48.81], [2.38, 48.77]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[2.23, 48.87], [2.28, 48.865], [2.34, 48.858], [2.41, 48.856], [2.48, 48.853]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[2.25, 48.9], [2.3, 48.885], [2.36, 48.855], [2.42, 48.82], [2.48, 48.79]] },
+      { "lineId": "inner-orbit", "lineName": "Inner Orbit", "coordinates": [[2.28, 48.88], [2.34, 48.9], [2.42, 48.885], [2.45, 48.84], [2.39, 48.805], [2.31, 48.81], [2.27, 48.845], [2.28, 48.88]] }
+    ]
+  },
+  {
+    "slug": "new-york",
+    "name": "New York",
+    "region": "United States",
+    "centroid": [-73.9857, 40.7484],
+    "lines": [
+      { "lineId": "uptown-downtown", "lineName": "Uptown-Downtown", "coordinates": [[-74.02, 40.88], [-74.01, 40.82], [-73.99, 40.76], [-73.98, 40.71], [-73.97, 40.66]] },
+      { "lineId": "crosstown", "lineName": "Crosstown", "coordinates": [[-74.09, 40.75], [-74.04, 40.75], [-73.99, 40.748], [-73.94, 40.747], [-73.88, 40.745]] },
+      { "lineId": "brooklyn-queens", "lineName": "Brooklyn-Queens", "coordinates": [[-74.03, 40.68], [-73.99, 40.705], [-73.95, 40.735], [-73.9, 40.76], [-73.84, 40.79]] },
+      { "lineId": "outer-arc", "lineName": "Outer Arc", "coordinates": [[-74.05, 40.82], [-74.0, 40.86], [-73.93, 40.84], [-73.9, 40.79], [-73.91, 40.72], [-73.96, 40.67], [-74.03, 40.69], [-74.05, 40.75], [-74.05, 40.82]] }
+    ]
+  },
+  {
+    "slug": "tokyo",
+    "name": "Tokyo",
+    "region": "Japan",
+    "centroid": [139.7671, 35.6812],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[139.75, 35.79], [139.755, 35.74], [139.765, 35.69], [139.775, 35.64], [139.79, 35.59]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[139.63, 35.69], [139.69, 35.688], [139.75, 35.684], [139.82, 35.681], [139.89, 35.679]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[139.67, 35.76], [139.71, 35.73], [139.76, 35.69], [139.82, 35.64], [139.88, 35.6]] },
+      { "lineId": "loop", "lineName": "Loop", "coordinates": [[139.7, 35.73], [139.77, 35.75], [139.84, 35.71], [139.84, 35.65], [139.78, 35.62], [139.71, 35.64], [139.68, 35.69], [139.7, 35.73]] }
+    ]
+  },
+  {
+    "slug": "seoul",
+    "name": "Seoul",
+    "region": "South Korea",
+    "centroid": [126.978, 37.5665],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[126.97, 37.67], [126.972, 37.62], [126.978, 37.57], [126.985, 37.52], [126.995, 37.47]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[126.84, 37.57], [126.9, 37.57], [126.97, 37.566], [127.04, 37.565], [127.12, 37.564]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[126.87, 37.63], [126.92, 37.61], [126.98, 37.57], [127.05, 37.53], [127.11, 37.49]] },
+      { "lineId": "ring", "lineName": "Ring", "coordinates": [[126.91, 37.62], [126.98, 37.64], [127.06, 37.61], [127.07, 37.55], [127.02, 37.5], [126.94, 37.51], [126.9, 37.56], [126.91, 37.62]] }
+    ]
+  },
+  {
+    "slug": "hong-kong",
+    "name": "Hong Kong",
+    "region": "Hong Kong SAR",
+    "centroid": [114.1694, 22.3193],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[114.12, 22.42], [114.14, 22.37], [114.16, 22.32], [114.18, 22.27], [114.2, 22.22]] },
+      { "lineId": "harbor-crossing", "lineName": "Harbor Crossing", "coordinates": [[114.02, 22.31], [114.08, 22.312], [114.14, 22.315], [114.2, 22.318], [114.28, 22.322]] },
+      { "lineId": "new-territories", "lineName": "New Territories", "coordinates": [[114.08, 22.38], [114.13, 22.355], [114.18, 22.325], [114.24, 22.3], [114.31, 22.28]] },
+      { "lineId": "coastal-arc", "lineName": "Coastal Arc", "coordinates": [[114.05, 22.29], [114.1, 22.27], [114.17, 22.26], [114.23, 22.28], [114.27, 22.32], [114.24, 22.36], [114.16, 22.38], [114.09, 22.35], [114.05, 22.29]] }
+    ]
+  },
+  {
+    "slug": "madrid",
+    "name": "Madrid",
+    "region": "Spain",
+    "centroid": [-3.7038, 40.4168],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[-3.71, 40.51], [-3.709, 40.46], [-3.704, 40.418], [-3.699, 40.38], [-3.694, 40.34]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[-3.84, 40.423], [-3.78, 40.422], [-3.72, 40.418], [-3.66, 40.416], [-3.59, 40.415]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[-3.79, 40.48], [-3.75, 40.455], [-3.7, 40.42], [-3.64, 40.39], [-3.58, 40.36]] },
+      { "lineId": "inner-ring", "lineName": "Inner Ring", "coordinates": [[-3.75, 40.45], [-3.69, 40.47], [-3.63, 40.44], [-3.62, 40.39], [-3.67, 40.36], [-3.73, 40.37], [-3.76, 40.41], [-3.75, 40.45]] }
+    ]
+  },
+  {
+    "slug": "mexico-city",
+    "name": "Mexico City",
+    "region": "Mexico",
+    "centroid": [-99.1332, 19.4326],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[-99.14, 19.55], [-99.138, 19.49], [-99.133, 19.433], [-99.129, 19.38], [-99.124, 19.32]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[-99.28, 19.44], [-99.22, 19.438], [-99.15, 19.434], [-99.07, 19.431], [-98.99, 19.428]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[-99.24, 19.5], [-99.19, 19.47], [-99.13, 19.433], [-99.07, 19.39], [-99.0, 19.35]] },
+      { "lineId": "ring", "lineName": "Ring", "coordinates": [[-99.21, 19.48], [-99.13, 19.5], [-99.05, 19.46], [-99.04, 19.39], [-99.1, 19.35], [-99.18, 19.36], [-99.23, 19.41], [-99.21, 19.48]] }
+    ]
+  },
+  {
+    "slug": "moscow",
+    "name": "Moscow",
+    "region": "Russia",
+    "centroid": [37.6173, 55.7558],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[37.61, 55.88], [37.612, 55.82], [37.617, 55.756], [37.622, 55.7], [37.628, 55.64]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[37.45, 55.762], [37.52, 55.76], [37.6, 55.756], [37.68, 55.753], [37.78, 55.751]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[37.49, 55.83], [37.55, 55.8], [37.62, 55.756], [37.7, 55.71], [37.78, 55.67]] },
+      { "lineId": "circle", "lineName": "Circle", "coordinates": [[37.53, 55.81], [37.63, 55.83], [37.73, 55.79], [37.75, 55.72], [37.68, 55.67], [37.58, 55.68], [37.51, 55.73], [37.53, 55.81]] }
+    ]
+  },
+  {
+    "slug": "berlin",
+    "name": "Berlin",
+    "region": "Germany",
+    "centroid": [13.405, 52.52],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[13.39, 52.62], [13.395, 52.57], [13.405, 52.52], [13.415, 52.47], [13.425, 52.42]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[13.24, 52.525], [13.31, 52.524], [13.39, 52.521], [13.48, 52.519], [13.58, 52.517]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[13.27, 52.58], [13.33, 52.56], [13.4, 52.52], [13.48, 52.48], [13.56, 52.45]] },
+      { "lineId": "ring", "lineName": "Ring", "coordinates": [[13.31, 52.57], [13.41, 52.6], [13.52, 52.57], [13.55, 52.5], [13.48, 52.45], [13.37, 52.46], [13.3, 52.51], [13.31, 52.57]] }
+    ]
+  },
+  {
+    "slug": "chicago",
+    "name": "Chicago",
+    "region": "United States",
+    "centroid": [-87.6298, 41.8781],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[-87.63, 42.02], [-87.629, 41.95], [-87.629, 41.88], [-87.63, 41.82], [-87.632, 41.76]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[-87.85, 41.885], [-87.76, 41.884], [-87.68, 41.88], [-87.6, 41.878], [-87.51, 41.877]] },
+      { "lineId": "northwest-loop", "lineName": "Northwest Loop", "coordinates": [[-87.78, 41.98], [-87.72, 41.94], [-87.67, 41.9], [-87.63, 41.88], [-87.58, 41.85], [-87.53, 41.82]] },
+      { "lineId": "loop", "lineName": "Loop", "coordinates": [[-87.66, 41.9], [-87.61, 41.91], [-87.57, 41.88], [-87.58, 41.84], [-87.63, 41.82], [-87.68, 41.84], [-87.69, 41.88], [-87.66, 41.9]] }
+    ]
+  },
+  {
+    "slug": "san-francisco",
+    "name": "San Francisco",
+    "region": "United States",
+    "centroid": [-122.4194, 37.7749],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[-122.42, 37.87], [-122.421, 37.82], [-122.419, 37.775], [-122.418, 37.73], [-122.416, 37.68]] },
+      { "lineId": "bay-crossing", "lineName": "Bay Crossing", "coordinates": [[-122.58, 37.79], [-122.5, 37.785], [-122.42, 37.775], [-122.33, 37.77], [-122.22, 37.765]] },
+      { "lineId": "peninsula", "lineName": "Peninsula", "coordinates": [[-122.47, 37.83], [-122.44, 37.8], [-122.41, 37.77], [-122.37, 37.73], [-122.32, 37.69]] },
+      { "lineId": "arc", "lineName": "Arc", "coordinates": [[-122.49, 37.82], [-122.42, 37.84], [-122.34, 37.81], [-122.31, 37.75], [-122.35, 37.7], [-122.43, 37.69], [-122.49, 37.73], [-122.49, 37.82]] }
+    ]
+  },
+  {
+    "slug": "beijing",
+    "name": "Beijing",
+    "region": "China",
+    "centroid": [116.4074, 39.9042],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[116.4, 40.03], [116.402, 39.97], [116.407, 39.904], [116.413, 39.85], [116.418, 39.79]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[116.24, 39.91], [116.31, 39.909], [116.39, 39.905], [116.48, 39.903], [116.58, 39.901]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[116.28, 39.98], [116.34, 39.95], [116.41, 39.904], [116.49, 39.86], [116.57, 39.82]] },
+      { "lineId": "second-ring", "lineName": "Second Ring", "coordinates": [[116.31, 39.96], [116.42, 39.98], [116.53, 39.94], [116.55, 39.87], [116.48, 39.82], [116.37, 39.83], [116.3, 39.88], [116.31, 39.96]] }
+    ]
+  },
+  {
+    "slug": "delhi",
+    "name": "Delhi",
+    "region": "India",
+    "centroid": [77.209, 28.6139],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[77.2, 28.73], [77.204, 28.67], [77.209, 28.614], [77.214, 28.56], [77.219, 28.5]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[77.04, 28.62], [77.11, 28.619], [77.19, 28.615], [77.28, 28.613], [77.38, 28.611]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[77.08, 28.69], [77.14, 28.66], [77.21, 28.614], [77.29, 28.57], [77.37, 28.53]] },
+      { "lineId": "ring", "lineName": "Ring", "coordinates": [[77.11, 28.67], [77.22, 28.7], [77.33, 28.66], [77.35, 28.58], [77.28, 28.53], [77.16, 28.54], [77.09, 28.59], [77.11, 28.67]] }
+    ]
+  },
+  {
+    "slug": "shanghai",
+    "name": "Shanghai",
+    "region": "China",
+    "centroid": [121.4737, 31.2304],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[121.47, 31.36], [121.471, 31.3], [121.474, 31.23], [121.477, 31.17], [121.48, 31.1]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[121.28, 31.24], [121.36, 31.238], [121.45, 31.232], [121.55, 31.229], [121.66, 31.226]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[121.32, 31.31], [121.39, 31.28], [121.47, 31.23], [121.56, 31.18], [121.65, 31.14]] },
+      { "lineId": "ring", "lineName": "Ring", "coordinates": [[121.36, 31.29], [121.49, 31.32], [121.61, 31.28], [121.63, 31.2], [121.55, 31.14], [121.42, 31.15], [121.34, 31.21], [121.36, 31.29]] }
+    ]
+  },
+  {
+    "slug": "santiago",
+    "name": "Santiago",
+    "region": "Chile",
+    "centroid": [-70.6693, -33.4489],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[-70.67, -33.31], [-70.67, -33.38], [-70.669, -33.449], [-70.668, -33.51], [-70.667, -33.58]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[-70.89, -33.452], [-70.8, -33.451], [-70.7, -33.449], [-70.59, -33.447], [-70.47, -33.446]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[-70.82, -33.36], [-70.76, -33.39], [-70.67, -33.449], [-70.58, -33.5], [-70.49, -33.55]] },
+      { "lineId": "ring", "lineName": "Ring", "coordinates": [[-70.77, -33.38], [-70.64, -33.35], [-70.53, -33.4], [-70.52, -33.49], [-70.6, -33.56], [-70.73, -33.55], [-70.8, -33.48], [-70.77, -33.38]] }
+    ]
+  },
+  {
+    "slug": "barcelona",
+    "name": "Barcelona",
+    "region": "Spain",
+    "centroid": [2.1734, 41.3851],
+    "lines": [
+      { "lineId": "north-south", "lineName": "North-South", "coordinates": [[2.17, 41.5], [2.171, 41.44], [2.173, 41.385], [2.176, 41.34], [2.179, 41.29]] },
+      { "lineId": "west-east", "lineName": "West-East", "coordinates": [[1.99, 41.392], [2.06, 41.391], [2.14, 41.387], [2.23, 41.385], [2.33, 41.383]] },
+      { "lineId": "northwest-southeast", "lineName": "Northwest-Southeast", "coordinates": [[2.04, 41.45], [2.1, 41.42], [2.17, 41.385], [2.25, 41.35], [2.33, 41.32]] },
+      { "lineId": "coastal-ring", "lineName": "Coastal Ring", "coordinates": [[2.08, 41.44], [2.2, 41.46], [2.31, 41.42], [2.33, 41.35], [2.26, 41.3], [2.14, 41.31], [2.06, 41.36], [2.08, 41.44]] }
+    ]
+  }
+]

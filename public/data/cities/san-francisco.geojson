@@ -1,0 +1,164 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "san-francisco",
+    "name": "San Francisco",
+    "region": "United States",
+    "centroid": [
+      -122.4194,
+      37.7749
+    ],
+    "bounds": [
+      -122.58,
+      37.68,
+      -122.22,
+      37.87
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "north-south",
+        "lineName": "North-South",
+        "systemName": "San Francisco"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.42,
+            37.87
+          ],
+          [
+            -122.421,
+            37.82
+          ],
+          [
+            -122.419,
+            37.775
+          ],
+          [
+            -122.418,
+            37.73
+          ],
+          [
+            -122.416,
+            37.68
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "bay-crossing",
+        "lineName": "Bay Crossing",
+        "systemName": "San Francisco"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.58,
+            37.79
+          ],
+          [
+            -122.5,
+            37.785
+          ],
+          [
+            -122.42,
+            37.775
+          ],
+          [
+            -122.33,
+            37.77
+          ],
+          [
+            -122.22,
+            37.765
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "peninsula",
+        "lineName": "Peninsula",
+        "systemName": "San Francisco"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.47,
+            37.83
+          ],
+          [
+            -122.44,
+            37.8
+          ],
+          [
+            -122.41,
+            37.77
+          ],
+          [
+            -122.37,
+            37.73
+          ],
+          [
+            -122.32,
+            37.69
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "arc",
+        "lineName": "Arc",
+        "systemName": "San Francisco"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.49,
+            37.82
+          ],
+          [
+            -122.42,
+            37.84
+          ],
+          [
+            -122.34,
+            37.81
+          ],
+          [
+            -122.31,
+            37.75
+          ],
+          [
+            -122.35,
+            37.7
+          ],
+          [
+            -122.43,
+            37.69
+          ],
+          [
+            -122.49,
+            37.73
+          ],
+          [
+            -122.49,
+            37.82
+          ]
+        ]
+      }
+    }
+  ]
+}
