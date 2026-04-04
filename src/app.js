@@ -351,8 +351,6 @@ function drawWaterLayer(ctx, projectedWater, revealValue, emphasis, dimmed) {
 
   ctx.save();
   ctx.fillStyle = CARD_STYLE.waterFill;
-  ctx.strokeStyle = CARD_STYLE.waterStroke;
-  ctx.lineWidth = CARD_STYLE.waterLineWidth;
   ctx.globalAlpha = alpha;
 
   ctx.beginPath();
@@ -364,15 +362,6 @@ function drawWaterLayer(ctx, projectedWater, revealValue, emphasis, dimmed) {
     }
   }
   ctx.fill('evenodd');
-  ctx.stroke();
-
-  ctx.beginPath();
-  for (const feature of projectedWater) {
-    for (const path of feature.paths) {
-      traceOpenPath(ctx, path);
-    }
-  }
-  ctx.stroke();
   ctx.restore();
 }
 

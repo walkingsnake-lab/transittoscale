@@ -21,8 +21,6 @@ export const CARD_STYLE = {
   dimmedAlpha: 0.16,
   neutralStroke: '#15211d',
   waterFill: 'rgba(123, 167, 191, 0.18)',
-  waterStroke: 'rgba(87, 130, 156, 0.68)',
-  waterLineWidth: 0.95,
   referenceStroke: '#94785b',
   gridStroke: 'rgba(24, 38, 32, 0.07)',
   cardStroke: 'rgba(17, 24, 20, 0.12)',
