@@ -1,0 +1,78 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "new-york",
+    "sourceName": "Transit To Scale curated",
+    "sourceUrl": ""
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "featureKind": "water",
+        "name": "Atlantic And Upper Bay (curated)",
+        "natural": "water",
+        "water": "sea",
+        "waterway": "",
+        "sourceName": "Transit To Scale curated",
+        "sourceUrl": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-74.23, 40.48],
+            [-73.69, 40.48],
+            [-73.69, 40.93],
+            [-73.80, 40.92],
+            [-73.84, 40.89],
+            [-73.87, 40.85],
+            [-73.89, 40.82],
+            [-73.91, 40.79],
+            [-73.93, 40.76],
+            [-73.95, 40.73],
+            [-73.98, 40.71],
+            [-74.02, 40.69],
+            [-74.05, 40.67],
+            [-74.08, 40.65],
+            [-74.11, 40.62],
+            [-74.14, 40.58],
+            [-74.18, 40.54],
+            [-74.23, 40.48]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "featureKind": "water",
+        "name": "Hudson River (curated)",
+        "natural": "water",
+        "water": "river",
+        "waterway": "",
+        "sourceName": "Transit To Scale curated",
+        "sourceUrl": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-74.19, 40.90],
+            [-74.06, 40.90],
+            [-74.03, 40.84],
+            [-74.01, 40.79],
+            [-74.00, 40.75],
+            [-74.00, 40.72],
+            [-74.01, 40.71],
+            [-74.03, 40.73],
+            [-74.05, 40.78],
+            [-74.08, 40.84],
+            [-74.12, 40.89],
+            [-74.19, 40.90]
+          ]
+        ]
+      }
+    }
+  ]
+}

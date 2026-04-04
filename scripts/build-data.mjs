@@ -7,6 +7,7 @@ const repoRoot = path.resolve(__dirname, '..');
 const rawDataPath = path.join(repoRoot, 'data', 'raw', 'city-seeds.json');
 const normalizedDataPath = path.join(repoRoot, 'data', 'normalized', 'cities.json');
 const normalizedWaterDir = path.join(repoRoot, 'data', 'normalized-water');
+const curatedWaterDir = path.join(repoRoot, 'data', 'curated-water');
 const publicDataDir = path.join(repoRoot, 'public', 'data');
 const cityDir = path.join(publicDataDir, 'cities');
 const waterDir = path.join(publicDataDir, 'water');
@@ -120,10 +121,33 @@ async function readNormalizedCities() {
 }
 
 async function readOptionalWaterFeatureCollection(slug) {
+  const [normalizedWater, curatedWater] = await Promise.all([
+    readOptionalGeojson(path.join(normalizedWaterDir, `${slug}.geojson`)),
+    readOptionalGeojson(path.join(curatedWaterDir, `${slug}.geojson`))
+  ]);
+
+  if (!normalizedWater && !curatedWater) {
+    return null;
+  }
+
+  if (normalizedWater && curatedWater) {
+    return {
+      type: 'FeatureCollection',
+      properties: {
+        ...normalizedWater.properties,
+        curatedSourceName: curatedWater.properties?.sourceName ?? 'Transit To Scale curated',
+        curatedSourceUrl: curatedWater.properties?.sourceUrl ?? ''
+      },
+      features: [...normalizedWater.features, ...curatedWater.features]
+    };
+  }
+
+  return curatedWater ?? normalizedWater;
+}
+
+async function readOptionalGeojson(filePath) {
   try {
-    return JSON.parse(
-      await readFile(path.join(normalizedWaterDir, `${slug}.geojson`), 'utf8')
-    );
+    return JSON.parse(await readFile(filePath, 'utf8'));
   } catch (error) {
     if (error.code === 'ENOENT') {
       return null;

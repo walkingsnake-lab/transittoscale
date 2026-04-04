@@ -3,7 +3,9 @@
   "properties": {
     "slug": "boston",
     "sourceName": "OpenStreetMap via Overpass",
-    "sourceUrl": "https://overpass-api.de/api/interpreter"
+    "sourceUrl": "https://overpass-api.de/api/interpreter",
+    "curatedSourceName": "Transit To Scale curated",
+    "curatedSourceUrl": ""
   },
   "features": [
     {
@@ -17162,6 +17164,85 @@
           [
             -70.9367421,
             42.4258848
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "featureKind": "water",
+        "name": "Boston Harbor And Massachusetts Bay (curated)",
+        "natural": "water",
+        "water": "sea",
+        "waterway": "",
+        "sourceName": "Transit To Scale curated",
+        "sourceUrl": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -71.14,
+              42.27
+            ],
+            [
+              -70.88,
+              42.27
+            ],
+            [
+              -70.88,
+              42.45
+            ],
+            [
+              -70.96,
+              42.44
+            ],
+            [
+              -71,
+              42.42
+            ],
+            [
+              -71.02,
+              42.4
+            ],
+            [
+              -71.04,
+              42.39
+            ],
+            [
+              -71.05,
+              42.38
+            ],
+            [
+              -71.05,
+              42.36
+            ],
+            [
+              -71.04,
+              42.35
+            ],
+            [
+              -71.05,
+              42.34
+            ],
+            [
+              -71.07,
+              42.33
+            ],
+            [
+              -71.09,
+              42.32
+            ],
+            [
+              -71.11,
+              42.3
+            ],
+            [
+              -71.14,
+              42.27
+            ]
           ]
         ]
       }
