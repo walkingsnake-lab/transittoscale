@@ -39,16 +39,18 @@
     "region": "United States",
     "dataPath": "data/cities/new-york.geojson",
     "centroid": [
-      -73.9857,
-      40.7484
+      -74.003683,
+      40.707944499999996
     ],
     "bounds": [
-      -74.09,
-      40.66,
-      -73.84,
-      40.88
+      -74.251961,
+      40.512764,
+      -73.755405,
+      40.903125
     ],
-    "lineCount": 4
+    "lineCount": 24,
+    "sourceName": "MTA New York City Transit",
+    "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip"
   },
   {
     "slug": "tokyo",
@@ -175,16 +177,18 @@
     "region": "United States",
     "dataPath": "data/cities/chicago.geojson",
     "centroid": [
-      -87.6298,
-      41.8781
+      -87.75504603,
+      41.89777223
     ],
     "bounds": [
-      -87.85,
-      41.76,
-      -87.51,
-      42.02
+      -87.90422891,
+      41.72238381,
+      -87.60586315,
+      42.07316065
     ],
-    "lineCount": 4
+    "lineCount": 8,
+    "sourceName": "Chicago Transit Authority (CTA)",
+    "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip"
   },
   {
     "slug": "san-francisco",

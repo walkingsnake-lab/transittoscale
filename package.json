@@ -7,10 +7,13 @@
     "dev": "vite",
     "build": "npm run data:build && vite build",
     "preview": "vite preview",
+    "data:import": "node ./scripts/import-gtfs.mjs",
     "data:build": "node ./scripts/build-data.mjs",
     "data:check": "node ./scripts/check-data.mjs"
   },
   "dependencies": {
+    "adm-zip": "^0.5.16",
+    "csv-parse": "^6.1.0",
     "d3-geo": "^3.1.1"
   },
   "devDependencies": {

@@ -27,9 +27,14 @@ Transit To Scale is a static web visualization that compares world metro systems
 ## Data Workflow
 
 - Edit the seed dataset in `data/raw/city-seeds.json`.
+- Import real GTFS pilot data with `npm run data:import`.
+- Inspect GTFS source config in `data/sources/gtfs-sources.json` and generated normalized outputs in `data/normalized/`.
 - Run `npm run data:build` to regenerate `public/data/city-manifest.json` and the per-city GeoJSON files.
 - Run `npm run data:check` to validate the generated output before shipping.
 
 ## Current Starter Dataset
 
-The repo includes a hand-curated starter dataset for seventeen metro systems so the app can launch with representative geometry and the full comparison flow already wired up. The normalization pipeline and manifest contract are in place for swapping in more precise source data later.
+The repo currently mixes real and placeholder data:
+
+- Chicago and New York are imported from official GTFS feeds and normalized into GeoJSON overrides.
+- The remaining cities still use the hand-curated starter dataset so the full comparison grid stays populated while the real-data pipeline expands.

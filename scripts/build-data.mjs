@@ -5,14 +5,22 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const rawDataPath = path.join(repoRoot, 'data', 'raw', 'city-seeds.json');
+const normalizedDataPath = path.join(repoRoot, 'data', 'normalized', 'cities.json');
 const publicDataDir = path.join(repoRoot, 'public', 'data');
 const cityDir = path.join(publicDataDir, 'cities');
 
 const raw = JSON.parse(await readFile(rawDataPath, 'utf8'));
+const normalized = await readNormalizedCities();
 
 await mkdir(cityDir, { recursive: true });
 
 const manifest = raw.map((city) => {
+  const normalizedCity = normalized.get(city.slug);
+
+  if (normalizedCity) {
+    return normalizedCity;
+  }
+
   const features = city.lines.map((line) => ({
     type: 'Feature',
     properties: {
@@ -63,6 +71,29 @@ await writeFile(
   path.join(publicDataDir, 'city-manifest.json'),
   JSON.stringify(manifestOutput, null, 2)
 );
+
+async function readNormalizedCities() {
+  try {
+    const normalizedManifest = JSON.parse(await readFile(normalizedDataPath, 'utf8'));
+    const cities = await Promise.all(
+      normalizedManifest.map(async (city) => {
+        const featureCollection = JSON.parse(
+          await readFile(path.join(repoRoot, 'data', 'normalized', `${city.slug}.geojson`), 'utf8')
+        );
+
+        return [city.slug, { ...city, featureCollection }];
+      })
+    );
+
+    return new Map(cities);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return new Map();
+    }
+
+    throw error;
+  }
+}
 
 function computeBounds(lines) {
   let minLon = Infinity;

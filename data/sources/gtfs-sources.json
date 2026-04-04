@@ -1,0 +1,67 @@
+[
+  {
+    "slug": "chicago",
+    "name": "Chicago",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Chicago Transit Authority (CTA)",
+    "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
+    "routeTypes": ["1"],
+    "minPointSpacingMeters": 20,
+    "routeIdAllowlist": ["Blue", "Brn", "G", "Org", "P", "Pink", "Red", "Y"],
+    "lineNameOverrides": {
+      "Blue": "Blue Line",
+      "Brn": "Brown Line",
+      "G": "Green Line",
+      "Org": "Orange Line",
+      "P": "Purple Line",
+      "Pink": "Pink Line",
+      "Red": "Red Line",
+      "Y": "Yellow Line"
+    }
+  },
+  {
+    "slug": "new-york",
+    "name": "New York",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "MTA New York City Transit",
+    "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
+    "routeTypes": ["1", "2"],
+    "minPointSpacingMeters": 20,
+    "routeIdAllowlist": ["1", "2", "3", "4", "5", "6", "6X", "7", "7X", "A", "B", "C", "D", "E", "F", "FX", "G", "GS", "FS", "H", "J", "Z", "L", "M", "N", "Q", "R", "W", "SI"],
+    "routeIdAliases": {
+      "6X": "6",
+      "7X": "7",
+      "FX": "F"
+    },
+    "lineNameOverrides": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "A": "A",
+      "C": "C",
+      "E": "E",
+      "B": "B",
+      "D": "D",
+      "F": "F",
+      "M": "M",
+      "G": "G",
+      "J": "J",
+      "Z": "Z",
+      "L": "L",
+      "N": "N",
+      "Q": "Q",
+      "R": "R",
+      "W": "W",
+      "GS": "42 St Shuttle",
+      "FS": "Franklin Av Shuttle",
+      "H": "Rockaway Park Shuttle",
+      "SI": "Staten Island Railway"
+    }
+  }
+]
