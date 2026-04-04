@@ -11,37 +11,48 @@ const sourceConfigs = JSON.parse(await readFile(sourcesPath, 'utf8'));
 
 await mkdir(outputDir, { recursive: true });
 
+const existingOutputNames = new Set(
+  (await readdir(outputDir, { withFileTypes: true }))
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.geojson'))
+    .map((entry) => entry.name)
+);
 const importedSlugs = [];
+const preservedNames = new Set();
 
 for (const sourceConfig of sourceConfigs) {
   if (sourceConfig.sourceType !== 'osm-overpass') {
     continue;
   }
 
-  const featureCollection = await importWaterContext(sourceConfig);
-  importedSlugs.push(sourceConfig.slug);
-  await writeFile(
-    path.join(outputDir, `${sourceConfig.slug}.geojson`),
-    `${JSON.stringify(featureCollection, null, 2)}\n`
-  );
+  try {
+    const featureCollection = await importWaterContext(sourceConfig);
+    importedSlugs.push(sourceConfig.slug);
+    await writeFile(
+      path.join(outputDir, `${sourceConfig.slug}.geojson`),
+      `${JSON.stringify(featureCollection, null, 2)}\n`
+    );
+  } catch (error) {
+    console.warn(`Skipping ${sourceConfig.slug}: ${error.message}`);
+
+    const existingName = `${sourceConfig.slug}.geojson`;
+    if (existingOutputNames.has(existingName)) {
+      preservedNames.add(existingName);
+    }
+  }
 }
 
 await pruneGeneratedFiles(
   outputDir,
-  new Set(importedSlugs.map((slug) => `${slug}.geojson`))
+  new Set([
+    ...importedSlugs.map((slug) => `${slug}.geojson`),
+    ...preservedNames
+  ])
 );
 
 console.log(`Imported ${importedSlugs.length} water context layers into data/normalized-water`);
 
 async function importWaterContext(sourceConfig) {
-  const response = await fetch(sourceConfig.sourceUrl, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      'user-agent': 'Transit To Scale water importer'
-    },
-    body: `data=${encodeURIComponent(buildOverpassQuery(sourceConfig.bbox))}`
-  });
+  const response = await fetchWithRetries(sourceConfig);
 
   if (!response.ok) {
     throw new Error(`Failed to download water context for ${sourceConfig.slug}: ${response.status} ${response.statusText}`);
@@ -63,6 +74,27 @@ async function importWaterContext(sourceConfig) {
     },
     features
   };
+}
+
+async function fetchWithRetries(sourceConfig, retries = 2) {
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const response = await fetch(sourceConfig.sourceUrl, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'user-agent': 'Transit To Scale water importer'
+      },
+      body: `data=${encodeURIComponent(buildOverpassQuery(sourceConfig.bbox))}`
+    });
+
+    if (response.ok || !isRetryableStatus(response.status) || attempt === retries) {
+      return response;
+    }
+
+    await sleep(500 * (attempt + 1));
+  }
+
+  throw new Error(`Failed to download water context for ${sourceConfig.slug}`);
 }
 
 function buildOverpassQuery([south, west, north, east]) {
@@ -352,4 +384,8 @@ function sleep(durationMs) {
   return new Promise((resolve) => {
     setTimeout(resolve, durationMs);
   });
+}
+
+function isRetryableStatus(status) {
+  return status === 429 || status === 502 || status === 503 || status === 504;
 }

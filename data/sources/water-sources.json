@@ -13,5 +13,20 @@
     "includeWaterValues": ["lake", "river", "canal", "harbour", "lagoon"],
     "includeWaterwayValues": ["riverbank"],
     "excludeWaterValues": ["pond", "basin", "wastewater", "reservoir", "reflecting_pool", "fountain", "lock"]
+  },
+  {
+    "slug": "new-york",
+    "name": "New York Water Context",
+    "sourceType": "osm-overpass",
+    "sourceName": "OpenStreetMap via Overpass",
+    "sourceUrl": "https://overpass.kumi.systems/api/interpreter",
+    "bbox": [40.58, -74.12, 40.86, -73.84],
+    "minAreaSquareMeters": 350000,
+    "minLineLengthMeters": 1200,
+    "minPointSpacingMeters": 55,
+    "includeNaturalValues": ["water"],
+    "includeWaterValues": ["lake", "river", "canal", "harbour", "lagoon"],
+    "includeWaterwayValues": ["riverbank"],
+    "excludeWaterValues": ["pond", "basin", "wastewater", "reservoir", "reflecting_pool", "fountain", "lock"]
   }
 ]
