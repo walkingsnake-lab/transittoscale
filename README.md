@@ -28,9 +28,18 @@ Transit To Scale is a static web visualization that compares world metro systems
 
 - Edit the seed dataset in `data/raw/city-seeds.json`.
 - Import real GTFS pilot data with `npm run data:import`.
+- Import water context layers with `npm run data:import-water`.
 - Inspect GTFS source config in `data/sources/gtfs-sources.json` and generated normalized outputs in `data/normalized/`.
+- Inspect water source config in `data/sources/water-sources.json` and generated outputs in `data/normalized-water/`.
 - Run `npm run data:build` to regenerate `public/data/city-manifest.json` and the per-city GeoJSON files.
 - Run `npm run data:check` to validate the generated output before shipping.
+
+## Water Context
+
+- Water context is optional per city and currently sourced from OpenStreetMap via the Overpass API.
+- The importer keeps only major explanatory features such as lake, river, canal, and harbor geometry, then simplifies them for rendering.
+- Water is rendered as a faint fill with a blue outline beneath the transit lines.
+- If we ship OSM-derived water data, we should preserve OpenStreetMap attribution in the project.
 
 ## Anchoring Rule
 

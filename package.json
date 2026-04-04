@@ -8,13 +8,15 @@
     "build": "npm run data:build && vite build",
     "preview": "vite preview",
     "data:import": "node ./scripts/import-gtfs.mjs",
+    "data:import-water": "node ./scripts/import-water.mjs",
     "data:build": "node ./scripts/build-data.mjs",
     "data:check": "node ./scripts/check-data.mjs"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
     "csv-parse": "^6.1.0",
-    "d3-geo": "^3.1.1"
+    "d3-geo": "^3.1.1",
+    "osmtogeojson": "^3.0.0-beta.5"
   },
   "devDependencies": {
     "vite": "^7.1.0"

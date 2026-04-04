@@ -1,0 +1,17 @@
+[
+  {
+    "slug": "chicago",
+    "name": "Chicago Water Context",
+    "sourceType": "osm-overpass",
+    "sourceName": "OpenStreetMap via Overpass",
+    "sourceUrl": "https://overpass-api.de/api/interpreter",
+    "bbox": [41.78, -87.75, 42.05, -87.52],
+    "minAreaSquareMeters": 100000,
+    "minLineLengthMeters": 800,
+    "minPointSpacingMeters": 45,
+    "includeNaturalValues": ["water"],
+    "includeWaterValues": ["lake", "river", "canal", "harbour", "lagoon"],
+    "includeWaterwayValues": ["riverbank"],
+    "excludeWaterValues": ["pond", "basin", "wastewater", "reservoir", "reflecting_pool", "fountain", "lock"]
+  }
+]

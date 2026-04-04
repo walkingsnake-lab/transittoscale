@@ -14,7 +14,7 @@ import {
 import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath, strokeCircleProgress } from './lib/canvas.js';
 import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
 import { clamp, damp, invLerp, nearlyEqual } from './lib/math.js';
-import { projectFeatureCollection } from './lib/projection.js';
+import { projectContextFeatureCollection, projectFeatureCollection } from './lib/projection.js';
 
 export async function mountApp(root) {
   root.innerHTML = `
@@ -88,7 +88,10 @@ async function loadCities() {
 
       return {
         ...city,
-        geojson: await response.json()
+        geojson: await response.json(),
+        waterGeojson: city.waterDataPath
+          ? await loadOptionalGeojson(city.waterDataPath)
+          : null
       };
     })
   );
@@ -98,6 +101,16 @@ async function loadCities() {
 
 function resolveAssetPath(relativePath) {
   return new URL(relativePath, document.baseURI).toString();
+}
+
+async function loadOptionalGeojson(relativePath) {
+  const response = await fetch(resolveAssetPath(relativePath));
+
+  if (!response.ok) {
+    throw new Error(`Unable to load ${relativePath}.`);
+  }
+
+  return response.json();
 }
 
 function createCard(city, index, animator, reducedMotion, onSelect) {
@@ -136,6 +149,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     width: 0,
     height: CARD_CANVAS_HEIGHT,
     projectedLines: [],
+    projectedWater: [],
     selectedValue: 0,
     selectedTarget: 0,
     dimValue: 0,
@@ -149,6 +163,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       this.width = width;
       this.height = height;
       clearHiDpiCanvas(canvas, ctx, width, height, window.devicePixelRatio || 1);
+      this.projectedWater = projectWater(city, width, height);
       this.projectedLines = projectLines(city, width, height);
       this.draw();
     },
@@ -193,6 +208,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         ctx,
         width: this.width,
         height: this.height,
+        projectedWater: this.projectedWater,
         projectedLines: this.projectedLines,
         introValue: this.introValue,
         selectedValue: this.selectedValue,
@@ -225,10 +241,32 @@ function projectLines(city, width, height) {
   }));
 }
 
+function projectWater(city, width, height) {
+  if (!city.waterGeojson) {
+    return [];
+  }
+
+  const frameWidth = width - CARD_PADDING * 2;
+  const frameHeight = height - CARD_PADDING * 2 - HEADER_OFFSET;
+  const centerX = CARD_PADDING + frameWidth / 2;
+  const centerY = CARD_PADDING + HEADER_OFFSET + frameHeight / 2;
+  const anchorPoint = city.focusPoint ?? city.centroid;
+  const projectedFeatures = projectContextFeatureCollection(city.waterGeojson, anchorPoint);
+
+  return projectedFeatures.map((feature) => ({
+    ...feature,
+    polygons: feature.polygons.map((polygon) =>
+      polygon.map((ring) => ring.map(([x, y]) => [centerX + x, centerY + y]))
+    ),
+    paths: feature.paths.map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
+  }));
+}
+
 function drawCard({
   ctx,
   width,
   height,
+  projectedWater,
   projectedLines,
   introValue,
   selectedValue,
@@ -243,6 +281,7 @@ function drawCard({
   const dimmed = dimValue;
 
   drawGrid(ctx, width, height);
+  drawWaterLayer(ctx, projectedWater, circleValue, emphasis, dimmed);
 
   ctx.save();
   ctx.strokeStyle = CARD_STYLE.cardStroke;
@@ -300,6 +339,66 @@ function drawCard({
     ctx.lineWidth = 1.5;
     ctx.strokeRect(1, 1, width - 2, height - 2);
     ctx.restore();
+  }
+}
+
+function drawWaterLayer(ctx, projectedWater, revealValue, emphasis, dimmed) {
+  if (projectedWater.length === 0 || revealValue <= 0) {
+    return;
+  }
+
+  const alpha = (0.7 + emphasis * 0.08 - dimmed * 0.14) * revealValue;
+
+  ctx.save();
+  ctx.fillStyle = CARD_STYLE.waterFill;
+  ctx.strokeStyle = CARD_STYLE.waterStroke;
+  ctx.lineWidth = CARD_STYLE.waterLineWidth;
+  ctx.globalAlpha = alpha;
+
+  ctx.beginPath();
+  for (const feature of projectedWater) {
+    for (const polygon of feature.polygons) {
+      for (const ring of polygon) {
+        traceClosedRing(ctx, ring);
+      }
+    }
+  }
+  ctx.fill('evenodd');
+  ctx.stroke();
+
+  ctx.beginPath();
+  for (const feature of projectedWater) {
+    for (const path of feature.paths) {
+      traceOpenPath(ctx, path);
+    }
+  }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function traceClosedRing(ctx, ring) {
+  if (ring.length < 4) {
+    return;
+  }
+
+  ctx.moveTo(ring[0][0], ring[0][1]);
+
+  for (let index = 1; index < ring.length; index += 1) {
+    ctx.lineTo(ring[index][0], ring[index][1]);
+  }
+
+  ctx.closePath();
+}
+
+function traceOpenPath(ctx, path) {
+  if (path.length < 2) {
+    return;
+  }
+
+  ctx.moveTo(path[0][0], path[0][1]);
+
+  for (let index = 1; index < path.length; index += 1) {
+    ctx.lineTo(path[index][0], path[index][1]);
   }
 }
 

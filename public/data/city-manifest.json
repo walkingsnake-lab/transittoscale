@@ -20,7 +20,8 @@
     ],
     "lineCount": 8,
     "sourceName": "Chicago Transit Authority (CTA)",
-    "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip"
+    "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
+    "waterDataPath": "data/water/chicago.geojson"
   },
   {
     "slug": "new-york",
