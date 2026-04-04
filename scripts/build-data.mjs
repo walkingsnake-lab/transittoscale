@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -12,6 +12,7 @@ const cityDir = path.join(publicDataDir, 'cities');
 const raw = JSON.parse(await readFile(rawDataPath, 'utf8'));
 const normalized = await readNormalizedCities();
 
+await rm(cityDir, { recursive: true, force: true });
 await mkdir(cityDir, { recursive: true });
 
 const manifest =
@@ -41,6 +42,7 @@ const manifest =
             name: city.name,
             region: city.region,
             centroid,
+            focusPoint: city.focusPoint ?? centroid,
             bounds
           },
           features
@@ -52,6 +54,7 @@ const manifest =
           region: city.region,
           dataPath: `data/cities/${city.slug}.geojson`,
           centroid,
+          focusPoint: city.focusPoint ?? centroid,
           bounds,
           lineCount: features.length,
           featureCollection

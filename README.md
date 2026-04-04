@@ -21,7 +21,7 @@ Transit To Scale is a static web visualization that compares world metro systems
 
 - Import the repository into Vercel and keep the detected framework preset as Vite.
 - The repo includes `vercel.json` with `npm run build` and `dist` as the output directory.
-- The build now regenerates `public/data` from `data/raw/city-seeds.json` during deployment, so source data stays canonical.
+- The build regenerates `public/data` from normalized GTFS imports when they exist, and falls back to `data/raw/city-seeds.json` otherwise.
 - Preview deployments are a good fit for checking card density, animation pacing, and mobile layout before promoting to production.
 
 ## Data Workflow
@@ -32,9 +32,24 @@ Transit To Scale is a static web visualization that compares world metro systems
 - Run `npm run data:build` to regenerate `public/data/city-manifest.json` and the per-city GeoJSON files.
 - Run `npm run data:check` to validate the generated output before shipping.
 
-## Current Starter Dataset
+## Anchoring Rule
 
-The repo currently mixes real and placeholder data:
+- Cards stay at a shared real-world scale using one global meters-per-pixel constant.
+- Each city can define a `focusPoint` in `[lon, lat]` form to anchor the card on its downtown or core urban center.
+- When `focusPoint` is present, the network is translated so that point sits at the card center and the 5-mile circle is centered on the same anchor.
+- When `focusPoint` is absent, the renderer falls back to the city's computed network centroid.
 
-- Chicago and New York are imported from official GTFS feeds and normalized into GeoJSON overrides.
-- The remaining cities still use the hand-curated starter dataset so the full comparison grid stays populated while the real-data pipeline expands.
+## Data Scope
+
+- The launch scope is `metro / rapid transit only`.
+- Include urban rapid-transit systems that function as the city's core metro or subway network.
+- Exclude commuter rail and regional rail, even when they share downtown terminals or are strongly associated with the same city.
+- Exclude adjacent or cross-jurisdiction systems unless they are explicitly part of the primary metro definition used across cities.
+- For New York, this means `NYC Subway + Staten Island Railway`, and excludes `PATH`, `LIRR`, and `Metro-North`.
+- If we ever want a broader comparison, it should be a separate mode rather than mixing definitions city by city.
+
+## Current Imported Dataset
+
+- The live manifest currently includes only normalized real-data cities.
+- Chicago, New York, and Boston are imported from official GTFS feeds and rendered in the app.
+- The hand-curated seed dataset remains in the repo as a fallback and development aid, but it is not shown once normalized imports exist.

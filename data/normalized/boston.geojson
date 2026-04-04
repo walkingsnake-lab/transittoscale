@@ -8,6 +8,10 @@
       -71.12187499999999,
       42.3221145
     ],
+    "focusPoint": [
+      -71.0603,
+      42.3555
+    ],
     "bounds": [
       -71.252372,
       42.207262,
@@ -13098,7 +13102,7 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "B",
+        "lineId": "Green-B",
         "lineName": "Green Line B",
         "systemName": "Boston",
         "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
@@ -14601,7 +14605,7 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "C",
+        "lineId": "Green-C",
         "lineName": "Green Line C",
         "systemName": "Boston",
         "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
@@ -15584,7 +15588,7 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "D",
+        "lineId": "Green-D",
         "lineName": "Green Line D",
         "systemName": "Boston",
         "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
@@ -18679,7 +18683,7 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "E",
+        "lineId": "Green-E",
         "lineName": "Green Line E",
         "systemName": "Boston",
         "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",

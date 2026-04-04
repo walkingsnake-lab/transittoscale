@@ -36,6 +36,7 @@ export async function mountApp(root) {
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  status.textContent = 'Loading network catalog...';
 
   try {
     const cities = await loadCities();
@@ -213,15 +214,13 @@ function projectLines(city, width, height) {
   const frameHeight = height - CARD_PADDING * 2 - HEADER_OFFSET;
   const centerX = CARD_PADDING + frameWidth / 2;
   const centerY = CARD_PADDING + HEADER_OFFSET + frameHeight / 2;
-  const projectedFeatures = projectFeatureCollection(city.geojson, city.centroid);
-  const projectedBounds = computeProjectedBounds(projectedFeatures);
-  const offsetX = centerX - (projectedBounds.minX + projectedBounds.maxX) / 2;
-  const offsetY = centerY - (projectedBounds.minY + projectedBounds.maxY) / 2;
+  const anchorPoint = city.focusPoint ?? city.centroid;
+  const projectedFeatures = projectFeatureCollection(city.geojson, anchorPoint);
 
   return projectedFeatures.map((feature) => ({
     ...feature,
     paths: feature.paths
-      .map((path) => path.map(([x, y]) => [offsetX + x, offsetY + y]))
+      .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
       .map((translatedPath) => buildPathMetrics(translatedPath))
   }));
 }
@@ -362,24 +361,4 @@ class Animator {
       this.lastFrame = 0;
     }
   }
-}
-
-function computeProjectedBounds(projectedFeatures) {
-  let minX = Infinity;
-  let minY = Infinity;
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-
-  for (const feature of projectedFeatures) {
-    for (const path of feature.paths) {
-      for (const [x, y] of path) {
-        minX = Math.min(minX, x);
-        minY = Math.min(minY, y);
-        maxX = Math.max(maxX, x);
-        maxY = Math.max(maxY, y);
-      }
-    }
-  }
-
-  return { minX, minY, maxX, maxY };
 }

@@ -6,6 +6,7 @@
     "sourceType": "gtfs",
     "sourceName": "Chicago Transit Authority (CTA)",
     "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
+    "focusPoint": [-87.6298, 41.8781],
     "routeTypes": ["1"],
     "minPointSpacingMeters": 20,
     "minShapeTrips": 20,
@@ -29,6 +30,7 @@
     "sourceType": "gtfs",
     "sourceName": "MTA New York City Transit",
     "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
+    "focusPoint": [-74.006, 40.7128],
     "routeTypes": ["1", "2"],
     "minPointSpacingMeters": 20,
     "minShapeTrips": 20,
@@ -75,6 +77,7 @@
     "sourceType": "gtfs",
     "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
     "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip",
+    "focusPoint": [-71.0603, 42.3555],
     "routeTypes": ["0", "1"],
     "minPointSpacingMeters": 20,
     "minShapeTrips": 20,
@@ -98,6 +101,7 @@
     "sourceType": "gtfs",
     "sourceName": "Washington Metropolitan Area Transit Authority (WMATA)",
     "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip",
+    "focusPoint": [-77.0283, 38.8981],
     "requestHeaders": {
       "api_key": {
         "env": "WMATA_API_KEY"

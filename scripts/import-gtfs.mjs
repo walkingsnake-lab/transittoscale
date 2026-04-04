@@ -140,6 +140,7 @@ async function importGtfsCity(sourceConfig, requestHeaders) {
     region: sourceConfig.region,
     dataPath: `data/cities/${sourceConfig.slug}.geojson`,
     centroid,
+    focusPoint: sourceConfig.focusPoint ?? centroid,
     bounds,
     lineCount: features.length,
     sourceName: sourceConfig.sourceName,
@@ -151,6 +152,7 @@ async function importGtfsCity(sourceConfig, requestHeaders) {
         name: sourceConfig.name,
         region: sourceConfig.region,
         centroid,
+        focusPoint: sourceConfig.focusPoint ?? centroid,
         bounds,
         sourceName: sourceConfig.sourceName,
         sourceUrl: sourceConfig.sourceUrl
@@ -330,7 +332,7 @@ function getLineName(canonicalLineId, route, sourceConfig) {
 
 function getCanonicalLineId(route, sourceConfig) {
   const routeId = normalizeValue(route.route_id);
-  return sourceConfig.routeIdAliases?.[routeId] || normalizeValue(route.route_short_name) || routeId;
+  return sourceConfig.routeIdAliases?.[routeId] || routeId;
 }
 
 function normalizeValue(value) {

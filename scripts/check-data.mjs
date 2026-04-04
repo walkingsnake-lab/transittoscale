@@ -17,6 +17,9 @@ for (const city of manifest) {
   assert(typeof city.name === 'string', 'City name must be a string.');
   assert(typeof city.region === 'string', 'City region must be a string.');
   assert(Array.isArray(city.centroid) && city.centroid.length === 2, 'City centroid must be a [lon, lat] tuple.');
+  if (city.focusPoint !== undefined) {
+    assert(Array.isArray(city.focusPoint) && city.focusPoint.length === 2, 'City focusPoint must be a [lon, lat] tuple.');
+  }
   assert(Array.isArray(city.bounds) && city.bounds.length === 4, 'City bounds must be a [minLon, minLat, maxLon, maxLat] tuple.');
   assert(typeof city.lineCount === 'number' && city.lineCount > 0, 'City line count must be a positive number.');
 

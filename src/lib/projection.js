@@ -3,8 +3,8 @@ import { EARTH_RADIUS_METERS, METERS_PER_PIXEL } from '../config.js';
 
 const DEG_TO_RAD = Math.PI / 180;
 
-export function createLocalProjection(centroid) {
-  const [lon, lat] = centroid;
+export function createLocalProjection(anchorPoint) {
+  const [lon, lat] = anchorPoint;
   const rawProjection = geoMercator()
     .center([lon, lat])
     .translate([0, 0])
@@ -27,8 +27,8 @@ export function createLocalProjection(centroid) {
   };
 }
 
-export function projectFeatureCollection(featureCollection, centroid) {
-  const project = createLocalProjection(centroid);
+export function projectFeatureCollection(featureCollection, anchorPoint) {
+  const project = createLocalProjection(anchorPoint);
 
   return featureCollection.features.map((feature) => {
     const geometry = feature.geometry;
@@ -45,4 +45,3 @@ export function projectFeatureCollection(featureCollection, centroid) {
     };
   });
 }
-
