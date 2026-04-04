@@ -90,5 +90,74 @@
     "lineCount": 6,
     "sourceName": "Washington Metropolitan Area Transit Authority (WMATA)",
     "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip"
+  },
+  {
+    "slug": "minneapolis-st-paul",
+    "name": "Minneapolis-St. Paul",
+    "region": "United States",
+    "dataPath": "data/cities/minneapolis-st-paul.geojson",
+    "centroid": [
+      -93.1827175,
+      44.9176875
+    ],
+    "focusPoint": [
+      -93.1775,
+      44.9658
+    ],
+    "bounds": [
+      -93.278722,
+      44.851862,
+      -93.086713,
+      44.983513
+    ],
+    "lineCount": 2,
+    "sourceName": "Metro Transit",
+    "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip"
+  },
+  {
+    "slug": "seattle",
+    "name": "Seattle",
+    "region": "United States",
+    "dataPath": "data/cities/seattle.geojson",
+    "centroid": [
+      -122.222911,
+      47.565711
+    ],
+    "focusPoint": [
+      -122.3321,
+      47.6062
+    ],
+    "bounds": [
+      -122.338382,
+      47.31554,
+      -122.10744,
+      47.815882
+    ],
+    "lineCount": 2,
+    "sourceName": "Sound Transit",
+    "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip"
+  },
+  {
+    "slug": "toronto",
+    "name": "Toronto",
+    "region": "Canada",
+    "dataPath": "data/cities/toronto.geojson",
+    "centroid": [
+      -79.3999685,
+      43.717288499999995
+    ],
+    "focusPoint": [
+      -79.3832,
+      43.6532
+    ],
+    "bounds": [
+      -79.535402,
+      43.637805,
+      -79.264535,
+      43.796772
+    ],
+    "lineCount": 3,
+    "sourceName": "Toronto Transit Commission (TTC)",
+    "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip"
   }
 ]

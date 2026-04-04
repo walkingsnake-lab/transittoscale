@@ -120,5 +120,60 @@
       "SILVER": "Silver Line",
       "YELLOW": "Yellow Line"
     }
+  },
+  {
+    "slug": "minneapolis-st-paul",
+    "name": "Minneapolis-St. Paul",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Metro Transit",
+    "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip",
+    "focusPoint": [-93.1775, 44.9658],
+    "routeTypes": ["0"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.1,
+    "routeIdAllowlist": ["901", "902"],
+    "lineNameOverrides": {
+      "901": "Blue Line",
+      "902": "Green Line"
+    }
+  },
+  {
+    "slug": "seattle",
+    "name": "Seattle",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Sound Transit",
+    "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip",
+    "focusPoint": [-122.3321, 47.6062],
+    "routeTypes": ["0"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.1,
+    "routeIdAllowlist": ["100479", "2LINE"],
+    "lineNameOverrides": {
+      "100479": "1 Line",
+      "2LINE": "2 Line"
+    }
+  },
+  {
+    "slug": "toronto",
+    "name": "Toronto",
+    "region": "Canada",
+    "sourceType": "gtfs",
+    "sourceName": "Toronto Transit Commission (TTC)",
+    "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip",
+    "focusPoint": [-79.3832, 43.6532],
+    "routeTypes": ["1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["1", "2", "4"],
+    "lineNameOverrides": {
+      "1": "Line 1",
+      "2": "Line 2",
+      "4": "Line 4"
+    }
   }
 ]

@@ -6,17 +6,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const rawDataPath = path.join(repoRoot, 'data', 'raw', 'city-seeds.json');
 const normalizedDataPath = path.join(repoRoot, 'data', 'normalized', 'cities.json');
-const normalizedWaterDir = path.join(repoRoot, 'data', 'normalized-water');
-const curatedWaterDir = path.join(repoRoot, 'data', 'curated-water');
 const publicDataDir = path.join(repoRoot, 'public', 'data');
 const cityDir = path.join(publicDataDir, 'cities');
-const waterDir = path.join(publicDataDir, 'water');
 
 const raw = JSON.parse(await readFile(rawDataPath, 'utf8'));
 const normalized = await readNormalizedCities();
 
 await mkdir(cityDir, { recursive: true });
-await mkdir(waterDir, { recursive: true });
 
 const manifest =
   normalized.size > 0
@@ -51,8 +47,6 @@ const manifest =
           features
         };
 
-        const waterFeatureCollection = await readOptionalWaterFeatureCollection(city.slug);
-
         return {
           slug: city.slug,
           name: city.name,
@@ -62,35 +56,20 @@ const manifest =
           focusPoint: city.focusPoint ?? centroid,
           bounds,
           lineCount: features.length,
-          featureCollection,
-          waterFeatureCollection
+          featureCollection
         };
       }));
 
 for (const city of manifest) {
   const cityPath = path.join(cityDir, `${city.slug}.geojson`);
   await writeFile(cityPath, JSON.stringify(city.featureCollection, null, 2));
-
-  if (city.waterFeatureCollection) {
-    const waterPath = path.join(waterDir, `${city.slug}.geojson`);
-    await writeFile(waterPath, JSON.stringify(city.waterFeatureCollection, null, 2));
-    city.waterDataPath = `data/water/${city.slug}.geojson`;
-  }
 }
 await pruneGeneratedFiles(
   cityDir,
   new Set(manifest.map((city) => `${city.slug}.geojson`))
 );
-await pruneGeneratedFiles(
-  waterDir,
-  new Set(
-    manifest
-      .filter((city) => city.waterFeatureCollection)
-      .map((city) => `${city.slug}.geojson`)
-  )
-);
 
-const manifestOutput = manifest.map(({ featureCollection, waterFeatureCollection, ...city }) => city);
+const manifestOutput = manifest.map(({ featureCollection, ...city }) => city);
 await writeFile(
   path.join(publicDataDir, 'city-manifest.json'),
   JSON.stringify(manifestOutput, null, 2)
@@ -104,9 +83,8 @@ async function readNormalizedCities() {
         const featureCollection = JSON.parse(
           await readFile(path.join(repoRoot, 'data', 'normalized', `${city.slug}.geojson`), 'utf8')
         );
-        const waterFeatureCollection = await readOptionalWaterFeatureCollection(city.slug);
 
-        return [city.slug, { ...city, featureCollection, waterFeatureCollection }];
+        return [city.slug, { ...city, featureCollection }];
       })
     );
 
@@ -114,43 +92,6 @@ async function readNormalizedCities() {
   } catch (error) {
     if (error.code === 'ENOENT') {
       return new Map();
-    }
-
-    throw error;
-  }
-}
-
-async function readOptionalWaterFeatureCollection(slug) {
-  const [normalizedWater, curatedWater] = await Promise.all([
-    readOptionalGeojson(path.join(normalizedWaterDir, `${slug}.geojson`)),
-    readOptionalGeojson(path.join(curatedWaterDir, `${slug}.geojson`))
-  ]);
-
-  if (!normalizedWater && !curatedWater) {
-    return null;
-  }
-
-  if (normalizedWater && curatedWater) {
-    return {
-      type: 'FeatureCollection',
-      properties: {
-        ...normalizedWater.properties,
-        curatedSourceName: curatedWater.properties?.sourceName ?? 'Transit To Scale curated',
-        curatedSourceUrl: curatedWater.properties?.sourceUrl ?? ''
-      },
-      features: [...normalizedWater.features, ...curatedWater.features]
-    };
-  }
-
-  return curatedWater ?? normalizedWater;
-}
-
-async function readOptionalGeojson(filePath) {
-  try {
-    return JSON.parse(await readFile(filePath, 'utf8'));
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      return null;
     }
 
     throw error;

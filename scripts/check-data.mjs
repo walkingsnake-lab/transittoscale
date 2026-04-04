@@ -34,24 +34,6 @@ for (const city of manifest) {
     assert(feature.geometry?.type === 'LineString' || feature.geometry?.type === 'MultiLineString', `${city.slug} must only contain line geometries.`);
     assert(Array.isArray(feature.geometry?.coordinates), `${city.slug} features must have coordinates.`);
   }
-
-  if (city.waterDataPath) {
-    const waterPath = path.join(repoRoot, 'public', city.waterDataPath);
-    const waterGeojson = JSON.parse(stripBom(await readFile(waterPath, 'utf8')));
-    assert(waterGeojson.type === 'FeatureCollection', `${city.slug} water layer must be a FeatureCollection.`);
-
-    for (const feature of waterGeojson.features) {
-      assert(feature.type === 'Feature', `${city.slug} water layer contains a non-Feature entry.`);
-      assert(
-        feature.geometry?.type === 'Polygon' ||
-          feature.geometry?.type === 'MultiPolygon' ||
-          feature.geometry?.type === 'LineString' ||
-          feature.geometry?.type === 'MultiLineString',
-        `${city.slug} water layer must only contain polygon or line geometries.`
-      );
-      assert(Array.isArray(feature.geometry?.coordinates), `${city.slug} water features must have coordinates.`);
-    }
-  }
 }
 
 console.log(`Validated ${manifest.length} cities in city-manifest.json`);
