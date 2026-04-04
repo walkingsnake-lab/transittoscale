@@ -130,6 +130,7 @@ function shouldKeepFeature(feature, sourceConfig) {
   const waterway = normalizeValue(properties.waterway);
   const name = normalizeValue(properties.name);
   const includeNames = new Set(sourceConfig.includeNames ?? []);
+  const excludeNames = new Set(sourceConfig.excludeNames ?? []);
   const includeNaturalValues = new Set(sourceConfig.includeNaturalValues ?? []);
   const includeWaterValues = new Set(sourceConfig.includeWaterValues ?? []);
   const includeWaterwayValues = new Set(sourceConfig.includeWaterwayValues ?? []);
@@ -137,6 +138,10 @@ function shouldKeepFeature(feature, sourceConfig) {
 
   if (includeNames.has(name)) {
     return true;
+  }
+
+  if (excludeNames.has(name)) {
+    return false;
   }
 
   if (isPolygonGeometry(feature.geometry.type)) {

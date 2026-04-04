@@ -31,5 +31,40 @@
     "includeWaterValues": ["lake", "river", "canal", "harbour", "lagoon"],
     "includeWaterwayValues": ["riverbank"],
     "excludeWaterValues": ["pond", "basin", "wastewater", "reservoir", "reflecting_pool", "fountain", "lock"]
+  },
+  {
+    "slug": "boston",
+    "name": "Boston Water Context",
+    "sourceType": "osm-overpass",
+    "sourceName": "OpenStreetMap via Overpass",
+    "sourceUrl": "https://overpass.kumi.systems/api/interpreter",
+    "bbox": [42.22, -71.2, 42.43, -70.94],
+    "minAreaSquareMeters": 140000,
+    "minLineLengthMeters": 1800,
+    "minPointSpacingMeters": 45,
+    "includeCoastline": true,
+    "maxCoastlineFeatures": 10,
+    "excludeNames": ["Spy Pond", "Lower Mystic Lake", "Jamaica Pond"],
+    "includeNaturalValues": ["water"],
+    "includeWaterValues": ["lake", "river", "canal", "harbour", "lagoon"],
+    "includeWaterwayValues": ["riverbank"],
+    "excludeWaterValues": ["pond", "basin", "wastewater", "reservoir", "reflecting_pool", "fountain", "lock"]
+  },
+  {
+    "slug": "washington-dc",
+    "name": "Washington, DC Water Context",
+    "sourceType": "osm-overpass",
+    "sourceName": "OpenStreetMap via Overpass",
+    "sourceUrl": "https://overpass.kumi.systems/api/interpreter",
+    "bbox": [38.79, -77.2, 39.02, -76.9],
+    "minAreaSquareMeters": 120000,
+    "minLineLengthMeters": 1400,
+    "minPointSpacingMeters": 40,
+    "includeCoastline": false,
+    "excludeNames": ["Lake Artemesia", "Cameron Run"],
+    "includeNaturalValues": ["water"],
+    "includeWaterValues": ["lake", "river", "canal", "harbour", "lagoon"],
+    "includeWaterwayValues": ["riverbank"],
+    "excludeWaterValues": ["pond", "basin", "wastewater", "reservoir", "reflecting_pool", "fountain", "lock"]
   }
 ]
