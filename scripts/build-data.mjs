@@ -1,4 +1,4 @@
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -12,7 +12,6 @@ const cityDir = path.join(publicDataDir, 'cities');
 const raw = JSON.parse(await readFile(rawDataPath, 'utf8'));
 const normalized = await readNormalizedCities();
 
-await rm(cityDir, { recursive: true, force: true });
 await mkdir(cityDir, { recursive: true });
 
 const manifest =
@@ -65,6 +64,10 @@ for (const city of manifest) {
   const cityPath = path.join(cityDir, `${city.slug}.geojson`);
   await writeFile(cityPath, JSON.stringify(city.featureCollection, null, 2));
 }
+await pruneGeneratedFiles(
+  cityDir,
+  new Set(manifest.map((city) => `${city.slug}.geojson`))
+);
 
 const manifestOutput = manifest.map(({ featureCollection, ...city }) => city);
 await writeFile(
@@ -127,4 +130,43 @@ function computeCentroid(lines) {
   }
 
   return [lonTotal / count, latTotal / count];
+}
+
+async function pruneGeneratedFiles(directory, keepFiles) {
+  const entries = await readdir(directory, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (!entry.isFile() || keepFiles.has(entry.name)) {
+      continue;
+    }
+
+    await unlinkWithRetries(path.join(directory, entry.name));
+  }
+}
+
+async function unlinkWithRetries(filePath, retries = 6, delayMs = 150) {
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      await unlink(filePath);
+      return;
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        return;
+      }
+
+      const isRetryable = error.code === 'EPERM' || error.code === 'EBUSY';
+
+      if (!isRetryable || attempt === retries) {
+        throw error;
+      }
+
+      await sleep(delayMs * (attempt + 1));
+    }
+  }
+}
+
+function sleep(durationMs) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, durationMs);
+  });
 }

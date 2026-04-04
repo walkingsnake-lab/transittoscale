@@ -1,4 +1,4 @@
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import AdmZip from 'adm-zip';
@@ -11,7 +11,6 @@ const normalizedDir = path.join(repoRoot, 'data', 'normalized');
 
 const sourceConfigs = JSON.parse(await readFile(sourcesPath, 'utf8'));
 
-await rm(normalizedDir, { recursive: true, force: true });
 await mkdir(normalizedDir, { recursive: true });
 
 const importedCities = [];
@@ -40,6 +39,10 @@ const manifest = importedCities.map(({ featureCollection, ...city }) => city);
 await writeFile(
   path.join(normalizedDir, 'cities.json'),
   `${JSON.stringify(manifest, null, 2)}\n`
+);
+await pruneGeneratedFiles(
+  normalizedDir,
+  new Set([...importedCities.map((city) => `${city.slug}.geojson`), 'cities.json'])
 );
 
 console.log(`Imported ${importedCities.length} GTFS cities into data/normalized`);
@@ -367,4 +370,43 @@ function computeBoundsFromFeatures(features) {
 function computeCentroidFromBounds(bounds) {
   const [minLon, minLat, maxLon, maxLat] = bounds;
   return [(minLon + maxLon) / 2, (minLat + maxLat) / 2];
+}
+
+async function pruneGeneratedFiles(directory, keepFiles) {
+  const entries = await readdir(directory, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (!entry.isFile() || keepFiles.has(entry.name)) {
+      continue;
+    }
+
+    await unlinkWithRetries(path.join(directory, entry.name));
+  }
+}
+
+async function unlinkWithRetries(filePath, retries = 6, delayMs = 150) {
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      await unlink(filePath);
+      return;
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        return;
+      }
+
+      const isRetryable = error.code === 'EPERM' || error.code === 'EBUSY';
+
+      if (!isRetryable || attempt === retries) {
+        throw error;
+      }
+
+      await sleep(delayMs * (attempt + 1));
+    }
+  }
+}
+
+function sleep(durationMs) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, durationMs);
+  });
 }

@@ -111,14 +111,14 @@
     "minPointSpacingMeters": 20,
     "minShapeTrips": 20,
     "shapeTripShareThreshold": 0.1,
-    "routeIdAllowlist": ["BL", "GR", "OR", "RD", "SV", "YL"],
+    "routeIdAllowlist": ["BLUE", "GREEN", "ORANGE", "RED", "SILVER", "YELLOW"],
     "lineNameOverrides": {
-      "BL": "Blue Line",
-      "GR": "Green Line",
-      "OR": "Orange Line",
-      "RD": "Red Line",
-      "SV": "Silver Line",
-      "YL": "Yellow Line"
+      "BLUE": "Blue Line",
+      "GREEN": "Green Line",
+      "ORANGE": "Orange Line",
+      "RED": "Red Line",
+      "SILVER": "Silver Line",
+      "YELLOW": "Yellow Line"
     }
   }
 ]
