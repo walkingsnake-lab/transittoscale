@@ -1,8 +1,8 @@
 export const EARTH_RADIUS_METERS = 6_378_137;
 export const METERS_PER_PIXEL = 160;
-export const CARD_CANVAS_HEIGHT = 400;
-export const CARD_PADDING = 24;
-export const HEADER_OFFSET = 8;
+export const CARD_CANVAS_HEIGHT = 440;
+export const CARD_PADDING = 20;
+export const HEADER_OFFSET = 0;
 export const REFERENCE_MILES = 5;
 export const METERS_PER_MILE = 1_609.344;
 export const REFERENCE_METERS = REFERENCE_MILES * METERS_PER_MILE;

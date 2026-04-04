@@ -19,15 +19,6 @@ import { projectFeatureCollection } from './lib/projection.js';
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell">
-      <header class="shell__header">
-        <p class="shell__eyebrow">Transit To Scale</p>
-        <div class="shell__heading">
-          <h1>World metro systems at the same real-world scale.</h1>
-          <p>
-            Every card uses the same distance rule. The five-mile reference circle never changes.
-          </p>
-        </div>
-      </header>
       <section class="shell__status" data-status>Loading network catalog…</section>
       <section class="grid" data-grid aria-live="polite"></section>
     </main>
@@ -103,7 +94,9 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   const element = document.createElement('button');
   element.type = 'button';
   element.className = 'card';
-  element.style.setProperty('--stagger', `${index * 65}ms`);
+  element.style.setProperty('--stagger', `${index * INTRO_STAGGER_MS}ms`);
+  element.style.setProperty('--flip-angle', `${index % 2 === 0 ? -12 : 12}deg`);
+  element.style.setProperty('--flip-origin', index % 2 === 0 ? '0% 50%' : '100% 50%');
   element.setAttribute('aria-pressed', 'false');
 
   element.innerHTML = `
