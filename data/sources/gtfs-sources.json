@@ -67,5 +67,54 @@
       "H": "Rockaway Park Shuttle",
       "SI": "Staten Island Railway"
     }
+  },
+  {
+    "slug": "boston",
+    "name": "Boston",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
+    "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip",
+    "routeTypes": ["0", "1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["Red", "Orange", "Blue", "Green-B", "Green-C", "Green-D", "Green-E", "Mattapan"],
+    "lineNameOverrides": {
+      "Red": "Red Line",
+      "Orange": "Orange Line",
+      "Blue": "Blue Line",
+      "Green-B": "Green Line B",
+      "Green-C": "Green Line C",
+      "Green-D": "Green Line D",
+      "Green-E": "Green Line E",
+      "Mattapan": "Mattapan Line"
+    }
+  },
+  {
+    "slug": "washington-dc",
+    "name": "Washington, DC",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Washington Metropolitan Area Transit Authority (WMATA)",
+    "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip",
+    "requestHeaders": {
+      "api_key": {
+        "env": "WMATA_API_KEY"
+      }
+    },
+    "routeTypes": ["1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.1,
+    "routeIdAllowlist": ["BL", "GR", "OR", "RD", "SV", "YL"],
+    "lineNameOverrides": {
+      "BL": "Blue Line",
+      "GR": "Green Line",
+      "OR": "Orange Line",
+      "RD": "Red Line",
+      "SV": "Silver Line",
+      "YL": "Yellow Line"
+    }
   }
 ]

@@ -21,7 +21,14 @@ for (const sourceConfig of sourceConfigs) {
     continue;
   }
 
-  const city = await importGtfsCity(sourceConfig);
+  const requestHeaders = resolveRequestHeaders(sourceConfig);
+
+  if (requestHeaders === null) {
+    console.warn(`Skipping ${sourceConfig.slug}: missing required credentials.`);
+    continue;
+  }
+
+  const city = await importGtfsCity(sourceConfig, requestHeaders);
   importedCities.push(city);
   await writeFile(
     path.join(normalizedDir, `${city.slug}.geojson`),
@@ -37,11 +44,34 @@ await writeFile(
 
 console.log(`Imported ${importedCities.length} GTFS cities into data/normalized`);
 
-async function importGtfsCity(sourceConfig) {
-  const response = await fetch(sourceConfig.sourceUrl, {
-    headers: {
-      'user-agent': 'Transit To Scale importer'
+function resolveRequestHeaders(sourceConfig) {
+  const headers = {
+    'user-agent': 'Transit To Scale importer'
+  };
+
+  for (const [headerName, headerConfig] of Object.entries(sourceConfig.requestHeaders ?? {})) {
+    if (typeof headerConfig === 'string') {
+      headers[headerName] = headerConfig;
+      continue;
     }
+
+    if (headerConfig?.env) {
+      const envValue = process.env[headerConfig.env];
+
+      if (!envValue) {
+        return null;
+      }
+
+      headers[headerName] = envValue;
+    }
+  }
+
+  return headers;
+}
+
+async function importGtfsCity(sourceConfig, requestHeaders) {
+  const response = await fetch(sourceConfig.sourceUrl, {
+    headers: requestHeaders
   });
 
   if (!response.ok) {
