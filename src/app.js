@@ -107,15 +107,15 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   element.setAttribute('aria-pressed', 'false');
 
   element.innerHTML = `
-    <div class="card__meta">
-      <div>
-        <p class="card__region">${city.region}</p>
-        <h2>${city.name}</h2>
-      </div>
-      <p class="card__count">${city.lineCount} lines</p>
-    </div>
     <div class="card__canvas-frame">
       <canvas class="card__canvas"></canvas>
+      <div class="card__overlay">
+        <div>
+          <p class="card__region">${city.region}</p>
+          <h2>${city.name}</h2>
+        </div>
+        <p class="card__count">${city.lineCount} lines</p>
+      </div>
     </div>
   `;
 
