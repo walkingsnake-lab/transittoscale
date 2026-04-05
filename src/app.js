@@ -432,7 +432,6 @@ function drawCard({
   const circleCenterX = width / 2;
   const circleCenterY = height / 2;
   const circleAlpha = clamp(0.28 * circleValue + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06, 0, 1);
-  const labelAlpha = clamp(0.64 * circleValue + hover * 0.14 + emphasis * 0.08 - dimmed * 0.1, 0, 1);
 
   ctx.save();
   ctx.fillStyle = theme.referenceFill;
@@ -449,10 +448,10 @@ function drawCard({
     radius: REFERENCE_RADIUS_PIXELS + 10,
     startAngle: Math.PI + 0.08,
     endAngle: Math.PI * 1.5 - 0.08,
-    fillStyle: theme.ink,
-    font: `700 15px ${FONT_STACK_TIGHT}`,
+    fillStyle: theme.referenceFill,
+    font: `800 15px ${FONT_STACK_TIGHT}`,
     letterSpacing: 0.9,
-    globalAlpha: labelAlpha
+    globalAlpha: circleAlpha
   });
 
   ctx.save();
