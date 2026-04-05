@@ -124,16 +124,16 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
 
   element.innerHTML = `
     <div class="card__paper">
+      <div class="card__header">
+        <div class="card__eyebrow">
+          <p class="card__agency">${agencyLabel}</p>
+          <p class="card__count">${lineLabel}</p>
+        </div>
+        <h2>${city.name}</h2>
+        <p class="card__region">${city.region}</p>
+      </div>
       <div class="card__canvas-frame">
         <canvas class="card__canvas"></canvas>
-        <div class="card__overlay">
-          <p class="card__agency">${agencyLabel}</p>
-          <h2>${city.name}</h2>
-          <div class="card__meta">
-            <p class="card__region">${city.region}</p>
-            <p class="card__count">${lineLabel}</p>
-          </div>
-        </div>
       </div>
     </div>
   `;
