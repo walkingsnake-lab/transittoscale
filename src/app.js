@@ -653,7 +653,7 @@ function formatSystemLabel(city) {
     'washington-dc': 'Washington Metro',
     'minneapolis-st-paul': 'Metro light rail',
     seattle: 'Link light rail',
-    toronto: 'TTC subway',
+    toronto: 'TTC subway + light metro',
     montreal: 'Montreal Metro',
     london: 'Underground + DLR + Overground + Elizabeth',
     'san-francisco-bay-area': 'BART + Muni Metro',

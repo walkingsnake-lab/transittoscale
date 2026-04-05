@@ -189,7 +189,7 @@
     "region": "Canada",
     "dataPath": "data/cities/toronto.geojson",
     "centroid": [
-      -79.3999685,
+      -79.43386749999999,
       43.717288499999995
     ],
     "focusPoint": [
@@ -197,12 +197,12 @@
       43.6532
     ],
     "bounds": [
-      -79.535402,
+      -79.6032,
       43.637805,
       -79.264535,
       43.796772
     ],
-    "lineCount": 3,
+    "lineCount": 5,
     "sourceName": "Toronto Transit Commission (TTC)",
     "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip"
   },
