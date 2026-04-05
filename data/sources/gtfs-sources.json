@@ -358,5 +358,48 @@
         }
       }
     ]
+  },
+  {
+    "slug": "san-jose-santa-clara-valley",
+    "name": "San Jose / Santa Clara Valley",
+    "region": "United States",
+    "sourceType": "gtfs-merge",
+    "sourceName": "VTA Light Rail + BART",
+    "sourceUrl": "https://www.vta.org/go/routes",
+    "focusPoint": [-121.8863, 37.3382],
+    "minPointSpacingMeters": 20,
+    "sources": [
+      {
+        "sourceName": "Santa Clara Valley Transportation Authority (VTA)",
+        "sourceUrl": "https://gtfs.vta.org/gtfs_vta.zip",
+        "routeTypes": ["0"],
+        "minShapeTrips": 20,
+        "shapeTripShareThreshold": 0.08,
+        "routeIdAllowlist": ["Blue", "Green", "Ornge"],
+        "lineNameOverrides": {
+          "Blue": "Blue Line",
+          "Green": "Green Line",
+          "Ornge": "Orange Line"
+        }
+      },
+      {
+        "sourceName": "Bay Area Rapid Transit (BART)",
+        "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
+        "routeTypes": ["1"],
+        "minShapeTrips": 20,
+        "shapeTripShareThreshold": 0.08,
+        "routeIdAllowlist": ["3", "4", "5", "6"],
+        "routeIdAliases": {
+          "3": "Orange",
+          "4": "Orange",
+          "5": "Green",
+          "6": "Green"
+        },
+        "lineNameOverrides": {
+          "Orange": "BART Orange Line",
+          "Green": "BART Green Line"
+        }
+      }
+    ]
   }
 ]

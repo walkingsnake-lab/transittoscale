@@ -656,7 +656,8 @@ function formatSystemLabel(city) {
     toronto: 'TTC subway',
     montreal: 'Montreal Metro',
     london: 'Underground + DLR + Overground + Elizabeth',
-    'san-francisco-bay-area': 'BART + Muni Metro'
+    'san-francisco-bay-area': 'BART + Muni Metro',
+    'san-jose-santa-clara-valley': 'VTA Light Rail + BART'
   };
 
   if (explicitLabels[city.slug]) {

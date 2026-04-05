@@ -33,7 +33,8 @@ const CITY_THEME_BY_SLUG = {
   toronto: { accent: '#996633' },
   montreal: { accent: '#A7A9AC' },
   london: { accent: '#DC241F' },
-  'san-francisco-bay-area': { accent: '#00933C' }
+  'san-francisco-bay-area': { accent: '#00933C' },
+  'san-jose-santa-clara-valley': { accent: '#0b8f6a' }
 };
 
 const CITY_THEME_SEQUENCE = ['#0039A6', '#FF6319', '#6CBE45', '#EE352E', '#B933AD', '#FCCC0A', '#996633', '#A7A9AC', '#00933C'];

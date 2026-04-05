@@ -274,5 +274,28 @@
     "lineCount": 12,
     "sourceName": "BART + Muni Metro",
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip"
+  },
+  {
+    "slug": "san-jose-santa-clara-valley",
+    "name": "San Jose / Santa Clara Valley",
+    "region": "United States",
+    "dataPath": "data/cities/san-jose-santa-clara-valley.geojson",
+    "centroid": [
+      -122.12890520549998,
+      37.586345396500015
+    ],
+    "focusPoint": [
+      -121.8863,
+      37.3382
+    ],
+    "bounds": [
+      -122.46890050099995,
+      37.23595428,
+      -121.78890991,
+      37.93673651300003
+    ],
+    "lineCount": 5,
+    "sourceName": "VTA Light Rail + BART",
+    "sourceUrl": "https://www.vta.org/go/routes"
   }
 ]
