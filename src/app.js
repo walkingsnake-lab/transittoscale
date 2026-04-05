@@ -103,7 +103,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   const theme = getCityTheme(city.slug, index);
   const lineLabel = formatLineLabel(city.lineCount);
   const agencyLabel = formatAgencyLabel(city);
-  const locationLabel = formatLocationLabel(city);
+  const flag = getCountryFlag(city);
   const element = document.createElement('button');
   element.type = 'button';
   element.className = 'card';
@@ -131,9 +131,9 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         <div class="card__overlay">
           <h2>${city.name}</h2>
           <p class="card__agency">${agencyLabel}</p>
-          <p class="card__region">${locationLabel}</p>
           <p class="card__count">${lineLabel}</p>
         </div>
+        ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}
       </div>
     </div>
   `;
@@ -390,14 +390,23 @@ function formatAgencyLabel(city) {
   return city.sourceName?.replace(/\s*\([^)]+\)/g, '').trim() ?? '';
 }
 
-function formatLocationLabel(city) {
-  const regionLabels = {
-    'United States': 'U.S.',
-    'United Kingdom': 'U.K.',
-    Canada: 'Canada'
+function getCountryFlag(city) {
+  const flagCodeByRegion = {
+    'United States': 'us',
+    Canada: 'ca',
+    'United Kingdom': 'gb'
   };
 
-  return `${city.name}, ${regionLabels[city.region] ?? city.region}`;
+  const code = flagCodeByRegion[city.region];
+
+  if (!code) {
+    return null;
+  }
+
+  return {
+    src: `https://hatscripts.github.io/circle-flags/flags/${code}.svg`,
+    alt: `${city.region} flag`
+  };
 }
 
 class Animator {

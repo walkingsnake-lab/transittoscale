@@ -185,25 +185,18 @@ body {
 
 .card__overlay {
   position: absolute;
-  inset: 18px auto auto 18px;
+  inset: 18px 70px auto 18px;
   z-index: 1;
   display: grid;
   gap: 4px;
-  width: min(calc(100% - 36px), 310px);
+  width: auto;
+  max-width: 340px;
   padding: 0;
   background: transparent;
   border: 0;
   border-radius: 0;
   box-shadow: none;
   pointer-events: none;
-}
-
-.card__region {
-  margin: 0;
-  color: rgba(17, 17, 17, 0.58);
-  font-size: 0.77rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
 }
 
 .card__agency {
@@ -230,6 +223,18 @@ body {
   font-weight: 700;
   line-height: 0.94;
   letter-spacing: -0.05em;
+}
+
+.card__flag {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 1;
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
 }
 
 .card__canvas-frame {
@@ -293,13 +298,21 @@ body {
 
   .card__overlay {
     gap: 3px;
-    inset: 14px auto auto 14px;
-    width: min(calc(100% - 28px), 250px);
+    inset: 14px 58px auto 14px;
+    width: auto;
+    max-width: none;
     padding: 0;
   }
 
   .card__overlay h2 {
     font-size: 1.58rem;
+  }
+
+  .card__flag {
+    top: 14px;
+    right: 14px;
+    width: 28px;
+    height: 28px;
   }
 
   .card__canvas-frame,
