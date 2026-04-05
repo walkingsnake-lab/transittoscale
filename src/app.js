@@ -33,19 +33,15 @@ export async function mountApp(root) {
       <header class="shell__toolbar" data-toolbar>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
           <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">
-            <svg class="zoom-controls__icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="10.5" cy="10.5" r="5.75"></circle>
-              <path d="M8 10.5H13"></path>
-              <path d="M15.25 15.25L20 20"></path>
-            </svg>
+            <span aria-hidden="true">-</span>
           </button>
+          <div class="zoom-controls__steps" aria-hidden="true">
+            <span class="zoom-controls__step" data-zoom-step></span>
+            <span class="zoom-controls__step" data-zoom-step></span>
+            <span class="zoom-controls__step" data-zoom-step></span>
+          </div>
           <button type="button" class="zoom-controls__button" data-zoom-in aria-label="Zoom in network diagrams">
-            <svg class="zoom-controls__icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="10.5" cy="10.5" r="5.75"></circle>
-              <path d="M8 10.5H13"></path>
-              <path d="M10.5 8V13"></path>
-              <path d="M15.25 15.25L20 20"></path>
-            </svg>
+            <span aria-hidden="true">+</span>
           </button>
           <span class="shell__sr-only" data-zoom-label aria-live="polite">Standard</span>
         </div>
@@ -59,6 +55,7 @@ export async function mountApp(root) {
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
   const zoomLabel = root.querySelector('[data-zoom-label]');
+  const zoomSteps = Array.from(root.querySelectorAll('[data-zoom-step]'));
   const zoomOutButton = root.querySelector('[data-zoom-out]');
   const zoomInButton = root.querySelector('[data-zoom-in]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -78,6 +75,7 @@ export async function mountApp(root) {
       const zoomStep = ZOOM_STEPS[zoomIndex];
 
       zoomLabel.textContent = zoomStep.label;
+      zoomSteps.forEach((step, index) => step.classList.toggle('zoom-controls__step--active', index === zoomIndex));
       zoomOutButton.disabled = zoomIndex === 0;
       zoomInButton.disabled = zoomIndex === ZOOM_STEPS.length - 1;
       cards.forEach((card) => card.setDiagramScale(zoomStep.diagramScale));
