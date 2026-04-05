@@ -114,8 +114,7 @@ body {
   align-items: center;
   gap: 0;
   margin-left: auto;
-  padding: 4px;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
   pointer-events: auto;
   background: #111111;
@@ -125,8 +124,8 @@ body {
 .zoom-controls__button {
   display: inline-grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border: 0;
   background: transparent;
   color: inherit;
@@ -580,8 +579,7 @@ body {
   }
 
   .zoom-controls {
-    padding: 3px;
-    border-radius: 16px;
+    border-radius: 14px;
   }
 
   .zoom-controls__button {

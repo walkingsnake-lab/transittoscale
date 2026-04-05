@@ -308,7 +308,7 @@
     "sourceType": "gtfs-merge",
     "sourceName": "BART + Muni Metro",
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
-    "focusPoint": [-122.2712, 37.8037],
+    "focusPoint": [-122.4194, 37.7749],
     "minPointSpacingMeters": 20,
     "sources": [
       {
