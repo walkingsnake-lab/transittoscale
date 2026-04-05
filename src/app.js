@@ -102,7 +102,7 @@ function resolveAssetPath(relativePath) {
 function createCard(city, index, animator, reducedMotion, onSelect) {
   const theme = getCityTheme(city.slug, index);
   const lineLabel = formatLineLabel(city.lineCount);
-  const agencyLabel = formatAgencyLabel(city);
+  const systemLabel = formatSystemLabel(city);
   const flag = getCountryFlag(city);
   const element = document.createElement('article');
   element.className = 'card';
@@ -137,7 +137,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
             <div class="card__canvas-frame">
               <canvas class="card__canvas"></canvas>
               <div class="card__overlay">
-                <p class="card__agency">${agencyLabel}</p>
+                <p class="card__agency">${systemLabel}</p>
                 <h2>${city.name}</h2>
                 <p class="card__count">${lineLabel}</p>
               </div>
@@ -495,18 +495,18 @@ function formatLineLabel(lineCount) {
   return `${lineCount} ${lineCount === 1 ? 'line' : 'lines'}`;
 }
 
-function formatAgencyLabel(city) {
+function formatSystemLabel(city) {
   const explicitLabels = {
-    chicago: 'Chicago Transit Authority',
-    'new-york': 'New York City Transit',
-    boston: 'Massachusetts Bay Transportation Authority',
-    'washington-dc': 'Washington Metropolitan Area Transit Authority',
-    'minneapolis-st-paul': 'Metro Transit',
-    seattle: 'Sound Transit',
-    toronto: 'Toronto Transit Commission',
-    montreal: 'Societe de transport de Montreal',
-    london: 'Transport for London',
-    'san-francisco-bay-area': 'Bay Area Rapid Transit'
+    chicago: 'Chicago "L"',
+    'new-york': 'Subway + Staten Island Railway',
+    boston: 'MBTA rapid transit',
+    'washington-dc': 'Washington Metro',
+    'minneapolis-st-paul': 'Metro light rail',
+    seattle: 'Link light rail',
+    toronto: 'TTC subway',
+    montreal: 'Montreal Metro',
+    london: 'Underground + DLR',
+    'san-francisco-bay-area': 'BART'
   };
 
   if (explicitLabels[city.slug]) {
