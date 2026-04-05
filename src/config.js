@@ -62,8 +62,12 @@ export function getCityTheme(slug, index = 0) {
 export const CARD_STYLE = {
   baseLineWidth: 1.65,
   selectedLineWidth: 2.15,
+  haloWidthPadding: 1.7,
   baseAlpha: 0.94,
   dimmedAlpha: 0.18,
+  haloAlpha: 0.78,
+  dimmedHaloAlpha: 0.24,
+  simplifyTolerance: 0.5,
   lineStroke: DEFAULT_INK
 };
 

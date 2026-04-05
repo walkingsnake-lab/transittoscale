@@ -15,7 +15,7 @@ import {
   HOVER_SPRING,
   getCityTheme
 } from './config.js';
-import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath } from './lib/canvas.js';
+import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath, simplifyPath } from './lib/canvas.js';
 import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
 import { clamp, damp, invLerp, nearlyEqual } from './lib/math.js';
 import { projectFeatureCollection } from './lib/projection.js';
@@ -394,12 +394,22 @@ function projectLines(city, width, height) {
   const anchorPoint = city.focusPoint ?? city.centroid;
   const projectedFeatures = projectFeatureCollection(city.geojson, anchorPoint);
 
-  return projectedFeatures.map((feature) => ({
-    ...feature,
-    paths: feature.paths
-      .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
-      .map((translatedPath) => buildPathMetrics(translatedPath))
-  }));
+  return projectedFeatures
+    .map((feature) => {
+      const paths = feature.paths
+        .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
+        .map((translatedPath) => simplifyPath(translatedPath, CARD_STYLE.simplifyTolerance))
+        .map((simplifiedPath) => buildPathMetrics(simplifiedPath))
+        .filter((metrics) => metrics.totalLength > 0);
+
+      return {
+        ...feature,
+        paths,
+        visualLength: paths.reduce((total, metrics) => total + metrics.totalLength, 0)
+      };
+    })
+    .filter((feature) => feature.paths.length > 0)
+    .sort((left, right) => right.visualLength - left.visualLength);
 }
 
 function drawCard({
@@ -458,12 +468,27 @@ function drawCard({
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.imageSmoothingEnabled = true;
-  ctx.strokeStyle = theme.ink;
-  ctx.globalAlpha = CARD_STYLE.baseAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
-  ctx.lineWidth =
-    CARD_STYLE.baseLineWidth +
-    (CARD_STYLE.selectedLineWidth - CARD_STYLE.baseLineWidth) * Math.max(emphasis, hover * 0.65);
+  const emphasisStrength = Math.max(emphasis, hover * 0.65);
+  const lineWidth =
+    CARD_STYLE.baseLineWidth + (CARD_STYLE.selectedLineWidth - CARD_STYLE.baseLineWidth) * emphasisStrength;
 
+  ctx.strokeStyle = theme.paper;
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = CARD_STYLE.haloAlpha * (1 - dimmed) + CARD_STYLE.dimmedHaloAlpha * dimmed;
+  ctx.lineWidth = lineWidth + CARD_STYLE.haloWidthPadding;
+  drawProjectedLines(ctx, projectedLines, lineWindow);
+
+  ctx.strokeStyle = theme.ink;
+  // Keep shared corridors from compounding into visibly darker knots.
+  ctx.globalCompositeOperation = 'darken';
+  ctx.globalAlpha = CARD_STYLE.baseAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
+  ctx.lineWidth = lineWidth;
+  drawProjectedLines(ctx, projectedLines, lineWindow);
+
+  ctx.restore();
+}
+
+function drawProjectedLines(ctx, projectedLines, lineWindow) {
   const lineCount = projectedLines.length;
 
   projectedLines.forEach((line, index) => {
@@ -474,8 +499,6 @@ function drawCard({
       drawProgressPath(ctx, metrics, progress);
     }
   });
-
-  ctx.restore();
 }
 
 function drawArcLabel(
