@@ -144,7 +144,12 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
               ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}
             </div>
           </div>
-          <button type="button" class="card__flip-button card__flip-button--front" aria-label="Show back of ${city.name} card">Back</button>
+          <button type="button" class="card__flip-button card__flip-button--front" aria-label="Show back of ${city.name} card">
+            <svg class="card__flip-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16.5 8.5V4.75L21 9.25l-4.5 4.5V10h-5.25a4.75 4.75 0 0 0 0 9.5H14" />
+              <path d="M7.5 15.5v3.75L3 14.75l4.5-4.5V14h5.25a4.75 4.75 0 0 0 0-9.5H10" />
+            </svg>
+          </button>
         </section>
         <section class="card__face card__face--back" aria-hidden="true">
           <button type="button" class="card__select" aria-label="Select ${city.name}" aria-pressed="false"></button>
@@ -160,7 +165,12 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
               </dl>
             </div>
           </div>
-          <button type="button" class="card__flip-button card__flip-button--back" aria-label="Show front of ${city.name} card">Front</button>
+          <button type="button" class="card__flip-button card__flip-button--back" aria-label="Show front of ${city.name} card">
+            <svg class="card__flip-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10" />
+              <path d="m17 7-10 10" />
+            </svg>
+          </button>
         </section>
       </div>
     </div>
