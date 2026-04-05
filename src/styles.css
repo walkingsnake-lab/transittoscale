@@ -103,7 +103,7 @@ body {
   transform-style: preserve-3d;
   will-change: transform;
   transition:
-    transform 260ms var(--ease-out),
+    transform 140ms var(--ease-out),
     opacity 240ms ease;
   color: var(--card-text);
 }
@@ -112,10 +112,10 @@ body {
 .card--hovered {
   transform:
     perspective(1800px)
-    translateY(-8px)
-    rotateX(4.2deg)
-    rotateY(var(--hover-tilt-y, 0deg))
-    scale(1.01);
+    translate3d(var(--hover-shift-x, 0px), calc(-8px + var(--hover-shift-y, 0px)), 0)
+    rotateX(var(--hover-rotate-x, 0deg))
+    rotateY(var(--hover-rotate-y, 0deg))
+    scale(1.012);
 }
 
 .card:focus-visible {
@@ -156,6 +156,15 @@ body {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent);
   opacity: 0.46;
   pointer-events: none;
+  transform: translate3d(var(--paper-gloss-x, 0px), var(--paper-gloss-y, 0px), 0);
+  transition:
+    opacity 140ms var(--ease-out),
+    transform 140ms var(--ease-out);
+}
+
+.card:hover .card__paper::before,
+.card--hovered .card__paper::before {
+  opacity: 0.56;
 }
 
 .card:hover .card__paper {
@@ -322,6 +331,13 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .card,
+  .card:hover,
+  .card--hovered,
+  .is-ready .card {
+    transform: none !important;
+  }
+
   *,
   *::before,
   *::after {

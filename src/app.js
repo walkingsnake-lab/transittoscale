@@ -110,7 +110,12 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   element.style.setProperty('--stagger', `${index * INTRO_STAGGER_MS}ms`);
   element.style.setProperty('--flip-angle', `${index % 2 === 0 ? -12 : 12}deg`);
   element.style.setProperty('--flip-origin', index % 2 === 0 ? '0% 50%' : '100% 50%');
-  element.style.setProperty('--hover-tilt-y', index % 2 === 0 ? '-3.4deg' : '3.4deg');
+  element.style.setProperty('--hover-shift-x', '0px');
+  element.style.setProperty('--hover-shift-y', '0px');
+  element.style.setProperty('--hover-rotate-x', '0deg');
+  element.style.setProperty('--hover-rotate-y', '0deg');
+  element.style.setProperty('--paper-gloss-x', '0px');
+  element.style.setProperty('--paper-gloss-y', '0px');
   element.style.setProperty('--card-accent', theme.accent);
   element.style.setProperty('--card-accent-rgb', theme.accentRgb);
   element.style.setProperty('--card-paper', theme.paper);
@@ -184,7 +189,49 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     setHovered(isHovered) {
       this.hoverTarget = isHovered ? 1 : 0;
       element.classList.toggle('card--hovered', isHovered);
+
+      if (!isHovered || reducedMotion) {
+        this.resetTilt();
+      }
+
       this.active = true;
+    },
+    updateTilt(clientX, clientY) {
+      if (reducedMotion) {
+        return;
+      }
+
+      const rect = element.getBoundingClientRect();
+
+      if (!rect.width || !rect.height) {
+        return;
+      }
+
+      const xRatio = clamp((clientX - rect.left) / rect.width);
+      const yRatio = clamp((clientY - rect.top) / rect.height);
+      const xNorm = xRatio * 2 - 1;
+      const yNorm = yRatio * 2 - 1;
+      const rotateX = -yNorm * 7.2;
+      const rotateY = xNorm * 9.4;
+      const shiftX = xNorm * 3.5;
+      const shiftY = yNorm * 2.5;
+      const glossX = xNorm * 7;
+      const glossY = yNorm * 4;
+
+      element.style.setProperty('--hover-shift-x', `${shiftX.toFixed(2)}px`);
+      element.style.setProperty('--hover-shift-y', `${shiftY.toFixed(2)}px`);
+      element.style.setProperty('--hover-rotate-x', `${rotateX.toFixed(2)}deg`);
+      element.style.setProperty('--hover-rotate-y', `${rotateY.toFixed(2)}deg`);
+      element.style.setProperty('--paper-gloss-x', `${glossX.toFixed(2)}px`);
+      element.style.setProperty('--paper-gloss-y', `${glossY.toFixed(2)}px`);
+    },
+    resetTilt() {
+      element.style.setProperty('--hover-shift-x', '0px');
+      element.style.setProperty('--hover-shift-y', '0px');
+      element.style.setProperty('--hover-rotate-x', '0deg');
+      element.style.setProperty('--hover-rotate-y', '0deg');
+      element.style.setProperty('--paper-gloss-x', '0px');
+      element.style.setProperty('--paper-gloss-y', '0px');
     },
     update(now, deltaSeconds) {
       let stillAnimating = false;
@@ -233,8 +280,15 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   };
 
   element.addEventListener('click', () => onSelect(city.slug));
-  element.addEventListener('pointerenter', () => card.setHovered(true));
+  element.addEventListener('pointerenter', (event) => {
+    card.setHovered(true);
+    card.updateTilt(event.clientX, event.clientY);
+  });
+  element.addEventListener('pointermove', (event) => {
+    card.updateTilt(event.clientX, event.clientY);
+  });
   element.addEventListener('pointerleave', () => card.setHovered(false));
+  element.addEventListener('pointercancel', () => card.setHovered(false));
   element.addEventListener('focus', () => card.setHovered(true));
   element.addEventListener('blur', () => card.setHovered(false));
   observer.observe(frame);
