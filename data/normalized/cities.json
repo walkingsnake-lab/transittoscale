@@ -259,7 +259,7 @@
     "dataPath": "data/cities/san-francisco-bay-area.geojson",
     "centroid": [
       -122.14447966349951,
-      37.6299022205
+      37.696167390000035
     ],
     "focusPoint": [
       -122.2712,
@@ -267,12 +267,12 @@
     ],
     "bounds": [
       -122.508525,
-      37.23595428,
+      37.36848461900007,
       -121.780434326999,
       38.023850161
     ],
-    "lineCount": 15,
-    "sourceName": "BART + Muni Metro + VTA Light Rail",
+    "lineCount": 12,
+    "sourceName": "BART + Muni Metro",
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip"
   }
 ]

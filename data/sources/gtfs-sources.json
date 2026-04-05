@@ -306,7 +306,7 @@
     "name": "San Francisco Bay Area",
     "region": "United States",
     "sourceType": "gtfs-merge",
-    "sourceName": "BART + Muni Metro + VTA Light Rail",
+    "sourceName": "BART + Muni Metro",
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
     "focusPoint": [-122.2712, 37.8037],
     "minPointSpacingMeters": 20,
@@ -355,19 +355,6 @@
           "M": "M Ocean View",
           "N": "N Judah",
           "T": "T Third"
-        }
-      },
-      {
-        "sourceName": "Santa Clara Valley Transportation Authority (VTA)",
-        "sourceUrl": "https://gtfs.vta.org/gtfs_vta.zip",
-        "routeTypes": ["0"],
-        "minShapeTrips": 20,
-        "shapeTripShareThreshold": 0.08,
-        "routeIdAllowlist": ["Blue", "Green", "Ornge"],
-        "lineNameOverrides": {
-          "Blue": "VTA Blue Line",
-          "Green": "VTA Green Line",
-          "Ornge": "VTA Orange Line"
         }
       }
     ]
