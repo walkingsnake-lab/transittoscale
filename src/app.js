@@ -567,7 +567,9 @@ function formatSystemLabel(city) {
     toronto: 'TTC subway',
     montreal: 'Montreal Metro',
     london: 'Underground + DLR',
-    'san-francisco-bay-area': 'BART'
+    'san-francisco-bay-area': 'BART',
+    paris: 'Metro',
+    tokyo: 'Rapid transit'
   };
 
   if (explicitLabels[city.slug]) {
@@ -581,7 +583,9 @@ function getCountryFlag(city) {
   const flagCodeByRegion = {
     'United States': 'us',
     Canada: 'ca',
-    'United Kingdom': 'gb'
+    'United Kingdom': 'gb',
+    France: 'fr',
+    Japan: 'jp'
   };
 
   const code = flagCodeByRegion[city.region];

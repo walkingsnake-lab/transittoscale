@@ -5,60 +5,22 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const rawDataPath = path.join(repoRoot, 'data', 'raw', 'city-seeds.json');
+const supplementalSeedSlugsPath = path.join(repoRoot, 'data', 'raw', 'cardset-seed-slugs.json');
 const normalizedDataPath = path.join(repoRoot, 'data', 'normalized', 'cities.json');
 const publicDataDir = path.join(repoRoot, 'public', 'data');
 const cityDir = path.join(publicDataDir, 'cities');
 
 const raw = JSON.parse(await readFile(rawDataPath, 'utf8'));
+const supplementalSeedSlugs = await readSupplementalSeedSlugs();
 const normalized = await readNormalizedCities();
+const seedCitiesBySlug = new Map(raw.map((city) => [city.slug, city]));
 
 await mkdir(cityDir, { recursive: true });
 
 const manifest =
   normalized.size > 0
-    ? [...normalized.values()]
-    : await Promise.all(raw.map(async (city) => {
-        const features = city.lines.map((line) => ({
-          type: 'Feature',
-          properties: {
-            lineId: line.lineId,
-            lineName: line.lineName,
-            systemName: city.name
-          },
-          geometry: {
-            type: 'LineString',
-            coordinates: line.coordinates
-          }
-        }));
-
-        const bounds = computeBounds(city.lines);
-        const centroid = city.centroid ?? computeCentroid(city.lines);
-
-        const featureCollection = {
-          type: 'FeatureCollection',
-          properties: {
-            slug: city.slug,
-            name: city.name,
-            region: city.region,
-            centroid,
-            focusPoint: city.focusPoint ?? centroid,
-            bounds
-          },
-          features
-        };
-
-        return {
-          slug: city.slug,
-          name: city.name,
-          region: city.region,
-          dataPath: `data/cities/${city.slug}.geojson`,
-          centroid,
-          focusPoint: city.focusPoint ?? centroid,
-          bounds,
-          lineCount: features.length,
-          featureCollection
-        };
-      }));
+    ? mergeImportedAndSupplementalCities(normalized, supplementalSeedSlugs, seedCitiesBySlug)
+    : raw.map((city) => buildSeedCity(city));
 
 for (const city of manifest) {
   const cityPath = path.join(cityDir, `${city.slug}.geojson`);
@@ -96,6 +58,81 @@ async function readNormalizedCities() {
 
     throw error;
   }
+}
+
+async function readSupplementalSeedSlugs() {
+  try {
+    return JSON.parse(await readFile(supplementalSeedSlugsPath, 'utf8'));
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return [];
+    }
+
+    throw error;
+  }
+}
+
+function mergeImportedAndSupplementalCities(normalizedCities, supplementalSlugs, seedCitiesBySlug) {
+  const manifest = [...normalizedCities.values()];
+
+  for (const slug of supplementalSlugs) {
+    if (normalizedCities.has(slug)) {
+      continue;
+    }
+
+    const seedCity = seedCitiesBySlug.get(slug);
+
+    if (!seedCity) {
+      throw new Error(`Unknown supplemental city seed slug: ${slug}`);
+    }
+
+    manifest.push(buildSeedCity(seedCity));
+  }
+
+  return manifest;
+}
+
+function buildSeedCity(city) {
+  const features = city.lines.map((line) => ({
+    type: 'Feature',
+    properties: {
+      lineId: line.lineId,
+      lineName: line.lineName,
+      systemName: city.name
+    },
+    geometry: {
+      type: 'LineString',
+      coordinates: line.coordinates
+    }
+  }));
+
+  const bounds = computeBounds(city.lines);
+  const centroid = city.centroid ?? computeCentroid(city.lines);
+
+  const featureCollection = {
+    type: 'FeatureCollection',
+    properties: {
+      slug: city.slug,
+      name: city.name,
+      region: city.region,
+      centroid,
+      focusPoint: city.focusPoint ?? centroid,
+      bounds
+    },
+    features
+  };
+
+  return {
+    slug: city.slug,
+    name: city.name,
+    region: city.region,
+    dataPath: `data/cities/${city.slug}.geojson`,
+    centroid,
+    focusPoint: city.focusPoint ?? centroid,
+    bounds,
+    lineCount: features.length,
+    featureCollection
+  };
 }
 
 function computeBounds(lines) {

@@ -1,0 +1,168 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "tokyo",
+    "name": "Tokyo",
+    "region": "Japan",
+    "centroid": [
+      139.7671,
+      35.6812
+    ],
+    "focusPoint": [
+      139.7671,
+      35.6812
+    ],
+    "bounds": [
+      139.63,
+      35.59,
+      139.89,
+      35.79
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "north-south",
+        "lineName": "North-South",
+        "systemName": "Tokyo"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            139.75,
+            35.79
+          ],
+          [
+            139.755,
+            35.74
+          ],
+          [
+            139.765,
+            35.69
+          ],
+          [
+            139.775,
+            35.64
+          ],
+          [
+            139.79,
+            35.59
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "west-east",
+        "lineName": "West-East",
+        "systemName": "Tokyo"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            139.63,
+            35.69
+          ],
+          [
+            139.69,
+            35.688
+          ],
+          [
+            139.75,
+            35.684
+          ],
+          [
+            139.82,
+            35.681
+          ],
+          [
+            139.89,
+            35.679
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "northwest-southeast",
+        "lineName": "Northwest-Southeast",
+        "systemName": "Tokyo"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            139.67,
+            35.76
+          ],
+          [
+            139.71,
+            35.73
+          ],
+          [
+            139.76,
+            35.69
+          ],
+          [
+            139.82,
+            35.64
+          ],
+          [
+            139.88,
+            35.6
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "loop",
+        "lineName": "Loop",
+        "systemName": "Tokyo"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            139.7,
+            35.73
+          ],
+          [
+            139.77,
+            35.75
+          ],
+          [
+            139.84,
+            35.71
+          ],
+          [
+            139.84,
+            35.65
+          ],
+          [
+            139.78,
+            35.62
+          ],
+          [
+            139.71,
+            35.64
+          ],
+          [
+            139.68,
+            35.69
+          ],
+          [
+            139.7,
+            35.73
+          ]
+        ]
+      }
+    }
+  ]
+}

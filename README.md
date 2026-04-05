@@ -27,6 +27,7 @@ Transit To Scale is a static web visualization that compares world metro systems
 ## Data Workflow
 
 - Edit the seed dataset in `data/raw/city-seeds.json`.
+- Use `data/raw/cardset-seed-slugs.json` to promote selected hand-curated seed cities into the live cardset alongside imported cities.
 - Import the full GTFS catalog with `npm run data:import`.
 - Import or refresh one city without re-fetching the rest with `npm run data:import -- --city <slug>`.
 - Import multiple specific cities with repeated flags or a comma-separated list such as `npm run data:import -- --city montreal --city san-francisco-bay-area`.
@@ -49,7 +50,7 @@ Transit To Scale is a static web visualization that compares world metro systems
 - `data/normalized/` is the source of truth for imported GTFS cities.
 - `npm run data:import` rewrites the normalized manifest from every configured GTFS source.
 - `npm run data:import -- --city <slug>` merges only the requested city into the existing normalized manifest and preserves the other imported cities as-is.
-- `npm run data:build` is local-only: it publishes whatever already exists in `data/normalized/` to `public/data/`.
+- `npm run data:build` is local-only: it publishes imported cities from `data/normalized/` and appends any curated seed cities listed in `data/raw/cardset-seed-slugs.json`.
 - The hand-curated seed dataset in `data/raw/city-seeds.json` is only used when there are no normalized imports available.
 
 ## Anchoring Rule
@@ -70,6 +71,6 @@ Transit To Scale is a static web visualization that compares world metro systems
 
 ## Current Imported Dataset
 
-- The live manifest currently includes only normalized real-data cities.
+- The live manifest currently includes normalized real-data cities plus a small curated supplemental seed set.
 - Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, Toronto, Montreal, London, and San Francisco Bay Area are imported from official agency feeds or APIs and rendered in the app.
-- The hand-curated seed dataset remains in the repo as a fallback and development aid, but it is not shown once normalized imports exist.
+- Paris and Tokyo are currently included as curated supplemental seed cards via `data/raw/cardset-seed-slugs.json`.

@@ -228,5 +228,47 @@
     "lineCount": 6,
     "sourceName": "Bay Area Rapid Transit (BART)",
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip"
+  },
+  {
+    "slug": "paris",
+    "name": "Paris",
+    "region": "France",
+    "dataPath": "data/cities/paris.geojson",
+    "centroid": [
+      2.3522,
+      48.8566
+    ],
+    "focusPoint": [
+      2.3522,
+      48.8566
+    ],
+    "bounds": [
+      2.23,
+      48.77,
+      2.48,
+      48.93
+    ],
+    "lineCount": 4
+  },
+  {
+    "slug": "tokyo",
+    "name": "Tokyo",
+    "region": "Japan",
+    "dataPath": "data/cities/tokyo.geojson",
+    "centroid": [
+      139.7671,
+      35.6812
+    ],
+    "focusPoint": [
+      139.7671,
+      35.6812
+    ],
+    "bounds": [
+      139.63,
+      35.59,
+      139.89,
+      35.79
+    ],
+    "lineCount": 4
   }
 ]
