@@ -146,8 +146,8 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
           </div>
           <button type="button" class="card__flip-button card__flip-button--front" aria-label="Show back of ${city.name} card">
             <svg class="card__flip-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M16.5 8.5V4.75L21 9.25l-4.5 4.5V10h-5.25a4.75 4.75 0 0 0 0 9.5H14" />
-              <path d="M7.5 15.5v3.75L3 14.75l4.5-4.5V14h5.25a4.75 4.75 0 0 0 0-9.5H10" />
+              <path d="M20 12a8 8 0 1 1-2.34-5.66" />
+              <path d="M20 5v6h-6" />
             </svg>
           </button>
         </section>

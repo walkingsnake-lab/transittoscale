@@ -332,40 +332,35 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 20px;
+  height: 20px;
   padding: 0;
-  border: 1px solid rgba(17, 17, 17, 0.14);
-  border-radius: 999px;
-  background: rgba(246, 245, 241, 0.72);
-  color: rgba(17, 17, 17, 0.68);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: rgba(17, 17, 17, 0.5);
   cursor: pointer;
-  transform: translateZ(56px);
+  transform: translateZ(12px);
   transition:
     opacity 140ms var(--ease-out),
     transform 140ms var(--ease-out),
-    background-color 140ms var(--ease-out),
-    border-color 140ms var(--ease-out),
     color 140ms var(--ease-out);
   opacity: 0;
   pointer-events: none;
 }
 
 .card__flip-button--back {
-  top: 16px;
   right: 16px;
-  bottom: auto;
-  background: rgba(17, 17, 17, 0.06);
-  border-color: rgba(17, 17, 17, 0.12);
+  bottom: 16px;
 }
 
 .card__flip-icon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   display: block;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.7;
+  stroke-width: 1.9;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -456,17 +451,11 @@ body {
 .card:focus-within .card__flip-button {
   opacity: 1;
   pointer-events: auto;
-  transform: translateZ(64px);
+  transform: translateZ(16px);
 }
 
 .card__flip-button:hover {
-  background: rgba(246, 245, 241, 0.9);
-  border-color: rgba(17, 17, 17, 0.2);
-  color: rgba(17, 17, 17, 0.86);
-}
-
-.card__flip-button--back:hover {
-  background: rgba(17, 17, 17, 0.12);
+  color: rgba(17, 17, 17, 0.82);
 }
 
 .is-ready .card {
@@ -539,21 +528,20 @@ body {
   .card__flip-button {
     right: 14px;
     bottom: 14px;
-    width: 32px;
-    height: 32px;
+    width: 20px;
+    height: 20px;
     opacity: 1;
     pointer-events: auto;
   }
 
   .card__flip-button--back {
-    top: 14px;
     right: 14px;
-    bottom: auto;
+    bottom: 14px;
   }
 
   .card__flip-icon {
-    width: 15px;
-    height: 15px;
+    width: 17px;
+    height: 17px;
   }
 
   .card__back-copy {
