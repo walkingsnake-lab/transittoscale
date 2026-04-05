@@ -102,21 +102,8 @@ body {
   text-align: left;
   cursor: pointer;
   transform-style: preserve-3d;
-  will-change: transform;
-  transition:
-    transform 140ms var(--ease-out),
-    opacity 240ms ease;
+  transition: opacity 240ms ease;
   color: var(--card-text);
-}
-
-.card:hover,
-.card--hovered {
-  transform:
-    perspective(1800px)
-    translate3d(var(--hover-shift-x, 0px), calc(-8px + var(--hover-shift-y, 0px)), 0)
-    rotateX(var(--hover-rotate-x, 0deg))
-    rotateY(var(--hover-rotate-y, 0deg))
-    scale(1.012);
 }
 
 .card:focus-visible {
@@ -133,6 +120,9 @@ body {
   min-height: var(--card-canvas-height, 360px);
   border-radius: 18px;
   overflow: hidden;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 22%),
     linear-gradient(180deg, var(--card-paper-strong) 0%, var(--card-paper) 100%);
@@ -144,6 +134,7 @@ body {
     0 18px 28px rgba(0, 0, 0, 0.24),
     0 28px 56px rgba(0, 0, 0, 0.18);
   transition:
+    transform 140ms var(--ease-out),
     box-shadow 260ms var(--ease-out),
     background-position 260ms var(--ease-out);
 }
@@ -169,6 +160,12 @@ body {
 }
 
 .card:hover .card__paper {
+  transform:
+    perspective(1800px)
+    translate3d(var(--hover-shift-x, 0px), calc(-8px + var(--hover-shift-y, 0px)), 0)
+    rotateX(var(--hover-rotate-x, 0deg))
+    rotateY(var(--hover-rotate-y, 0deg))
+    scale(1.012);
   box-shadow:
     0 4px 0 rgba(255, 255, 255, 0.62) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
@@ -177,6 +174,12 @@ body {
 }
 
 .card--hovered .card__paper {
+  transform:
+    perspective(1800px)
+    translate3d(var(--hover-shift-x, 0px), calc(-8px + var(--hover-shift-y, 0px)), 0)
+    rotateX(var(--hover-rotate-x, 0deg))
+    rotateY(var(--hover-rotate-y, 0deg))
+    scale(1.012);
   box-shadow:
     0 4px 0 rgba(255, 255, 255, 0.62) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
@@ -333,9 +336,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card,
-  .card:hover,
-  .card--hovered,
+  .card__paper,
+  .card:hover .card__paper,
+  .card--hovered .card__paper,
   .is-ready .card {
     transform: none !important;
   }
