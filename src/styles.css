@@ -2,8 +2,8 @@
 
 :root {
   color-scheme: dark;
-  --page-bg: #141414;
-  --page-bg-strong: #0f0f0f;
+  --page-bg: #2a211b;
+  --page-bg-strong: #15110f;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -20,7 +20,15 @@ body {
 body {
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.04), transparent 22%),
+    radial-gradient(circle at top, rgba(255, 244, 214, 0.1), transparent 24%),
+    linear-gradient(180deg, rgba(74, 58, 46, 0.38), transparent 34%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.015) 0,
+      rgba(255, 255, 255, 0.015) 2px,
+      transparent 2px,
+      transparent 14px
+    ),
     linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-strong) 100%);
 }
 
@@ -29,9 +37,27 @@ body {
 }
 
 .shell {
+  position: relative;
   width: 100%;
   min-height: 100vh;
   padding: 12px;
+}
+
+.shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% -8%, rgba(255, 255, 255, 0.12), transparent 28%),
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.16) 100%);
+  opacity: 0.7;
+}
+
+.shell > * {
+  position: relative;
+  z-index: 1;
 }
 
 .shell__status {
@@ -62,6 +88,7 @@ body {
   grid-template-columns: repeat(var(--card-columns, 3), minmax(0, 1fr));
   gap: 10px;
   align-items: start;
+  perspective: 1800px;
 }
 
 .card {
@@ -73,8 +100,22 @@ body {
   background: transparent;
   text-align: left;
   cursor: pointer;
-  transition: opacity 240ms ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition:
+    transform 260ms var(--ease-out),
+    opacity 240ms ease;
   color: var(--card-text);
+}
+
+.card:hover,
+.card--hovered {
+  transform:
+    perspective(1800px)
+    translateY(-8px)
+    rotateX(4.2deg)
+    rotateY(var(--hover-tilt-y, 0deg))
+    scale(1.01);
 }
 
 .card:focus-visible {
@@ -88,45 +129,74 @@ body {
 
 .card__paper {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  height: var(--card-canvas-height, 360px);
   min-height: var(--card-canvas-height, 360px);
   border-radius: 18px;
   overflow: hidden;
-  background: var(--card-paper);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 22%),
+    linear-gradient(180deg, var(--card-paper-strong) 0%, var(--card-paper) 100%);
   color: var(--card-text);
   border: 2px solid var(--card-border);
-  box-shadow: 0 18px 38px var(--card-shadow);
+  box-shadow:
+    0 4px 0 rgba(255, 255, 255, 0.55) inset,
+    0 -2px 0 rgba(17, 17, 17, 0.08) inset,
+    0 18px 28px rgba(0, 0, 0, 0.24),
+    0 28px 56px rgba(0, 0, 0, 0.18);
   transition:
     box-shadow 260ms var(--ease-out),
-    background-color 260ms var(--ease-out);
+    background-position 260ms var(--ease-out);
+}
+
+.card__paper::before {
+  content: '';
+  position: absolute;
+  inset: 10px 10px auto;
+  height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent);
+  opacity: 0.46;
+  pointer-events: none;
 }
 
 .card:hover .card__paper {
-  background: var(--card-paper-strong);
-  box-shadow: 0 21px 40px var(--card-shadow);
+  box-shadow:
+    0 4px 0 rgba(255, 255, 255, 0.62) inset,
+    0 -2px 0 rgba(17, 17, 17, 0.08) inset,
+    0 24px 34px rgba(0, 0, 0, 0.26),
+    0 38px 72px rgba(0, 0, 0, 0.22);
 }
 
 .card--hovered .card__paper {
-  background: var(--card-paper-strong);
-  box-shadow: 0 21px 40px var(--card-shadow);
+  box-shadow:
+    0 4px 0 rgba(255, 255, 255, 0.62) inset,
+    0 -2px 0 rgba(17, 17, 17, 0.08) inset,
+    0 24px 34px rgba(0, 0, 0, 0.26),
+    0 38px 72px rgba(0, 0, 0, 0.22);
 }
 
 .card--selected .card__paper {
   box-shadow:
-    0 22px 46px var(--card-shadow),
+    0 4px 0 rgba(255, 255, 255, 0.62) inset,
+    0 -2px 0 rgba(17, 17, 17, 0.08) inset,
+    0 28px 44px rgba(0, 0, 0, 0.28),
+    0 42px 78px rgba(0, 0, 0, 0.24),
     0 0 0 1px rgba(17, 17, 17, 0.14);
 }
 
-.card__header {
+.card__overlay {
+  position: absolute;
+  inset: 14px 14px auto;
+  z-index: 1;
   display: grid;
-  gap: 10px;
-  width: 100%;
-  padding: 18px 18px 16px;
-  background: #111111;
-  color: #ffffff;
-  border-bottom: 2px solid #111111;
+  gap: 9px;
+  padding: 14px 16px 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(247, 244, 237, 0.96) 30%, rgba(242, 238, 230, 0.93));
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 12px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.92) inset,
+    0 10px 24px rgba(0, 0, 0, 0.16);
 }
 
 .card__eyebrow {
@@ -138,7 +208,7 @@ body {
 
 .card__region {
   margin: 0;
-  color: rgba(255, 255, 255, 0.74);
+  color: rgba(17, 17, 17, 0.58);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -147,7 +217,7 @@ body {
 
 .card__agency {
   margin: 0;
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(17, 17, 17, 0.78);
   font-size: 0.68rem;
   font-weight: 800;
   line-height: 1;
@@ -157,7 +227,7 @@ body {
 
 .card__count {
   margin: 0;
-  color: rgba(255, 255, 255, 0.64);
+  color: rgba(17, 17, 17, 0.54);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -166,9 +236,9 @@ body {
   white-space: nowrap;
 }
 
-.card__header h2 {
+.card__overlay h2 {
   margin: 0;
-  color: #ffffff;
+  color: #111111;
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: clamp(1.7rem, 2.2vw, 2.2rem);
   font-weight: 800;
@@ -178,25 +248,17 @@ body {
 
 .card__canvas-frame {
   position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
+  min-height: var(--card-canvas-height, 360px);
   overflow: hidden;
-  background: var(--card-paper);
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.16), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 24%);
 }
 
 .card__canvas {
   display: block;
   width: 100%;
-  height: 100%;
-  min-height: 100%;
-}
-
-.card:hover .card__canvas-frame {
-  background: var(--card-paper-strong);
-}
-
-.card--hovered .card__canvas-frame {
-  background: var(--card-paper-strong);
+  height: var(--card-canvas-height, 360px);
 }
 
 .is-ready .card {
@@ -239,22 +301,28 @@ body {
   }
 
   .card__paper {
-    height: var(--card-canvas-height, 300px);
     min-height: var(--card-canvas-height, 300px);
     border-radius: 14px;
   }
 
-  .card__header {
+  .card__overlay {
     gap: 8px;
-    padding: 16px 14px 14px;
+    inset: 12px 12px auto;
+    padding: 13px 14px 15px;
   }
 
-  .card__header h2 {
+  .card__overlay h2 {
     font-size: 1.58rem;
   }
 
   .card__eyebrow {
     gap: 10px;
+  }
+
+  .card__canvas-frame,
+  .card__canvas {
+    min-height: var(--card-canvas-height, 300px);
+    height: var(--card-canvas-height, 300px);
   }
 }
 

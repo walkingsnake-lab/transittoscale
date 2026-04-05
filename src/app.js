@@ -109,6 +109,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   element.style.setProperty('--stagger', `${index * INTRO_STAGGER_MS}ms`);
   element.style.setProperty('--flip-angle', `${index % 2 === 0 ? -12 : 12}deg`);
   element.style.setProperty('--flip-origin', index % 2 === 0 ? '0% 50%' : '100% 50%');
+  element.style.setProperty('--hover-tilt-y', index % 2 === 0 ? '-3.4deg' : '3.4deg');
   element.style.setProperty('--card-accent', theme.accent);
   element.style.setProperty('--card-accent-rgb', theme.accentRgb);
   element.style.setProperty('--card-paper', theme.paper);
@@ -124,16 +125,16 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
 
   element.innerHTML = `
     <div class="card__paper">
-      <div class="card__header">
-        <div class="card__eyebrow">
-          <p class="card__agency">${agencyLabel}</p>
-          <p class="card__count">${lineLabel}</p>
-        </div>
-        <h2>${city.name}</h2>
-        <p class="card__region">${city.region}</p>
-      </div>
       <div class="card__canvas-frame">
         <canvas class="card__canvas"></canvas>
+        <div class="card__overlay">
+          <div class="card__eyebrow">
+            <p class="card__agency">${agencyLabel}</p>
+            <p class="card__count">${lineLabel}</p>
+          </div>
+          <h2>${city.name}</h2>
+          <p class="card__region">${city.region}</p>
+        </div>
       </div>
     </div>
   `;
@@ -358,13 +359,6 @@ function drawCard({
     const progress = easeOutCubic(clamp((lineWindow - offset) / Math.max(0.12, 1 - offset)));
 
     for (const metrics of line.paths) {
-      ctx.save();
-      ctx.strokeStyle = theme.paperStrong;
-      ctx.globalAlpha = 0.22 * (1 - dimmed) + 0.08 * Math.max(emphasis, hover);
-      ctx.lineWidth += 0.9;
-      drawProgressPath(ctx, metrics, progress);
-      ctx.restore();
-
       drawProgressPath(ctx, metrics, progress);
     }
   });
