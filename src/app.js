@@ -211,12 +211,12 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       const yRatio = clamp((clientY - rect.top) / rect.height);
       const xNorm = xRatio * 2 - 1;
       const yNorm = yRatio * 2 - 1;
-      const rotateX = -yNorm * 7.2;
-      const rotateY = xNorm * 9.4;
-      const shiftX = xNorm * 3.5;
-      const shiftY = yNorm * 2.5;
-      const glossX = xNorm * 7;
-      const glossY = yNorm * 4;
+      const rotateX = -yNorm * 5.2;
+      const rotateY = xNorm * 6.8;
+      const shiftX = xNorm * 2.2;
+      const shiftY = yNorm * 1.4;
+      const glossX = xNorm * 5.2;
+      const glossY = yNorm * 3;
 
       element.style.setProperty('--hover-shift-x', `${shiftX.toFixed(2)}px`);
       element.style.setProperty('--hover-shift-y', `${shiftY.toFixed(2)}px`);

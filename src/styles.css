@@ -4,7 +4,7 @@
   --page-bg-strong: #15110f;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --font-sans: 'Reddit Sans Condensed', 'Arial Narrow', Arial, sans-serif;
-  --font-sans-tight: var(--font-sans);
+  --font-sans-tight: 'Inter Tight', 'Reddit Sans Condensed', 'Arial Narrow', Arial, sans-serif;
 }
 
 * {
@@ -162,10 +162,10 @@ body {
 .card:hover .card__paper {
   transform:
     perspective(1800px)
-    translate3d(var(--hover-shift-x, 0px), calc(-8px + var(--hover-shift-y, 0px)), 0)
+    translate3d(var(--hover-shift-x, 0px), calc(-4px + var(--hover-shift-y, 0px)), 0)
     rotateX(var(--hover-rotate-x, 0deg))
     rotateY(var(--hover-rotate-y, 0deg))
-    scale(1.012);
+    scale(1.008);
   box-shadow:
     0 4px 0 rgba(255, 255, 255, 0.62) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
@@ -176,10 +176,10 @@ body {
 .card--hovered .card__paper {
   transform:
     perspective(1800px)
-    translate3d(var(--hover-shift-x, 0px), calc(-8px + var(--hover-shift-y, 0px)), 0)
+    translate3d(var(--hover-shift-x, 0px), calc(-4px + var(--hover-shift-y, 0px)), 0)
     rotateX(var(--hover-rotate-x, 0deg))
     rotateY(var(--hover-rotate-y, 0deg))
-    scale(1.012);
+    scale(1.008);
   box-shadow:
     0 4px 0 rgba(255, 255, 255, 0.62) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
@@ -233,6 +233,7 @@ body {
 .card__overlay h2 {
   margin: 0;
   color: rgba(17, 17, 17, 0.9);
+  font-family: var(--font-sans-tight);
   font-size: clamp(1.58rem, 2.02vw, 2rem);
   font-weight: 700;
   line-height: 0.94;
