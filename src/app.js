@@ -2,6 +2,7 @@ import {
   CARD_CANVAS_HEIGHT,
   CARD_PADDING,
   CARD_STYLE,
+  FONT_STACK,
   HEADER_OFFSET,
   INTRO_CIRCLE_PORTION,
   INTRO_DURATION_MS,
@@ -9,7 +10,8 @@ import {
   REFERENCE_RADIUS_PIXELS,
   REVEAL_LINE_OFFSET,
   SELECTION_SPRING,
-  DIM_SPRING
+  DIM_SPRING,
+  getCityTheme
 } from './config.js';
 import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath, strokeCircleProgress } from './lib/canvas.js';
 import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
@@ -97,12 +99,22 @@ function resolveAssetPath(relativePath) {
 }
 
 function createCard(city, index, animator, reducedMotion, onSelect) {
+  const theme = getCityTheme(city.slug, index);
   const element = document.createElement('button');
   element.type = 'button';
   element.className = 'card';
   element.style.setProperty('--stagger', `${index * INTRO_STAGGER_MS}ms`);
   element.style.setProperty('--flip-angle', `${index % 2 === 0 ? -12 : 12}deg`);
   element.style.setProperty('--flip-origin', index % 2 === 0 ? '0% 50%' : '100% 50%');
+  element.style.setProperty('--card-accent', theme.accent);
+  element.style.setProperty('--card-accent-rgb', theme.accentRgb);
+  element.style.setProperty('--card-surface', theme.surface);
+  element.style.setProperty('--card-surface-strong', theme.surfaceStrong);
+  element.style.setProperty('--card-border', theme.border);
+  element.style.setProperty('--card-overlay-fade', theme.overlayFade);
+  element.style.setProperty('--card-title', theme.accent);
+  element.style.setProperty('--card-count', theme.accent);
+  element.style.setProperty('--card-region', theme.regionText);
   element.setAttribute('aria-pressed', 'false');
 
   element.innerHTML = `
@@ -128,6 +140,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
 
   const card = {
     city,
+    theme,
     element,
     canvas,
     ctx,
@@ -192,6 +205,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         width: this.width,
         height: this.height,
         projectedLines: this.projectedLines,
+        theme: this.theme,
         introValue: this.introValue,
         selectedValue: this.selectedValue,
         dimValue: this.dimValue
@@ -266,6 +280,7 @@ function drawCard({
   width,
   height,
   projectedLines,
+  theme,
   introValue,
   selectedValue,
   dimValue
@@ -278,17 +293,17 @@ function drawCard({
   const emphasis = selectedValue;
   const dimmed = dimValue;
 
-  drawGrid(ctx, width, height);
+  drawGrid(ctx, width, height, theme);
 
   ctx.save();
-  ctx.strokeStyle = CARD_STYLE.cardStroke;
+  ctx.strokeStyle = theme.cardStroke;
   ctx.lineWidth = 1;
   ctx.strokeRect(0.5, 0.5, width - 1, height - 1);
   ctx.restore();
 
   if (emphasis > 0.01) {
     ctx.save();
-    ctx.fillStyle = CARD_STYLE.selectedGlow;
+    ctx.fillStyle = theme.selectedGlow;
     ctx.fillRect(0, 0, width, height);
     ctx.restore();
   }
@@ -297,12 +312,12 @@ function drawCard({
   const circleCenterY = height / 2;
 
   ctx.save();
-  ctx.strokeStyle = CARD_STYLE.referenceStroke;
-  ctx.globalAlpha = 0.24 + emphasis * 0.22 - dimmed * 0.1;
+  ctx.strokeStyle = theme.referenceStroke;
+  ctx.globalAlpha = 0.34 + emphasis * 0.22 - dimmed * 0.12;
   ctx.lineWidth = 1.1;
   strokeCircleProgress(ctx, circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, circleValue);
-  ctx.fillStyle = CARD_STYLE.referenceStroke;
-  ctx.font = '500 11px "IBM Plex Sans Condensed", sans-serif';
+  ctx.fillStyle = theme.referenceStroke;
+  ctx.font = `600 11px ${FONT_STACK}`;
   ctx.textAlign = 'center';
   ctx.fillText('5 mi', circleCenterX, circleCenterY + REFERENCE_RADIUS_PIXELS + 16);
   ctx.restore();
@@ -310,7 +325,7 @@ function drawCard({
   ctx.save();
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  ctx.strokeStyle = CARD_STYLE.neutralStroke;
+  ctx.strokeStyle = CARD_STYLE.lineStroke;
   ctx.globalAlpha = CARD_STYLE.baseAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
   ctx.lineWidth =
     CARD_STYLE.baseLineWidth +
@@ -331,7 +346,7 @@ function drawCard({
 
   if (emphasis > 0.01) {
     ctx.save();
-    ctx.strokeStyle = CARD_STYLE.selectedCardStroke;
+    ctx.strokeStyle = theme.selectedCardStroke;
     ctx.globalAlpha = emphasis;
     ctx.lineWidth = 1.5;
     ctx.strokeRect(1, 1, width - 2, height - 2);
@@ -339,9 +354,9 @@ function drawCard({
   }
 }
 
-function drawGrid(ctx, width, height) {
+function drawGrid(ctx, width, height, theme) {
   ctx.save();
-  ctx.strokeStyle = CARD_STYLE.gridStroke;
+  ctx.strokeStyle = theme.gridStroke;
   ctx.lineWidth = 1;
 
   for (let x = 24; x < width; x += 44) {

@@ -13,16 +13,59 @@ export const INTRO_CIRCLE_PORTION = 0.36;
 export const REVEAL_LINE_OFFSET = 0.085;
 export const SELECTION_SPRING = 12;
 export const DIM_SPRING = 9;
+export const FONT_STACK = '"Inter", "Helvetica Neue", Helvetica, Arial, sans-serif';
+
+const DEFAULT_SURFACE = '#08090c';
+const DEFAULT_SURFACE_STRONG = '#101318';
+const DEFAULT_BORDER = '#1f2530';
+
+const CITY_THEME_BY_SLUG = {
+  'new-york': { accent: '#0039A6' },
+  chicago: { accent: '#00933C' },
+  boston: { accent: '#EE352E' },
+  'washington-dc': { accent: '#FCCC0A' },
+  'minneapolis-st-paul': { accent: '#FF6319' },
+  seattle: { accent: '#6CBE45' },
+  toronto: { accent: '#B933AD' }
+};
+
+const CITY_THEME_SEQUENCE = ['#0039A6', '#EE352E', '#00933C', '#FCCC0A', '#FF6319', '#B933AD', '#6CBE45', '#996633'];
+
+export function getCityTheme(slug, index = 0) {
+  const accent = CITY_THEME_BY_SLUG[slug]?.accent ?? CITY_THEME_SEQUENCE[index % CITY_THEME_SEQUENCE.length];
+  const accentRgb = hexToRgbTriplet(accent);
+
+  return {
+    accent,
+    accentRgb,
+    surface: CITY_THEME_BY_SLUG[slug]?.surface ?? DEFAULT_SURFACE,
+    surfaceStrong: CITY_THEME_BY_SLUG[slug]?.surfaceStrong ?? DEFAULT_SURFACE_STRONG,
+    border: CITY_THEME_BY_SLUG[slug]?.border ?? DEFAULT_BORDER,
+    text: '#ffffff',
+    mutedText: `rgba(${accentRgb}, 0.82)`,
+    regionText: 'rgba(255, 255, 255, 0.74)',
+    gridStroke: `rgba(${accentRgb}, 0.12)`,
+    cardStroke: `rgba(${accentRgb}, 0.32)`,
+    referenceStroke: accent,
+    selectedGlow: `rgba(${accentRgb}, 0.16)`,
+    selectedCardStroke: accent,
+    overlayFade: `linear-gradient(180deg, rgba(8, 9, 12, 0.96) 0%, rgba(8, 9, 12, 0.84) 30%, rgba(8, 9, 12, 0) 100%)`
+  };
+}
 
 export const CARD_STYLE = {
-  baseLineWidth: 1.55,
-  selectedLineWidth: 2.35,
-  baseAlpha: 0.9,
-  dimmedAlpha: 0.16,
-  neutralStroke: '#15211d',
-  referenceStroke: '#94785b',
-  gridStroke: 'rgba(24, 38, 32, 0.07)',
-  cardStroke: 'rgba(17, 24, 20, 0.12)',
-  selectedCardStroke: 'rgba(17, 24, 20, 0.62)',
-  selectedGlow: 'rgba(186, 145, 91, 0.22)'
+  baseLineWidth: 1.7,
+  selectedLineWidth: 2.55,
+  baseAlpha: 0.96,
+  dimmedAlpha: 0.18,
+  lineStroke: '#f6f7fb'
 };
+
+function hexToRgbTriplet(hex) {
+  const normalized = hex.replace('#', '');
+  const bigint = Number.parseInt(normalized, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `${r}, ${g}, ${b}`;
+}
