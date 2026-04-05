@@ -122,13 +122,13 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
 
   element.innerHTML = `
     <div class="card__paper">
-      <div class="card__header">
-        <p class="card__region">${city.region}</p>
-        <h2>${city.name}</h2>
-        <p class="card__count">${lineLabel}</p>
-      </div>
       <div class="card__canvas-frame">
         <canvas class="card__canvas"></canvas>
+        <div class="card__overlay">
+          <p class="card__region">${city.region}</p>
+          <h2>${city.name}</h2>
+          <p class="card__count">${lineLabel}</p>
+        </div>
       </div>
     </div>
   `;
@@ -228,7 +228,7 @@ function updateGridLayout(grid, cardCount) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
   const columns = chooseColumnCount(viewportWidth, cardCount);
-  const chromeHeight = viewportWidth < 720 ? 56 : 68;
+  const chromeHeight = 0;
   const rowTarget =
     columns >= 5 ? 2.16 :
     columns === 4 ? 1.98 :
