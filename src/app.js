@@ -3,6 +3,7 @@ import {
   CARD_PADDING,
   CARD_STYLE,
   FONT_STACK,
+  FONT_STACK_TIGHT,
   HEADER_OFFSET,
   INTRO_CIRCLE_PORTION,
   INTRO_DURATION_MS,
@@ -442,15 +443,15 @@ function drawCard({
   ctx.restore();
 
   drawArcLabel(ctx, {
-    text: '5 miles',
+    text: '5 MILES',
     centerX: circleCenterX,
     centerY: circleCenterY,
-    radius: REFERENCE_RADIUS_PIXELS + 2,
+    radius: REFERENCE_RADIUS_PIXELS + 10,
     startAngle: Math.PI + 0.08,
     endAngle: Math.PI * 1.5 - 0.08,
     fillStyle: theme.ink,
-    font: `700 14px ${FONT_STACK}`,
-    letterSpacing: 0.35,
+    font: `700 15px ${FONT_STACK_TIGHT}`,
+    letterSpacing: 0.9,
     globalAlpha: labelAlpha
   });
 

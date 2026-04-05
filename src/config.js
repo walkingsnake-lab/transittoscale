@@ -15,6 +15,7 @@ export const SELECTION_SPRING = 12;
 export const DIM_SPRING = 9;
 export const HOVER_SPRING = 11;
 export const FONT_STACK = '"Reddit Sans Condensed", "Arial Narrow", Arial, sans-serif';
+export const FONT_STACK_TIGHT = '"Inter Tight", "Reddit Sans Condensed", "Arial Narrow", Arial, sans-serif';
 const DEFAULT_PAPER = '#f6f5f1';
 const DEFAULT_PAPER_STRONG = '#ffffff';
 const DEFAULT_INK = '#111111';
