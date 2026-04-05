@@ -15,9 +15,9 @@ export const SELECTION_SPRING = 12;
 export const DIM_SPRING = 9;
 export const FONT_STACK = '"Inter", "Helvetica Neue", Helvetica, Arial, sans-serif';
 
-const DEFAULT_SURFACE = '#08090c';
-const DEFAULT_SURFACE_STRONG = '#101318';
-const DEFAULT_BORDER = '#1f2530';
+const DEFAULT_SURFACE = '#17191d';
+const DEFAULT_SURFACE_STRONG = '#20242a';
+const DEFAULT_BORDER = '#2e333c';
 
 const CITY_THEME_BY_SLUG = {
   'new-york': { accent: '#0039A6' },
@@ -41,24 +41,24 @@ export function getCityTheme(slug, index = 0) {
     surface: CITY_THEME_BY_SLUG[slug]?.surface ?? DEFAULT_SURFACE,
     surfaceStrong: CITY_THEME_BY_SLUG[slug]?.surfaceStrong ?? DEFAULT_SURFACE_STRONG,
     border: CITY_THEME_BY_SLUG[slug]?.border ?? DEFAULT_BORDER,
-    text: '#ffffff',
-    mutedText: `rgba(${accentRgb}, 0.82)`,
-    regionText: 'rgba(255, 255, 255, 0.74)',
-    gridStroke: `rgba(${accentRgb}, 0.12)`,
+    text: '#d8dde4',
+    mutedText: `rgba(${accentRgb}, 0.86)`,
+    regionText: 'rgba(216, 221, 228, 0.72)',
+    gridStroke: 'transparent',
     cardStroke: `rgba(${accentRgb}, 0.32)`,
     referenceStroke: accent,
-    selectedGlow: `rgba(${accentRgb}, 0.16)`,
+    selectedGlow: `rgba(${accentRgb}, 0.08)`,
     selectedCardStroke: accent,
-    overlayFade: `linear-gradient(180deg, rgba(8, 9, 12, 0.96) 0%, rgba(8, 9, 12, 0.84) 30%, rgba(8, 9, 12, 0) 100%)`
+    overlayFill: CITY_THEME_BY_SLUG[slug]?.surfaceStrong ?? DEFAULT_SURFACE_STRONG
   };
 }
 
 export const CARD_STYLE = {
   baseLineWidth: 1.7,
   selectedLineWidth: 2.55,
-  baseAlpha: 0.96,
-  dimmedAlpha: 0.18,
-  lineStroke: '#f6f7fb'
+  baseAlpha: 0.9,
+  dimmedAlpha: 0.22,
+  lineStroke: '#d2d7de'
 };
 
 function hexToRgbTriplet(hex) {

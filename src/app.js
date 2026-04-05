@@ -111,10 +111,11 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   element.style.setProperty('--card-surface', theme.surface);
   element.style.setProperty('--card-surface-strong', theme.surfaceStrong);
   element.style.setProperty('--card-border', theme.border);
-  element.style.setProperty('--card-overlay-fade', theme.overlayFade);
+  element.style.setProperty('--card-overlay-fill', theme.overlayFill);
   element.style.setProperty('--card-title', theme.accent);
   element.style.setProperty('--card-count', theme.accent);
   element.style.setProperty('--card-region', theme.regionText);
+  element.style.setProperty('--card-text', theme.text);
   element.setAttribute('aria-pressed', 'false');
 
   element.innerHTML = `
@@ -293,8 +294,6 @@ function drawCard({
   const emphasis = selectedValue;
   const dimmed = dimValue;
 
-  drawGrid(ctx, width, height, theme);
-
   ctx.save();
   ctx.strokeStyle = theme.cardStroke;
   ctx.lineWidth = 1;
@@ -313,7 +312,7 @@ function drawCard({
 
   ctx.save();
   ctx.strokeStyle = theme.referenceStroke;
-  ctx.globalAlpha = 0.34 + emphasis * 0.22 - dimmed * 0.12;
+  ctx.globalAlpha = 0.28 + emphasis * 0.18 - dimmed * 0.1;
   ctx.lineWidth = 1.1;
   strokeCircleProgress(ctx, circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, circleValue);
   ctx.fillStyle = theme.referenceStroke;
@@ -352,28 +351,6 @@ function drawCard({
     ctx.strokeRect(1, 1, width - 2, height - 2);
     ctx.restore();
   }
-}
-
-function drawGrid(ctx, width, height, theme) {
-  ctx.save();
-  ctx.strokeStyle = theme.gridStroke;
-  ctx.lineWidth = 1;
-
-  for (let x = 24; x < width; x += 44) {
-    ctx.beginPath();
-    ctx.moveTo(x + 0.5, 0);
-    ctx.lineTo(x + 0.5, height);
-    ctx.stroke();
-  }
-
-  for (let y = 20; y < height; y += 44) {
-    ctx.beginPath();
-    ctx.moveTo(0, y + 0.5);
-    ctx.lineTo(width, y + 0.5);
-    ctx.stroke();
-  }
-
-  ctx.restore();
 }
 
 class Animator {
