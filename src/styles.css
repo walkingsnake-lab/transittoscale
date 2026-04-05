@@ -192,6 +192,7 @@ body {
   color: var(--card-text);
   border: 2px solid var(--card-border);
   box-shadow:
+    0 0 0 6px rgba(255, 255, 255, 0.82),
     0 4px 0 rgba(255, 255, 255, 0.55) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
     0 18px 28px rgba(0, 0, 0, 0.24),
@@ -243,6 +244,7 @@ body {
 .card:hover .card__paper,
 .card--hovered .card__paper {
   box-shadow:
+    0 0 0 6px rgba(255, 255, 255, 0.86),
     0 4px 0 rgba(255, 255, 255, 0.62) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
     0 24px 34px rgba(0, 0, 0, 0.26),
@@ -251,6 +253,7 @@ body {
 
 .card--selected .card__paper {
   box-shadow:
+    0 0 0 6px rgba(255, 255, 255, 0.88),
     0 4px 0 rgba(255, 255, 255, 0.62) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
     0 28px 44px rgba(0, 0, 0, 0.28),
