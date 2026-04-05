@@ -13,6 +13,7 @@ export const INTRO_CIRCLE_PORTION = 0.36;
 export const REVEAL_LINE_OFFSET = 0.085;
 export const SELECTION_SPRING = 12;
 export const DIM_SPRING = 9;
+export const HOVER_SPRING = 11;
 export const FONT_STACK = '"Inter", "Helvetica Neue", Helvetica, Arial, sans-serif';
 const DEFAULT_PAPER = '#f6f5f1';
 const DEFAULT_PAPER_STRONG = '#ffffff';
@@ -28,6 +29,7 @@ const CITY_THEME_BY_SLUG = {
   seattle: { accent: '#FCCC0A' },
   toronto: { accent: '#996633' },
   montreal: { accent: '#A7A9AC' },
+  london: { accent: '#DC241F' },
   'san-francisco-bay-area': { accent: '#00933C' }
 };
 

@@ -11,6 +11,7 @@ import {
   REVEAL_LINE_OFFSET,
   SELECTION_SPRING,
   DIM_SPRING,
+  HOVER_SPRING,
   getCityTheme
 } from './config.js';
 import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath } from './lib/canvas.js';
@@ -152,6 +153,8 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     projectedLines: [],
     selectedValue: 0,
     selectedTarget: 0,
+    hoverValue: 0,
+    hoverTarget: 0,
     dimValue: 0,
     dimTarget: 0,
     introStart: performance.now() + index * INTRO_STAGGER_MS,
@@ -174,6 +177,11 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       element.setAttribute('aria-pressed', String(isSelected));
       this.active = true;
     },
+    setHovered(isHovered) {
+      this.hoverTarget = isHovered ? 1 : 0;
+      element.classList.toggle('card--hovered', isHovered);
+      this.active = true;
+    },
     update(now, deltaSeconds) {
       let stillAnimating = false;
 
@@ -185,14 +193,17 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       }
 
       const nextSelected = damp(this.selectedValue, this.selectedTarget, SELECTION_SPRING, deltaSeconds);
+      const nextHover = damp(this.hoverValue, this.hoverTarget, HOVER_SPRING, deltaSeconds);
       const nextDim = damp(this.dimValue, this.dimTarget, DIM_SPRING, deltaSeconds);
 
       stillAnimating =
         stillAnimating ||
         !nearlyEqual(nextSelected, this.selectedTarget) ||
+        !nearlyEqual(nextHover, this.hoverTarget) ||
         !nearlyEqual(nextDim, this.dimTarget);
 
       this.selectedValue = nextSelected;
+      this.hoverValue = nextHover;
       this.dimValue = nextDim;
 
       if (stillAnimating || this.active) {
@@ -211,12 +222,17 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         theme: this.theme,
         introValue: this.introValue,
         selectedValue: this.selectedValue,
+        hoverValue: this.hoverValue,
         dimValue: this.dimValue
       });
     }
   };
 
   element.addEventListener('click', () => onSelect(city.slug));
+  element.addEventListener('pointerenter', () => card.setHovered(true));
+  element.addEventListener('pointerleave', () => card.setHovered(false));
+  element.addEventListener('focus', () => card.setHovered(true));
+  element.addEventListener('blur', () => card.setHovered(false));
   observer.observe(frame);
   card.resize();
   animator.add(card);
@@ -287,6 +303,7 @@ function drawCard({
   theme,
   introValue,
   selectedValue,
+  hoverValue,
   dimValue
 }) {
   ctx.clearRect(0, 0, width, height);
@@ -295,6 +312,7 @@ function drawCard({
   const circleValue = easeInOutCubic(invLerp(revealValue, 0, INTRO_CIRCLE_PORTION));
   const lineWindow = invLerp(revealValue, 0.18, 1);
   const emphasis = selectedValue;
+  const hover = hoverValue;
   const dimmed = dimValue;
 
   if (emphasis > 0.01) {
@@ -309,7 +327,7 @@ function drawCard({
 
   ctx.save();
   ctx.fillStyle = theme.referenceFill;
-  ctx.globalAlpha = 0.28 * circleValue + emphasis * 0.05 - dimmed * 0.06;
+  ctx.globalAlpha = 0.28 * circleValue + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06;
   ctx.beginPath();
   ctx.arc(circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, 0, Math.PI * 2);
   ctx.fill();
@@ -326,7 +344,7 @@ function drawCard({
   ctx.globalAlpha = CARD_STYLE.baseAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
   ctx.lineWidth =
     CARD_STYLE.baseLineWidth +
-    (CARD_STYLE.selectedLineWidth - CARD_STYLE.baseLineWidth) * emphasis;
+    (CARD_STYLE.selectedLineWidth - CARD_STYLE.baseLineWidth) * Math.max(emphasis, hover * 0.65);
 
   const lineCount = projectedLines.length;
 

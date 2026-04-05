@@ -184,6 +184,29 @@
     "sourceUrl": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip"
   },
   {
+    "slug": "london",
+    "name": "London",
+    "region": "United Kingdom",
+    "dataPath": "data/cities/london.geojson",
+    "centroid": [
+      -0.1801825,
+      51.553675
+    ],
+    "focusPoint": [
+      -0.1276,
+      51.5074
+    ],
+    "bounds": [
+      -0.611247,
+      51.402142,
+      0.250882,
+      51.705208
+    ],
+    "lineCount": 12,
+    "sourceName": "Transport for London (TfL)",
+    "sourceUrl": "https://api.tfl.gov.uk"
+  },
+  {
     "slug": "san-francisco-bay-area",
     "name": "San Francisco Bay Area",
     "region": "United States",
@@ -193,8 +216,8 @@
       37.696167390000035
     ],
     "focusPoint": [
-      -122.3971,
-      37.7929
+      -122.2712,
+      37.8037
     ],
     "bounds": [
       -122.471099361999,

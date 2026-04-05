@@ -102,13 +102,18 @@ body {
 
 .card:hover .card__paper {
   background: var(--card-paper-strong);
-  box-shadow: 0 22px 42px var(--card-shadow);
+  box-shadow: 0 21px 40px var(--card-shadow);
+}
+
+.card--hovered .card__paper {
+  background: var(--card-paper-strong);
+  box-shadow: 0 21px 40px var(--card-shadow);
 }
 
 .card--selected .card__paper {
   box-shadow:
     0 22px 46px var(--card-shadow),
-    0 0 0 1px rgba(17, 17, 17, 0.08);
+    0 0 0 1px rgba(17, 17, 17, 0.14);
 }
 
 .card__overlay {
@@ -119,7 +124,8 @@ body {
   gap: 6px;
   width: min(100%, 248px);
   padding: 18px 18px 34px;
-  background: linear-gradient(180deg, rgba(246, 245, 241, 0.95) 0%, rgba(246, 245, 241, 0.84) 56%, rgba(246, 245, 241, 0) 100%);
+  background: rgba(246, 245, 241, 0.84);
+  border-bottom-right-radius: 12px;
 }
 
 .card__region {

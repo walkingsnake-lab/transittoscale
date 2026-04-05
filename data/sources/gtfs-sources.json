@@ -197,13 +197,42 @@
     }
   },
   {
+    "slug": "london",
+    "name": "London",
+    "region": "United Kingdom",
+    "sourceType": "tfl-api",
+    "sourceName": "Transport for London (TfL)",
+    "sourceUrl": "https://api.tfl.gov.uk",
+    "focusPoint": [-0.1276, 51.5074],
+    "minPointSpacingMeters": 20,
+    "lineIds": [
+      "bakerloo",
+      "central",
+      "circle",
+      "district",
+      "hammersmith-city",
+      "jubilee",
+      "metropolitan",
+      "northern",
+      "piccadilly",
+      "victoria",
+      "waterloo-city",
+      "dlr"
+    ],
+    "lineNameOverrides": {
+      "hammersmith-city": "Hammersmith & City",
+      "waterloo-city": "Waterloo & City",
+      "dlr": "Docklands Light Railway"
+    }
+  },
+  {
     "slug": "san-francisco-bay-area",
     "name": "San Francisco Bay Area",
     "region": "United States",
     "sourceType": "gtfs",
     "sourceName": "Bay Area Rapid Transit (BART)",
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
-    "focusPoint": [-122.3971, 37.7929],
+    "focusPoint": [-122.2712, 37.8037],
     "routeTypes": ["1"],
     "minPointSpacingMeters": 20,
     "minShapeTrips": 20,
