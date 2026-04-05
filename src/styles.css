@@ -3,8 +3,8 @@
   --page-bg: #2a211b;
   --page-bg-strong: #15110f;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --font-sans: 'Inter', sans-serif;
-  --font-sans-tight: 'Inter Tight', 'Inter', sans-serif;
+  --font-sans: 'Reddit Sans Condensed', 'Arial Narrow', Arial, sans-serif;
+  --font-sans-tight: var(--font-sans);
 }
 
 * {
