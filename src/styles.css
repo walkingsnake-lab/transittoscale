@@ -120,29 +120,32 @@ body {
 .zoom-controls__button {
   display: inline-grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(255, 248, 240, 0.16);
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 248, 240, 0.14);
   border-radius: 999px;
-  background: rgba(18, 14, 12, 0.34);
+  background: rgba(18, 14, 12, 0.28);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
   backdrop-filter: blur(10px);
   color: rgba(255, 248, 240, 0.94);
-  font-size: 1.22rem;
-  font-weight: 600;
-  line-height: 1;
+  line-height: 0;
   cursor: pointer;
+  overflow: hidden;
   transition:
     transform 140ms var(--ease-out),
     border-color 140ms var(--ease-out),
     background-color 140ms var(--ease-out),
+    box-shadow 180ms var(--ease-out),
     opacity 140ms var(--ease-out);
 }
 
 .zoom-controls__button:hover:not(:disabled),
 .zoom-controls__button:focus-visible {
-  border-color: rgba(255, 248, 240, 0.28);
-  background: rgba(255, 248, 240, 0.12);
+  border-color: rgba(255, 248, 240, 0.24);
+  background: rgba(255, 248, 240, 0.11);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 10px 22px rgba(0, 0, 0, 0.14);
   transform: translateY(-1px);
 }
 
@@ -156,6 +159,28 @@ body {
   border-color: rgba(255, 248, 240, 0.08);
   cursor: default;
   transform: none;
+}
+
+.zoom-controls__icon {
+  width: 17px;
+  height: 17px;
+  transition:
+    transform 180ms var(--ease-out),
+    opacity 180ms var(--ease-out);
+}
+
+.zoom-controls__icon circle,
+.zoom-controls__icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.zoom-controls__button:hover:not(:disabled) .zoom-controls__icon,
+.zoom-controls__button:focus-visible .zoom-controls__icon {
+  transform: scale(1.04);
 }
 
 .grid {

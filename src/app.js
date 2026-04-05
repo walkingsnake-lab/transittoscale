@@ -25,14 +25,28 @@ const ZOOM_STEPS = [
   { label: 'Standard', diagramScale: 1 },
   { label: 'Close', diagramScale: 1.18 }
 ];
+const DIAGRAM_ZOOM_SPRING = 10;
 
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell">
       <header class="shell__toolbar" data-toolbar>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
-          <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">-</button>
-          <button type="button" class="zoom-controls__button" data-zoom-in aria-label="Zoom in network diagrams">+</button>
+          <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">
+            <svg class="zoom-controls__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="5.75"></circle>
+              <path d="M8 10.5H13"></path>
+              <path d="M15.25 15.25L20 20"></path>
+            </svg>
+          </button>
+          <button type="button" class="zoom-controls__button" data-zoom-in aria-label="Zoom in network diagrams">
+            <svg class="zoom-controls__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="5.75"></circle>
+              <path d="M8 10.5H13"></path>
+              <path d="M10.5 8V13"></path>
+              <path d="M15.25 15.25L20 20"></path>
+            </svg>
+          </button>
           <span class="shell__sr-only" data-zoom-label aria-live="polite">Standard</span>
         </div>
       </header>
@@ -60,19 +74,22 @@ export async function mountApp(root) {
 
     let zoomIndex = 1;
 
-    function applyLayout() {
+    function syncZoomControls() {
       const zoomStep = ZOOM_STEPS[zoomIndex];
-      const chromeHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) + 18 : 0;
 
       zoomLabel.textContent = zoomStep.label;
       zoomOutButton.disabled = zoomIndex === 0;
       zoomInButton.disabled = zoomIndex === ZOOM_STEPS.length - 1;
-      updateGridLayout(grid, cards.length, { chromeHeight });
-      cards.forEach((card) => {
-        card.diagramScale = zoomStep.diagramScale;
-        card.resize();
-      });
+      cards.forEach((card) => card.setDiagramScale(zoomStep.diagramScale));
       animator.start();
+    }
+
+    function applyLayout() {
+      const chromeHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) + 18 : 0;
+
+      updateGridLayout(grid, cards.length, { chromeHeight });
+      cards.forEach((card) => card.resize());
+      syncZoomControls();
     }
 
     function setZoomIndex(nextZoomIndex) {
@@ -231,7 +248,8 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     width: 0,
     height: CARD_CANVAS_HEIGHT,
     projectedLines: [],
-    diagramScale: 1,
+    diagramScaleValue: 1,
+    diagramScaleTarget: 1,
     selectedValue: 0,
     selectedTarget: 0,
     hoverValue: 0,
@@ -248,8 +266,17 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       this.width = width;
       this.height = height;
       clearHiDpiCanvas(canvas, ctx, width, height, window.devicePixelRatio || 1);
-      this.projectedLines = projectLines(city, width, height, this.diagramScale);
+      this.projectedLines = projectLines(city, width, height);
       this.draw();
+    },
+    setDiagramScale(diagramScale) {
+      this.diagramScaleTarget = diagramScale;
+
+      if (reducedMotion) {
+        this.diagramScaleValue = diagramScale;
+      }
+
+      this.active = true;
     },
     setSelected(isSelected, hasSelection) {
       this.selectedTarget = isSelected ? 1 : 0;
@@ -330,16 +357,21 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       const nextSelected = damp(this.selectedValue, this.selectedTarget, SELECTION_SPRING, deltaSeconds);
       const nextHover = damp(this.hoverValue, this.hoverTarget, HOVER_SPRING, deltaSeconds);
       const nextDim = damp(this.dimValue, this.dimTarget, DIM_SPRING, deltaSeconds);
+      const nextDiagramScale = reducedMotion
+        ? this.diagramScaleTarget
+        : damp(this.diagramScaleValue, this.diagramScaleTarget, DIAGRAM_ZOOM_SPRING, deltaSeconds);
 
       stillAnimating =
         stillAnimating ||
         !nearlyEqual(nextSelected, this.selectedTarget) ||
         !nearlyEqual(nextHover, this.hoverTarget) ||
-        !nearlyEqual(nextDim, this.dimTarget);
+        !nearlyEqual(nextDim, this.dimTarget) ||
+        !nearlyEqual(nextDiagramScale, this.diagramScaleTarget);
 
       this.selectedValue = nextSelected;
       this.hoverValue = nextHover;
       this.dimValue = nextDim;
+      this.diagramScaleValue = nextDiagramScale;
 
       if (stillAnimating || this.active) {
         this.draw(now);
@@ -354,7 +386,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         width: this.width,
         height: this.height,
         projectedLines: this.projectedLines,
-        diagramScale: this.diagramScale,
+        diagramScale: this.diagramScaleValue,
         theme: this.theme,
         introValue: this.introValue,
         selectedValue: this.selectedValue,
@@ -433,7 +465,7 @@ function chooseColumnCount(viewportWidth, cardCount) {
   return best;
 }
 
-function projectLines(city, width, height, diagramScale = 1) {
+function projectLines(city, width, height) {
   const frameWidth = width - CARD_PADDING * 2;
   const frameHeight = height - CARD_PADDING * 2 - HEADER_OFFSET;
   const centerX = CARD_PADDING + frameWidth / 2;
@@ -444,7 +476,7 @@ function projectLines(city, width, height, diagramScale = 1) {
   return projectedFeatures
     .map((feature) => {
       const paths = feature.paths
-        .map((path) => path.map(([x, y]) => [centerX + x * diagramScale, centerY + y * diagramScale]))
+        .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
         .map((translatedPath) => simplifyPath(translatedPath, CARD_STYLE.simplifyTolerance))
         .map((simplifiedPath) => buildPathMetrics(simplifiedPath))
         .filter((metrics) => metrics.totalLength > 0);
@@ -525,7 +557,10 @@ function drawCard({
   // Keep shared corridors from compounding into visibly darker knots.
   ctx.globalCompositeOperation = 'darken';
   ctx.globalAlpha = CARD_STYLE.baseAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
-  ctx.lineWidth = lineWidth;
+  ctx.translate(circleCenterX, circleCenterY);
+  ctx.scale(diagramScale, diagramScale);
+  ctx.translate(-circleCenterX, -circleCenterY);
+  ctx.lineWidth = lineWidth / Math.max(diagramScale, 0.001);
   drawProjectedLines(ctx, projectedLines, lineWindow);
 
   ctx.restore();
