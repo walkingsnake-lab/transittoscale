@@ -103,6 +103,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   const theme = getCityTheme(city.slug, index);
   const lineLabel = formatLineLabel(city.lineCount);
   const agencyLabel = formatAgencyLabel(city);
+  const locationLabel = formatLocationLabel(city);
   const element = document.createElement('button');
   element.type = 'button';
   element.className = 'card';
@@ -128,12 +129,10 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       <div class="card__canvas-frame">
         <canvas class="card__canvas"></canvas>
         <div class="card__overlay">
-          <div class="card__eyebrow">
-            <p class="card__agency">${agencyLabel}</p>
-            <p class="card__count">${lineLabel}</p>
-          </div>
           <h2>${city.name}</h2>
-          <p class="card__region">${city.region}</p>
+          <p class="card__agency">${agencyLabel}</p>
+          <p class="card__region">${locationLabel}</p>
+          <p class="card__count">${lineLabel}</p>
         </div>
       </div>
     </div>
@@ -372,28 +371,33 @@ function formatLineLabel(lineCount) {
 
 function formatAgencyLabel(city) {
   const explicitLabels = {
-    chicago: 'CTA',
-    'new-york': 'MTA',
-    boston: 'MBTA',
-    'washington-dc': 'WMATA',
+    chicago: 'Chicago Transit Authority',
+    'new-york': 'New York City Transit',
+    boston: 'Massachusetts Bay Transportation Authority',
+    'washington-dc': 'Washington Metropolitan Area Transit Authority',
     'minneapolis-st-paul': 'Metro Transit',
     seattle: 'Sound Transit',
-    toronto: 'TTC',
-    montreal: 'STM',
-    london: 'TfL',
-    'san-francisco-bay-area': 'BART'
+    toronto: 'Toronto Transit Commission',
+    montreal: 'Societe de transport de Montreal',
+    london: 'Transport for London',
+    'san-francisco-bay-area': 'Bay Area Rapid Transit'
   };
 
   if (explicitLabels[city.slug]) {
     return explicitLabels[city.slug];
   }
 
-  const parentheticalMatch = city.sourceName?.match(/\(([^)]+)\)/);
-  if (parentheticalMatch) {
-    return parentheticalMatch[1];
-  }
+  return city.sourceName?.replace(/\s*\([^)]+\)/g, '').trim() ?? '';
+}
 
-  return city.sourceName ?? '';
+function formatLocationLabel(city) {
+  const regionLabels = {
+    'United States': 'U.S.',
+    'United Kingdom': 'U.K.',
+    Canada: 'Canada'
+  };
+
+  return `${city.name}, ${regionLabels[city.region] ?? city.region}`;
 }
 
 class Animator {
