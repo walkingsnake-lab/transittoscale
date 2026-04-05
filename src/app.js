@@ -104,8 +104,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   const lineLabel = formatLineLabel(city.lineCount);
   const agencyLabel = formatAgencyLabel(city);
   const flag = getCountryFlag(city);
-  const element = document.createElement('button');
-  element.type = 'button';
+  const element = document.createElement('article');
   element.className = 'card';
   element.style.setProperty('--stagger', `${index * INTRO_STAGGER_MS}ms`);
   element.style.setProperty('--flip-angle', `${index % 2 === 0 ? -12 : 12}deg`);
@@ -127,24 +126,55 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   element.style.setProperty('--card-text', theme.text);
   element.style.setProperty('--card-ink', theme.ink);
   element.style.setProperty('--card-shadow', theme.shadow);
-  element.setAttribute('aria-pressed', 'false');
+  element.setAttribute('aria-label', `${city.name} transit card`);
 
   element.innerHTML = `
-    <div class="card__paper">
-      <div class="card__canvas-frame">
-        <canvas class="card__canvas"></canvas>
-        <div class="card__overlay">
-          <p class="card__agency">${agencyLabel}</p>
-          <h2>${city.name}</h2>
-          <p class="card__count">${lineLabel}</p>
-        </div>
-        ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}
+    <div class="card__stage">
+      <div class="card__rotator">
+        <section class="card__face card__face--front">
+          <button type="button" class="card__select" aria-label="Select ${city.name}" aria-pressed="false"></button>
+          <div class="card__paper">
+            <div class="card__canvas-frame">
+              <canvas class="card__canvas"></canvas>
+              <div class="card__overlay">
+                <p class="card__agency">${agencyLabel}</p>
+                <h2>${city.name}</h2>
+                <p class="card__count">${lineLabel}</p>
+              </div>
+              ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}
+            </div>
+          </div>
+          <button type="button" class="card__flip-button card__flip-button--front" aria-label="Show back of ${city.name} card">Back</button>
+        </section>
+        <section class="card__face card__face--back" aria-hidden="true">
+          <button type="button" class="card__select" aria-label="Select ${city.name}" aria-pressed="false"></button>
+          <div class="card__paper card__paper--back">
+            <div class="card__back-copy">
+              <p class="card__back-kicker">Reverse Side</p>
+              <h3>Transit notes and stats will live here.</h3>
+              <p class="card__back-note">We can use this side for comparisons, system details, and other network context.</p>
+              <dl class="card__back-list">
+                <div><dt>Coverage</dt><dd>Coming soon</dd></div>
+                <div><dt>Stations</dt><dd>Coming soon</dd></div>
+                <div><dt>Ridership</dt><dd>Coming soon</dd></div>
+              </dl>
+            </div>
+          </div>
+          <button type="button" class="card__flip-button card__flip-button--back" aria-label="Show front of ${city.name} card">Front</button>
+        </section>
       </div>
     </div>
   `;
 
+  const stage = element.querySelector('.card__stage');
   const canvas = element.querySelector('canvas');
   const frame = element.querySelector('.card__canvas-frame');
+  const selectButtons = Array.from(element.querySelectorAll('.card__select'));
+  const [frontSelectButton, backSelectButton] = selectButtons;
+  const frontFace = element.querySelector('.card__face--front');
+  const backFace = element.querySelector('.card__face--back');
+  const flipFrontButton = element.querySelector('.card__flip-button--front');
+  const flipBackButton = element.querySelector('.card__flip-button--back');
   const ctx = canvas.getContext('2d');
   const observer = new ResizeObserver(() => {
     card.resize();
@@ -166,12 +196,13 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     hoverTarget: 0,
     dimValue: 0,
     dimTarget: 0,
+    flipped: false,
     introStart: performance.now() + index * INTRO_STAGGER_MS,
     introValue: reducedMotion ? 1 : 0,
     active: true,
     resize() {
-      const width = Math.max(220, Math.round(frame.clientWidth));
-      const height = Math.max(220, Math.round(frame.clientHeight || CARD_CANVAS_HEIGHT));
+      const width = Math.max(220, Math.round(stage.clientWidth));
+      const height = Math.max(220, Math.round(stage.clientHeight || CARD_CANVAS_HEIGHT));
       this.width = width;
       this.height = height;
       clearHiDpiCanvas(canvas, ctx, width, height, window.devicePixelRatio || 1);
@@ -183,8 +214,22 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       this.dimTarget = hasSelection && !isSelected ? 1 : 0;
       element.classList.toggle('card--selected', isSelected);
       element.classList.toggle('card--muted', hasSelection && !isSelected);
-      element.setAttribute('aria-pressed', String(isSelected));
+      selectButtons.forEach((button) => button.setAttribute('aria-pressed', String(isSelected)));
       this.active = true;
+    },
+    setFlipped(isFlipped) {
+      this.flipped = isFlipped;
+      element.classList.toggle('card--flipped', isFlipped);
+      frontFace.setAttribute('aria-hidden', String(isFlipped));
+      backFace.setAttribute('aria-hidden', String(!isFlipped));
+      frontSelectButton.disabled = isFlipped;
+      flipFrontButton.disabled = isFlipped;
+      backSelectButton.disabled = !isFlipped;
+      flipBackButton.disabled = !isFlipped;
+      this.active = true;
+    },
+    toggleFlipped() {
+      this.setFlipped(!this.flipped);
     },
     setHovered(isHovered) {
       this.hoverTarget = isHovered ? 1 : 0;
@@ -279,7 +324,6 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     }
   };
 
-  element.addEventListener('click', () => onSelect(city.slug));
   element.addEventListener('pointerenter', (event) => {
     card.setHovered(true);
     card.updateTilt(event.clientX, event.clientY);
@@ -289,9 +333,23 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   });
   element.addEventListener('pointerleave', () => card.setHovered(false));
   element.addEventListener('pointercancel', () => card.setHovered(false));
-  element.addEventListener('focus', () => card.setHovered(true));
-  element.addEventListener('blur', () => card.setHovered(false));
-  observer.observe(frame);
+  element.addEventListener('focusin', () => card.setHovered(true));
+  element.addEventListener('focusout', (event) => {
+    if (!element.contains(event.relatedTarget)) {
+      card.setHovered(false);
+    }
+  });
+  selectButtons.forEach((button) => {
+    button.addEventListener('click', () => onSelect(city.slug));
+  });
+  [flipFrontButton, flipBackButton].forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      card.toggleFlipped();
+    });
+  });
+  observer.observe(stage);
+  card.setFlipped(false);
   card.resize();
   animator.add(card);
 
