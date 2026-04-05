@@ -12,10 +12,12 @@ const publicDataDir = path.join(repoRoot, 'public', 'data');
 const publicCityDir = path.join(publicDataDir, 'cities');
 
 const sourceConfigs = JSON.parse(stripBom(await readFile(sourcesPath, 'utf8')));
-const gtfsSourceConfigs = sourceConfigs.filter((sourceConfig) => sourceConfig.sourceType === 'gtfs');
-const sourceConfigBySlug = new Map(gtfsSourceConfigs.map((sourceConfig) => [sourceConfig.slug, sourceConfig]));
+const importSourceConfigs = sourceConfigs.filter((sourceConfig) =>
+  ['gtfs', 'tfl-api'].includes(sourceConfig.sourceType)
+);
+const sourceConfigBySlug = new Map(importSourceConfigs.map((sourceConfig) => [sourceConfig.slug, sourceConfig]));
 const selectedCitySlugs = parseSelectedCitySlugs(process.argv.slice(2));
-const selectedSourceConfigs = resolveSelectedSourceConfigs(selectedCitySlugs, sourceConfigBySlug, gtfsSourceConfigs);
+const selectedSourceConfigs = resolveSelectedSourceConfigs(selectedCitySlugs, sourceConfigBySlug, importSourceConfigs);
 const isSelectiveImport = selectedCitySlugs.length > 0;
 const existingCitiesBySlug = await readExistingImportedCities(sourceConfigBySlug);
 
@@ -24,26 +26,11 @@ await mkdir(normalizedDir, { recursive: true });
 const citiesBySlug = isSelectiveImport ? new Map(existingCitiesBySlug) : new Map();
 
 for (const sourceConfig of selectedSourceConfigs) {
-  const requestHeaders = resolveRequestHeaders(sourceConfig);
-
-  if (requestHeaders === null) {
-    const existingCity = existingCitiesBySlug.get(sourceConfig.slug);
-
-    if (existingCity) {
-      console.warn(`Skipping ${sourceConfig.slug}: missing required credentials, reusing existing data.`);
-      citiesBySlug.set(existingCity.slug, existingCity);
-    } else {
-      console.warn(`Skipping ${sourceConfig.slug}: missing required credentials.`);
-    }
-
-    continue;
-  }
-
-  const city = await importGtfsCity(sourceConfig, requestHeaders);
+  const city = await importSourceCity(sourceConfig, existingCitiesBySlug);
   citiesBySlug.set(city.slug, city);
 }
 
-const manifestCities = sortCitiesForManifest([...citiesBySlug.values()], gtfsSourceConfigs);
+const manifestCities = sortCitiesForManifest([...citiesBySlug.values()], importSourceConfigs);
 
 for (const city of manifestCities) {
   await writeFile(
@@ -66,10 +53,10 @@ if (!isSelectiveImport) {
 
 if (isSelectiveImport) {
   console.log(
-    `Imported ${selectedSourceConfigs.length} requested GTFS cities; normalized catalog now has ${manifestCities.length} cities.`
+    `Imported ${selectedSourceConfigs.length} requested transit cities; normalized catalog now has ${manifestCities.length} cities.`
   );
 } else {
-  console.log(`Imported ${manifestCities.length} GTFS cities into data/normalized`);
+  console.log(`Imported ${manifestCities.length} transit cities into data/normalized`);
 }
 
 async function readExistingImportedCities(sourceConfigBySlug) {
@@ -138,9 +125,9 @@ function parseSelectedCitySlugs(argv) {
   return [...new Set(citySlugs)];
 }
 
-function resolveSelectedSourceConfigs(selectedCitySlugs, sourceConfigBySlug, gtfsSourceConfigs) {
+function resolveSelectedSourceConfigs(selectedCitySlugs, sourceConfigBySlug, importSourceConfigs) {
   if (selectedCitySlugs.length === 0) {
-    return gtfsSourceConfigs;
+    return importSourceConfigs;
   }
 
   const unknownSlugs = selectedCitySlugs.filter((slug) => !sourceConfigBySlug.has(slug));
@@ -194,6 +181,31 @@ function resolveRequestHeaders(sourceConfig) {
   return headers;
 }
 
+async function importSourceCity(sourceConfig, existingCitiesBySlug) {
+  if (sourceConfig.sourceType === 'gtfs') {
+    const requestHeaders = resolveRequestHeaders(sourceConfig);
+
+    if (requestHeaders === null) {
+      const existingCity = existingCitiesBySlug.get(sourceConfig.slug);
+
+      if (existingCity) {
+        console.warn(`Skipping ${sourceConfig.slug}: missing required credentials, reusing existing data.`);
+        return existingCity;
+      }
+
+      throw new Error(`Missing required credentials for ${sourceConfig.slug}`);
+    }
+
+    return importGtfsCity(sourceConfig, requestHeaders);
+  }
+
+  if (sourceConfig.sourceType === 'tfl-api') {
+    return importTflApiCity(sourceConfig);
+  }
+
+  throw new Error(`Unsupported source type for ${sourceConfig.slug}: ${sourceConfig.sourceType}`);
+}
+
 async function importGtfsCity(sourceConfig, requestHeaders) {
   const response = await fetch(sourceConfig.sourceUrl, {
     headers: requestHeaders
@@ -240,6 +252,81 @@ async function importGtfsCity(sourceConfig, requestHeaders) {
       type: 'Feature',
       properties: {
         lineId: canonicalLineId,
+        lineName,
+        systemName: sourceConfig.name,
+        sourceName: sourceConfig.sourceName,
+        sourceUrl: sourceConfig.sourceUrl
+      },
+      geometry: {
+        type: multiLineCoordinates.length === 1 ? 'LineString' : 'MultiLineString',
+        coordinates: multiLineCoordinates.length === 1 ? multiLineCoordinates[0] : multiLineCoordinates
+      }
+    });
+  }
+
+  if (features.length === 0) {
+    throw new Error(`No features were produced for ${sourceConfig.slug}`);
+  }
+
+  const bounds = computeBoundsFromFeatures(features);
+  const centroid = computeCentroidFromBounds(bounds);
+
+  return {
+    slug: sourceConfig.slug,
+    name: sourceConfig.name,
+    region: sourceConfig.region,
+    dataPath: `data/cities/${sourceConfig.slug}.geojson`,
+    centroid,
+    focusPoint: sourceConfig.focusPoint ?? centroid,
+    bounds,
+    lineCount: features.length,
+    sourceName: sourceConfig.sourceName,
+    sourceUrl: sourceConfig.sourceUrl,
+    featureCollection: {
+      type: 'FeatureCollection',
+      properties: {
+        slug: sourceConfig.slug,
+        name: sourceConfig.name,
+        region: sourceConfig.region,
+        centroid,
+        focusPoint: sourceConfig.focusPoint ?? centroid,
+        bounds,
+        sourceName: sourceConfig.sourceName,
+        sourceUrl: sourceConfig.sourceUrl
+      },
+      features
+    }
+  };
+}
+
+async function importTflApiCity(sourceConfig) {
+  const lineIds = sourceConfig.lineIds ?? [];
+
+  if (lineIds.length === 0) {
+    throw new Error(`No lineIds configured for ${sourceConfig.slug}`);
+  }
+
+  const features = [];
+
+  for (const lineId of lineIds) {
+    const response = await fetch(`${sourceConfig.sourceUrl.replace(/\/$/, '')}/Line/${lineId}/Route/Sequence/all`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to download ${sourceConfig.slug}/${lineId}: ${response.status} ${response.statusText}`);
+    }
+
+    const routeSequence = await response.json();
+    const multiLineCoordinates = normalizeTflLineStrings(routeSequence.lineStrings, sourceConfig);
+
+    if (multiLineCoordinates.length === 0) {
+      continue;
+    }
+
+    const lineName = sourceConfig.lineNameOverrides?.[lineId] ?? routeSequence.lineName ?? lineId;
+    features.push({
+      type: 'Feature',
+      properties: {
+        lineId,
         lineName,
         systemName: sourceConfig.name,
         sourceName: sourceConfig.sourceName,
@@ -436,6 +523,40 @@ function simplifyPoints(points, minPointSpacingMeters) {
 
   simplified.push(points.at(-1));
   return simplified;
+}
+
+function normalizeTflLineStrings(lineStrings, sourceConfig) {
+  const segments = [];
+
+  for (const lineString of lineStrings ?? []) {
+    const parsed = typeof lineString === 'string' ? JSON.parse(lineString) : lineString;
+    const normalizedSegments = Array.isArray(parsed?.[0]?.[0]) ? parsed : [parsed];
+
+    for (const segment of normalizedSegments) {
+      if (!Array.isArray(segment) || segment.length < 2) {
+        continue;
+      }
+
+      const points = segment
+        .map(([lon, lat]) => ({
+          lon: Number(lon),
+          lat: Number(lat)
+        }))
+        .filter((point) => Number.isFinite(point.lon) && Number.isFinite(point.lat));
+
+      if (points.length < 2) {
+        continue;
+      }
+
+      segments.push(
+        simplifyPoints(dedupeAdjacentPoints(points), sourceConfig.minPointSpacingMeters ?? 0).map(
+          ({ lon, lat }) => [lon, lat]
+        )
+      );
+    }
+  }
+
+  return segments;
 }
 
 function distanceMeters(left, right) {

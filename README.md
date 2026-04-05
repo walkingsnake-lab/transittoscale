@@ -36,7 +36,7 @@ Transit To Scale is a static web visualization that compares world metro systems
 
 ## Adding Or Updating Cities
 
-- Add or edit a GTFS entry in `data/sources/gtfs-sources.json`.
+- Add or edit an import source entry in `data/sources/gtfs-sources.json`.
 - Keep scope to `metro / rapid transit only`, and use allowlists or aliases so each city maps to the intended lines.
 - For a new city or a single-city tuning pass, run `npm run data:import -- --city <slug>`.
 - For a city that requires credentials, the importer reuses the last generated normalized copy when credentials are unavailable, instead of dropping the city from the catalog.
@@ -71,5 +71,5 @@ Transit To Scale is a static web visualization that compares world metro systems
 ## Current Imported Dataset
 
 - The live manifest currently includes only normalized real-data cities.
-- Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, Toronto, Montreal, and San Francisco Bay Area are imported from official GTFS feeds and rendered in the app.
+- Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, Toronto, Montreal, London, and San Francisco Bay Area are imported from official agency feeds or APIs and rendered in the app.
 - The hand-curated seed dataset remains in the repo as a fallback and development aid, but it is not shown once normalized imports exist.
