@@ -189,9 +189,8 @@ body {
     linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 22%),
     linear-gradient(180deg, var(--card-paper-strong) 0%, var(--card-paper) 100%);
   color: var(--card-text);
-  border: 2px solid var(--card-border);
+  border: 0;
   box-shadow:
-    0 0 0 6px rgba(255, 255, 255, 0.82),
     0 4px 0 rgba(255, 255, 255, 0.55) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
     0 18px 28px rgba(0, 0, 0, 0.24),
@@ -211,6 +210,7 @@ body {
   content: '';
   position: absolute;
   inset: 10px 10px auto;
+  z-index: 1;
   height: 28px;
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent);
@@ -224,6 +224,16 @@ body {
 
 .card__paper--back::before {
   opacity: 0.22;
+}
+
+.card__paper::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  z-index: 2;
+  border: 2px solid rgba(17, 17, 17, 0.94);
+  border-radius: 12px;
+  pointer-events: none;
 }
 
 .card:hover .card__paper::before,
@@ -243,7 +253,6 @@ body {
 .card:hover .card__paper,
 .card--hovered .card__paper {
   box-shadow:
-    0 0 0 6px rgba(255, 255, 255, 0.86),
     0 4px 0 rgba(255, 255, 255, 0.62) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
     0 24px 34px rgba(0, 0, 0, 0.26),
@@ -252,7 +261,6 @@ body {
 
 .card--selected .card__paper {
   box-shadow:
-    0 0 0 6px rgba(255, 255, 255, 0.88),
     0 4px 0 rgba(255, 255, 255, 0.62) inset,
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
     0 28px 44px rgba(0, 0, 0, 0.28),
@@ -463,6 +471,11 @@ body {
   .card__paper,
   .card__select {
     border-radius: 14px;
+  }
+
+  .card__paper::after {
+    inset: 5px;
+    border-radius: 9px;
   }
 
   .card__overlay {
