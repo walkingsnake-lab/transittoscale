@@ -21,9 +21,9 @@ import { clamp, damp, invLerp, nearlyEqual } from './lib/math.js';
 import { projectFeatureCollection } from './lib/projection.js';
 
 const ZOOM_STEPS = [
-  { label: 'Compact', factor: 0.88 },
-  { label: 'Standard', factor: 1 },
-  { label: 'Expanded', factor: 1.14 }
+  { label: 'Wide', diagramScale: 0.82 },
+  { label: 'Standard', diagramScale: 1 },
+  { label: 'Close', diagramScale: 1.18 }
 ];
 
 export async function mountApp(root) {
@@ -35,12 +35,12 @@ export async function mountApp(root) {
           <p class="shell__toolbar-title">Compare each network at one shared scale.</p>
         </div>
         <div class="zoom-controls" role="group" aria-label="Card zoom controls">
-          <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out cards">-</button>
+          <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">-</button>
           <div class="zoom-controls__status">
             <span class="zoom-controls__label">Zoom</span>
             <strong class="zoom-controls__value" data-zoom-label aria-live="polite">Standard</strong>
           </div>
-          <button type="button" class="zoom-controls__button" data-zoom-in aria-label="Zoom in cards">+</button>
+          <button type="button" class="zoom-controls__button" data-zoom-in aria-label="Zoom in network diagrams">+</button>
         </div>
       </header>
       <section class="shell__status" data-status>Loading network catalog…</section>
@@ -74,8 +74,11 @@ export async function mountApp(root) {
       zoomLabel.textContent = zoomStep.label;
       zoomOutButton.disabled = zoomIndex === 0;
       zoomInButton.disabled = zoomIndex === ZOOM_STEPS.length - 1;
-      updateGridLayout(grid, cards.length, { zoomFactor: zoomStep.factor, chromeHeight });
-      cards.forEach((card) => card.resize());
+      updateGridLayout(grid, cards.length, { chromeHeight });
+      cards.forEach((card) => {
+        card.diagramScale = zoomStep.diagramScale;
+        card.resize();
+      });
       animator.start();
     }
 
@@ -235,6 +238,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     width: 0,
     height: CARD_CANVAS_HEIGHT,
     projectedLines: [],
+    diagramScale: 1,
     selectedValue: 0,
     selectedTarget: 0,
     hoverValue: 0,
@@ -251,7 +255,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       this.width = width;
       this.height = height;
       clearHiDpiCanvas(canvas, ctx, width, height, window.devicePixelRatio || 1);
-      this.projectedLines = projectLines(city, width, height);
+      this.projectedLines = projectLines(city, width, height, this.diagramScale);
       this.draw();
     },
     setSelected(isSelected, hasSelection) {
@@ -357,6 +361,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         width: this.width,
         height: this.height,
         projectedLines: this.projectedLines,
+        diagramScale: this.diagramScale,
         theme: this.theme,
         introValue: this.introValue,
         selectedValue: this.selectedValue,
@@ -391,10 +396,10 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   return card;
 }
 
-function updateGridLayout(grid, cardCount, { zoomFactor = 1, chromeHeight = 0 } = {}) {
+function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
-  const columns = chooseColumnCount(viewportWidth, cardCount, zoomFactor);
+  const columns = chooseColumnCount(viewportWidth, cardCount);
   const isMobile = viewportWidth < 720;
   const availableHeight = Math.max(320, viewportHeight - chromeHeight);
   const rowTarget =
@@ -407,15 +412,15 @@ function updateGridLayout(grid, cardCount, { zoomFactor = 1, chromeHeight = 0 } 
     isMobile
       ? clamp(Math.min(availableHeight * 0.52, viewportWidth * 1.08), 250, 360)
       : clamp(availableHeight / rowTarget, 250, 500);
-  const cardHeight = clamp(baseCardHeight * zoomFactor, isMobile ? 236 : 250, isMobile ? 420 : 580);
+  const cardHeight = baseCardHeight;
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
 }
 
-function chooseColumnCount(viewportWidth, cardCount, zoomFactor = 1) {
-  const minCardWidth = (viewportWidth < 720 ? 250 : viewportWidth < 1100 ? 300 : 340) * zoomFactor;
-  const idealCardWidth = (viewportWidth >= 1600 ? 420 : viewportWidth >= 1100 ? 390 : 340) * zoomFactor;
+function chooseColumnCount(viewportWidth, cardCount) {
+  const minCardWidth = viewportWidth < 720 ? 250 : viewportWidth < 1100 ? 300 : 340;
+  const idealCardWidth = viewportWidth >= 1600 ? 420 : viewportWidth >= 1100 ? 390 : 340;
   let best = 1;
 
   for (let columns = 1; columns <= cardCount; columns += 1) {
@@ -435,7 +440,7 @@ function chooseColumnCount(viewportWidth, cardCount, zoomFactor = 1) {
   return best;
 }
 
-function projectLines(city, width, height) {
+function projectLines(city, width, height, diagramScale = 1) {
   const frameWidth = width - CARD_PADDING * 2;
   const frameHeight = height - CARD_PADDING * 2 - HEADER_OFFSET;
   const centerX = CARD_PADDING + frameWidth / 2;
@@ -446,7 +451,7 @@ function projectLines(city, width, height) {
   return projectedFeatures
     .map((feature) => {
       const paths = feature.paths
-        .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
+        .map((path) => path.map(([x, y]) => [centerX + x * diagramScale, centerY + y * diagramScale]))
         .map((translatedPath) => simplifyPath(translatedPath, CARD_STYLE.simplifyTolerance))
         .map((simplifiedPath) => buildPathMetrics(simplifiedPath))
         .filter((metrics) => metrics.totalLength > 0);
@@ -466,6 +471,7 @@ function drawCard({
   width,
   height,
   projectedLines,
+  diagramScale,
   theme,
   introValue,
   selectedValue,
@@ -490,13 +496,14 @@ function drawCard({
 
   const circleCenterX = width / 2;
   const circleCenterY = height / 2;
+  const referenceRadius = REFERENCE_RADIUS_PIXELS * diagramScale;
   const circleAlpha = clamp(0.28 * circleValue + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06, 0, 1);
 
   ctx.save();
   ctx.fillStyle = theme.referenceFill;
   ctx.globalAlpha = circleAlpha;
   ctx.beginPath();
-  ctx.arc(circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, 0, Math.PI * 2);
+  ctx.arc(circleCenterX, circleCenterY, referenceRadius, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
 
@@ -504,7 +511,7 @@ function drawCard({
     text: '5 MILES',
     centerX: circleCenterX,
     centerY: circleCenterY,
-    radius: REFERENCE_RADIUS_PIXELS + 10,
+    radius: referenceRadius + 10,
     startAngle: Math.PI + 0.08,
     endAngle: Math.PI * 1.5 - 0.08,
     fillStyle: theme.referenceFill,
