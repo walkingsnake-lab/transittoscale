@@ -257,19 +257,33 @@
       "central",
       "circle",
       "district",
+      "dlr",
+      "elizabeth",
       "hammersmith-city",
       "jubilee",
+      "liberty",
+      "lioness",
       "metropolitan",
+      "mildmay",
       "northern",
       "piccadilly",
+      "suffragette",
       "victoria",
       "waterloo-city",
-      "dlr"
+      "weaver",
+      "windrush"
     ],
     "lineNameOverrides": {
+      "dlr": "Docklands Light Railway",
+      "elizabeth": "Elizabeth line",
       "hammersmith-city": "Hammersmith & City",
+      "liberty": "Liberty line",
+      "lioness": "Lioness line",
+      "mildmay": "Mildmay line",
+      "suffragette": "Suffragette line",
       "waterloo-city": "Waterloo & City",
-      "dlr": "Docklands Light Railway"
+      "weaver": "Weaver line",
+      "windrush": "Windrush line"
     }
   },
   {

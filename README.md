@@ -66,6 +66,7 @@ Transit To Scale is a static web visualization that compares world metro systems
 - Exclude commuter rail and regional rail, even when they share downtown terminals or are strongly associated with the same city.
 - Exclude adjacent or cross-jurisdiction systems unless they are explicitly part of the primary metro definition used across cities.
 - For New York, this means `NYC Subway + Staten Island Railway`, and excludes `PATH`, `LIRR`, and `Metro-North`.
+- For London, this means `Underground + DLR + London Overground + Elizabeth line`, and excludes `Thameslink` and other National Rail services.
 - If we ever want a broader comparison, it should be a separate mode rather than mixing definitions city by city.
 
 ## Current Imported Dataset

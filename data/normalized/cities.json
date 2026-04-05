@@ -235,20 +235,20 @@
     "region": "United Kingdom",
     "dataPath": "data/cities/london.geojson",
     "centroid": [
-      -0.1801825,
-      51.553675
+      -0.321006,
+      51.541818
     ],
     "focusPoint": [
       -0.1276,
       51.5074
     ],
     "bounds": [
-      -0.611247,
-      51.402142,
-      0.250882,
+      -0.971863,
+      51.378428,
+      0.329851,
       51.705208
     ],
-    "lineCount": 12,
+    "lineCount": 19,
     "sourceName": "Transport for London (TfL)",
     "sourceUrl": "https://api.tfl.gov.uk"
   },

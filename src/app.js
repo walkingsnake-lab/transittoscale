@@ -624,7 +624,7 @@ function formatSystemLabel(city) {
     seattle: 'Link light rail',
     toronto: 'TTC subway',
     montreal: 'Montreal Metro',
-    london: 'Underground + DLR',
+    london: 'Underground + DLR + Overground + Elizabeth',
     'san-francisco-bay-area': 'BART'
   };
 
