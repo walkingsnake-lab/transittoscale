@@ -454,18 +454,29 @@ function drawCard({
 
   const circleCenterX = width / 2;
   const circleCenterY = height / 2;
+  const circleAlpha = clamp(0.28 * circleValue + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06, 0, 1);
+  const labelAlpha = clamp(0.64 * circleValue + hover * 0.14 + emphasis * 0.08 - dimmed * 0.1, 0, 1);
 
   ctx.save();
   ctx.fillStyle = theme.referenceFill;
-  ctx.globalAlpha = 0.28 * circleValue + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06;
+  ctx.globalAlpha = circleAlpha;
   ctx.beginPath();
   ctx.arc(circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = theme.mutedText;
-  ctx.font = `600 11px ${FONT_STACK}`;
-  ctx.textAlign = 'center';
-  ctx.fillText('5 mi', circleCenterX, circleCenterY + REFERENCE_RADIUS_PIXELS + 16);
   ctx.restore();
+
+  drawArcLabel(ctx, {
+    text: '5 miles',
+    centerX: circleCenterX,
+    centerY: circleCenterY,
+    radius: REFERENCE_RADIUS_PIXELS + 2,
+    startAngle: Math.PI + 0.08,
+    endAngle: Math.PI * 1.5 - 0.08,
+    fillStyle: theme.ink,
+    font: `700 14px ${FONT_STACK}`,
+    letterSpacing: 0.35,
+    globalAlpha: labelAlpha
+  });
 
   ctx.save();
   ctx.lineCap = 'round';
@@ -486,6 +497,62 @@ function drawCard({
     for (const metrics of line.paths) {
       drawProgressPath(ctx, metrics, progress);
     }
+  });
+
+  ctx.restore();
+}
+
+function drawArcLabel(
+  ctx,
+  {
+    text,
+    centerX,
+    centerY,
+    radius,
+    startAngle,
+    endAngle,
+    fillStyle,
+    font,
+    letterSpacing = 0,
+    globalAlpha = 1
+  }
+) {
+  const glyphs = Array.from(text);
+
+  if (!glyphs.length) {
+    return;
+  }
+
+  ctx.save();
+  ctx.fillStyle = fillStyle;
+  ctx.font = font;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.globalAlpha = globalAlpha;
+
+  const glyphWidths = glyphs.map((glyph) => ctx.measureText(glyph).width);
+  const totalWidth = glyphWidths.reduce((sum, width) => sum + width, 0) + letterSpacing * Math.max(0, glyphs.length - 1);
+  let currentAngle = (startAngle + endAngle) / 2 - totalWidth / radius / 2;
+
+  glyphs.forEach((glyph, index) => {
+    const glyphWidth = glyphWidths[index];
+    const halfAngle = glyphWidth / radius / 2;
+    const trailingSpacing = index < glyphs.length - 1 ? letterSpacing : 0;
+
+    currentAngle += halfAngle;
+
+    if (glyph.trim()) {
+      const x = centerX + Math.cos(currentAngle) * radius;
+      const y = centerY + Math.sin(currentAngle) * radius;
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(currentAngle + Math.PI / 2);
+      ctx.fillText(glyph, 0, 0);
+      ctx.restore();
+    }
+
+    currentAngle += halfAngle + trailingSpacing / radius;
   });
 
   ctx.restore();
