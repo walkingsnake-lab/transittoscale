@@ -129,8 +129,8 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       <div class="card__canvas-frame">
         <canvas class="card__canvas"></canvas>
         <div class="card__overlay">
-          <h2>${city.name}</h2>
           <p class="card__agency">${agencyLabel}</p>
+          <h2>${city.name}</h2>
           <p class="card__count">${lineLabel}</p>
         </div>
         ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}

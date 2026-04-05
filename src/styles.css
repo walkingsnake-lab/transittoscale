@@ -219,10 +219,10 @@ body {
 .card__overlay h2 {
   margin: 0;
   color: rgba(17, 17, 17, 0.9);
-  font-size: clamp(1.7rem, 2.15vw, 2.16rem);
+  font-size: clamp(1.58rem, 2.02vw, 2rem);
   font-weight: 700;
   line-height: 0.94;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.045em;
 }
 
 .card__flag {
@@ -234,7 +234,6 @@ body {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
 }
 
 .card__canvas-frame {
@@ -305,7 +304,7 @@ body {
   }
 
   .card__overlay h2 {
-    font-size: 1.58rem;
+    font-size: 1.48rem;
   }
 
   .card__flag {
