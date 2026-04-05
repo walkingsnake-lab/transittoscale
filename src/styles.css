@@ -306,7 +306,7 @@ body {
   }
 
   .card__paper {
-    min-height: var(--card-canvas-height, 300px);
+    min-height: var(--card-canvas-height, 280px);
     border-radius: 14px;
   }
 
@@ -331,8 +331,8 @@ body {
 
   .card__canvas-frame,
   .card__canvas {
-    min-height: var(--card-canvas-height, 300px);
-    height: var(--card-canvas-height, 300px);
+    min-height: var(--card-canvas-height, 280px);
+    height: var(--card-canvas-height, 280px);
   }
 }
 

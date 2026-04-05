@@ -302,6 +302,7 @@ function updateGridLayout(grid, cardCount) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
   const columns = chooseColumnCount(viewportWidth, cardCount);
+  const isMobile = viewportWidth < 720;
   const chromeHeight = 0;
   const rowTarget =
     columns >= 5 ? 2.16 :
@@ -309,7 +310,10 @@ function updateGridLayout(grid, cardCount) {
     columns === 3 ? 1.8 :
     columns === 2 ? 1.56 :
     1.34;
-  const cardHeight = clamp(viewportHeight / rowTarget - chromeHeight, 250, 500);
+  const cardHeight =
+    isMobile
+      ? clamp(Math.min(viewportHeight * 0.52, viewportWidth * 1.08), 250, 360)
+      : clamp(viewportHeight / rowTarget - chromeHeight, 250, 500);
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
