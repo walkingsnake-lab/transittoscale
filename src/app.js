@@ -242,8 +242,8 @@ function updateGridLayout(grid, cardCount) {
 }
 
 function chooseColumnCount(viewportWidth, cardCount) {
-  const minCardWidth = viewportWidth < 720 ? 220 : 260;
-  const idealCardWidth = viewportWidth >= 1600 ? 360 : viewportWidth >= 1100 ? 340 : 315;
+  const minCardWidth = viewportWidth < 720 ? 250 : viewportWidth < 1100 ? 300 : 340;
+  const idealCardWidth = viewportWidth >= 1600 ? 420 : viewportWidth >= 1100 ? 390 : 340;
   let best = 1;
 
   for (let columns = 1; columns <= cardCount; columns += 1) {
@@ -309,7 +309,7 @@ function drawCard({
 
   ctx.save();
   ctx.fillStyle = theme.referenceFill;
-  ctx.globalAlpha = 0.16 * circleValue + emphasis * 0.03 - dimmed * 0.04;
+  ctx.globalAlpha = 0.28 * circleValue + emphasis * 0.05 - dimmed * 0.06;
   ctx.beginPath();
   ctx.arc(circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, 0, Math.PI * 2);
   ctx.fill();

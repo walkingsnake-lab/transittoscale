@@ -1,5 +1,5 @@
 export const EARTH_RADIUS_METERS = 6_378_137;
-export const METERS_PER_PIXEL = 160;
+export const METERS_PER_PIXEL = 180;
 export const CARD_CANVAS_HEIGHT = 440;
 export const CARD_PADDING = 20;
 export const HEADER_OFFSET = 0;
@@ -49,7 +49,7 @@ export function getCityTheme(slug, index = 0) {
     mutedText: `rgba(${inkRgb}, 0.74)`,
     regionText: `rgba(${inkRgb}, 0.56)`,
     cardStroke: `rgba(${inkRgb}, 0.12)`,
-    referenceFill: `rgba(${accentRgb}, 0.32)`,
+    referenceFill: `rgb(${accentRgb})`,
     selectedGlow: `rgba(${accentRgb}, 0.06)`,
     selectedCardStroke: accent,
     shadow: 'rgba(0, 0, 0, 0.18)'
