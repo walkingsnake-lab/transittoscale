@@ -34,6 +34,7 @@ const CITY_THEME_SEQUENCE = ['#0039A6', '#EE352E', '#00933C', '#FCCC0A', '#FF631
 export function getCityTheme(slug, index = 0) {
   const accent = CITY_THEME_BY_SLUG[slug]?.accent ?? CITY_THEME_SEQUENCE[index % CITY_THEME_SEQUENCE.length];
   const accentRgb = hexToRgbTriplet(accent);
+  const textRgb = '216, 221, 228';
 
   return {
     accent,
@@ -42,12 +43,12 @@ export function getCityTheme(slug, index = 0) {
     surfaceStrong: CITY_THEME_BY_SLUG[slug]?.surfaceStrong ?? DEFAULT_SURFACE_STRONG,
     border: CITY_THEME_BY_SLUG[slug]?.border ?? DEFAULT_BORDER,
     text: '#d8dde4',
-    mutedText: `rgba(${accentRgb}, 0.86)`,
-    regionText: 'rgba(216, 221, 228, 0.72)',
+    mutedText: `rgba(${textRgb}, 0.82)`,
+    regionText: `rgba(${textRgb}, 0.64)`,
     gridStroke: 'transparent',
-    cardStroke: `rgba(${accentRgb}, 0.32)`,
-    referenceStroke: accent,
-    selectedGlow: `rgba(${accentRgb}, 0.08)`,
+    cardStroke: `rgba(${textRgb}, 0.08)`,
+    referenceStroke: `rgba(${textRgb}, 0.42)`,
+    selectedGlow: `rgba(${textRgb}, 0.04)`,
     selectedCardStroke: accent,
     overlayFill: CITY_THEME_BY_SLUG[slug]?.surfaceStrong ?? DEFAULT_SURFACE_STRONG
   };

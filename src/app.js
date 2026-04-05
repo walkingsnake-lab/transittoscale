@@ -112,8 +112,8 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   element.style.setProperty('--card-surface-strong', theme.surfaceStrong);
   element.style.setProperty('--card-border', theme.border);
   element.style.setProperty('--card-overlay-fill', theme.overlayFill);
-  element.style.setProperty('--card-title', theme.accent);
-  element.style.setProperty('--card-count', theme.accent);
+  element.style.setProperty('--card-title', theme.text);
+  element.style.setProperty('--card-count', theme.mutedText);
   element.style.setProperty('--card-region', theme.regionText);
   element.style.setProperty('--card-text', theme.text);
   element.setAttribute('aria-pressed', 'false');

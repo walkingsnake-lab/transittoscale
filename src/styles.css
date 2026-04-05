@@ -94,7 +94,7 @@ body {
 .card__region {
   color: var(--card-region);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -102,7 +102,7 @@ body {
 .card__count {
   color: var(--card-count);
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
@@ -136,18 +136,17 @@ body {
   padding: 14px 14px 12px;
   pointer-events: none;
   background: var(--card-overlay-fill);
-  border-bottom: 1px solid rgba(var(--card-accent-rgb), 0.28);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .card__overlay h2 {
   margin: 4px 0 0;
   color: var(--card-title);
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.22rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-size: 1.18rem;
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
 }
 
 .card:hover .card__canvas-frame {
@@ -157,8 +156,8 @@ body {
 .card--selected .card__canvas-frame {
   background: var(--card-surface-strong);
   box-shadow:
-    inset 0 0 0 1px rgba(var(--card-accent-rgb), 0.72),
-    inset 0 0 0 2px rgba(var(--card-accent-rgb), 0.18);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 0 0 2px rgba(var(--card-accent-rgb), 0.14);
 }
 
 .is-ready .card {
