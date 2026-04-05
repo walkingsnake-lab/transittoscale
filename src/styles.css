@@ -121,28 +121,52 @@ body {
   inset: 0 auto auto 0;
   z-index: 1;
   display: grid;
-  gap: 6px;
-  width: min(100%, 248px);
-  padding: 18px 18px 34px;
-  background: rgba(246, 245, 241, 0.84);
+  gap: 9px;
+  width: min(100%, 280px);
+  padding: 16px 18px 24px;
+  background: rgba(246, 245, 241, 0.86);
   border-bottom-right-radius: 12px;
 }
 
 .card__region {
   margin: 0;
   color: var(--card-region);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
+.card__agency {
+  margin: 0;
+  justify-self: start;
+  padding: 5px 10px 6px;
+  color: var(--card-accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(var(--card-accent-rgb), 0.14);
+  border: 1px solid rgba(var(--card-accent-rgb), 0.26);
+  border-radius: 999px;
+}
+
+.card__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .card__count {
   margin: 0;
   color: var(--card-count);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: right;
 }
 
 .card__overlay h2 {
@@ -213,7 +237,7 @@ body {
   }
 
   .card__overlay {
-    width: min(100%, 212px);
+    width: min(100%, 236px);
     padding: 14px 14px 28px;
   }
 

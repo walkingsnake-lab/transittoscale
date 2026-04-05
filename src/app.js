@@ -102,6 +102,7 @@ function resolveAssetPath(relativePath) {
 function createCard(city, index, animator, reducedMotion, onSelect) {
   const theme = getCityTheme(city.slug, index);
   const lineLabel = formatLineLabel(city.lineCount);
+  const agencyLabel = formatAgencyLabel(city);
   const element = document.createElement('button');
   element.type = 'button';
   element.className = 'card';
@@ -126,9 +127,12 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       <div class="card__canvas-frame">
         <canvas class="card__canvas"></canvas>
         <div class="card__overlay">
-          <p class="card__region">${city.region}</p>
+          <p class="card__agency">${agencyLabel}</p>
           <h2>${city.name}</h2>
-          <p class="card__count">${lineLabel}</p>
+          <div class="card__meta">
+            <p class="card__region">${city.region}</p>
+            <p class="card__count">${lineLabel}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -340,6 +344,7 @@ function drawCard({
   ctx.save();
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
+  ctx.imageSmoothingEnabled = true;
   ctx.strokeStyle = theme.ink;
   ctx.globalAlpha = CARD_STYLE.baseAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
   ctx.lineWidth =
@@ -353,6 +358,13 @@ function drawCard({
     const progress = easeOutCubic(clamp((lineWindow - offset) / Math.max(0.12, 1 - offset)));
 
     for (const metrics of line.paths) {
+      ctx.save();
+      ctx.strokeStyle = theme.paperStrong;
+      ctx.globalAlpha = 0.22 * (1 - dimmed) + 0.08 * Math.max(emphasis, hover);
+      ctx.lineWidth += 0.9;
+      drawProgressPath(ctx, metrics, progress);
+      ctx.restore();
+
       drawProgressPath(ctx, metrics, progress);
     }
   });
@@ -362,6 +374,32 @@ function drawCard({
 
 function formatLineLabel(lineCount) {
   return `${lineCount} ${lineCount === 1 ? 'line' : 'lines'}`;
+}
+
+function formatAgencyLabel(city) {
+  const explicitLabels = {
+    chicago: 'CTA',
+    'new-york': 'MTA',
+    boston: 'MBTA',
+    'washington-dc': 'WMATA',
+    'minneapolis-st-paul': 'Metro Transit',
+    seattle: 'Sound Transit',
+    toronto: 'TTC',
+    montreal: 'STM',
+    london: 'TfL',
+    'san-francisco-bay-area': 'BART'
+  };
+
+  if (explicitLabels[city.slug]) {
+    return explicitLabels[city.slug];
+  }
+
+  const parentheticalMatch = city.sourceName?.match(/\(([^)]+)\)/);
+  if (parentheticalMatch) {
+    return parentheticalMatch[1];
+  }
+
+  return city.sourceName ?? '';
 }
 
 class Animator {
