@@ -22,6 +22,8 @@ const DEFAULT_INK = '#111111';
 const DEFAULT_BORDER = '#111111';
 
 const CITY_THEME_BY_SLUG = {
+  atlanta: { accent: '#FFB81C' },
+  baltimore: { accent: '#008000' },
   'new-york': { accent: '#0039A6' },
   chicago: { accent: '#FF6319' },
   boston: { accent: '#6CBE45' },
@@ -31,9 +33,7 @@ const CITY_THEME_BY_SLUG = {
   toronto: { accent: '#996633' },
   montreal: { accent: '#A7A9AC' },
   london: { accent: '#DC241F' },
-  'san-francisco-bay-area': { accent: '#00933C' },
-  paris: { accent: '#003CA6' },
-  tokyo: { accent: '#9E1B32' }
+  'san-francisco-bay-area': { accent: '#00933C' }
 };
 
 const CITY_THEME_SEQUENCE = ['#0039A6', '#FF6319', '#6CBE45', '#EE352E', '#B933AD', '#FCCC0A', '#996633', '#A7A9AC', '#00933C'];

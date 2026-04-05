@@ -5,21 +5,18 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const rawDataPath = path.join(repoRoot, 'data', 'raw', 'city-seeds.json');
-const supplementalSeedSlugsPath = path.join(repoRoot, 'data', 'raw', 'cardset-seed-slugs.json');
 const normalizedDataPath = path.join(repoRoot, 'data', 'normalized', 'cities.json');
 const publicDataDir = path.join(repoRoot, 'public', 'data');
 const cityDir = path.join(publicDataDir, 'cities');
 
 const raw = JSON.parse(await readFile(rawDataPath, 'utf8'));
-const supplementalSeedSlugs = await readSupplementalSeedSlugs();
 const normalized = await readNormalizedCities();
-const seedCitiesBySlug = new Map(raw.map((city) => [city.slug, city]));
 
 await mkdir(cityDir, { recursive: true });
 
 const manifest =
   normalized.size > 0
-    ? mergeImportedAndSupplementalCities(normalized, supplementalSeedSlugs, seedCitiesBySlug)
+    ? [...normalized.values()]
     : raw.map((city) => buildSeedCity(city));
 
 for (const city of manifest) {
@@ -58,38 +55,6 @@ async function readNormalizedCities() {
 
     throw error;
   }
-}
-
-async function readSupplementalSeedSlugs() {
-  try {
-    return JSON.parse(await readFile(supplementalSeedSlugsPath, 'utf8'));
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      return [];
-    }
-
-    throw error;
-  }
-}
-
-function mergeImportedAndSupplementalCities(normalizedCities, supplementalSlugs, seedCitiesBySlug) {
-  const manifest = [...normalizedCities.values()];
-
-  for (const slug of supplementalSlugs) {
-    if (normalizedCities.has(slug)) {
-      continue;
-    }
-
-    const seedCity = seedCitiesBySlug.get(slug);
-
-    if (!seedCity) {
-      throw new Error(`Unknown supplemental city seed slug: ${slug}`);
-    }
-
-    manifest.push(buildSeedCity(seedCity));
-  }
-
-  return manifest;
 }
 
 function buildSeedCity(city) {

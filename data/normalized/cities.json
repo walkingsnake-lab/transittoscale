@@ -1,5 +1,51 @@
 [
   {
+    "slug": "atlanta",
+    "name": "Atlanta",
+    "region": "United States",
+    "dataPath": "data/cities/atlanta.geojson",
+    "centroid": [
+      -84.3487005,
+      33.7926435
+    ],
+    "focusPoint": [
+      -84.3879,
+      33.7488
+    ],
+    "bounds": [
+      -84.469057,
+      33.639219,
+      -84.228344,
+      33.946068
+    ],
+    "lineCount": 4,
+    "sourceName": "Metropolitan Atlanta Rapid Transit Authority (MARTA)",
+    "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip"
+  },
+  {
+    "slug": "baltimore",
+    "name": "Baltimore",
+    "region": "United States",
+    "dataPath": "data/cities/baltimore.geojson",
+    "centroid": [
+      -76.68852079999999,
+      39.348874300000006
+    ],
+    "focusPoint": [
+      -76.6122,
+      39.2904
+    ],
+    "bounds": [
+      -76.7829216,
+      39.289349,
+      -76.59412,
+      39.4083996
+    ],
+    "lineCount": 1,
+    "sourceName": "Maryland Transit Administration (MTA Maryland)",
+    "sourceUrl": "https://feeds.mta.maryland.gov/gtfs/metro"
+  },
+  {
     "slug": "chicago",
     "name": "Chicago",
     "region": "United States",

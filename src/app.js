@@ -558,6 +558,8 @@ function formatLineLabel(lineCount) {
 
 function formatSystemLabel(city) {
   const explicitLabels = {
+    atlanta: 'MARTA rail',
+    baltimore: 'Metro SubwayLink',
     chicago: 'Chicago "L"',
     'new-york': 'Subway + Staten Island Railway',
     boston: 'MBTA rapid transit',
@@ -567,9 +569,7 @@ function formatSystemLabel(city) {
     toronto: 'TTC subway',
     montreal: 'Montreal Metro',
     london: 'Underground + DLR',
-    'san-francisco-bay-area': 'BART',
-    paris: 'Metro',
-    tokyo: 'Rapid transit'
+    'san-francisco-bay-area': 'BART'
   };
 
   if (explicitLabels[city.slug]) {
@@ -583,9 +583,7 @@ function getCountryFlag(city) {
   const flagCodeByRegion = {
     'United States': 'us',
     Canada: 'ca',
-    'United Kingdom': 'gb',
-    France: 'fr',
-    Japan: 'jp'
+    'United Kingdom': 'gb'
   };
 
   const code = flagCodeByRegion[city.region];

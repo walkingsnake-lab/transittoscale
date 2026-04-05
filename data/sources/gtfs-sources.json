@@ -1,5 +1,52 @@
 [
   {
+    "slug": "atlanta",
+    "name": "Atlanta",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Metropolitan Atlanta Rapid Transit Authority (MARTA)",
+    "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip",
+    "focusPoint": [-84.3879, 33.7488],
+    "requestHeaders": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+      "referer": "https://itsmarta.com/app-developer-resources.aspx"
+    },
+    "routeTypes": ["1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["27448", "27449", "27450", "27451"],
+    "routeIdAliases": {
+      "27448": "BLUE",
+      "27449": "GOLD",
+      "27450": "GREEN",
+      "27451": "RED"
+    },
+    "lineNameOverrides": {
+      "BLUE": "Blue Line",
+      "GOLD": "Gold Line",
+      "GREEN": "Green Line",
+      "RED": "Red Line"
+    }
+  },
+  {
+    "slug": "baltimore",
+    "name": "Baltimore",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Maryland Transit Administration (MTA Maryland)",
+    "sourceUrl": "https://feeds.mta.maryland.gov/gtfs/metro",
+    "focusPoint": [-76.6122, 39.2904],
+    "routeTypes": ["1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 5,
+    "shapeTripShareThreshold": 0.02,
+    "routeIdAllowlist": ["11682"],
+    "lineNameOverrides": {
+      "11682": "Metro SubwayLink"
+    }
+  },
+  {
     "slug": "chicago",
     "name": "Chicago",
     "region": "United States",
