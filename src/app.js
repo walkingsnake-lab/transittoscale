@@ -486,7 +486,8 @@ function drawProjectedLines(ctx, projectedLines, lineWindow) {
   const lineCount = projectedLines.length;
 
   projectedLines.forEach((line, index) => {
-    const offset = lineCount > 1 ? (index / lineCount) * REVEAL_LINE_OFFSET * lineCount : 0;
+    // Spread the reveal stagger across the full set so later lines still finish drawing.
+    const offset = lineCount > 1 ? (index / (lineCount - 1)) * REVEAL_LINE_OFFSET : 0;
     const progress = easeOutCubic(clamp((lineWindow - offset) / Math.max(0.12, 1 - offset)));
 
     for (const metrics of line.paths) {
