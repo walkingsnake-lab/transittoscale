@@ -132,7 +132,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     <div class="card__stage">
       <div class="card__rotator">
         <section class="card__face card__face--front">
-          <button type="button" class="card__select" aria-label="Select ${city.name}" aria-pressed="false"></button>
+          <button type="button" class="card__select" aria-label="Show back of ${city.name} card"></button>
           <div class="card__paper">
             <div class="card__canvas-frame">
               <canvas class="card__canvas"></canvas>
@@ -144,15 +144,9 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
               ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}
             </div>
           </div>
-          <button type="button" class="card__flip-button card__flip-button--front" aria-label="Show back of ${city.name} card">
-            <svg class="card__flip-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20 12a8 8 0 1 1-2.34-5.66" />
-              <path d="M20 5v6h-6" />
-            </svg>
-          </button>
         </section>
         <section class="card__face card__face--back" aria-hidden="true">
-          <button type="button" class="card__select" aria-label="Select ${city.name}" aria-pressed="false"></button>
+          <button type="button" class="card__select" aria-label="Show front of ${city.name} card"></button>
           <div class="card__paper card__paper--back">
             <div class="card__back-copy">
               <p class="card__back-kicker">Reverse Side</p>
@@ -165,12 +159,6 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
               </dl>
             </div>
           </div>
-          <button type="button" class="card__flip-button card__flip-button--back" aria-label="Show front of ${city.name} card">
-            <svg class="card__flip-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m7 7 10 10" />
-              <path d="m17 7-10 10" />
-            </svg>
-          </button>
         </section>
       </div>
     </div>
@@ -183,8 +171,6 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   const [frontSelectButton, backSelectButton] = selectButtons;
   const frontFace = element.querySelector('.card__face--front');
   const backFace = element.querySelector('.card__face--back');
-  const flipFrontButton = element.querySelector('.card__flip-button--front');
-  const flipBackButton = element.querySelector('.card__flip-button--back');
   const ctx = canvas.getContext('2d');
   const observer = new ResizeObserver(() => {
     card.resize();
@@ -224,7 +210,6 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       this.dimTarget = hasSelection && !isSelected ? 1 : 0;
       element.classList.toggle('card--selected', isSelected);
       element.classList.toggle('card--muted', hasSelection && !isSelected);
-      selectButtons.forEach((button) => button.setAttribute('aria-pressed', String(isSelected)));
       this.active = true;
     },
     setFlipped(isFlipped) {
@@ -233,9 +218,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       frontFace.setAttribute('aria-hidden', String(isFlipped));
       backFace.setAttribute('aria-hidden', String(!isFlipped));
       frontSelectButton.disabled = isFlipped;
-      flipFrontButton.disabled = isFlipped;
       backSelectButton.disabled = !isFlipped;
-      flipBackButton.disabled = !isFlipped;
       this.active = true;
     },
     toggleFlipped() {
@@ -349,15 +332,8 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       card.setHovered(false);
     }
   });
-  selectButtons.forEach((button) => {
-    button.addEventListener('click', () => onSelect(city.slug));
-  });
-  [flipFrontButton, flipBackButton].forEach((button) => {
-    button.addEventListener('click', (event) => {
-      event.stopPropagation();
-      card.toggleFlipped();
-    });
-  });
+  frontSelectButton.addEventListener('click', () => card.setFlipped(true));
+  backSelectButton.addEventListener('click', () => card.setFlipped(false));
   observer.observe(stage);
   card.setFlipped(false);
   card.resize();

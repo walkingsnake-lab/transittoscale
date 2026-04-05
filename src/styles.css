@@ -171,8 +171,7 @@ body {
   cursor: pointer;
 }
 
-.card__select:focus-visible,
-.card__flip-button:focus-visible {
+.card__select:focus-visible {
   outline: 3px solid rgba(255, 255, 255, 0.86);
   outline-offset: 4px;
 }
@@ -337,47 +336,6 @@ body {
   height: 100%;
 }
 
-.card__flip-button {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: rgba(17, 17, 17, 0.5);
-  cursor: pointer;
-  transform: translateZ(12px);
-  transition:
-    opacity 140ms var(--ease-out),
-    transform 140ms var(--ease-out),
-    color 140ms var(--ease-out);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.card__flip-button--back {
-  right: 16px;
-  bottom: 16px;
-}
-
-.card__flip-icon {
-  width: 18px;
-  height: 18px;
-  display: block;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.9;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 .card__back-copy {
   position: absolute;
   inset: 22px 22px 72px;
@@ -459,18 +417,6 @@ body {
   transform: translateZ(56px);
 }
 
-.card:hover .card__flip-button,
-.card--hovered .card__flip-button,
-.card:focus-within .card__flip-button {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateZ(16px);
-}
-
-.card__flip-button:hover {
-  color: rgba(17, 17, 17, 0.82);
-}
-
 .is-ready .card {
   animation: card-deal 760ms var(--ease-out) both;
   animation-delay: var(--stagger);
@@ -536,25 +482,6 @@ body {
     right: 14px;
     width: 28px;
     height: 28px;
-  }
-
-  .card__flip-button {
-    right: 14px;
-    bottom: 14px;
-    width: 20px;
-    height: 20px;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .card__flip-button--back {
-    right: 14px;
-    bottom: 14px;
-  }
-
-  .card__flip-icon {
-    width: 17px;
-    height: 17px;
   }
 
   .card__back-copy {
