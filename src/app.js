@@ -100,7 +100,6 @@ function resolveAssetPath(relativePath) {
 
 function createCard(city, index, animator, reducedMotion, onSelect) {
   const theme = getCityTheme(city.slug, index);
-  const cardCode = getCardCode(city.slug, city.name);
   const lineLabel = formatLineLabel(city.lineCount);
   const element = document.createElement('button');
   element.type = 'button';
@@ -118,21 +117,11 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   element.style.setProperty('--card-region', theme.regionText);
   element.style.setProperty('--card-text', theme.text);
   element.style.setProperty('--card-ink', theme.ink);
-  element.style.setProperty('--card-rule', theme.headerRule);
-  element.style.setProperty('--card-corner', theme.cornerText);
   element.style.setProperty('--card-shadow', theme.shadow);
   element.setAttribute('aria-pressed', 'false');
 
   element.innerHTML = `
     <div class="card__paper">
-      <div class="card__corner">
-        <span class="card__corner-code">${cardCode}</span>
-        <span class="card__corner-value">${city.lineCount}</span>
-      </div>
-      <div class="card__corner card__corner--bottom" aria-hidden="true">
-        <span class="card__corner-code">${cardCode}</span>
-        <span class="card__corner-value">${city.lineCount}</span>
-      </div>
       <div class="card__header">
         <p class="card__region">${city.region}</p>
         <h2>${city.name}</h2>
@@ -142,8 +131,11 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         <canvas class="card__canvas"></canvas>
       </div>
       <div class="card__footer">
-        <span class="card__footer-copy">Shared scale</span>
-        <span class="card__footer-copy">5-mile key</span>
+        <span class="card__brand">
+          <span class="card__brand-mark"></span>
+          <span>Transit To Scale</span>
+        </span>
+        <span class="card__footer-copy">5-mile reference</span>
       </div>
     </div>
   `;
@@ -243,14 +235,14 @@ function updateGridLayout(grid, cardCount) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
   const columns = chooseColumnCount(viewportWidth, cardCount);
-  const chromeHeight = viewportWidth < 720 ? 132 : 156;
+  const chromeHeight = viewportWidth < 720 ? 108 : 128;
   const rowTarget =
-    columns >= 5 ? 2.25 :
-    columns === 4 ? 2.08 :
-    columns === 3 ? 1.9 :
-    columns === 2 ? 1.62 :
-    1.38;
-  const cardHeight = clamp(viewportHeight / rowTarget - chromeHeight, 240, 480);
+    columns >= 5 ? 2.16 :
+    columns === 4 ? 1.98 :
+    columns === 3 ? 1.8 :
+    columns === 2 ? 1.56 :
+    1.34;
+  const cardHeight = clamp(viewportHeight / rowTarget - chromeHeight, 250, 500);
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
@@ -354,29 +346,6 @@ function drawCard({
   });
 
   ctx.restore();
-}
-
-function getCardCode(slug, name) {
-  const overrides = {
-    chicago: 'CHI',
-    'new-york': 'NY',
-    boston: 'BOS',
-    'washington-dc': 'DC',
-    'minneapolis-st-paul': 'MSP',
-    seattle: 'SEA',
-    toronto: 'TOR'
-  };
-
-  if (overrides[slug]) {
-    return overrides[slug];
-  }
-
-  return name
-    .split(/\s+/)
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 3)
-    .toUpperCase();
 }
 
 function formatLineLabel(lineCount) {

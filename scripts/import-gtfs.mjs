@@ -12,17 +12,18 @@ const publicDataDir = path.join(repoRoot, 'public', 'data');
 const publicCityDir = path.join(publicDataDir, 'cities');
 
 const sourceConfigs = JSON.parse(stripBom(await readFile(sourcesPath, 'utf8')));
-const existingCitiesBySlug = await readExistingImportedCities();
+const gtfsSourceConfigs = sourceConfigs.filter((sourceConfig) => sourceConfig.sourceType === 'gtfs');
+const sourceConfigBySlug = new Map(gtfsSourceConfigs.map((sourceConfig) => [sourceConfig.slug, sourceConfig]));
+const selectedCitySlugs = parseSelectedCitySlugs(process.argv.slice(2));
+const selectedSourceConfigs = resolveSelectedSourceConfigs(selectedCitySlugs, sourceConfigBySlug, gtfsSourceConfigs);
+const isSelectiveImport = selectedCitySlugs.length > 0;
+const existingCitiesBySlug = await readExistingImportedCities(sourceConfigBySlug);
 
 await mkdir(normalizedDir, { recursive: true });
 
-const importedCities = [];
+const citiesBySlug = isSelectiveImport ? new Map(existingCitiesBySlug) : new Map();
 
-for (const sourceConfig of sourceConfigs) {
-  if (sourceConfig.sourceType !== 'gtfs') {
-    continue;
-  }
-
+for (const sourceConfig of selectedSourceConfigs) {
   const requestHeaders = resolveRequestHeaders(sourceConfig);
 
   if (requestHeaders === null) {
@@ -30,11 +31,7 @@ for (const sourceConfig of sourceConfigs) {
 
     if (existingCity) {
       console.warn(`Skipping ${sourceConfig.slug}: missing required credentials, reusing existing data.`);
-      importedCities.push(existingCity);
-      await writeFile(
-        path.join(normalizedDir, `${existingCity.slug}.geojson`),
-        `${JSON.stringify(existingCity.featureCollection, null, 2)}\n`
-      );
+      citiesBySlug.set(existingCity.slug, existingCity);
     } else {
       console.warn(`Skipping ${sourceConfig.slug}: missing required credentials.`);
     }
@@ -43,46 +40,61 @@ for (const sourceConfig of sourceConfigs) {
   }
 
   const city = await importGtfsCity(sourceConfig, requestHeaders);
-  importedCities.push(city);
+  citiesBySlug.set(city.slug, city);
+}
+
+const manifestCities = sortCitiesForManifest([...citiesBySlug.values()], gtfsSourceConfigs);
+
+for (const city of manifestCities) {
   await writeFile(
     path.join(normalizedDir, `${city.slug}.geojson`),
     `${JSON.stringify(city.featureCollection, null, 2)}\n`
   );
 }
 
-const manifest = importedCities.map(({ featureCollection, ...city }) => city);
+const manifest = manifestCities.map(({ featureCollection, ...city }) => city);
 await writeFile(
   path.join(normalizedDir, 'cities.json'),
   `${JSON.stringify(manifest, null, 2)}\n`
 );
-await pruneGeneratedFiles(
-  normalizedDir,
-  new Set([...importedCities.map((city) => `${city.slug}.geojson`), 'cities.json'])
-);
+if (!isSelectiveImport) {
+  await pruneGeneratedFiles(
+    normalizedDir,
+    new Set([...manifestCities.map((city) => `${city.slug}.geojson`), 'cities.json'])
+  );
+}
 
-console.log(`Imported ${importedCities.length} GTFS cities into data/normalized`);
+if (isSelectiveImport) {
+  console.log(
+    `Imported ${selectedSourceConfigs.length} requested GTFS cities; normalized catalog now has ${manifestCities.length} cities.`
+  );
+} else {
+  console.log(`Imported ${manifestCities.length} GTFS cities into data/normalized`);
+}
 
-async function readExistingImportedCities() {
+async function readExistingImportedCities(sourceConfigBySlug) {
   const cities = new Map();
   await addExistingCitiesFromManifest(
     cities,
+    sourceConfigBySlug,
     path.join(normalizedDir, 'cities.json'),
     normalizedDir
   );
   await addExistingCitiesFromManifest(
     cities,
+    sourceConfigBySlug,
     path.join(publicDataDir, 'city-manifest.json'),
     publicCityDir
   );
   return cities;
 }
 
-async function addExistingCitiesFromManifest(cities, manifestPath, cityDirectory) {
+async function addExistingCitiesFromManifest(cities, sourceConfigBySlug, manifestPath, cityDirectory) {
   try {
     const manifest = JSON.parse(stripBom(await readFile(manifestPath, 'utf8')));
 
     for (const city of manifest) {
-      if (cities.has(city.slug)) {
+      if (cities.has(city.slug) || !sourceConfigBySlug.has(city.slug)) {
         continue;
       }
 
@@ -96,6 +108,65 @@ async function addExistingCitiesFromManifest(cities, manifestPath, cityDirectory
       throw error;
     }
   }
+}
+
+function parseSelectedCitySlugs(argv) {
+  const citySlugs = [];
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+
+    if (argument !== '--city') {
+      throw new Error(`Unknown argument: ${argument}`);
+    }
+
+    const value = argv[index + 1];
+
+    if (!value || value.startsWith('--')) {
+      throw new Error('The --city flag requires a slug.');
+    }
+
+    citySlugs.push(
+      ...value
+        .split(',')
+        .map((slug) => slug.trim())
+        .filter(Boolean)
+    );
+    index += 1;
+  }
+
+  return [...new Set(citySlugs)];
+}
+
+function resolveSelectedSourceConfigs(selectedCitySlugs, sourceConfigBySlug, gtfsSourceConfigs) {
+  if (selectedCitySlugs.length === 0) {
+    return gtfsSourceConfigs;
+  }
+
+  const unknownSlugs = selectedCitySlugs.filter((slug) => !sourceConfigBySlug.has(slug));
+
+  if (unknownSlugs.length > 0) {
+    throw new Error(`Unknown GTFS city slug(s): ${unknownSlugs.join(', ')}`);
+  }
+
+  return selectedCitySlugs.map((slug) => sourceConfigBySlug.get(slug));
+}
+
+function sortCitiesForManifest(cities, gtfsSourceConfigs) {
+  const sortIndexBySlug = new Map(
+    gtfsSourceConfigs.map((sourceConfig, index) => [sourceConfig.slug, index])
+  );
+
+  return [...cities].sort((left, right) => {
+    const leftIndex = sortIndexBySlug.get(left.slug) ?? Number.MAX_SAFE_INTEGER;
+    const rightIndex = sortIndexBySlug.get(right.slug) ?? Number.MAX_SAFE_INTEGER;
+
+    if (leftIndex !== rightIndex) {
+      return leftIndex - rightIndex;
+    }
+
+    return left.name.localeCompare(right.name);
+  });
 }
 
 function resolveRequestHeaders(sourceConfig) {

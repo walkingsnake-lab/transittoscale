@@ -27,10 +27,30 @@ Transit To Scale is a static web visualization that compares world metro systems
 ## Data Workflow
 
 - Edit the seed dataset in `data/raw/city-seeds.json`.
-- Import real GTFS pilot data with `npm run data:import`.
+- Import the full GTFS catalog with `npm run data:import`.
+- Import or refresh one city without re-fetching the rest with `npm run data:import -- --city <slug>`.
+- Import multiple specific cities with repeated flags or a comma-separated list such as `npm run data:import -- --city montreal --city san-francisco-bay-area`.
 - Inspect GTFS source config in `data/sources/gtfs-sources.json` and generated normalized outputs in `data/normalized/`.
 - Run `npm run data:build` to regenerate `public/data/city-manifest.json` and the per-city GeoJSON files.
 - Run `npm run data:check` to validate the generated output before shipping.
+
+## Adding Or Updating Cities
+
+- Add or edit a GTFS entry in `data/sources/gtfs-sources.json`.
+- Keep scope to `metro / rapid transit only`, and use allowlists or aliases so each city maps to the intended lines.
+- For a new city or a single-city tuning pass, run `npm run data:import -- --city <slug>`.
+- For a city that requires credentials, the importer reuses the last generated normalized copy when credentials are unavailable, instead of dropping the city from the catalog.
+- After importing, run `npm run data:build` and `npm run data:check`.
+- Run `npm run build` before shipping to verify the app still bundles cleanly.
+- If you remove a city from `data/sources/gtfs-sources.json` or want to reconcile the entire imported catalog from scratch, run the full `npm run data:import` instead of a targeted import.
+
+## Incremental Import Notes
+
+- `data/normalized/` is the source of truth for imported GTFS cities.
+- `npm run data:import` rewrites the normalized manifest from every configured GTFS source.
+- `npm run data:import -- --city <slug>` merges only the requested city into the existing normalized manifest and preserves the other imported cities as-is.
+- `npm run data:build` is local-only: it publishes whatever already exists in `data/normalized/` to `public/data/`.
+- The hand-curated seed dataset in `data/raw/city-seeds.json` is only used when there are no normalized imports available.
 
 ## Anchoring Rule
 
@@ -51,5 +71,5 @@ Transit To Scale is a static web visualization that compares world metro systems
 ## Current Imported Dataset
 
 - The live manifest currently includes only normalized real-data cities.
-- Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, and Toronto are imported from official GTFS feeds and rendered in the app.
+- Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, Toronto, Montreal, and San Francisco Bay Area are imported from official GTFS feeds and rendered in the app.
 - The hand-curated seed dataset remains in the repo as a fallback and development aid, but it is not shown once normalized imports exist.
