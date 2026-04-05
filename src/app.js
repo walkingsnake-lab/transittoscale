@@ -20,16 +20,40 @@ import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
 import { clamp, damp, invLerp, nearlyEqual } from './lib/math.js';
 import { projectFeatureCollection } from './lib/projection.js';
 
+const ZOOM_STEPS = [
+  { label: 'Compact', factor: 0.88 },
+  { label: 'Standard', factor: 1 },
+  { label: 'Expanded', factor: 1.14 }
+];
+
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell">
+      <header class="shell__toolbar" data-toolbar>
+        <div class="shell__toolbar-copy">
+          <p class="shell__eyebrow">Transit To Scale</p>
+          <p class="shell__toolbar-title">Compare each network at one shared scale.</p>
+        </div>
+        <div class="zoom-controls" role="group" aria-label="Card zoom controls">
+          <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out cards">-</button>
+          <div class="zoom-controls__status">
+            <span class="zoom-controls__label">Zoom</span>
+            <strong class="zoom-controls__value" data-zoom-label aria-live="polite">Standard</strong>
+          </div>
+          <button type="button" class="zoom-controls__button" data-zoom-in aria-label="Zoom in cards">+</button>
+        </div>
+      </header>
       <section class="shell__status" data-status>Loading network catalog…</section>
       <section class="grid" data-grid aria-live="polite"></section>
     </main>
   `;
 
+  const toolbar = root.querySelector('[data-toolbar]');
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
+  const zoomLabel = root.querySelector('[data-zoom-label]');
+  const zoomOutButton = root.querySelector('[data-zoom-out]');
+  const zoomInButton = root.querySelector('[data-zoom-in]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   status.textContent = 'Loading network catalog...';
 
@@ -40,15 +64,39 @@ export async function mountApp(root) {
     const cards = cities.map((city, index) => createCard(city, index, animator, reducedMotion, handleSelect));
 
     cards.forEach(({ element }) => grid.append(element));
-    updateGridLayout(grid, cards.length);
-    window.addEventListener('resize', () => {
-      updateGridLayout(grid, cards.length);
+
+    let zoomIndex = 1;
+
+    function applyLayout() {
+      const zoomStep = ZOOM_STEPS[zoomIndex];
+      const chromeHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) + 18 : 0;
+
+      zoomLabel.textContent = zoomStep.label;
+      zoomOutButton.disabled = zoomIndex === 0;
+      zoomInButton.disabled = zoomIndex === ZOOM_STEPS.length - 1;
+      updateGridLayout(grid, cards.length, { zoomFactor: zoomStep.factor, chromeHeight });
+      cards.forEach((card) => card.resize());
       animator.start();
-    });
+    }
+
+    function setZoomIndex(nextZoomIndex) {
+      const boundedZoomIndex = clamp(nextZoomIndex, 0, ZOOM_STEPS.length - 1);
+
+      if (boundedZoomIndex === zoomIndex) {
+        return;
+      }
+
+      zoomIndex = boundedZoomIndex;
+      applyLayout();
+    }
+
+    zoomOutButton.addEventListener('click', () => setZoomIndex(zoomIndex - 1));
+    zoomInButton.addEventListener('click', () => setZoomIndex(zoomIndex + 1));
+    window.addEventListener('resize', applyLayout);
 
     requestAnimationFrame(() => {
       root.classList.add('is-ready');
-      animator.start();
+      applyLayout();
     });
 
     let selectedSlug = null;
@@ -343,30 +391,31 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   return card;
 }
 
-function updateGridLayout(grid, cardCount) {
+function updateGridLayout(grid, cardCount, { zoomFactor = 1, chromeHeight = 0 } = {}) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
-  const columns = chooseColumnCount(viewportWidth, cardCount);
+  const columns = chooseColumnCount(viewportWidth, cardCount, zoomFactor);
   const isMobile = viewportWidth < 720;
-  const chromeHeight = 0;
+  const availableHeight = Math.max(320, viewportHeight - chromeHeight);
   const rowTarget =
     columns >= 5 ? 2.16 :
     columns === 4 ? 1.98 :
     columns === 3 ? 1.8 :
     columns === 2 ? 1.56 :
     1.34;
-  const cardHeight =
+  const baseCardHeight =
     isMobile
-      ? clamp(Math.min(viewportHeight * 0.52, viewportWidth * 1.08), 250, 360)
-      : clamp(viewportHeight / rowTarget - chromeHeight, 250, 500);
+      ? clamp(Math.min(availableHeight * 0.52, viewportWidth * 1.08), 250, 360)
+      : clamp(availableHeight / rowTarget, 250, 500);
+  const cardHeight = clamp(baseCardHeight * zoomFactor, isMobile ? 236 : 250, isMobile ? 420 : 580);
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
 }
 
-function chooseColumnCount(viewportWidth, cardCount) {
-  const minCardWidth = viewportWidth < 720 ? 250 : viewportWidth < 1100 ? 300 : 340;
-  const idealCardWidth = viewportWidth >= 1600 ? 420 : viewportWidth >= 1100 ? 390 : 340;
+function chooseColumnCount(viewportWidth, cardCount, zoomFactor = 1) {
+  const minCardWidth = (viewportWidth < 720 ? 250 : viewportWidth < 1100 ? 300 : 340) * zoomFactor;
+  const idealCardWidth = (viewportWidth >= 1600 ? 420 : viewportWidth >= 1100 ? 390 : 340) * zoomFactor;
   let best = 1;
 
   for (let columns = 1; columns <= cardCount; columns += 1) {
