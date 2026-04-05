@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  color-scheme: dark;
-  --page-bg: #121419;
-  --page-ink: #d8dde4;
+  color-scheme: light;
+  --page-bg: #2a3732;
+  --page-bg-strong: #202822;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -19,8 +19,23 @@ body {
 
 body {
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: var(--page-ink);
-  background: var(--page-bg);
+  background:
+    radial-gradient(circle at top, rgba(255, 247, 229, 0.08), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(255, 247, 229, 0.05), transparent 28%),
+    linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-strong) 100%);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.26;
+  mask-image: radial-gradient(circle at center, black, transparent 82%);
 }
 
 #app {
@@ -30,6 +45,7 @@ body {
 .shell {
   width: 100%;
   min-height: 100vh;
+  padding: 18px;
 }
 
 .shell__status {
@@ -52,16 +68,14 @@ body {
   clip: auto;
   overflow: visible;
   white-space: normal;
-  color: #8b2f1a;
+  color: #f7ddd2;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 0;
+  grid-template-columns: repeat(var(--card-columns, 3), minmax(0, 1fr));
+  gap: 18px;
   align-items: start;
-  min-height: 100vh;
-  perspective: 1800px;
 }
 
 .card {
@@ -78,102 +92,198 @@ body {
 }
 
 .card:focus-visible {
-  outline: 2px solid var(--card-accent);
-  outline-offset: -2px;
+  outline: 2px solid rgba(var(--card-accent-rgb), 0.66);
+  outline-offset: 5px;
 }
 
 .card--muted {
-  opacity: 0.72;
+  opacity: 0.48;
+}
+
+.card__paper {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 14px;
+  min-height: calc(var(--card-canvas-height, 360px) + 156px);
+  padding: 18px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--card-paper);
+  color: var(--card-text);
+  border: 1px solid rgba(43, 36, 30, 0.18);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+    0 16px 34px var(--card-shadow);
+  transition:
+    transform 280ms var(--ease-out),
+    box-shadow 280ms var(--ease-out),
+    background-color 280ms var(--ease-out),
+    border-color 280ms var(--ease-out);
+}
+
+.card__paper::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(43, 36, 30, 0.14);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.card__paper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top left, rgba(var(--card-accent-rgb), 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 26%),
+    repeating-linear-gradient(0deg, rgba(43, 36, 30, 0.018) 0 1px, transparent 1px 4px);
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+
+.card:hover .card__paper {
+  transform: translateY(-5px) rotate(-0.35deg);
+  background: var(--card-paper-strong);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.48) inset,
+    0 22px 38px rgba(17, 13, 9, 0.26);
+}
+
+.card--selected .card__paper {
+  transform: translateY(-8px);
+  border-color: rgba(var(--card-accent-rgb), 0.38);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 26px 40px rgba(17, 13, 9, 0.28),
+    0 0 0 1px rgba(var(--card-accent-rgb), 0.18);
+}
+
+.card__corner {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 2;
+  display: grid;
+  gap: 1px;
+  text-align: center;
+  color: var(--card-corner);
+}
+
+.card__corner--bottom {
+  top: auto;
+  left: auto;
+  right: 15px;
+  bottom: 15px;
+  transform: rotate(180deg);
+}
+
+.card__corner-code {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 0.92;
+}
+
+.card__corner-value {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--card-text);
+}
+
+.card__header {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 6px;
+  padding: 4px 44px 0;
+  text-align: center;
+}
+
+.card__header::after {
+  content: '';
+  width: 72px;
+  height: 1px;
+  margin: 8px auto 0;
+  background: var(--card-rule);
+  box-shadow: 0 6px 0 rgba(var(--card-accent-rgb), 0.18);
 }
 
 .card__region,
-.card__count {
+.card__count,
+.card__footer-copy {
   margin: 0;
-}
-
-.card__region {
-  color: var(--card-region);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.card__count {
+.card__region {
+  color: var(--card-region);
+}
+
+.card__count,
+.card__footer-copy {
   color: var(--card-count);
-  font-size: 0.82rem;
+}
+
+.card__header h2 {
+  margin: 0;
+  color: var(--card-text);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 2.4vw, 2.35rem);
   font-weight: 600;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
 }
 
 .card__canvas-frame {
   position: relative;
-  width: 100%;
-  min-height: 440px;
-  box-shadow: inset 0 0 0 1px var(--card-border);
+  z-index: 1;
+  min-height: var(--card-canvas-height, 360px);
+  border-radius: 12px;
   overflow: hidden;
-  background: var(--card-surface);
-  transition:
-    background 280ms var(--ease-out),
-    box-shadow 280ms var(--ease-out);
+  background: rgba(255, 251, 244, 0.42);
+  border: 1px solid rgba(43, 36, 30, 0.12);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.34),
+    0 1px 0 rgba(43, 36, 30, 0.04);
 }
 
 .card__canvas {
   display: block;
   width: 100%;
-  height: 440px;
+  height: var(--card-canvas-height, 360px);
 }
 
-.card__overlay {
-  position: absolute;
-  inset: 0 0 auto 0;
+.card__footer {
+  position: relative;
   z-index: 1;
   display: flex;
   justify-content: space-between;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 14px 14px 12px;
-  pointer-events: none;
-  background: var(--card-overlay-fill);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.card__overlay h2 {
-  margin: 4px 0 0;
-  color: var(--card-title);
-  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.18rem;
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-}
-
-.card:hover .card__canvas-frame {
-  background: var(--card-surface-strong);
-}
-
-.card--selected .card__canvas-frame {
-  background: var(--card-surface-strong);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
-    inset 0 0 0 2px rgba(var(--card-accent-rgb), 0.14);
+  gap: 10px;
+  padding: 0 6px;
 }
 
 .is-ready .card {
-  animation: card-in 920ms var(--ease-out) both;
+  animation: card-deal 960ms var(--ease-out) both;
   animation-delay: var(--stagger);
   transform-origin: var(--flip-origin);
   backface-visibility: hidden;
   transform-style: preserve-3d;
 }
 
-@keyframes card-in {
+@keyframes card-deal {
   from {
     opacity: 0;
     transform:
       perspective(1800px)
-      rotateX(18deg)
+      rotateX(10deg)
       rotateY(var(--flip-angle))
       translateY(26px)
       scale(0.985);
@@ -191,14 +301,37 @@ body {
 }
 
 @media (max-width: 720px) {
-  .card__canvas-frame,
-  .card__canvas {
-    min-height: 360px;
-    height: 360px;
+  .shell {
+    padding: 12px;
   }
 
-  .card__overlay {
-    padding: 13px 13px 30px;
+  .grid {
+    gap: 12px;
+  }
+
+  .card__paper {
+    padding: 14px;
+    border-radius: 18px;
+    min-height: calc(var(--card-canvas-height, 300px) + 138px);
+  }
+
+  .card__paper::before {
+    inset: 7px;
+    border-radius: 12px;
+  }
+
+  .card__header {
+    padding: 2px 34px 0;
+  }
+
+  .card__header h2 {
+    font-size: 1.72rem;
+  }
+
+  .card__canvas-frame,
+  .card__canvas {
+    min-height: var(--card-canvas-height, 300px);
+    height: var(--card-canvas-height, 300px);
   }
 }
 

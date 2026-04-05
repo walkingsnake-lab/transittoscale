@@ -157,7 +157,8 @@ async function unlinkWithRetries(filePath, retries = 6, delayMs = 150) {
       const isRetryable = error.code === 'EPERM' || error.code === 'EBUSY';
 
       if (!isRetryable || attempt === retries) {
-        throw error;
+        console.warn(`Skipping stale generated file ${path.basename(filePath)}: ${error.code ?? error.message}`);
+        return;
       }
 
       await sleep(delayMs * (attempt + 1));

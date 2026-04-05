@@ -100,6 +100,8 @@ function resolveAssetPath(relativePath) {
 
 function createCard(city, index, animator, reducedMotion, onSelect) {
   const theme = getCityTheme(city.slug, index);
+  const cardCode = getCardCode(city.slug, city.name);
+  const lineLabel = formatLineLabel(city.lineCount);
   const element = document.createElement('button');
   element.type = 'button';
   element.className = 'card';
@@ -108,25 +110,40 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   element.style.setProperty('--flip-origin', index % 2 === 0 ? '0% 50%' : '100% 50%');
   element.style.setProperty('--card-accent', theme.accent);
   element.style.setProperty('--card-accent-rgb', theme.accentRgb);
-  element.style.setProperty('--card-surface', theme.surface);
-  element.style.setProperty('--card-surface-strong', theme.surfaceStrong);
+  element.style.setProperty('--card-paper', theme.paper);
+  element.style.setProperty('--card-paper-strong', theme.paperStrong);
   element.style.setProperty('--card-border', theme.border);
-  element.style.setProperty('--card-overlay-fill', theme.overlayFill);
   element.style.setProperty('--card-title', theme.text);
   element.style.setProperty('--card-count', theme.mutedText);
   element.style.setProperty('--card-region', theme.regionText);
   element.style.setProperty('--card-text', theme.text);
+  element.style.setProperty('--card-ink', theme.ink);
+  element.style.setProperty('--card-rule', theme.headerRule);
+  element.style.setProperty('--card-corner', theme.cornerText);
+  element.style.setProperty('--card-shadow', theme.shadow);
   element.setAttribute('aria-pressed', 'false');
 
   element.innerHTML = `
-    <div class="card__canvas-frame">
-      <canvas class="card__canvas"></canvas>
-      <div class="card__overlay">
-        <div>
-          <p class="card__region">${city.region}</p>
-          <h2>${city.name}</h2>
-        </div>
-        <p class="card__count">${city.lineCount} lines</p>
+    <div class="card__paper">
+      <div class="card__corner">
+        <span class="card__corner-code">${cardCode}</span>
+        <span class="card__corner-value">${city.lineCount}</span>
+      </div>
+      <div class="card__corner card__corner--bottom" aria-hidden="true">
+        <span class="card__corner-code">${cardCode}</span>
+        <span class="card__corner-value">${city.lineCount}</span>
+      </div>
+      <div class="card__header">
+        <p class="card__region">${city.region}</p>
+        <h2>${city.name}</h2>
+        <p class="card__count">${lineLabel}</p>
+      </div>
+      <div class="card__canvas-frame">
+        <canvas class="card__canvas"></canvas>
+      </div>
+      <div class="card__footer">
+        <span class="card__footer-copy">Shared scale</span>
+        <span class="card__footer-copy">5-mile key</span>
       </div>
     </div>
   `;
@@ -226,13 +243,14 @@ function updateGridLayout(grid, cardCount) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
   const columns = chooseColumnCount(viewportWidth, cardCount);
+  const chromeHeight = viewportWidth < 720 ? 132 : 156;
   const rowTarget =
-    columns >= 5 ? 2.2 :
-    columns === 4 ? 2 :
-    columns === 3 ? 1.8 :
-    columns === 2 ? 1.55 :
-    1.35;
-  const cardHeight = clamp(viewportHeight / rowTarget, 320, 620);
+    columns >= 5 ? 2.25 :
+    columns === 4 ? 2.08 :
+    columns === 3 ? 1.9 :
+    columns === 2 ? 1.62 :
+    1.38;
+  const cardHeight = clamp(viewportHeight / rowTarget - chromeHeight, 240, 480);
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
@@ -294,12 +312,6 @@ function drawCard({
   const emphasis = selectedValue;
   const dimmed = dimValue;
 
-  ctx.save();
-  ctx.strokeStyle = theme.cardStroke;
-  ctx.lineWidth = 1;
-  ctx.strokeRect(0.5, 0.5, width - 1, height - 1);
-  ctx.restore();
-
   if (emphasis > 0.01) {
     ctx.save();
     ctx.fillStyle = theme.selectedGlow;
@@ -312,10 +324,10 @@ function drawCard({
 
   ctx.save();
   ctx.strokeStyle = theme.referenceStroke;
-  ctx.globalAlpha = 0.28 + emphasis * 0.18 - dimmed * 0.1;
+  ctx.globalAlpha = 0.42 + emphasis * 0.12 - dimmed * 0.12;
   ctx.lineWidth = 1.1;
   strokeCircleProgress(ctx, circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, circleValue);
-  ctx.fillStyle = theme.referenceStroke;
+  ctx.fillStyle = theme.mutedText;
   ctx.font = `600 11px ${FONT_STACK}`;
   ctx.textAlign = 'center';
   ctx.fillText('5 mi', circleCenterX, circleCenterY + REFERENCE_RADIUS_PIXELS + 16);
@@ -324,7 +336,7 @@ function drawCard({
   ctx.save();
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  ctx.strokeStyle = CARD_STYLE.lineStroke;
+  ctx.strokeStyle = theme.ink;
   ctx.globalAlpha = CARD_STYLE.baseAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
   ctx.lineWidth =
     CARD_STYLE.baseLineWidth +
@@ -342,15 +354,33 @@ function drawCard({
   });
 
   ctx.restore();
+}
 
-  if (emphasis > 0.01) {
-    ctx.save();
-    ctx.strokeStyle = theme.selectedCardStroke;
-    ctx.globalAlpha = emphasis;
-    ctx.lineWidth = 1.5;
-    ctx.strokeRect(1, 1, width - 2, height - 2);
-    ctx.restore();
+function getCardCode(slug, name) {
+  const overrides = {
+    chicago: 'CHI',
+    'new-york': 'NY',
+    boston: 'BOS',
+    'washington-dc': 'DC',
+    'minneapolis-st-paul': 'MSP',
+    seattle: 'SEA',
+    toronto: 'TOR'
+  };
+
+  if (overrides[slug]) {
+    return overrides[slug];
   }
+
+  return name
+    .split(/\s+/)
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 3)
+    .toUpperCase();
+}
+
+function formatLineLabel(lineCount) {
+  return `${lineCount} ${lineCount === 1 ? 'line' : 'lines'}`;
 }
 
 class Animator {

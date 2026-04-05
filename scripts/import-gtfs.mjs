@@ -8,8 +8,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const sourcesPath = path.join(repoRoot, 'data', 'sources', 'gtfs-sources.json');
 const normalizedDir = path.join(repoRoot, 'data', 'normalized');
+const publicDataDir = path.join(repoRoot, 'public', 'data');
+const publicCityDir = path.join(publicDataDir, 'cities');
 
-const sourceConfigs = JSON.parse(await readFile(sourcesPath, 'utf8'));
+const sourceConfigs = JSON.parse(stripBom(await readFile(sourcesPath, 'utf8')));
+const existingCitiesBySlug = await readExistingImportedCities();
 
 await mkdir(normalizedDir, { recursive: true });
 
@@ -23,7 +26,19 @@ for (const sourceConfig of sourceConfigs) {
   const requestHeaders = resolveRequestHeaders(sourceConfig);
 
   if (requestHeaders === null) {
-    console.warn(`Skipping ${sourceConfig.slug}: missing required credentials.`);
+    const existingCity = existingCitiesBySlug.get(sourceConfig.slug);
+
+    if (existingCity) {
+      console.warn(`Skipping ${sourceConfig.slug}: missing required credentials, reusing existing data.`);
+      importedCities.push(existingCity);
+      await writeFile(
+        path.join(normalizedDir, `${existingCity.slug}.geojson`),
+        `${JSON.stringify(existingCity.featureCollection, null, 2)}\n`
+      );
+    } else {
+      console.warn(`Skipping ${sourceConfig.slug}: missing required credentials.`);
+    }
+
     continue;
   }
 
@@ -46,6 +61,42 @@ await pruneGeneratedFiles(
 );
 
 console.log(`Imported ${importedCities.length} GTFS cities into data/normalized`);
+
+async function readExistingImportedCities() {
+  const cities = new Map();
+  await addExistingCitiesFromManifest(
+    cities,
+    path.join(normalizedDir, 'cities.json'),
+    normalizedDir
+  );
+  await addExistingCitiesFromManifest(
+    cities,
+    path.join(publicDataDir, 'city-manifest.json'),
+    publicCityDir
+  );
+  return cities;
+}
+
+async function addExistingCitiesFromManifest(cities, manifestPath, cityDirectory) {
+  try {
+    const manifest = JSON.parse(stripBom(await readFile(manifestPath, 'utf8')));
+
+    for (const city of manifest) {
+      if (cities.has(city.slug)) {
+        continue;
+      }
+
+      const featureCollection = JSON.parse(
+        stripBom(await readFile(path.join(cityDirectory, `${city.slug}.geojson`), 'utf8'))
+      );
+      cities.set(city.slug, { ...city, featureCollection });
+    }
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw error;
+    }
+  }
+}
 
 function resolveRequestHeaders(sourceConfig) {
   const headers = {
@@ -340,6 +391,10 @@ function getCanonicalLineId(route, sourceConfig) {
 
 function normalizeValue(value) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function stripBom(content) {
+  return content.replace(/^\uFEFF/, '');
 }
 
 function computeBoundsFromFeatures(features) {
