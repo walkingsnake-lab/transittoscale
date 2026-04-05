@@ -1,24 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 :root {
   color-scheme: dark;
   --page-bg: #2a211b;
   --page-bg-strong: #15110f;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --font-sans: 'Inter', sans-serif;
 }
 
 * {
   box-sizing: border-box;
+  font-family: inherit;
 }
 
 html,
 body {
   margin: 0;
   min-height: 100%;
+  font-family: var(--font-sans);
 }
 
 body {
-  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background:
     radial-gradient(circle at top, rgba(255, 244, 214, 0.1), transparent 24%),
     linear-gradient(180deg, rgba(74, 58, 46, 0.38), transparent 34%),
@@ -226,7 +226,6 @@ body {
 .card__overlay h2 {
   margin: 0;
   color: rgba(17, 17, 17, 0.9);
-  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: clamp(1.7rem, 2.15vw, 2.16rem);
   font-weight: 700;
   line-height: 0.94;
