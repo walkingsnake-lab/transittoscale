@@ -110,7 +110,6 @@ body {
 }
 
 .zoom-controls {
-  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0;
@@ -120,38 +119,23 @@ body {
   overflow: hidden;
   pointer-events: auto;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 28%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 245, 241, 0.98) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(20, 16, 14, 0.96) 0%, rgba(12, 10, 9, 0.98) 100%);
   box-shadow:
-    0 3px 0 rgba(255, 255, 255, 0.56) inset,
-    0 -2px 0 rgba(17, 17, 17, 0.08) inset,
-    0 14px 30px rgba(0, 0, 0, 0.2);
-  color: rgba(17, 17, 17, 0.94);
-}
-
-.zoom-controls::after {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border: 2px solid rgba(17, 17, 17, 0.94);
-  border-radius: 14px;
-  pointer-events: none;
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.28) inset,
+    0 12px 28px rgba(0, 0, 0, 0.28);
+  color: rgba(255, 252, 247, 0.96);
 }
 
 .zoom-controls__button {
   display: inline-grid;
   place-items: center;
-  position: relative;
-  z-index: 1;
   width: 34px;
   height: 34px;
   border: 0;
   background: transparent;
   color: inherit;
-  font-family: var(--font-sans-tight);
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1;
   cursor: pointer;
   transition:
     transform 140ms var(--ease-out),
@@ -161,12 +145,12 @@ body {
 
 .zoom-controls__button:hover:not(:disabled),
 .zoom-controls__button:focus-visible {
-  background: rgba(17, 17, 17, 0.07);
+  background: rgba(255, 255, 255, 0.08);
   transform: translateY(-1px);
 }
 
 .zoom-controls__button:focus-visible {
-  outline: 2px solid rgba(17, 17, 17, 0.9);
+  outline: 2px solid rgba(255, 252, 247, 0.9);
   outline-offset: 2px;
 }
 
@@ -177,8 +161,6 @@ body {
 }
 
 .zoom-controls__steps {
-  position: relative;
-  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -189,7 +171,7 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: rgba(17, 17, 17, 0.18);
+  background: rgba(255, 252, 247, 0.26);
   transition:
     transform 180ms var(--ease-out),
     background-color 180ms var(--ease-out),
@@ -197,8 +179,20 @@ body {
 }
 
 .zoom-controls__step--active {
-  background: rgba(17, 17, 17, 0.92);
+  background: rgba(255, 252, 247, 0.96);
   transform: scale(1.15);
+}
+
+.zoom-controls__icon {
+  width: 14px;
+  height: 14px;
+}
+
+.zoom-controls__icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
 }
 
 .grid {
@@ -585,11 +579,6 @@ body {
   .zoom-controls {
     padding: 3px;
     border-radius: 16px;
-  }
-
-  .zoom-controls::after {
-    inset: 3px;
-    border-radius: 12px;
   }
 
   .zoom-controls__button {

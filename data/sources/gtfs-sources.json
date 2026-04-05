@@ -305,36 +305,71 @@
     "slug": "san-francisco-bay-area",
     "name": "San Francisco Bay Area",
     "region": "United States",
-    "sourceType": "gtfs",
-    "sourceName": "Bay Area Rapid Transit (BART)",
+    "sourceType": "gtfs-merge",
+    "sourceName": "BART + Muni Metro + VTA Light Rail",
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
     "focusPoint": [-122.2712, 37.8037],
-    "routeTypes": ["1"],
     "minPointSpacingMeters": 20,
-    "minShapeTrips": 20,
-    "shapeTripShareThreshold": 0.08,
-    "routeIdAllowlist": ["1", "2", "3", "4", "5", "6", "7", "8", "11", "12", "19", "20"],
-    "routeIdAliases": {
-      "1": "Yellow",
-      "2": "Yellow",
-      "3": "Orange",
-      "4": "Orange",
-      "5": "Green",
-      "6": "Green",
-      "7": "Red",
-      "8": "Red",
-      "11": "Blue",
-      "12": "Blue",
-      "19": "Gray",
-      "20": "Gray"
-    },
-    "lineNameOverrides": {
-      "Yellow": "Yellow Line",
-      "Orange": "Orange Line",
-      "Green": "Green Line",
-      "Red": "Red Line",
-      "Blue": "Blue Line",
-      "Gray": "Oakland Airport Connector"
-    }
+    "sources": [
+      {
+        "sourceName": "Bay Area Rapid Transit (BART)",
+        "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
+        "routeTypes": ["1"],
+        "minShapeTrips": 20,
+        "shapeTripShareThreshold": 0.08,
+        "routeIdAllowlist": ["1", "2", "3", "4", "5", "6", "7", "8", "11", "12", "19", "20"],
+        "routeIdAliases": {
+          "1": "Yellow",
+          "2": "Yellow",
+          "3": "Orange",
+          "4": "Orange",
+          "5": "Green",
+          "6": "Green",
+          "7": "Red",
+          "8": "Red",
+          "11": "Blue",
+          "12": "Blue",
+          "19": "Gray",
+          "20": "Gray"
+        },
+        "lineNameOverrides": {
+          "Yellow": "Yellow Line",
+          "Orange": "Orange Line",
+          "Green": "Green Line",
+          "Red": "Red Line",
+          "Blue": "Blue Line",
+          "Gray": "Oakland Airport Connector"
+        }
+      },
+      {
+        "sourceName": "San Francisco Municipal Transportation Agency (SFMTA)",
+        "sourceUrl": "https://muni-gtfs.apps.sfmta.com/data/muni_gtfs-current.zip",
+        "routeTypes": ["0"],
+        "minShapeTrips": 20,
+        "shapeTripShareThreshold": 0.08,
+        "routeIdAllowlist": ["J", "K", "L", "M", "N", "T"],
+        "lineNameOverrides": {
+          "J": "J Church",
+          "K": "K Ingleside",
+          "L": "L Taraval",
+          "M": "M Ocean View",
+          "N": "N Judah",
+          "T": "T Third"
+        }
+      },
+      {
+        "sourceName": "Santa Clara Valley Transportation Authority (VTA)",
+        "sourceUrl": "https://gtfs.vta.org/gtfs_vta.zip",
+        "routeTypes": ["0"],
+        "minShapeTrips": 20,
+        "shapeTripShareThreshold": 0.08,
+        "routeIdAllowlist": ["Blue", "Green", "Ornge"],
+        "lineNameOverrides": {
+          "Blue": "VTA Blue Line",
+          "Green": "VTA Green Line",
+          "Ornge": "VTA Orange Line"
+        }
+      }
+    ]
   }
 ]

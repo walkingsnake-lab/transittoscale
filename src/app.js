@@ -33,7 +33,9 @@ export async function mountApp(root) {
       <header class="shell__toolbar" data-toolbar>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
           <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">
-            <span aria-hidden="true">-</span>
+            <svg class="zoom-controls__icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M4 8H12"></path>
+            </svg>
           </button>
           <div class="zoom-controls__steps" aria-hidden="true">
             <span class="zoom-controls__step" data-zoom-step></span>
@@ -41,7 +43,10 @@ export async function mountApp(root) {
             <span class="zoom-controls__step" data-zoom-step></span>
           </div>
           <button type="button" class="zoom-controls__button" data-zoom-in aria-label="Zoom in network diagrams">
-            <span aria-hidden="true">+</span>
+            <svg class="zoom-controls__icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M4 8H12"></path>
+              <path d="M8 4V12"></path>
+            </svg>
           </button>
           <span class="shell__sr-only" data-zoom-label aria-live="polite">Standard</span>
         </div>
@@ -651,7 +656,7 @@ function formatSystemLabel(city) {
     toronto: 'TTC subway',
     montreal: 'Montreal Metro',
     london: 'Underground + DLR + Overground + Elizabeth',
-    'san-francisco-bay-area': 'BART'
+    'san-francisco-bay-area': 'BART + Muni Metro + VTA Light Rail'
   };
 
   if (explicitLabels[city.slug]) {
