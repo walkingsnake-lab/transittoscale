@@ -30,17 +30,10 @@ export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell">
       <header class="shell__toolbar" data-toolbar>
-        <div class="shell__toolbar-copy">
-          <p class="shell__eyebrow">Transit To Scale</p>
-          <p class="shell__toolbar-title">Compare each network at one shared scale.</p>
-        </div>
-        <div class="zoom-controls" role="group" aria-label="Card zoom controls">
+        <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
           <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">-</button>
-          <div class="zoom-controls__status">
-            <span class="zoom-controls__label">Zoom</span>
-            <strong class="zoom-controls__value" data-zoom-label aria-live="polite">Standard</strong>
-          </div>
           <button type="button" class="zoom-controls__button" data-zoom-in aria-label="Zoom in network diagrams">+</button>
+          <span class="shell__sr-only" data-zoom-label aria-live="polite">Standard</span>
         </div>
       </header>
       <section class="shell__status" data-status>Loading network catalog…</section>
