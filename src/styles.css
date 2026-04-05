@@ -31,7 +31,7 @@ body {
 .shell {
   width: 100%;
   min-height: 100vh;
-  padding: 24px;
+  padding: 0;
 }
 
 .shell__status {
@@ -60,7 +60,7 @@ body {
 .grid {
   display: grid;
   grid-template-columns: repeat(var(--card-columns, 3), minmax(0, 1fr));
-  gap: 18px;
+  gap: 0;
   align-items: start;
 }
 
@@ -93,25 +93,22 @@ body {
   gap: 16px;
   min-height: calc(var(--card-canvas-height, 360px) + 128px);
   padding: 18px;
-  border-radius: 16px;
+  border-radius: 0;
   background: var(--card-paper);
   color: var(--card-text);
   border: 2px solid var(--card-border);
   box-shadow: 0 18px 38px var(--card-shadow);
   transition:
-    transform 260ms var(--ease-out),
     box-shadow 260ms var(--ease-out),
     background-color 260ms var(--ease-out);
 }
 
 .card:hover .card__paper {
-  transform: translateY(-4px);
   background: var(--card-paper-strong);
   box-shadow: 0 22px 42px var(--card-shadow);
 }
 
 .card--selected .card__paper {
-  transform: translateY(-6px);
   box-shadow:
     0 22px 46px var(--card-shadow),
     0 0 0 1px rgba(17, 17, 17, 0.08);
@@ -157,7 +154,7 @@ body {
 .card__canvas-frame {
   position: relative;
   min-height: var(--card-canvas-height, 360px);
-  border-radius: 10px;
+  border-radius: 0;
   overflow: hidden;
   background: #f0efeb;
   border: 1px solid rgba(17, 17, 17, 0.14);
@@ -221,18 +218,10 @@ body {
 }
 
 @media (max-width: 720px) {
-  .shell {
-    padding: 12px;
-  }
-
-  .grid {
-    gap: 12px;
-  }
-
   .card__paper {
     padding: 14px;
     min-height: calc(var(--card-canvas-height, 300px) + 112px);
-    border-radius: 14px;
+    border-radius: 0;
   }
 
   .card__header h2 {

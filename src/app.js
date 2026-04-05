@@ -13,7 +13,7 @@ import {
   DIM_SPRING,
   getCityTheme
 } from './config.js';
-import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath, strokeCircleProgress } from './lib/canvas.js';
+import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath } from './lib/canvas.js';
 import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
 import { clamp, damp, invLerp, nearlyEqual } from './lib/math.js';
 import { projectFeatureCollection } from './lib/projection.js';
@@ -130,13 +130,6 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       <div class="card__canvas-frame">
         <canvas class="card__canvas"></canvas>
       </div>
-      <div class="card__footer">
-        <span class="card__brand">
-          <span class="card__brand-mark"></span>
-          <span>Transit To Scale</span>
-        </span>
-        <span class="card__footer-copy">5-mile reference</span>
-      </div>
     </div>
   `;
 
@@ -235,7 +228,7 @@ function updateGridLayout(grid, cardCount) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
   const columns = chooseColumnCount(viewportWidth, cardCount);
-  const chromeHeight = viewportWidth < 720 ? 108 : 128;
+  const chromeHeight = viewportWidth < 720 ? 56 : 68;
   const rowTarget =
     columns >= 5 ? 2.16 :
     columns === 4 ? 1.98 :
@@ -315,10 +308,11 @@ function drawCard({
   const circleCenterY = height / 2;
 
   ctx.save();
-  ctx.strokeStyle = theme.referenceStroke;
-  ctx.globalAlpha = 0.42 + emphasis * 0.12 - dimmed * 0.12;
-  ctx.lineWidth = 1.1;
-  strokeCircleProgress(ctx, circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, circleValue);
+  ctx.fillStyle = theme.referenceFill;
+  ctx.globalAlpha = 0.16 * circleValue + emphasis * 0.03 - dimmed * 0.04;
+  ctx.beginPath();
+  ctx.arc(circleCenterX, circleCenterY, REFERENCE_RADIUS_PIXELS, 0, Math.PI * 2);
+  ctx.fill();
   ctx.fillStyle = theme.mutedText;
   ctx.font = `600 11px ${FONT_STACK}`;
   ctx.textAlign = 'center';

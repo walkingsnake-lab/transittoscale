@@ -19,9 +19,23 @@ const DEFAULT_PAPER_STRONG = '#ffffff';
 const DEFAULT_INK = '#111111';
 const DEFAULT_BORDER = '#111111';
 
+const CITY_THEME_BY_SLUG = {
+  'new-york': { accent: '#244f9e' },
+  chicago: { accent: '#2d7a5a' },
+  boston: { accent: '#a33f36' },
+  'washington-dc': { accent: '#b08a3f' },
+  'minneapolis-st-paul': { accent: '#8f5c96' },
+  seattle: { accent: '#4f7a59' },
+  toronto: { accent: '#5c64a8' },
+  montreal: { accent: '#c26b2d' },
+  'san-francisco-bay-area': { accent: '#2c6f8f' }
+};
+
+const CITY_THEME_SEQUENCE = ['#244f9e', '#2d7a5a', '#a33f36', '#b08a3f', '#8f5c96', '#4f7a59', '#5c64a8', '#c26b2d', '#2c6f8f'];
+
 export function getCityTheme(slug, index = 0) {
-  const accent = '#111111';
-  const accentRgb = '17, 17, 17';
+  const accent = CITY_THEME_BY_SLUG[slug]?.accent ?? CITY_THEME_SEQUENCE[index % CITY_THEME_SEQUENCE.length];
+  const accentRgb = hexToRgbTriplet(accent);
   const inkRgb = '17, 17, 17';
 
   return {
@@ -35,9 +49,9 @@ export function getCityTheme(slug, index = 0) {
     mutedText: `rgba(${inkRgb}, 0.74)`,
     regionText: `rgba(${inkRgb}, 0.56)`,
     cardStroke: `rgba(${inkRgb}, 0.12)`,
-    referenceStroke: `rgba(${inkRgb}, 0.24)`,
-    selectedGlow: `rgba(${inkRgb}, 0.03)`,
-    selectedCardStroke: DEFAULT_INK,
+    referenceFill: `rgba(${accentRgb}, 0.14)`,
+    selectedGlow: `rgba(${accentRgb}, 0.035)`,
+    selectedCardStroke: accent,
     shadow: 'rgba(0, 0, 0, 0.18)'
   };
 }
@@ -49,3 +63,12 @@ export const CARD_STYLE = {
   dimmedAlpha: 0.18,
   lineStroke: DEFAULT_INK
 };
+
+function hexToRgbTriplet(hex) {
+  const normalized = hex.replace('#', '');
+  const bigint = Number.parseInt(normalized, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `${r}, ${g}, ${b}`;
+}
