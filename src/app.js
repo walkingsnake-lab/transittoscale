@@ -36,6 +36,11 @@ export async function mountApp(root) {
     const cards = cities.map((city, index) => createCard(city, index, animator, reducedMotion, handleSelect));
 
     cards.forEach(({ element }) => grid.append(element));
+    updateGridLayout(grid, cards.length);
+    window.addEventListener('resize', () => {
+      updateGridLayout(grid, cards.length);
+      animator.start();
+    });
 
     requestAnimationFrame(() => {
       root.classList.add('is-ready');
@@ -90,6 +95,7 @@ async function loadCities() {
 function resolveAssetPath(relativePath) {
   return new URL(relativePath, document.baseURI).toString();
 }
+
 function createCard(city, index, animator, reducedMotion, onSelect) {
   const element = document.createElement('button');
   element.type = 'button';
@@ -199,6 +205,44 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   animator.add(card);
 
   return card;
+}
+
+function updateGridLayout(grid, cardCount) {
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const columns = chooseColumnCount(viewportWidth, cardCount);
+  const rowTarget =
+    columns >= 5 ? 2.2 :
+    columns === 4 ? 2 :
+    columns === 3 ? 1.8 :
+    columns === 2 ? 1.55 :
+    1.35;
+  const cardHeight = clamp(viewportHeight / rowTarget, 320, 620);
+
+  grid.style.setProperty('--card-columns', String(columns));
+  grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
+}
+
+function chooseColumnCount(viewportWidth, cardCount) {
+  const minCardWidth = viewportWidth < 720 ? 220 : 260;
+  const idealCardWidth = viewportWidth >= 1600 ? 360 : viewportWidth >= 1100 ? 340 : 315;
+  let best = 1;
+
+  for (let columns = 1; columns <= cardCount; columns += 1) {
+    const candidateWidth = viewportWidth / columns;
+
+    if (candidateWidth < minCardWidth) {
+      break;
+    }
+
+    best = columns;
+
+    if (candidateWidth <= idealCardWidth * 1.08) {
+      return columns;
+    }
+  }
+
+  return best;
 }
 
 function projectLines(city, width, height) {
