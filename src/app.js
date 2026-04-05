@@ -472,12 +472,6 @@ function drawCard({
   const lineWidth =
     CARD_STYLE.baseLineWidth + (CARD_STYLE.selectedLineWidth - CARD_STYLE.baseLineWidth) * emphasisStrength;
 
-  ctx.strokeStyle = theme.paper;
-  ctx.globalCompositeOperation = 'source-over';
-  ctx.globalAlpha = CARD_STYLE.haloAlpha * (1 - dimmed) + CARD_STYLE.dimmedHaloAlpha * dimmed;
-  ctx.lineWidth = lineWidth + CARD_STYLE.haloWidthPadding;
-  drawProjectedLines(ctx, projectedLines, lineWindow);
-
   ctx.strokeStyle = theme.ink;
   // Keep shared corridors from compounding into visibly darker knots.
   ctx.globalCompositeOperation = 'darken';
