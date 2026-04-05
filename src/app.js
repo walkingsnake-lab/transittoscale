@@ -608,7 +608,7 @@ function formatLineLabel(lineCount) {
 function formatSystemLabel(city) {
   const explicitLabels = {
     atlanta: 'MARTA rail',
-    baltimore: 'Metro SubwayLink',
+    baltimore: 'Metro SubwayLink + Light RailLink',
     chicago: 'Chicago "L"',
     'new-york': 'Subway + Staten Island Railway',
     boston: 'MBTA rapid transit',

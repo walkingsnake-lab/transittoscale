@@ -33,18 +33,33 @@
     "slug": "baltimore",
     "name": "Baltimore",
     "region": "United States",
-    "sourceType": "gtfs",
+    "sourceType": "gtfs-merge",
     "sourceName": "Maryland Transit Administration (MTA Maryland)",
-    "sourceUrl": "https://feeds.mta.maryland.gov/gtfs/metro",
+    "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources",
     "focusPoint": [-76.6122, 39.2904],
-    "routeTypes": ["1"],
     "minPointSpacingMeters": 20,
-    "minShapeTrips": 5,
-    "shapeTripShareThreshold": 0.02,
-    "routeIdAllowlist": ["11682"],
-    "lineNameOverrides": {
-      "11682": "Metro SubwayLink"
-    }
+    "sources": [
+      {
+        "sourceUrl": "https://feeds.mta.maryland.gov/gtfs/metro",
+        "routeTypes": ["1"],
+        "minShapeTrips": 5,
+        "shapeTripShareThreshold": 0.02,
+        "routeIdAllowlist": ["11682"],
+        "lineNameOverrides": {
+          "11682": "Metro SubwayLink"
+        }
+      },
+      {
+        "sourceUrl": "https://feeds.mta.maryland.gov/gtfs/light-rail",
+        "routeTypes": ["0"],
+        "minShapeTrips": 5,
+        "shapeTripShareThreshold": 0.02,
+        "routeIdAllowlist": ["11693"],
+        "lineNameOverrides": {
+          "11693": "Light RailLink"
+        }
+      }
+    ]
   },
   {
     "slug": "chicago",

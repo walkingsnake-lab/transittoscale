@@ -13,7 +13,7 @@ const publicCityDir = path.join(publicDataDir, 'cities');
 
 const sourceConfigs = JSON.parse(stripBom(await readFile(sourcesPath, 'utf8')));
 const importSourceConfigs = sourceConfigs.filter((sourceConfig) =>
-  ['gtfs', 'tfl-api'].includes(sourceConfig.sourceType)
+  ['gtfs', 'gtfs-merge', 'tfl-api'].includes(sourceConfig.sourceType)
 );
 const sourceConfigBySlug = new Map(importSourceConfigs.map((sourceConfig) => [sourceConfig.slug, sourceConfig]));
 const selectedCitySlugs = parseSelectedCitySlugs(process.argv.slice(2));
@@ -199,6 +199,10 @@ async function importSourceCity(sourceConfig, existingCitiesBySlug) {
     return importGtfsCity(sourceConfig, requestHeaders);
   }
 
+  if (sourceConfig.sourceType === 'gtfs-merge') {
+    return importMergedGtfsCity(sourceConfig, existingCitiesBySlug);
+  }
+
   if (sourceConfig.sourceType === 'tfl-api') {
     return importTflApiCity(sourceConfig);
   }
@@ -207,6 +211,44 @@ async function importSourceCity(sourceConfig, existingCitiesBySlug) {
 }
 
 async function importGtfsCity(sourceConfig, requestHeaders) {
+  const features = await importGtfsFeatures(sourceConfig, requestHeaders);
+  return buildImportedCity(sourceConfig, features);
+}
+
+async function importMergedGtfsCity(sourceConfig, existingCitiesBySlug) {
+  const mergedSourceConfigs = sourceConfig.sources ?? [];
+
+  if (mergedSourceConfigs.length === 0) {
+    throw new Error(`No GTFS sources configured for ${sourceConfig.slug}`);
+  }
+
+  const features = [];
+
+  for (const mergedSourceConfig of mergedSourceConfigs) {
+    const effectiveSourceConfig = {
+      ...sourceConfig,
+      ...mergedSourceConfig
+    };
+    const requestHeaders = resolveRequestHeaders(effectiveSourceConfig);
+
+    if (requestHeaders === null) {
+      const existingCity = existingCitiesBySlug.get(sourceConfig.slug);
+
+      if (existingCity) {
+        console.warn(`Skipping ${sourceConfig.slug}: missing required credentials, reusing existing data.`);
+        return existingCity;
+      }
+
+      throw new Error(`Missing required credentials for ${sourceConfig.slug}`);
+    }
+
+    features.push(...(await importGtfsFeatures(effectiveSourceConfig, requestHeaders)));
+  }
+
+  return buildImportedCity(sourceConfig, features);
+}
+
+async function importGtfsFeatures(sourceConfig, requestHeaders) {
   const response = await fetch(sourceConfig.sourceUrl, {
     headers: requestHeaders
   });
@@ -268,6 +310,10 @@ async function importGtfsCity(sourceConfig, requestHeaders) {
     throw new Error(`No features were produced for ${sourceConfig.slug}`);
   }
 
+  return features;
+}
+
+function buildImportedCity(sourceConfig, features) {
   const bounds = computeBoundsFromFeatures(features);
   const centroid = computeCentroidFromBounds(bounds);
 

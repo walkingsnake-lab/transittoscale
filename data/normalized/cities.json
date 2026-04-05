@@ -29,7 +29,7 @@
     "dataPath": "data/cities/baltimore.geojson",
     "centroid": [
       -76.68852079999999,
-      39.348874300000006
+      39.334028243999995
     ],
     "focusPoint": [
       -76.6122,
@@ -37,13 +37,13 @@
     ],
     "bounds": [
       -76.7829216,
-      39.289349,
+      39.171772003,
       -76.59412,
-      39.4083996
+      39.496284485
     ],
-    "lineCount": 1,
+    "lineCount": 2,
     "sourceName": "Maryland Transit Administration (MTA Maryland)",
-    "sourceUrl": "https://feeds.mta.maryland.gov/gtfs/metro"
+    "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources"
   },
   {
     "slug": "chicago",
