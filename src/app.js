@@ -4,13 +4,8 @@ import {
   CARD_STYLE,
   FONT_STACK_TIGHT,
   HEADER_OFFSET,
-  INTRO_CIRCLE_DELAY,
-  INTRO_CIRCLE_PORTION,
-  INTRO_DURATION_MS,
-  INTRO_LINES_DELAY,
   INTRO_STAGGER_MS,
   REFERENCE_RADIUS_PIXELS,
-  REVEAL_LINE_OFFSET,
   SELECTION_SPRING,
   DIM_SPRING,
   HOVER_SPRING,
@@ -19,12 +14,10 @@ import {
 import {
   clearHiDpiCanvas,
   buildPathMetrics,
-  drawProgressPath,
   simplifyPath
 } from './lib/canvas.js';
 import { createCityDisplay } from './lib/display-profiles.js';
-import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
-import { clamp, damp, invLerp, nearlyEqual, mix } from './lib/math.js';
+import { clamp, damp, nearlyEqual } from './lib/math.js';
 import { projectFeatureCollection } from './lib/projection.js';
 
 const ZOOM_STEPS = [
@@ -282,8 +275,6 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     dimValue: 0,
     dimTarget: 0,
     flipped: false,
-    introStart: performance.now() + index * INTRO_STAGGER_MS,
-    introValue: reducedMotion ? 1 : 0,
     active: true,
     resize() {
       const width = Math.max(220, Math.round(stage.clientWidth));
@@ -372,13 +363,6 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
     update(now, deltaSeconds) {
       let stillAnimating = false;
 
-      if (!reducedMotion && this.introValue < 1) {
-        this.introValue = clamp((now - this.introStart) / INTRO_DURATION_MS);
-        stillAnimating = stillAnimating || this.introValue < 1;
-      } else {
-        this.introValue = 1;
-      }
-
       const nextSelected = damp(this.selectedValue, this.selectedTarget, SELECTION_SPRING, deltaSeconds);
       const nextHover = damp(this.hoverValue, this.hoverTarget, HOVER_SPRING, deltaSeconds);
       const nextDim = damp(this.dimValue, this.dimTarget, DIM_SPRING, deltaSeconds);
@@ -414,7 +398,6 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         diagramScale: this.diagramScaleValue,
         display: this.city.display,
         theme: this.theme,
-        introValue: this.introValue,
         selectedValue: this.selectedValue,
         hoverValue: this.hoverValue,
         dimValue: this.dimValue
@@ -521,16 +504,12 @@ function drawCard({
   diagramScale,
   display,
   theme,
-  introValue,
   selectedValue,
   hoverValue,
   dimValue
 }) {
   ctx.clearRect(0, 0, width, height);
 
-  const labelValue = easeOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY + 0.16, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION + 0.18));
-  const lineWindow = easeInOutCubic(invLerp(introValue, INTRO_LINES_DELAY, 0.98));
-  const labelPopValue = easeOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY + 0.08, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION + 0.08));
   const emphasis = selectedValue;
   const hover = hoverValue;
   const dimmed = dimValue;
@@ -559,15 +538,13 @@ function drawCard({
     text: '5 MILES',
     centerX: circleCenterX,
     centerY: circleCenterY,
-    radius: mix(referenceRadius - 8, referenceRadius + 10, labelPopValue),
+    radius: referenceRadius + 10,
     startAngle: Math.PI + 0.08,
     endAngle: Math.PI * 1.5 - 0.08,
     fillStyle: theme.referenceFill,
     font: `800 15px ${FONT_STACK_TIGHT}`,
     letterSpacing: 0.9,
-    globalAlpha: clamp(circleAlpha * labelValue * (0.9 + hover * 0.2 + emphasis * 0.08 - dimmed * 0.08), 0, 0.32),
-    scale: mix(0.58, 1, labelPopValue),
-    clipOutsideRadius: referenceRadius + 1.5
+    globalAlpha: clamp(circleAlpha * (0.92 + hover * 0.2 + emphasis * 0.08 - dimmed * 0.08), 0.08, 0.34)
   });
 
   ctx.save();
@@ -588,26 +565,24 @@ function drawCard({
   ctx.strokeStyle = theme.ink;
   // Keep shared corridors from compounding into visibly darker knots.
   ctx.globalCompositeOperation = 'darken';
-  ctx.globalAlpha = (display.lineAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed) * (0.24 + lineWindow * 0.76);
+  ctx.globalAlpha = display.lineAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
   ctx.lineWidth = scaledLineWidth;
-  drawProjectedLines(ctx, projectedLines, lineWindow);
+  drawProjectedLines(ctx, projectedLines);
 
   ctx.restore();
 }
 
-function drawProjectedLines(ctx, projectedLines, lineWindow) {
-  const lineCount = projectedLines.length;
+function drawProjectedLines(ctx, projectedLines) {
+  projectedLines.forEach((metrics) => {
+    ctx.beginPath();
+    ctx.moveTo(metrics.points[0][0], metrics.points[0][1]);
 
-  projectedLines.forEach((metrics, index) => {
-    const progress = getLineRevealProgress(lineCount, index, lineWindow);
-    drawProgressPath(ctx, metrics, progress);
+    for (let index = 1; index < metrics.points.length; index += 1) {
+      ctx.lineTo(metrics.points[index][0], metrics.points[index][1]);
+    }
+
+    ctx.stroke();
   });
-}
-
-function getLineRevealProgress(lineCount, index, lineWindow) {
-  // Spread the reveal stagger across the full set so later lines still finish drawing.
-  const offset = lineCount > 1 ? (index / (lineCount - 1)) * REVEAL_LINE_OFFSET : 0;
-  return easeOutCubic(clamp((lineWindow - offset) / Math.max(0.16, 1 - offset)));
 }
 
 function mergeOverlappingPaths(paths, snapPrecision = SEGMENT_SNAP_PRECISION) {
