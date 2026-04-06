@@ -4,7 +4,6 @@ import {
   REFERENCE_RADIUS_PIXELS,
   getCityTheme
 } from '../config.js';
-import { simplifyPath } from './canvas.js';
 import { OVERVIEW_BASE_HEIGHT, OVERVIEW_BASE_WIDTH } from './overview-config.js';
 import { projectFeatureCollection } from './projection.js';
 
@@ -82,7 +81,6 @@ export function getOverviewDisplayPaths(city, width = OVERVIEW_BASE_WIDTH, heigh
     return [];
   }
 
-  const simplifyTolerance = Math.max(0.5, city.display.simplifyTolerance * 0.7);
   const frameWidth = width - OVERVIEW_FRAME_PADDING * 2;
   const frameHeight = height - OVERVIEW_FRAME_PADDING * 2 - HEADER_OFFSET;
   const centerX = OVERVIEW_FRAME_PADDING + frameWidth / 2;
@@ -92,7 +90,6 @@ export function getOverviewDisplayPaths(city, width = OVERVIEW_BASE_WIDTH, heigh
   const projectedPaths = projectedFeatures.flatMap((feature) =>
     feature.paths
       .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
-      .map((translatedPath) => simplifyPath(translatedPath, simplifyTolerance))
       .filter((path) => path.length > 1)
   );
   const { mergedPaths, duplicateShare } = mergeOverlappingPaths(projectedPaths);
