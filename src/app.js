@@ -26,6 +26,7 @@ const ZOOM_STEPS = [
   { label: 'Close', diagramScale: 1.18 }
 ];
 const DIAGRAM_ZOOM_SPRING = 10;
+const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
 
 export async function mountApp(root) {
   root.innerHTML = `
@@ -157,7 +158,15 @@ async function loadCities() {
     })
   );
 
-  return cities;
+  return cities.sort((left, right) => {
+    const regionComparison = CITY_ORDER_COLLATOR.compare(left.region ?? '', right.region ?? '');
+
+    if (regionComparison !== 0) {
+      return regionComparison;
+    }
+
+    return CITY_ORDER_COLLATOR.compare(left.name, right.name);
+  });
 }
 
 function resolveAssetPath(relativePath) {
