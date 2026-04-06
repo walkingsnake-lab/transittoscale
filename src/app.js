@@ -25,7 +25,7 @@ import {
 } from './lib/canvas.js';
 import { createCityDisplay } from './lib/display-profiles.js';
 import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
-import { clamp, damp, invLerp, nearlyEqual } from './lib/math.js';
+import { clamp, damp, invLerp, nearlyEqual, mix } from './lib/math.js';
 import { projectFeatureCollection } from './lib/projection.js';
 
 const ZOOM_STEPS = [
@@ -533,6 +533,7 @@ function drawCard({
   const circleValue = easeInOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION));
   const labelValue = easeOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY + 0.16, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION + 0.18));
   const lineWindow = easeInOutCubic(invLerp(introValue, INTRO_LINES_DELAY, 0.98));
+  const labelPopValue = easeOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY + 0.08, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION + 0.08));
   const emphasis = selectedValue;
   const hover = hoverValue;
   const dimmed = dimValue;
@@ -561,13 +562,15 @@ function drawCard({
     text: '5 MILES',
     centerX: circleCenterX,
     centerY: circleCenterY,
-    radius: referenceRadius + 10,
+    radius: mix(referenceRadius - 8, referenceRadius + 10, labelPopValue),
     startAngle: Math.PI + 0.08,
     endAngle: Math.PI * 1.5 - 0.08,
-    fillStyle: theme.mutedText,
+    fillStyle: theme.referenceFill,
     font: `800 15px ${FONT_STACK_TIGHT}`,
     letterSpacing: 0.9,
-    globalAlpha: clamp(labelValue * (0.08 + hover * 0.08 + emphasis * 0.04 - dimmed * 0.03), 0, 0.18)
+    globalAlpha: clamp(circleAlpha * labelValue * (0.9 + hover * 0.2 + emphasis * 0.08 - dimmed * 0.08), 0, 0.32),
+    scale: mix(0.58, 1, labelPopValue),
+    clipOutsideRadius: referenceRadius + 1.5
   });
 
   ctx.save();
@@ -731,7 +734,9 @@ function drawArcLabel(
     fillStyle,
     font,
     letterSpacing = 0,
-    globalAlpha = 1
+    globalAlpha = 1,
+    scale = 1,
+    clipOutsideRadius = null
   }
 ) {
   const glyphs = Array.from(text);
@@ -746,6 +751,13 @@ function drawArcLabel(
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.globalAlpha = globalAlpha;
+
+  if (clipOutsideRadius !== null) {
+    ctx.beginPath();
+    ctx.rect(-10000, -10000, 20000, 20000);
+    ctx.arc(centerX, centerY, clipOutsideRadius, 0, Math.PI * 2, true);
+    ctx.clip('evenodd');
+  }
 
   const glyphWidths = glyphs.map((glyph) => ctx.measureText(glyph).width);
   const totalWidth = glyphWidths.reduce((sum, width) => sum + width, 0) + letterSpacing * Math.max(0, glyphs.length - 1);
@@ -765,6 +777,7 @@ function drawArcLabel(
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(currentAngle + Math.PI / 2);
+      ctx.scale(scale, scale);
       ctx.fillText(glyph, 0, 0);
       ctx.restore();
     }
