@@ -320,17 +320,25 @@
     "sourceUrl": "https://github.com/septadev/GTFS/releases/latest/download/gtfs_public.zip",
     "archiveEntry": "google_bus.zip",
     "focusPoint": [-75.1652, 39.9526],
-    "routeTypes": ["1"],
+    "routeTypes": ["0", "1"],
     "minPointSpacingMeters": 20,
     "minShapeTrips": 20,
     "shapeTripShareThreshold": 0.08,
-    "routeIdAllowlist": ["L1", "B1", "B2", "B3", "M1"],
+    "routeIdAllowlist": ["L1", "B1", "B2", "B3", "M1", "T1", "T2", "T3", "T4", "T5"],
+    "routeIdAliases": {
+      "B1": "B",
+      "B2": "B"
+    },
     "lineNameOverrides": {
       "L1": "Market-Frankford Line",
-      "B1": "Broad Street Line Local",
-      "B2": "Broad Street Line Express",
+      "B": "Broad Street Line",
       "B3": "Broad-Ridge Spur",
-      "M1": "Norristown High Speed Line"
+      "M1": "Norristown High Speed Line",
+      "T1": "Subway-Surface Trolley 10",
+      "T2": "Subway-Surface Trolley 34",
+      "T3": "Subway-Surface Trolley 13",
+      "T4": "Subway-Surface Trolley 11",
+      "T5": "Subway-Surface Trolley 36"
     }
   },
   {
