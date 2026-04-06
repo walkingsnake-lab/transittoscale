@@ -45,13 +45,13 @@
         },
         "standard": {
           "centerX": 170,
-          "centerY": 220.49,
+          "centerY": 220,
           "radius": 48.28,
           "labelRadius": 58.28
         },
         "close": {
           "centerX": 170,
-          "centerY": 220.57,
+          "centerY": 220,
           "radius": 56.97,
           "labelRadius": 66.97
         }
@@ -962,19 +962,19 @@
       "referenceMarkers": {
         "wide": {
           "centerX": 170,
-          "centerY": 220.53,
+          "centerY": 220,
           "radius": 39.59,
           "labelRadius": 49.59
         },
         "standard": {
           "centerX": 170,
-          "centerY": 220.65,
+          "centerY": 220,
           "radius": 48.28,
           "labelRadius": 58.28
         },
         "close": {
           "centerX": 170,
-          "centerY": 220.76,
+          "centerY": 220,
           "radius": 56.97,
           "labelRadius": 66.97
         }
@@ -1033,19 +1033,19 @@
       "referenceMarkers": {
         "wide": {
           "centerX": 170,
-          "centerY": 220.58,
+          "centerY": 220,
           "radius": 39.59,
           "labelRadius": 49.59
         },
         "standard": {
           "centerX": 170,
-          "centerY": 220.7,
+          "centerY": 220,
           "radius": 48.28,
           "labelRadius": 58.28
         },
         "close": {
           "centerX": 170,
-          "centerY": 220.83,
+          "centerY": 220,
           "radius": 56.97,
           "labelRadius": 66.97
         }
@@ -1110,13 +1110,13 @@
         },
         "standard": {
           "centerX": 170,
-          "centerY": 220.54,
+          "centerY": 220,
           "radius": 48.28,
           "labelRadius": 58.28
         },
         "close": {
           "centerX": 170,
-          "centerY": 220.64,
+          "centerY": 220,
           "radius": 56.97,
           "labelRadius": 66.97
         }
