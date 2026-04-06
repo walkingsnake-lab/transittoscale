@@ -4,7 +4,6 @@ import {
   CARD_STYLE,
   FONT_STACK_TIGHT,
   HEADER_OFFSET,
-  INTRO_CARD_PORTION,
   INTRO_CIRCLE_DELAY,
   INTRO_CIRCLE_PORTION,
   INTRO_DURATION_MS,
@@ -529,8 +528,6 @@ function drawCard({
 }) {
   ctx.clearRect(0, 0, width, height);
 
-  const settleValue = easeOutCubic(invLerp(introValue, 0, INTRO_CARD_PORTION));
-  const circleValue = easeInOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION));
   const labelValue = easeOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY + 0.16, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION + 0.18));
   const lineWindow = easeInOutCubic(invLerp(introValue, INTRO_LINES_DELAY, 0.98));
   const labelPopValue = easeOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY + 0.08, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION + 0.08));
@@ -548,7 +545,7 @@ function drawCard({
   const circleCenterX = width / 2;
   const circleCenterY = height / 2;
   const referenceRadius = REFERENCE_RADIUS_PIXELS * diagramScale;
-  const circleAlpha = clamp((0.18 + settleValue * 0.1) * circleValue + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06, 0, 1);
+  const circleAlpha = clamp(0.24 + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06, 0.08, 0.46);
 
   ctx.save();
   ctx.fillStyle = theme.referenceFill;

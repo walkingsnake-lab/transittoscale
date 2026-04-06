@@ -576,16 +576,6 @@ body {
   animation-delay: calc(var(--stagger) + 30ms);
 }
 
-.is-ready .card__overlay {
-  animation: overlay-rise 760ms cubic-bezier(0.2, 1, 0.32, 1) both;
-  animation-delay: calc(var(--stagger) + 300ms);
-}
-
-.is-ready .card__flag {
-  animation: flag-rise 700ms cubic-bezier(0.2, 1, 0.32, 1) both;
-  animation-delay: calc(var(--stagger) + 380ms);
-}
-
 .is-ready .card__canvas-frame::after {
   animation: canvas-sweep 900ms cubic-bezier(0.18, 1, 0.28, 1) both;
   animation-delay: calc(var(--stagger) + 280ms);
@@ -630,42 +620,6 @@ body {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
     filter: saturate(1) brightness(1);
-  }
-}
-
-@keyframes overlay-rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 22px, 34px) scale(0.985);
-    filter: blur(8px);
-  }
-
-  55% {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 1;
-    transform: translateZ(34px);
-    filter: blur(0);
-  }
-}
-
-@keyframes flag-rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 12px, 48px) scale(0.82);
-    filter: blur(6px);
-  }
-
-  60% {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 1;
-    transform: translateZ(48px) scale(1);
-    filter: blur(0);
   }
 }
 
