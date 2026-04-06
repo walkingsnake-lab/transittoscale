@@ -232,6 +232,64 @@
     }
   },
   {
+    "slug": "los-angeles",
+    "name": "Los Angeles",
+    "region": "United States",
+    "dataPath": "data/cities/los-angeles.geojson",
+    "centroid": [
+      -118.12033149999999,
+      33.9694216439
+    ],
+    "focusPoint": [
+      -118.2437,
+      34.0522
+    ],
+    "bounds": [
+      -118.491688,
+      33.767995,
+      -117.748975,
+      34.1708482878
+    ],
+    "lineCount": 6,
+    "sourceName": "Los Angeles County Metropolitan Transportation Authority (LA Metro)",
+    "sourceUrl": "https://gitlab.com/LACMTA/gtfs_rail/raw/master/gtfs_rail.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 0.9,
+      "lineWidth": 1.45,
+      "lineAlpha": 0.88
+    }
+  },
+  {
+    "slug": "vancouver",
+    "name": "Vancouver",
+    "region": "Canada",
+    "dataPath": "data/cities/vancouver.geojson",
+    "centroid": [
+      -122.98526799999999,
+      49.2278355
+    ],
+    "focusPoint": [
+      -123.1207,
+      49.2827
+    ],
+    "bounds": [
+      -123.179452,
+      49.16753,
+      -122.791084,
+      49.288141
+    ],
+    "lineCount": 3,
+    "sourceName": "TransLink",
+    "sourceUrl": "https://gtfs-static.translink.ca/gtfs/google_transit.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
+  },
+  {
     "slug": "toronto",
     "name": "Toronto",
     "region": "Canada",
