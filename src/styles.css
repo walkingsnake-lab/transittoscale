@@ -300,10 +300,6 @@ body {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   background:
-    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.18), transparent 22%),
-    radial-gradient(circle at 82% 24%, rgba(126, 107, 84, 0.03), transparent 24%),
-    radial-gradient(circle at 28% 78%, rgba(126, 107, 84, 0.022), transparent 28%),
-    radial-gradient(circle at 76% 82%, rgba(255, 255, 255, 0.08), transparent 24%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 22%),
     linear-gradient(180deg, var(--card-paper-strong) 0%, var(--card-paper) 100%);
   color: var(--card-text);
@@ -321,10 +317,6 @@ body {
 
 .card__paper--back {
   background:
-    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.14), transparent 26%),
-    radial-gradient(circle at 78% 20%, rgba(126, 107, 84, 0.028), transparent 24%),
-    radial-gradient(circle at 34% 82%, rgba(126, 107, 84, 0.024), transparent 28%),
-    radial-gradient(circle at 74% 74%, rgba(255, 255, 255, 0.07), transparent 24%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.34), transparent 26%),
     linear-gradient(180deg, rgba(243, 240, 234, 0.98) 0%, rgba(236, 231, 221, 0.98) 100%);
 }
@@ -460,9 +452,6 @@ body {
   overflow: hidden;
   isolation: isolate;
   background:
-    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.08), transparent 24%),
-    radial-gradient(circle at 78% 24%, rgba(126, 107, 84, 0.018), transparent 22%),
-    radial-gradient(circle at 36% 80%, rgba(126, 107, 84, 0.016), transparent 26%),
     radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.16), transparent 42%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 24%);
 }
