@@ -5,14 +5,14 @@ export const DISPLAY_PROFILES = Object.freeze({
     lineAlpha: 0.94
   }),
   dense: Object.freeze({
-    simplifyTolerance: 0.9,
-    lineWidth: 1.45,
-    lineAlpha: 0.88
+    simplifyTolerance: 1.3,
+    lineWidth: 1.3,
+    lineAlpha: 0.8
   }),
   mega: Object.freeze({
-    simplifyTolerance: 1.4,
-    lineWidth: 1.2,
-    lineAlpha: 0.8
+    simplifyTolerance: 2.4,
+    lineWidth: 1,
+    lineAlpha: 0.7
   })
 });
 

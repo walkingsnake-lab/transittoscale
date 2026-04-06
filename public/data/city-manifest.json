@@ -81,9 +81,9 @@
     "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
     "display": {
       "profile": "dense",
-      "simplifyTolerance": 0.9,
-      "lineWidth": 1.45,
-      "lineAlpha": 0.88
+      "simplifyTolerance": 1.3,
+      "lineWidth": 1.3,
+      "lineAlpha": 0.8
     }
   },
   {
@@ -110,9 +110,9 @@
     "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
     "display": {
       "profile": "mega",
-      "simplifyTolerance": 1.4,
-      "lineWidth": 1.2,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 2.4,
+      "lineWidth": 1,
+      "lineAlpha": 0.7
     }
   },
   {
@@ -139,9 +139,9 @@
     "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip",
     "display": {
       "profile": "dense",
-      "simplifyTolerance": 0.9,
-      "lineWidth": 1.45,
-      "lineAlpha": 0.88
+      "simplifyTolerance": 1.3,
+      "lineWidth": 1.3,
+      "lineAlpha": 0.8
     }
   },
   {
@@ -168,9 +168,9 @@
     "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip",
     "display": {
       "profile": "dense",
-      "simplifyTolerance": 0.9,
-      "lineWidth": 1.45,
-      "lineAlpha": 0.88
+      "simplifyTolerance": 1.3,
+      "lineWidth": 1.3,
+      "lineAlpha": 0.8
     }
   },
   {
@@ -255,9 +255,9 @@
     "sourceUrl": "https://gitlab.com/LACMTA/gtfs_rail/raw/master/gtfs_rail.zip",
     "display": {
       "profile": "dense",
-      "simplifyTolerance": 0.9,
-      "lineWidth": 1.45,
-      "lineAlpha": 0.88
+      "simplifyTolerance": 1.3,
+      "lineWidth": 1.3,
+      "lineAlpha": 0.8
     }
   },
   {
@@ -400,9 +400,9 @@
     "sourceUrl": "https://api.tfl.gov.uk",
     "display": {
       "profile": "mega",
-      "simplifyTolerance": 1.4,
-      "lineWidth": 1.2,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 2.4,
+      "lineWidth": 1,
+      "lineAlpha": 0.7
     }
   },
   {
@@ -429,9 +429,9 @@
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
     "display": {
       "profile": "dense",
-      "simplifyTolerance": 0.9,
-      "lineWidth": 1.45,
-      "lineAlpha": 0.88
+      "simplifyTolerance": 1.3,
+      "lineWidth": 1.3,
+      "lineAlpha": 0.8
     }
   },
   {
