@@ -33,22 +33,10 @@ export async function mountApp(root) {
       <section class="grid" data-grid aria-live="polite"></section>
       <aside class="detail-view" data-detail-view hidden aria-hidden="true">
         <button type="button" class="detail-view__backdrop" data-detail-backdrop aria-label="Close selected transit system"></button>
-        <article class="detail-card" data-detail-card role="dialog" aria-modal="true" aria-label="Selected transit system detail">
-          <button type="button" class="detail-card__close" data-detail-close aria-label="Close selected transit system">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <div class="detail-card__paper">
-            <div class="detail-card__canvas-frame">
-              <img class="detail-card__canvas" data-detail-image alt="" decoding="async" />
-              <div class="detail-card__overlay">
-                <p class="detail-card__agency" data-detail-agency></p>
-                <h2 data-detail-title></h2>
-                <p class="detail-card__count" data-detail-count></p>
-              </div>
-              <img class="detail-card__flag" data-detail-flag alt="" decoding="async" hidden />
-            </div>
-          </div>
-        </article>
+        <div class="detail-view__slot" data-detail-slot></div>
+        <button type="button" class="detail-card__close" data-detail-close aria-label="Close selected transit system">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </aside>
     </main>
   `;
@@ -62,19 +50,16 @@ export async function mountApp(root) {
   const zoomOutButton = root.querySelector('[data-zoom-out]');
   const zoomInButton = root.querySelector('[data-zoom-in]');
   const detailView = root.querySelector('[data-detail-view]');
-  const detailCard = root.querySelector('[data-detail-card]');
+  const detailSlot = root.querySelector('[data-detail-slot]');
   const detailBackdrop = root.querySelector('[data-detail-backdrop]');
   const detailCloseButton = root.querySelector('[data-detail-close]');
-  const detailImage = root.querySelector('[data-detail-image]');
-  const detailAgency = root.querySelector('[data-detail-agency]');
-  const detailTitle = root.querySelector('[data-detail-title]');
-  const detailCount = root.querySelector('[data-detail-count]');
-  const detailFlag = root.querySelector('[data-detail-flag]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const interactiveDepth = !reducedMotion && supportsInteractiveDepthEffects();
   let selectedCard = null;
   let detailHideTimeoutId = 0;
   let lastActiveTrigger = null;
+  let selectedPlaceholder = null;
+  let selectedHomeParent = null;
 
   try {
     const cities = await loadCities();
@@ -85,16 +70,7 @@ export async function mountApp(root) {
         reducedMotion,
         interactiveDepth,
         onOpen(card, triggerElement) {
-          if (selectedCard === card) {
-            closeDetail();
-            return;
-          }
-
-          selectedCard = card;
-          lastActiveTrigger = triggerElement;
-          populateDetail(card);
-          syncSelection();
-          showDetailView();
+          openDetail(card, triggerElement);
         }
       })
     );
@@ -122,6 +98,10 @@ export async function mountApp(root) {
 
       updateGridLayout(grid, cards.length, { chromeHeight });
       syncZoomControls();
+
+      if (selectedCard) {
+        applyFixedRect(selectedCard.element, getDetailTargetRect(selectedCard));
+      }
     }
 
     function setZoomIndex(nextZoomIndex) {
@@ -143,40 +123,6 @@ export async function mountApp(root) {
       document.body.classList.toggle('body--detail-open', hasSelection);
     }
 
-    function populateDetail(card) {
-      const { city, theme } = card;
-      const flag = getCountryFlag(city);
-      const detailImagePath =
-        city.detail?.imagePath ??
-        city.overview?.variants?.close ??
-        city.overview?.variants?.[DEFAULT_OVERVIEW_VARIANT] ??
-        null;
-
-      applyThemeVars(detailCard, theme);
-      detailCard.setAttribute('aria-label', `${city.name} transit system detail`);
-      detailAgency.textContent = formatSystemLabel(city);
-      detailTitle.textContent = city.name;
-      detailCount.textContent = formatLineLabel(city.lineCount);
-
-      if (detailImagePath) {
-        setImageSource(detailImage, resolveAssetPath(detailImagePath));
-      } else {
-        detailImage.removeAttribute('src');
-        delete detailImage.dataset.loadedSrc;
-        delete detailImage.dataset.pendingSrc;
-      }
-
-      if (flag) {
-        detailFlag.src = flag.src;
-        detailFlag.alt = flag.alt;
-        detailFlag.hidden = false;
-      } else {
-        detailFlag.hidden = true;
-        detailFlag.removeAttribute('src');
-        detailFlag.alt = '';
-      }
-    }
-
     function showDetailView() {
       if (detailHideTimeoutId) {
         window.clearTimeout(detailHideTimeoutId);
@@ -185,41 +131,96 @@ export async function mountApp(root) {
 
       detailView.hidden = false;
       detailView.setAttribute('aria-hidden', 'false');
+    }
+
+    function openDetail(card, triggerElement) {
+      if (selectedCard === card) {
+        closeDetail();
+        return;
+      }
+
+      if (selectedCard) {
+        closeDetail({ instant: true, restoreFocus: false });
+      }
+
+      lastActiveTrigger = triggerElement;
+      selectedCard = card;
+      selectedHomeParent = card.element.parentNode;
+      selectedPlaceholder = document.createElement('div');
+      selectedPlaceholder.className = 'card card--placeholder';
+      selectedPlaceholder.setAttribute('aria-hidden', 'true');
+      selectedPlaceholder.style.height = `${card.element.getBoundingClientRect().height}px`;
+      selectedHomeParent.insertBefore(selectedPlaceholder, card.element);
+
+      const startRect = card.element.getBoundingClientRect();
+
+      showDetailView();
+      detailSlot.append(card.element);
+      card.setDetailActive(true);
+      card.setHovered(false);
+      card.resetTilt();
+      syncSelection();
+      applyFixedRect(card.element, startRect);
+
       requestAnimationFrame(() => {
         detailView.classList.add('detail-view--open');
+        applyFixedRect(card.element, getDetailTargetRect(card));
       });
+
       detailCloseButton.focus({ preventScroll: true });
     }
 
-    function closeDetail() {
+    function closeDetail({ instant = false, restoreFocus = true } = {}) {
       if (!selectedCard && detailView.hidden) {
         return;
       }
 
       const focusTarget = lastActiveTrigger;
+      const card = selectedCard;
 
-      selectedCard = null;
-      syncSelection();
+      if (!card) {
+        detailView.hidden = true;
+        detailView.setAttribute('aria-hidden', 'true');
+        return;
+      }
+
       detailView.classList.remove('detail-view--open');
       detailView.setAttribute('aria-hidden', 'true');
+      applyFixedRect(card.element, selectedPlaceholder.getBoundingClientRect());
 
       if (detailHideTimeoutId) {
         window.clearTimeout(detailHideTimeoutId);
       }
 
-      detailHideTimeoutId = window.setTimeout(() => {
-        if (!selectedCard) {
-          detailView.hidden = true;
+      const finalizeClose = () => {
+        if (selectedHomeParent) {
+          selectedHomeParent.insertBefore(card.element, selectedPlaceholder);
         }
 
+        selectedPlaceholder?.remove();
+        selectedPlaceholder = null;
+        selectedHomeParent = null;
+        card.setDetailActive(false);
+        clearFixedRect(card.element);
+        selectedCard = null;
+        syncSelection();
+        detailSlot.textContent = '';
+        detailView.hidden = true;
         detailHideTimeoutId = 0;
-      }, 260);
 
-      if (focusTarget instanceof HTMLElement) {
-        requestAnimationFrame(() => {
-          focusTarget.focus({ preventScroll: true });
-        });
+        if (restoreFocus && focusTarget instanceof HTMLElement) {
+          requestAnimationFrame(() => {
+            focusTarget.focus({ preventScroll: true });
+          });
+        }
+      };
+
+      if (instant || reducedMotion) {
+        finalizeClose();
+        return;
       }
+
+      detailHideTimeoutId = window.setTimeout(finalizeClose, 260);
     }
 
     zoomOutButton.addEventListener('click', () => setZoomIndex(zoomIndex - 1));
@@ -278,14 +279,23 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   const lineLabel = formatLineLabel(city.lineCount);
   const systemLabel = formatSystemLabel(city);
   const flag = getCountryFlag(city);
+  const overviewWidth = city.overview?.width ?? 340;
+  const overviewHeight = city.overview?.height ?? 440;
+  const overviewReferenceMarkers = city.overview?.referenceMarkers ?? {};
   const overviewVariantPaths = Object.fromEntries(
     Object.entries(city.overview?.variants ?? {}).map(([key, relativePath]) => [key, resolveAssetPath(relativePath)])
   );
+  const detailWidth = city.detail?.width ?? overviewWidth;
+  const detailHeight = city.detail?.height ?? overviewHeight;
+  const detailReferenceMarker = city.detail?.referenceMarker ?? null;
+  const detailImagePath = city.detail?.imagePath ? resolveAssetPath(city.detail.imagePath) : null;
   const initialVariantKey =
     overviewVariantPaths[DEFAULT_OVERVIEW_VARIANT]
       ? DEFAULT_OVERVIEW_VARIANT
       : city.overview?.defaultVariant ?? Object.keys(overviewVariantPaths)[0] ?? null;
   const initialOverviewPath = initialVariantKey ? overviewVariantPaths[initialVariantKey] : null;
+  const initialReferenceMarker = initialVariantKey ? overviewReferenceMarkers[initialVariantKey] ?? null : null;
+  const referenceArcId = `reference-arc-${city.slug}-${index}`;
   const element = document.createElement('article');
   element.className = 'card';
   element.style.setProperty('--stagger', `${index * 90}ms`);
@@ -309,7 +319,12 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
       <button type="button" class="card__select" aria-label="Open details for ${city.name}"></button>
       <div class="card__paper${interactiveDepth ? '' : ' card__paper--static'}">
         <div class="card__canvas-frame">
-          ${initialOverviewPath ? `<img class="card__canvas" src="${initialOverviewPath}" alt="" loading="lazy" decoding="async" />` : ''}
+          <div class="card__diagram-shell">
+            <div class="card__diagram">
+              ${initialOverviewPath ? `<img class="card__canvas" src="${initialOverviewPath}" alt="" loading="lazy" decoding="async" />` : ''}
+              <svg class="card__reference" aria-hidden="true" focusable="false"></svg>
+            </div>
+          </div>
           <div class="card__overlay">
             <p class="card__agency">${systemLabel}</p>
             <h2>${city.name}</h2>
@@ -322,28 +337,93 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   `;
 
   const openButton = element.querySelector('.card__select');
+  const diagram = element.querySelector('.card__diagram');
   const overviewImage = element.querySelector('.card__canvas');
+  const referenceSvg = element.querySelector('.card__reference');
+
+  function setDiagramPresentation({ imagePath, marker, width, height }) {
+    if (diagram) {
+      diagram.style.setProperty('--diagram-aspect', `${width} / ${height}`);
+    }
+
+    renderReferenceMarker(referenceSvg, {
+      marker,
+      width,
+      height,
+      arcId: referenceArcId
+    });
+
+    if (overviewImage && imagePath) {
+      setImageSource(overviewImage, imagePath);
+    }
+  }
+
   const card = {
     city,
     theme,
     element,
     currentOverviewVariant: initialVariantKey,
+    detailImagePath,
+    isDetailActive: false,
     setOverviewVariant(variantKey) {
       const nextOverviewPath = overviewVariantPaths[variantKey];
+      const nextReferenceMarker = overviewReferenceMarkers[variantKey] ?? null;
 
-      if (!overviewImage || !nextOverviewPath || variantKey === this.currentOverviewVariant) {
+      if (!nextOverviewPath || variantKey === this.currentOverviewVariant) {
         return;
       }
 
-      setImageSource(overviewImage, nextOverviewPath);
       this.currentOverviewVariant = variantKey;
+
+      if (!this.isDetailActive) {
+        setDiagramPresentation({
+          imagePath: nextOverviewPath,
+          marker: nextReferenceMarker,
+          width: overviewWidth,
+          height: overviewHeight
+        });
+      }
+    },
+    setDetailActive(isActive) {
+      this.isDetailActive = isActive;
+      element.classList.toggle('card--detail-active', isActive);
+      openButton.disabled = isActive;
+
+      if (isActive) {
+        const fallbackVariantKey =
+          overviewVariantPaths.close
+            ? 'close'
+            : this.currentOverviewVariant ?? initialVariantKey;
+        const fallbackPath = overviewVariantPaths[fallbackVariantKey] ?? initialOverviewPath;
+        const fallbackReferenceMarker = overviewReferenceMarkers[fallbackVariantKey] ?? initialReferenceMarker;
+
+        setDiagramPresentation({
+          imagePath: this.detailImagePath ?? fallbackPath,
+          marker: detailReferenceMarker ?? fallbackReferenceMarker,
+          width: detailWidth,
+          height: detailHeight
+        });
+        return;
+      }
+
+      const restorePath = overviewVariantPaths[this.currentOverviewVariant] ?? initialOverviewPath;
+      const restoreReferenceMarker = overviewReferenceMarkers[this.currentOverviewVariant] ?? initialReferenceMarker;
+
+      if (restorePath) {
+        setDiagramPresentation({
+          imagePath: restorePath,
+          marker: restoreReferenceMarker,
+          width: overviewWidth,
+          height: overviewHeight
+        });
+      }
     },
     setSelected(isSelected, hasSelection) {
       element.classList.toggle('card--selected', isSelected);
       element.classList.toggle('card--muted', hasSelection && !isSelected);
     },
     setHovered(isHovered) {
-      if (!interactiveDepth) {
+      if (!interactiveDepth || this.isDetailActive) {
         return;
       }
 
@@ -354,7 +434,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
       }
     },
     updateTilt(clientX, clientY) {
-      if (!interactiveDepth || reducedMotion) {
+      if (!interactiveDepth || reducedMotion || this.isDetailActive) {
         return;
       }
 
@@ -399,6 +479,13 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   if (overviewImage && initialOverviewPath) {
     overviewImage.dataset.loadedSrc = initialOverviewPath;
   }
+
+  setDiagramPresentation({
+    imagePath: initialOverviewPath,
+    marker: initialReferenceMarker,
+    width: overviewWidth,
+    height: overviewHeight
+  });
 
   if (interactiveDepth) {
     element.addEventListener('pointerenter', (event) => {
@@ -529,6 +616,7 @@ function applyThemeVars(element, theme) {
   element.style.setProperty('--card-region', theme.regionText);
   element.style.setProperty('--card-text', theme.text);
   element.style.setProperty('--card-ink', theme.ink);
+  element.style.setProperty('--card-reference-fill', theme.referenceFill);
   element.style.setProperty('--card-shadow', theme.shadow);
 }
 
@@ -583,5 +671,95 @@ function setImageSource(image, nextSrc) {
       image.src = nextSrc;
       image.dataset.loadedSrc = nextSrc;
     });
+}
+
+function renderReferenceMarker(referenceSvg, { marker, width, height, arcId }) {
+  if (!referenceSvg) {
+    return;
+  }
+
+  if (!marker || !width || !height) {
+    referenceSvg.innerHTML = '';
+    referenceSvg.setAttribute('hidden', '');
+    return;
+  }
+
+  const startAngle = Math.PI + 0.08;
+  const endAngle = Math.PI * 1.5 - 0.08;
+  const [arcStartX, arcStartY] = polarToCartesian(marker.centerX, marker.centerY, marker.labelRadius, startAngle);
+  const [arcEndX, arcEndY] = polarToCartesian(marker.centerX, marker.centerY, marker.labelRadius, endAngle);
+  const arcSweepFlag = endAngle - startAngle <= Math.PI ? 0 : 1;
+
+  referenceSvg.removeAttribute('hidden');
+  referenceSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  referenceSvg.innerHTML = `
+    <defs>
+      <path id="${arcId}" d="M ${formatSvgNumber(arcStartX)} ${formatSvgNumber(arcStartY)} A ${formatSvgNumber(marker.labelRadius)} ${formatSvgNumber(marker.labelRadius)} 0 ${arcSweepFlag} 1 ${formatSvgNumber(arcEndX)} ${formatSvgNumber(arcEndY)}" />
+    </defs>
+    <circle class="card__reference-circle" cx="${formatSvgNumber(marker.centerX)}" cy="${formatSvgNumber(marker.centerY)}" r="${formatSvgNumber(marker.radius)}"></circle>
+    <text class="card__reference-label">
+      <textPath href="#${arcId}" startOffset="50%" text-anchor="middle">5 MILES</textPath>
+    </text>
+  `.trim();
+}
+
+function polarToCartesian(centerX, centerY, radius, angle) {
+  return [
+    centerX + Math.cos(angle) * radius,
+    centerY + Math.sin(angle) * radius
+  ];
+}
+
+function formatSvgNumber(value) {
+  return Number(value.toFixed(2));
+}
+
+function getDetailTargetRect(card) {
+  const viewportPadding = window.innerWidth < 720 ? 10 : 24;
+  const maxWidth = Math.max(280, Math.min(window.innerWidth - viewportPadding * 2, 720));
+  const maxHeight = Math.max(320, window.innerHeight - viewportPadding * 2);
+  const aspectRatio = (card.city.detail?.height ?? 880) / (card.city.detail?.width ?? 680);
+  let width = maxWidth;
+  let height = width * aspectRatio;
+
+  if (height > maxHeight) {
+    height = maxHeight;
+    width = height / aspectRatio;
+  }
+
+  return {
+    top: Math.round((window.innerHeight - height) / 2),
+    left: Math.round((window.innerWidth - width) / 2),
+    width: Math.round(width),
+    height: Math.round(height)
+  };
+}
+
+function applyFixedRect(element, rect) {
+  if (!element || !rect) {
+    return;
+  }
+
+  element.style.position = 'fixed';
+  element.style.top = `${Math.round(rect.top)}px`;
+  element.style.left = `${Math.round(rect.left)}px`;
+  element.style.width = `${Math.round(rect.width)}px`;
+  element.style.height = `${Math.round(rect.height)}px`;
+  element.style.margin = '0';
+  element.style.zIndex = '25';
+}
+
+function clearFixedRect(element) {
+  if (!element) {
+    return;
+  }
+
+  element.style.removeProperty('position');
+  element.style.removeProperty('top');
+  element.style.removeProperty('left');
+  element.style.removeProperty('width');
+  element.style.removeProperty('height');
+  element.style.removeProperty('margin');
+  element.style.removeProperty('z-index');
 }
 

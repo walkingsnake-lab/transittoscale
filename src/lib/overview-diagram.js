@@ -24,36 +24,44 @@ export function createOverviewDiagramSvg({
   diagramScale = 1,
   theme = getCityTheme(city.slug),
   idPrefix = 'overview',
-  safeInset = OVERVIEW_SAFE_INSET
+  safeInset = OVERVIEW_SAFE_INSET,
+  includeReferenceMarker = true,
+  layout = null
 }) {
-  const targetScale = diagramScale * OVERVIEW_SCALE_BIAS;
-  const { paths: displayPaths, appliedScale } = getOverviewDisplayPaths({
-    city,
-    width,
-    height,
-    diagramScale: targetScale,
-    safeInset
-  });
-  const circleCenterX = width / 2;
-  const circleCenterY = height / 2;
-  const referenceRadius = REFERENCE_RADIUS_PIXELS * appliedScale;
-  const arcId = `${idPrefix}-arc`;
+  const resolvedLayout =
+    layout ??
+    getOverviewDiagramLayout({
+      city,
+      width,
+      height,
+      diagramScale,
+      safeInset
+    });
+  const {
+    paths: displayPaths,
+    referenceCenterX,
+    referenceCenterY,
+    referenceRadius,
+    referenceLabelRadius
+  } = resolvedLayout;
   const lineMarkup = displayPaths
     .map((path) => `<path d="${toSvgPathData(path)}" />`)
     .join('');
-  const [arcStartX, arcStartY] = polarToCartesian(circleCenterX, circleCenterY, referenceRadius + 10, ARC_LABEL_START_ANGLE);
-  const [arcEndX, arcEndY] = polarToCartesian(circleCenterX, circleCenterY, referenceRadius + 10, ARC_LABEL_END_ANGLE);
-  const arcSweepFlag = ARC_LABEL_END_ANGLE - ARC_LABEL_START_ANGLE <= Math.PI ? 0 : 1;
+  let referenceMarkerMarkup = '';
 
-  return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" fill="none">
-  <defs>
-    <path id="${arcId}" d="M ${formatNumber(arcStartX)} ${formatNumber(arcStartY)} A ${formatNumber(referenceRadius + 10)} ${formatNumber(referenceRadius + 10)} 0 ${arcSweepFlag} 1 ${formatNumber(arcEndX)} ${formatNumber(arcEndY)}" />
-  </defs>
-  <g shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+  if (includeReferenceMarker) {
+    const arcId = `${idPrefix}-arc`;
+    const [arcStartX, arcStartY] = polarToCartesian(referenceCenterX, referenceCenterY, referenceLabelRadius, ARC_LABEL_START_ANGLE);
+    const [arcEndX, arcEndY] = polarToCartesian(referenceCenterX, referenceCenterY, referenceLabelRadius, ARC_LABEL_END_ANGLE);
+    const arcSweepFlag = ARC_LABEL_END_ANGLE - ARC_LABEL_START_ANGLE <= Math.PI ? 0 : 1;
+
+    referenceMarkerMarkup = `
+    <defs>
+      <path id="${arcId}" d="M ${formatNumber(arcStartX)} ${formatNumber(arcStartY)} A ${formatNumber(referenceLabelRadius)} ${formatNumber(referenceLabelRadius)} 0 ${arcSweepFlag} 1 ${formatNumber(arcEndX)} ${formatNumber(arcEndY)}" />
+    </defs>
     <circle
-      cx="${formatNumber(circleCenterX)}"
-      cy="${formatNumber(circleCenterY)}"
+      cx="${formatNumber(referenceCenterX)}"
+      cy="${formatNumber(referenceCenterY)}"
       r="${formatNumber(referenceRadius)}"
       fill="${theme.referenceFill}"
       fill-opacity="${OVERVIEW_CIRCLE_ALPHA}"
@@ -67,7 +75,13 @@ export function createOverviewDiagramSvg({
       letter-spacing="0.9"
     >
       <textPath href="#${arcId}" startOffset="50%" text-anchor="middle">5 MILES</textPath>
-    </text>
+    </text>`;
+  }
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" fill="none">
+  <g shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+    ${referenceMarkerMarkup}
     <g
       stroke="${theme.ink}"
       stroke-opacity="${city.display.lineAlpha}"
@@ -79,6 +93,38 @@ export function createOverviewDiagramSvg({
     </g>
   </g>
 </svg>`.trim();
+}
+
+export function getOverviewDiagramLayout({
+  city,
+  width = OVERVIEW_BASE_WIDTH,
+  height = OVERVIEW_BASE_HEIGHT,
+  diagramScale = 1,
+  safeInset = OVERVIEW_SAFE_INSET
+}) {
+  const targetScale = diagramScale * OVERVIEW_SCALE_BIAS;
+  const {
+    paths,
+    referenceCenterX,
+    referenceCenterY
+  } = getOverviewDisplayPaths({
+    city,
+    width,
+    height,
+    diagramScale: targetScale,
+    safeInset
+  });
+  const referenceRadius = REFERENCE_RADIUS_PIXELS * targetScale;
+
+  return {
+    width,
+    height,
+    paths,
+    referenceCenterX,
+    referenceCenterY,
+    referenceRadius,
+    referenceLabelRadius: referenceRadius + 10
+  };
 }
 
 export function getOverviewDisplayPaths({
@@ -93,7 +139,8 @@ export function getOverviewDisplayPaths({
   if (!featureCollection) {
     return {
       paths: [],
-      appliedScale: diagramScale
+      referenceCenterX: width / 2,
+      referenceCenterY: height / 2
     };
   }
 
@@ -101,7 +148,7 @@ export function getOverviewDisplayPaths({
   const frameHeight = height - OVERVIEW_FRAME_PADDING * 2 - HEADER_OFFSET;
   const centerX = OVERVIEW_FRAME_PADDING + frameWidth / 2;
   const centerY = OVERVIEW_FRAME_PADDING + HEADER_OFFSET + frameHeight / 2;
-  const anchorPoint = city.focusPoint ?? city.centroid;
+  const anchorPoint = city.centroid ?? city.focusPoint;
   const projectedFeatures = projectFeatureCollection(featureCollection, anchorPoint);
   const projectedPaths = projectedFeatures.flatMap((feature) =>
     feature.paths
@@ -110,24 +157,35 @@ export function getOverviewDisplayPaths({
   );
   const { mergedPaths, duplicateShare } = mergeOverlappingPaths(projectedPaths);
   let displayPaths = duplicateShare >= MIN_SEGMENT_DUPLICATE_SHARE ? mergedPaths : projectedPaths;
-  const appliedScale = clampPathScaleToFrame(
+  const referenceRadius = REFERENCE_RADIUS_PIXELS * diagramScale;
+  const referenceLabelPadding = 26;
+
+  if (Math.abs(diagramScale - 1) > 0.001) {
+    displayPaths = displayPaths.map((path) => scalePathAroundPoint(path, centerX, centerY, diagramScale));
+  }
+
+  const { offsetX, offsetY } = computeContainedOffset(
     displayPaths,
-    centerX,
-    centerY,
-    diagramScale,
     safeInset,
     width - safeInset,
     safeInset,
-    height - safeInset
+    height - safeInset,
+    {
+      minX: centerX - referenceRadius - referenceLabelPadding,
+      maxX: centerX + referenceRadius + referenceLabelPadding,
+      minY: centerY - referenceRadius - referenceLabelPadding,
+      maxY: centerY + referenceRadius + referenceLabelPadding
+    }
   );
 
-  if (Math.abs(appliedScale - 1) > 0.001) {
-    displayPaths = displayPaths.map((path) => scalePathAroundPoint(path, centerX, centerY, appliedScale));
+  if (offsetX !== 0 || offsetY !== 0) {
+    displayPaths = displayPaths.map((path) => translatePath(path, offsetX, offsetY));
   }
 
   return {
     paths: displayPaths,
-    appliedScale
+    referenceCenterX: centerX + offsetX,
+    referenceCenterY: centerY + offsetY
   };
 }
 
@@ -198,33 +256,83 @@ function scalePathAroundPoint(path, centerX, centerY, scale) {
   ]);
 }
 
-function clampPathScaleToFrame(paths, centerX, centerY, targetScale, minX, maxX, minY, maxY) {
-  let maxAllowedScale = Number.POSITIVE_INFINITY;
+function translatePath(path, offsetX, offsetY) {
+  return path.map(([x, y]) => [x + offsetX, y + offsetY]);
+}
+
+function computeContainedOffset(paths, minX, maxX, minY, maxY, extraBounds = null) {
+  const bounds = getPathBounds(paths);
+
+  if (!bounds && !extraBounds) {
+    return { offsetX: 0, offsetY: 0 };
+  }
+
+  const combinedBounds = combineBounds(bounds, extraBounds);
+
+  return {
+    offsetX: computeAxisOffset(combinedBounds.minX, combinedBounds.maxX, minX, maxX),
+    offsetY: computeAxisOffset(combinedBounds.minY, combinedBounds.maxY, minY, maxY)
+  };
+}
+
+function computeAxisOffset(contentMin, contentMax, safeMin, safeMax) {
+  const contentSize = contentMax - contentMin;
+  const safeSize = safeMax - safeMin;
+
+  if (contentSize <= safeSize) {
+    if (contentMin < safeMin) {
+      return safeMin - contentMin;
+    }
+
+    if (contentMax > safeMax) {
+      return safeMax - contentMax;
+    }
+
+    return 0;
+  }
+
+  const contentCenter = (contentMin + contentMax) / 2;
+  const safeCenter = (safeMin + safeMax) / 2;
+  return safeCenter - contentCenter;
+}
+
+function getPathBounds(paths) {
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
 
   for (const path of paths) {
     for (const [x, y] of path) {
-      const dx = x - centerX;
-      const dy = y - centerY;
-
-      if (dx > 0) {
-        maxAllowedScale = Math.min(maxAllowedScale, (maxX - centerX) / dx);
-      } else if (dx < 0) {
-        maxAllowedScale = Math.min(maxAllowedScale, (minX - centerX) / dx);
-      }
-
-      if (dy > 0) {
-        maxAllowedScale = Math.min(maxAllowedScale, (maxY - centerY) / dy);
-      } else if (dy < 0) {
-        maxAllowedScale = Math.min(maxAllowedScale, (minY - centerY) / dy);
-      }
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x);
+      maxY = Math.max(maxY, y);
     }
   }
 
-  if (!Number.isFinite(maxAllowedScale) || maxAllowedScale <= 0) {
-    return targetScale;
+  if (!Number.isFinite(minX)) {
+    return null;
   }
 
-  return Math.min(targetScale, maxAllowedScale);
+  return { minX, minY, maxX, maxY };
+}
+
+function combineBounds(primaryBounds, secondaryBounds) {
+  if (!primaryBounds) {
+    return secondaryBounds;
+  }
+
+  if (!secondaryBounds) {
+    return primaryBounds;
+  }
+
+  return {
+    minX: Math.min(primaryBounds.minX, secondaryBounds.minX),
+    minY: Math.min(primaryBounds.minY, secondaryBounds.minY),
+    maxX: Math.max(primaryBounds.maxX, secondaryBounds.maxX),
+    maxY: Math.max(primaryBounds.maxY, secondaryBounds.maxY)
+  };
 }
 
 function getSnappedPointKey(point, pointByKey, snapPrecision) {

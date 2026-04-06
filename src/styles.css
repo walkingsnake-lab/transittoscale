@@ -530,6 +530,23 @@ body.body--detail-open {
     linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 24%);
 }
 
+.card__diagram-shell {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.card__diagram {
+  position: relative;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: var(--diagram-aspect, 340 / 440);
+}
+
 .card__canvas-frame::after {
   content: '';
   position: absolute;
@@ -551,11 +568,11 @@ body.body--detail-open {
 }
 
 .card__canvas {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -563,6 +580,30 @@ body.body--detail-open {
   transition: opacity 180ms var(--ease-out);
   backface-visibility: hidden;
   will-change: transform, opacity;
+}
+
+.card__reference {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--card-reference-fill);
+  pointer-events: none;
+  overflow: visible;
+}
+
+.card__reference-circle {
+  fill: currentColor;
+  fill-opacity: 0.24;
+}
+
+.card__reference-label {
+  fill: currentColor;
+  fill-opacity: 0.22;
+  font-family: var(--font-sans-tight);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
 }
 
 .detail-view {
@@ -593,6 +634,83 @@ body.body--detail-open {
   background: rgba(9, 7, 6, 0.58);
   cursor: pointer;
   backdrop-filter: blur(12px) saturate(0.8);
+}
+
+.detail-view__slot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.card--placeholder {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.card--detail-active {
+  content-visibility: visible;
+  contain: layout style paint;
+  transition:
+    top 260ms var(--ease-out),
+    left 260ms var(--ease-out),
+    width 260ms var(--ease-out),
+    height 260ms var(--ease-out);
+}
+
+.card--detail-active .card__stage {
+  min-height: 100%;
+  height: 100%;
+  perspective: none;
+  -webkit-perspective: none;
+  transform: none !important;
+}
+
+.card--detail-active .card__paper {
+  box-shadow:
+    0 4px 0 rgba(255, 255, 255, 0.58) inset,
+    0 -2px 0 rgba(17, 17, 17, 0.08) inset,
+    0 34px 64px rgba(0, 0, 0, 0.34),
+    0 58px 104px rgba(0, 0, 0, 0.24);
+}
+
+.card--detail-active .card__paper,
+.card--detail-active .card__canvas-frame,
+.card--detail-active .card__diagram-shell,
+.card--detail-active .card__diagram,
+.card--detail-active .card__canvas,
+.card--detail-active .card__reference {
+  min-height: 0;
+  height: 100%;
+}
+
+.card--detail-active .card__overlay {
+  inset: 24px 82px auto 24px;
+  gap: 6px;
+  transform: none;
+}
+
+.card--detail-active .card__agency {
+  font-size: 0.98rem;
+}
+
+.card--detail-active .card__count {
+  font-size: 0.9rem;
+}
+
+.card--detail-active .card__overlay h2 {
+  font-size: clamp(2.2rem, 4.8vw, 3.3rem);
+}
+
+.card--detail-active .card__flag {
+  top: 22px;
+  right: 22px;
+  width: 40px;
+  height: 40px;
+  transform: none;
+}
+
+.card--detail-active .card__select {
+  pointer-events: none;
 }
 
 .detail-card {
@@ -973,6 +1091,8 @@ body.body--detail-open {
   }
 
   .card__canvas-frame,
+  .card__diagram-shell,
+  .card__diagram,
   .card__canvas {
     min-height: var(--card-canvas-height, 280px);
     height: var(--card-canvas-height, 280px);
@@ -1013,6 +1133,30 @@ body.body--detail-open {
   .detail-card__close {
     top: 10px;
     right: 10px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .card--detail-active .card__overlay {
+    inset: 16px 64px auto 16px;
+    gap: 4px;
+  }
+
+  .card--detail-active .card__agency {
+    font-size: 0.86rem;
+  }
+
+  .card--detail-active .card__count {
+    font-size: 0.8rem;
+  }
+
+  .card--detail-active .card__overlay h2 {
+    font-size: clamp(1.9rem, 7.6vw, 2.56rem);
+  }
+
+  .card--detail-active .card__flag {
+    top: 16px;
+    right: 16px;
     width: 34px;
     height: 34px;
   }
