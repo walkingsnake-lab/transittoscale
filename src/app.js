@@ -4,9 +4,13 @@ import {
   CARD_STYLE,
   FONT_STACK_TIGHT,
   HEADER_OFFSET,
+  INTRO_CARD_PORTION,
+  INTRO_CIRCLE_DELAY,
   INTRO_CIRCLE_PORTION,
   INTRO_DURATION_MS,
+  INTRO_LINES_DELAY,
   INTRO_STAGGER_MS,
+  LINE_TRACER_WINDOW,
   REFERENCE_RADIUS_PIXELS,
   REVEAL_LINE_OFFSET,
   SELECTION_SPRING,
@@ -14,7 +18,14 @@ import {
   HOVER_SPRING,
   getCityTheme
 } from './config.js';
-import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath, simplifyPath } from './lib/canvas.js';
+import {
+  clearHiDpiCanvas,
+  buildPathMetrics,
+  drawPathWindow,
+  drawProgressPath,
+  simplifyPath,
+  strokeCircleProgress
+} from './lib/canvas.js';
 import { createCityDisplay } from './lib/display-profiles.js';
 import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
 import { clamp, damp, invLerp, nearlyEqual } from './lib/math.js';
@@ -521,9 +532,11 @@ function drawCard({
 }) {
   ctx.clearRect(0, 0, width, height);
 
-  const revealValue = easeOutCubic(introValue);
-  const circleValue = easeInOutCubic(invLerp(revealValue, 0, INTRO_CIRCLE_PORTION));
-  const lineWindow = invLerp(revealValue, 0.18, 1);
+  const settleValue = easeOutCubic(invLerp(introValue, 0, INTRO_CARD_PORTION));
+  const circleValue = easeInOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION));
+  const labelValue = easeOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY + 0.16, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION + 0.18));
+  const lineWindow = easeInOutCubic(invLerp(introValue, INTRO_LINES_DELAY, 0.98));
+  const tracerValue = easeOutCubic(invLerp(introValue, INTRO_LINES_DELAY + 0.04, 1));
   const emphasis = selectedValue;
   const hover = hoverValue;
   const dimmed = dimValue;
@@ -538,7 +551,7 @@ function drawCard({
   const circleCenterX = width / 2;
   const circleCenterY = height / 2;
   const referenceRadius = REFERENCE_RADIUS_PIXELS * diagramScale;
-  const circleAlpha = clamp(0.28 * circleValue + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06, 0, 1);
+  const circleAlpha = clamp((0.18 + settleValue * 0.1) * circleValue + hover * 0.14 + emphasis * 0.07 - dimmed * 0.06, 0, 1);
 
   ctx.save();
   ctx.fillStyle = theme.referenceFill;
@@ -546,6 +559,13 @@ function drawCard({
   ctx.beginPath();
   ctx.arc(circleCenterX, circleCenterY, referenceRadius, 0, Math.PI * 2);
   ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.strokeStyle = theme.referenceFill;
+  ctx.globalAlpha = clamp(circleAlpha * 0.68 + hover * 0.06, 0, 0.44);
+  ctx.lineWidth = 1.35;
+  strokeCircleProgress(ctx, circleCenterX, circleCenterY, referenceRadius + 6, circleValue);
   ctx.restore();
 
   drawArcLabel(ctx, {
@@ -558,26 +578,47 @@ function drawCard({
     fillStyle: theme.referenceFill,
     font: `800 15px ${FONT_STACK_TIGHT}`,
     letterSpacing: 0.9,
-    globalAlpha: circleAlpha
+    globalAlpha: circleAlpha * labelValue
   });
 
   ctx.save();
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.imageSmoothingEnabled = true;
   const emphasisStrength = Math.max(emphasis, hover * 0.65);
   const baseLineWidth = CARD_STYLE.baseLineWidth;
   const selectedLineWidth = CARD_STYLE.selectedLineWidth;
   const lineWidth = baseLineWidth + (selectedLineWidth - baseLineWidth) * emphasisStrength;
+  const scaleSafe = Math.max(diagramScale, 0.001);
+  const scaledLineWidth = lineWidth / scaleSafe;
+
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.imageSmoothingEnabled = true;
+  ctx.translate(circleCenterX, circleCenterY);
+  ctx.scale(diagramScale, diagramScale);
+  ctx.translate(-circleCenterX, -circleCenterY);
+
+  if (tracerValue > 0.001) {
+    ctx.save();
+    ctx.strokeStyle = theme.referenceFill;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = clamp((0.12 + tracerValue * 0.16 + hover * 0.04) * (1 - dimmed * 0.7), 0, 0.32);
+    ctx.lineWidth = scaledLineWidth + 4 / scaleSafe;
+    drawProjectedLineTracers(ctx, projectedLines, lineWindow, LINE_TRACER_WINDOW + emphasisStrength * 0.03);
+    ctx.restore();
+
+    ctx.save();
+    ctx.strokeStyle = theme.referenceFill;
+    ctx.globalCompositeOperation = 'screen';
+    ctx.globalAlpha = clamp((0.2 + tracerValue * 0.48 + hover * 0.08) * (1 - dimmed * 0.82), 0, 0.66);
+    ctx.lineWidth = scaledLineWidth + 1.2 / scaleSafe;
+    drawProjectedLineTracers(ctx, projectedLines, lineWindow, LINE_TRACER_WINDOW * 0.72);
+    ctx.restore();
+  }
 
   ctx.strokeStyle = theme.ink;
   // Keep shared corridors from compounding into visibly darker knots.
   ctx.globalCompositeOperation = 'darken';
-  ctx.globalAlpha = display.lineAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
-  ctx.translate(circleCenterX, circleCenterY);
-  ctx.scale(diagramScale, diagramScale);
-  ctx.translate(-circleCenterX, -circleCenterY);
-  ctx.lineWidth = lineWidth / Math.max(diagramScale, 0.001);
+  ctx.globalAlpha = (display.lineAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed) * (0.24 + lineWindow * 0.76);
+  ctx.lineWidth = scaledLineWidth;
   drawProjectedLines(ctx, projectedLines, lineWindow);
 
   ctx.restore();
@@ -587,11 +628,29 @@ function drawProjectedLines(ctx, projectedLines, lineWindow) {
   const lineCount = projectedLines.length;
 
   projectedLines.forEach((metrics, index) => {
-    // Spread the reveal stagger across the full set so later lines still finish drawing.
-    const offset = lineCount > 1 ? (index / (lineCount - 1)) * REVEAL_LINE_OFFSET : 0;
-    const progress = easeOutCubic(clamp((lineWindow - offset) / Math.max(0.12, 1 - offset)));
+    const progress = getLineRevealProgress(lineCount, index, lineWindow);
     drawProgressPath(ctx, metrics, progress);
   });
+}
+
+function drawProjectedLineTracers(ctx, projectedLines, lineWindow, tracerWindow) {
+  const lineCount = projectedLines.length;
+
+  projectedLines.forEach((metrics, index) => {
+    const progress = getLineRevealProgress(lineCount, index, lineWindow);
+
+    if (progress <= 0) {
+      return;
+    }
+
+    drawPathWindow(ctx, metrics, Math.max(0, progress - tracerWindow), progress);
+  });
+}
+
+function getLineRevealProgress(lineCount, index, lineWindow) {
+  // Spread the reveal stagger across the full set so later lines still finish drawing.
+  const offset = lineCount > 1 ? (index / (lineCount - 1)) * REVEAL_LINE_OFFSET : 0;
+  return easeOutCubic(clamp((lineWindow - offset) / Math.max(0.16, 1 - offset)));
 }
 
 function mergeOverlappingPaths(paths, snapPrecision = SEGMENT_SNAP_PRECISION) {

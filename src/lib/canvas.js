@@ -89,6 +89,72 @@ export function drawProgressPath(ctx, metrics, progress) {
   ctx.stroke();
 }
 
+export function drawPathWindow(ctx, metrics, startProgress, endProgress) {
+  if (!metrics || metrics.points.length < 2) {
+    return;
+  }
+
+  const start = clampUnit(startProgress);
+  const end = clampUnit(endProgress);
+
+  if (end <= start) {
+    return;
+  }
+
+  if (start <= 0 && end >= 0.999) {
+    drawProgressPath(ctx, metrics, 1);
+    return;
+  }
+
+  const startLength = metrics.totalLength * start;
+  const endLength = metrics.totalLength * end;
+  let traversed = 0;
+  let hasDrawn = false;
+
+  ctx.beginPath();
+
+  for (const segment of metrics.segments) {
+    if (segment.length === 0) {
+      continue;
+    }
+
+    const segmentStart = traversed;
+    const segmentEnd = traversed + segment.length;
+
+    if (endLength <= segmentStart) {
+      break;
+    }
+
+    if (startLength >= segmentEnd) {
+      traversed = segmentEnd;
+      continue;
+    }
+
+    const localStart = Math.max(startLength, segmentStart);
+    const localEnd = Math.min(endLength, segmentEnd);
+    const startRatio = (localStart - segmentStart) / segment.length;
+    const endRatio = (localEnd - segmentStart) / segment.length;
+    const startX = segment.start[0] + (segment.end[0] - segment.start[0]) * startRatio;
+    const startY = segment.start[1] + (segment.end[1] - segment.start[1]) * startRatio;
+    const endX = segment.start[0] + (segment.end[0] - segment.start[0]) * endRatio;
+    const endY = segment.start[1] + (segment.end[1] - segment.start[1]) * endRatio;
+
+    if (!hasDrawn) {
+      ctx.moveTo(startX, startY);
+      hasDrawn = true;
+    } else {
+      ctx.lineTo(startX, startY);
+    }
+
+    ctx.lineTo(endX, endY);
+    traversed = segmentEnd;
+  }
+
+  if (hasDrawn) {
+    ctx.stroke();
+  }
+}
+
 export function strokeCircleProgress(ctx, x, y, radius, progress) {
   if (progress <= 0) {
     return;
@@ -165,6 +231,10 @@ function squaredDistance(a, b) {
   const dx = b[0] - a[0];
   const dy = b[1] - a[1];
   return dx * dx + dy * dy;
+}
+
+function clampUnit(value) {
+  return Math.min(1, Math.max(0, value));
 }
 
 function squaredSegmentDistance(point, start, end) {
