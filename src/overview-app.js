@@ -42,12 +42,13 @@ export async function mountApp(root) {
   const zoomOutButton = root.querySelector('[data-zoom-out]');
   const zoomInButton = root.querySelector('[data-zoom-in]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const interactiveDepth = !reducedMotion && supportsInteractiveDepthEffects();
 
   try {
     const cities = await loadCities();
     status.textContent = `${cities.length} metro systems loaded.`;
 
-    const cards = cities.map((city, index) => createCard(city, index, reducedMotion));
+    const cards = cities.map((city, index) => createCard(city, index, { reducedMotion, interactiveDepth }));
     cards.forEach(({ element }) => grid.append(element));
 
     let zoomIndex = OVERVIEW_ZOOM_STEPS.findIndex((step) => step.key === DEFAULT_OVERVIEW_VARIANT);
@@ -123,7 +124,11 @@ function resolveAssetPath(relativePath) {
   return new URL(relativePath, document.baseURI).toString();
 }
 
-function createCard(city, index, reducedMotion) {
+function supportsInteractiveDepthEffects() {
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
+function createCard(city, index, { reducedMotion, interactiveDepth }) {
   const theme = getCityTheme(city.slug, index);
   const lineLabel = formatLineLabel(city.lineCount);
   const systemLabel = formatSystemLabel(city);
@@ -158,47 +163,65 @@ function createCard(city, index, reducedMotion) {
   element.style.setProperty('--card-shadow', theme.shadow);
   element.setAttribute('aria-label', `${city.name} transit card`);
 
-  element.innerHTML = `
-    <div class="card__stage">
-      <div class="card__rotator">
-        <section class="card__face card__face--front">
-          <button type="button" class="card__select" aria-label="Show back of ${city.name} card"></button>
-          <div class="card__paper">
-            <div class="card__canvas-frame">
-              ${initialOverviewPath ? `<img class="card__canvas" data-overview-image src="${resolveAssetPath(initialOverviewPath)}" alt="" loading="lazy" decoding="async" />` : ''}
-              <div class="card__overlay">
-                <p class="card__agency">${systemLabel}</p>
-                <h2>${city.name}</h2>
-                <p class="card__count">${lineLabel}</p>
+  if (interactiveDepth) {
+    element.innerHTML = `
+      <div class="card__stage">
+        <div class="card__rotator">
+          <section class="card__face card__face--front">
+            <button type="button" class="card__select" aria-label="Show back of ${city.name} card"></button>
+            <div class="card__paper">
+              <div class="card__canvas-frame">
+                ${initialOverviewPath ? `<img class="card__canvas" src="${resolveAssetPath(initialOverviewPath)}" alt="" loading="lazy" decoding="async" />` : ''}
+                <div class="card__overlay">
+                  <p class="card__agency">${systemLabel}</p>
+                  <h2>${city.name}</h2>
+                  <p class="card__count">${lineLabel}</p>
+                </div>
+                ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}
               </div>
-              ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}
             </div>
-          </div>
-        </section>
-        <section class="card__face card__face--back" aria-hidden="true">
-          <button type="button" class="card__select" aria-label="Show front of ${city.name} card"></button>
-          <div class="card__paper card__paper--back">
-            <div class="card__back-copy">
-              <p class="card__back-kicker">Reverse Side</p>
-              <h3>Transit notes and stats will live here.</h3>
-              <p class="card__back-note">We can use this side for comparisons, system details, and other network context.</p>
-              <dl class="card__back-list">
-                <div><dt>Coverage</dt><dd>Coming soon</dd></div>
-                <div><dt>Stations</dt><dd>Coming soon</dd></div>
-                <div><dt>Ridership</dt><dd>Coming soon</dd></div>
-              </dl>
+          </section>
+          <section class="card__face card__face--back" aria-hidden="true">
+            <button type="button" class="card__select" aria-label="Show front of ${city.name} card"></button>
+            <div class="card__paper card__paper--back">
+              <div class="card__back-copy">
+                <p class="card__back-kicker">Reverse Side</p>
+                <h3>Transit notes and stats will live here.</h3>
+                <p class="card__back-note">We can use this side for comparisons, system details, and other network context.</p>
+                <dl class="card__back-list">
+                  <div><dt>Coverage</dt><dd>Coming soon</dd></div>
+                  <div><dt>Stations</dt><dd>Coming soon</dd></div>
+                  <div><dt>Ridership</dt><dd>Coming soon</dd></div>
+                </dl>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  } else {
+    element.classList.add('card--static');
+    element.innerHTML = `
+      <div class="card__stage card__stage--static">
+        <div class="card__paper card__paper--static">
+          <div class="card__canvas-frame">
+            ${initialOverviewPath ? `<img class="card__canvas" src="${resolveAssetPath(initialOverviewPath)}" alt="" loading="lazy" decoding="async" />` : ''}
+            <div class="card__overlay">
+              <p class="card__agency">${systemLabel}</p>
+              <h2>${city.name}</h2>
+              <p class="card__count">${lineLabel}</p>
+            </div>
+            ${flag ? `<img class="card__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
-  const overviewImage = element.querySelector('[data-overview-image]');
-  const selectButtons = Array.from(element.querySelectorAll('.card__select'));
+  const selectButtons = interactiveDepth ? Array.from(element.querySelectorAll('.card__select')) : [];
   const [frontSelectButton, backSelectButton] = selectButtons;
-  const frontFace = element.querySelector('.card__face--front');
-  const backFace = element.querySelector('.card__face--back');
+  const frontFace = interactiveDepth ? element.querySelector('.card__face--front') : null;
+  const backFace = interactiveDepth ? element.querySelector('.card__face--back') : null;
   const card = {
     element,
     flipped: false,
@@ -214,6 +237,10 @@ function createCard(city, index, reducedMotion) {
       this.currentOverviewVariant = variantKey;
     },
     setFlipped(isFlipped) {
+      if (!interactiveDepth) {
+        return;
+      }
+
       this.flipped = isFlipped;
       element.classList.toggle('card--flipped', isFlipped);
       frontFace.setAttribute('aria-hidden', String(isFlipped));
@@ -222,6 +249,10 @@ function createCard(city, index, reducedMotion) {
       backSelectButton.disabled = !isFlipped;
     },
     setHovered(isHovered) {
+      if (!interactiveDepth) {
+        return;
+      }
+
       element.classList.toggle('card--hovered', isHovered);
 
       if (!isHovered || reducedMotion) {
@@ -229,7 +260,7 @@ function createCard(city, index, reducedMotion) {
       }
     },
     updateTilt(clientX, clientY) {
-      if (reducedMotion) {
+      if (!interactiveDepth || reducedMotion) {
         return;
       }
 
@@ -258,6 +289,10 @@ function createCard(city, index, reducedMotion) {
       element.style.setProperty('--paper-gloss-y', `${glossY.toFixed(2)}px`);
     },
     resetTilt() {
+      if (!interactiveDepth) {
+        return;
+      }
+
       element.style.setProperty('--hover-shift-x', '0px');
       element.style.setProperty('--hover-shift-y', '0px');
       element.style.setProperty('--hover-rotate-x', '0deg');
@@ -267,24 +302,26 @@ function createCard(city, index, reducedMotion) {
     }
   };
 
-  element.addEventListener('pointerenter', (event) => {
-    card.setHovered(true);
-    card.updateTilt(event.clientX, event.clientY);
-  });
-  element.addEventListener('pointermove', (event) => {
-    card.updateTilt(event.clientX, event.clientY);
-  });
-  element.addEventListener('pointerleave', () => card.setHovered(false));
-  element.addEventListener('pointercancel', () => card.setHovered(false));
-  element.addEventListener('focusin', () => card.setHovered(true));
-  element.addEventListener('focusout', (event) => {
-    if (!element.contains(event.relatedTarget)) {
-      card.setHovered(false);
-    }
-  });
-  frontSelectButton.addEventListener('click', () => card.setFlipped(true));
-  backSelectButton.addEventListener('click', () => card.setFlipped(false));
-  card.setFlipped(false);
+  if (interactiveDepth) {
+    element.addEventListener('pointerenter', (event) => {
+      card.setHovered(true);
+      card.updateTilt(event.clientX, event.clientY);
+    });
+    element.addEventListener('pointermove', (event) => {
+      card.updateTilt(event.clientX, event.clientY);
+    });
+    element.addEventListener('pointerleave', () => card.setHovered(false));
+    element.addEventListener('pointercancel', () => card.setHovered(false));
+    element.addEventListener('focusin', () => card.setHovered(true));
+    element.addEventListener('focusout', (event) => {
+      if (!element.contains(event.relatedTarget)) {
+        card.setHovered(false);
+      }
+    });
+    frontSelectButton.addEventListener('click', () => card.setFlipped(true));
+    backSelectButton.addEventListener('click', () => card.setFlipped(false));
+    card.setFlipped(false);
+  }
 
   return card;
 }

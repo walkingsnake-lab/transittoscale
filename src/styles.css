@@ -209,6 +209,8 @@ body {
   position: relative;
   display: block;
   width: 100%;
+  content-visibility: auto;
+  contain-intrinsic-size: 360px 440px;
   padding: 0;
   background: transparent;
   text-align: left;
@@ -241,6 +243,42 @@ body {
   -webkit-transform-style: preserve-3d;
   will-change: transform;
   transition: transform 620ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.card--static {
+  transform-style: flat;
+}
+
+.card__stage--static {
+  perspective: none;
+  -webkit-perspective: none;
+  transform: none;
+  transform-style: flat;
+  -webkit-transform-style: flat;
+  will-change: auto;
+}
+
+.card__paper--static {
+  position: relative;
+  inset: auto;
+  min-height: inherit;
+  pointer-events: auto;
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+  will-change: auto;
+}
+
+.card--static .card__paper::before,
+.card--static .card__overlay,
+.card--static .card__flag {
+  transform: none;
+  will-change: auto;
+}
+
+.card--static .card__canvas {
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+  will-change: auto;
 }
 
 .card--flipped .card__rotator {
@@ -356,6 +394,11 @@ body {
   opacity: 0.56;
 }
 
+.card--static:hover .card__paper::before,
+.card--static.card--hovered .card__paper::before {
+  opacity: 0.46;
+}
+
 .card:hover .card__stage,
 .card--hovered .card__stage {
   transform:
@@ -365,6 +408,11 @@ body {
     scale(1.008);
 }
 
+.card--static:hover .card__stage,
+.card--static.card--hovered .card__stage {
+  transform: none;
+}
+
 .card:hover .card__paper,
 .card--hovered .card__paper {
   box-shadow:
@@ -372,6 +420,15 @@ body {
     0 -2px 0 rgba(17, 17, 17, 0.08) inset,
     0 24px 34px rgba(0, 0, 0, 0.26),
     0 38px 72px rgba(0, 0, 0, 0.22);
+}
+
+.card--static:hover .card__paper,
+.card--static.card--hovered .card__paper {
+  box-shadow:
+    0 4px 0 rgba(255, 255, 255, 0.55) inset,
+    0 -2px 0 rgba(17, 17, 17, 0.08) inset,
+    0 18px 28px rgba(0, 0, 0, 0.24),
+    var(--card-intro-shadow);
 }
 
 .card--selected .card__paper {
@@ -570,12 +627,22 @@ body {
   transform: translateZ(42px);
 }
 
+.card--static:hover .card__overlay,
+.card--static.card--hovered .card__overlay {
+  transform: none;
+}
+
 .card:hover .card__flag,
 .card--hovered .card__flag {
   transform: translateZ(56px);
 }
 
-.is-ready .card {
+.card--static:hover .card__flag,
+.card--static.card--hovered .card__flag {
+  transform: none;
+}
+
+.is-ready .card:not(.card--static) {
   animation: card-deal 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--stagger);
   transform-origin: var(--flip-origin);
@@ -583,12 +650,12 @@ body {
   transform-style: preserve-3d;
 }
 
-.is-ready .card__paper {
+.is-ready .card:not(.card--static) .card__paper {
   animation: paper-settle 960ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(var(--stagger) + 30ms);
 }
 
-.is-ready .card__canvas-frame::after {
+.is-ready .card:not(.card--static) .card__canvas-frame::after {
   animation: canvas-sweep 900ms cubic-bezier(0.18, 1, 0.28, 1) both;
   animation-delay: calc(var(--stagger) + 280ms);
 }
