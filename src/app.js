@@ -579,7 +579,12 @@ function drawCard({
   ctx.translate(circleCenterX, circleCenterY);
   ctx.scale(diagramScale, diagramScale);
   ctx.translate(-circleCenterX, -circleCenterY);
-  ctx.lineWidth = lineWidth / Math.max(diagramScale, 0.001);
+  const dpr = window.devicePixelRatio || 1;
+  const scaledLineWidth = lineWidth / Math.max(diagramScale, 0.001);
+
+  // Snap the stroke width to the device-pixel grid so Chrome/Windows doesn't
+  // render some diagonals and curves as visibly lighter than others.
+  ctx.lineWidth = Math.max(1 / dpr, Math.round(scaledLineWidth * dpr) / dpr);
   drawProjectedLines(ctx, projectedLines, lineWindow);
 
   ctx.restore();
