@@ -29,6 +29,11 @@ const DIAGRAM_ZOOM_SPRING = 10;
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
 const SEGMENT_SNAP_PRECISION = 0.1;
 const MIN_SEGMENT_DUPLICATE_SHARE = 0.15;
+const CORRIDOR_SIGNATURE_PRECISION = 1.25;
+const CORRIDOR_LENGTH_PRECISION = 1.5;
+const CORRIDOR_ENDPOINT_PRECISION = 0.45;
+const CORRIDOR_ANGLE_BUCKETS = 18;
+const MIN_CORRIDOR_COLLAPSE_SHARE = 0.12;
 
 export async function mountApp(root) {
   root.innerHTML = `
@@ -488,7 +493,16 @@ function projectLines(city, width, height) {
       .filter((path) => path.length > 1)
   );
   const { mergedPaths, duplicateShare } = mergeOverlappingPaths(projectedPaths);
-  const displayPaths = duplicateShare >= MIN_SEGMENT_DUPLICATE_SHARE ? mergedPaths : projectedPaths;
+  let displayPaths = duplicateShare >= MIN_SEGMENT_DUPLICATE_SHARE ? mergedPaths : projectedPaths;
+  const shouldCollapseCorridors = city.display.profile !== 'standard' || city.lineCount >= 8;
+
+  if (shouldCollapseCorridors) {
+    const { collapsedPaths, collapseShare } = collapseNearbyCorridors(displayPaths);
+
+    if (collapseShare >= MIN_CORRIDOR_COLLAPSE_SHARE) {
+      displayPaths = collapsedPaths;
+    }
+  }
 
   return displayPaths
     .map((path) => buildPathMetrics(path))
@@ -642,6 +656,79 @@ function mergeOverlappingPaths(paths, snapPrecision = SEGMENT_SNAP_PRECISION) {
   return {
     mergedPaths: mergedPaths.filter((path) => path.length > 1),
     duplicateShare: totalSegmentCount > 0 ? 1 - segmentByKey.size / totalSegmentCount : 0
+  };
+}
+
+function collapseNearbyCorridors(paths) {
+  const corridorGroups = new Map();
+  let totalSegmentCount = 0;
+
+  for (const path of paths) {
+    for (let index = 1; index < path.length; index += 1) {
+      let start = path[index - 1];
+      let end = path[index];
+
+      if (!start || !end) {
+        continue;
+      }
+
+      if (end[0] < start[0] || (end[0] === start[0] && end[1] < start[1])) {
+        [start, end] = [end, start];
+      }
+
+      const dx = end[0] - start[0];
+      const dy = end[1] - start[1];
+      const length = Math.hypot(dx, dy);
+
+      if (length <= 0.01) {
+        continue;
+      }
+
+      totalSegmentCount += 1;
+      let angle = Math.atan2(dy, dx);
+
+      if (angle < 0) {
+        angle += Math.PI;
+      }
+
+      const signatureKey = [
+        snapValue((start[0] + end[0]) / 2, CORRIDOR_SIGNATURE_PRECISION),
+        snapValue((start[1] + end[1]) / 2, CORRIDOR_SIGNATURE_PRECISION),
+        Math.round((angle / Math.PI) * CORRIDOR_ANGLE_BUCKETS),
+        snapValue(length, CORRIDOR_LENGTH_PRECISION)
+      ].join('|');
+      const group = corridorGroups.get(signatureKey) ?? {
+        count: 0,
+        startX: 0,
+        startY: 0,
+        endX: 0,
+        endY: 0
+      };
+
+      group.count += 1;
+      group.startX += start[0];
+      group.startY += start[1];
+      group.endX += end[0];
+      group.endY += end[1];
+      corridorGroups.set(signatureKey, group);
+    }
+  }
+
+  const collapsedSegmentPaths = [...corridorGroups.values()]
+    .map((group) => {
+      const start = [group.startX / group.count, group.startY / group.count];
+      const end = [group.endX / group.count, group.endY / group.count];
+      return [start, end];
+    })
+    .filter((path) => {
+      const [start, end] = path;
+      return Math.hypot(end[0] - start[0], end[1] - start[1]) > 0.01;
+    });
+  const { mergedPaths } = mergeOverlappingPaths(collapsedSegmentPaths, CORRIDOR_ENDPOINT_PRECISION);
+
+  return {
+    collapsedPaths: mergedPaths,
+    collapseShare: totalSegmentCount > 0 ? 1 - corridorGroups.size / totalSegmentCount : 0
   };
 }
 
