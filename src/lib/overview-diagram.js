@@ -1,5 +1,4 @@
 import {
-  CARD_PADDING,
   CARD_STYLE,
   HEADER_OFFSET,
   REFERENCE_RADIUS_PIXELS,
@@ -11,11 +10,8 @@ import { projectFeatureCollection } from './projection.js';
 
 const SEGMENT_SNAP_PRECISION = 0.1;
 const MIN_SEGMENT_DUPLICATE_SHARE = 0.15;
-const CORRIDOR_SIGNATURE_PRECISION = 1.25;
-const CORRIDOR_LENGTH_PRECISION = 1.5;
-const CORRIDOR_ENDPOINT_PRECISION = 0.45;
-const CORRIDOR_ANGLE_BUCKETS = 18;
-const MIN_CORRIDOR_COLLAPSE_SHARE = 0.12;
+const OVERVIEW_FRAME_PADDING = 8;
+const OVERVIEW_SCALE_BIAS = 1.08;
 const OVERVIEW_CIRCLE_ALPHA = 0.24;
 const OVERVIEW_LABEL_ALPHA = 0.22;
 const ARC_LABEL_START_ANGLE = Math.PI + 0.08;
@@ -30,10 +26,11 @@ export function createOverviewDiagramSvg({
   theme = getCityTheme(city.slug),
   idPrefix = 'overview'
 }) {
-  const displayPaths = getOverviewDisplayPaths(city, width, height, diagramScale);
+  const effectiveScale = diagramScale * OVERVIEW_SCALE_BIAS;
+  const displayPaths = getOverviewDisplayPaths(city, width, height, effectiveScale);
   const circleCenterX = width / 2;
   const circleCenterY = height / 2;
-  const referenceRadius = REFERENCE_RADIUS_PIXELS * diagramScale;
+  const referenceRadius = REFERENCE_RADIUS_PIXELS * effectiveScale;
   const arcId = `${idPrefix}-arc`;
   const lineMarkup = displayPaths
     .map((path) => `<path d="${toSvgPathData(path)}" />`)
@@ -85,29 +82,21 @@ export function getOverviewDisplayPaths(city, width = OVERVIEW_BASE_WIDTH, heigh
     return [];
   }
 
-  const frameWidth = width - CARD_PADDING * 2;
-  const frameHeight = height - CARD_PADDING * 2 - HEADER_OFFSET;
-  const centerX = CARD_PADDING + frameWidth / 2;
-  const centerY = CARD_PADDING + HEADER_OFFSET + frameHeight / 2;
+  const simplifyTolerance = Math.max(0.5, city.display.simplifyTolerance * 0.7);
+  const frameWidth = width - OVERVIEW_FRAME_PADDING * 2;
+  const frameHeight = height - OVERVIEW_FRAME_PADDING * 2 - HEADER_OFFSET;
+  const centerX = OVERVIEW_FRAME_PADDING + frameWidth / 2;
+  const centerY = OVERVIEW_FRAME_PADDING + HEADER_OFFSET + frameHeight / 2;
   const anchorPoint = city.focusPoint ?? city.centroid;
   const projectedFeatures = projectFeatureCollection(featureCollection, anchorPoint);
   const projectedPaths = projectedFeatures.flatMap((feature) =>
     feature.paths
       .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
-      .map((translatedPath) => simplifyPath(translatedPath, city.display.simplifyTolerance))
+      .map((translatedPath) => simplifyPath(translatedPath, simplifyTolerance))
       .filter((path) => path.length > 1)
   );
   const { mergedPaths, duplicateShare } = mergeOverlappingPaths(projectedPaths);
   let displayPaths = duplicateShare >= MIN_SEGMENT_DUPLICATE_SHARE ? mergedPaths : projectedPaths;
-  const shouldCollapseCorridors = city.display.profile !== 'standard' || city.lineCount >= 8;
-
-  if (shouldCollapseCorridors) {
-    const { collapsedPaths, collapseShare } = collapseNearbyCorridors(displayPaths);
-
-    if (collapseShare >= MIN_CORRIDOR_COLLAPSE_SHARE) {
-      displayPaths = collapsedPaths;
-    }
-  }
 
   if (Math.abs(diagramScale - 1) > 0.001) {
     displayPaths = displayPaths.map((path) => scalePathAroundPoint(path, centerX, centerY, diagramScale));
@@ -173,79 +162,6 @@ function mergeOverlappingPaths(paths, snapPrecision = SEGMENT_SNAP_PRECISION) {
   return {
     mergedPaths: mergedPaths.filter((path) => path.length > 1),
     duplicateShare: totalSegmentCount > 0 ? 1 - segmentByKey.size / totalSegmentCount : 0
-  };
-}
-
-function collapseNearbyCorridors(paths) {
-  const corridorGroups = new Map();
-  let totalSegmentCount = 0;
-
-  for (const path of paths) {
-    for (let index = 1; index < path.length; index += 1) {
-      let start = path[index - 1];
-      let end = path[index];
-
-      if (!start || !end) {
-        continue;
-      }
-
-      if (end[0] < start[0] || (end[0] === start[0] && end[1] < start[1])) {
-        [start, end] = [end, start];
-      }
-
-      const dx = end[0] - start[0];
-      const dy = end[1] - start[1];
-      const length = Math.hypot(dx, dy);
-
-      if (length <= 0.01) {
-        continue;
-      }
-
-      totalSegmentCount += 1;
-      let angle = Math.atan2(dy, dx);
-
-      if (angle < 0) {
-        angle += Math.PI;
-      }
-
-      const signatureKey = [
-        snapValue((start[0] + end[0]) / 2, CORRIDOR_SIGNATURE_PRECISION),
-        snapValue((start[1] + end[1]) / 2, CORRIDOR_SIGNATURE_PRECISION),
-        Math.round((angle / Math.PI) * CORRIDOR_ANGLE_BUCKETS),
-        snapValue(length, CORRIDOR_LENGTH_PRECISION)
-      ].join('|');
-      const group = corridorGroups.get(signatureKey) ?? {
-        count: 0,
-        startX: 0,
-        startY: 0,
-        endX: 0,
-        endY: 0
-      };
-
-      group.count += 1;
-      group.startX += start[0];
-      group.startY += start[1];
-      group.endX += end[0];
-      group.endY += end[1];
-      corridorGroups.set(signatureKey, group);
-    }
-  }
-
-  const collapsedSegmentPaths = [...corridorGroups.values()]
-    .map((group) => {
-      const start = [group.startX / group.count, group.startY / group.count];
-      const end = [group.endX / group.count, group.endY / group.count];
-      return [start, end];
-    })
-    .filter((path) => {
-      const [start, end] = path;
-      return Math.hypot(end[0] - start[0], end[1] - start[1]) > 0.01;
-    });
-  const { mergedPaths } = mergeOverlappingPaths(collapsedSegmentPaths, CORRIDOR_ENDPOINT_PRECISION);
-
-  return {
-    collapsedPaths: mergedPaths,
-    collapseShare: totalSegmentCount > 0 ? 1 - corridorGroups.size / totalSegmentCount : 0
   };
 }
 

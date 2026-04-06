@@ -3,6 +3,7 @@ import { DEFAULT_OVERVIEW_VARIANT, OVERVIEW_ZOOM_STEPS } from './lib/overview-co
 import { clamp } from './lib/math.js';
 
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
+const ZOOM_STEP_BY_KEY = new Map(OVERVIEW_ZOOM_STEPS.map((step) => [step.key, step]));
 
 export async function mountApp(root) {
   root.innerHTML = `
@@ -127,11 +128,15 @@ function createCard(city, index, reducedMotion) {
   const lineLabel = formatLineLabel(city.lineCount);
   const systemLabel = formatSystemLabel(city);
   const flag = getCountryFlag(city);
-  const defaultVariant = city.overview?.defaultVariant ?? DEFAULT_OVERVIEW_VARIANT;
-  const initialOverviewPath = city.overview?.variants?.[defaultVariant];
+  const baseVariantKey =
+    city.overview?.variants?.[DEFAULT_OVERVIEW_VARIANT]
+      ? DEFAULT_OVERVIEW_VARIANT
+      : city.overview?.defaultVariant ?? Object.keys(city.overview?.variants ?? {})[0] ?? null;
+  const initialOverviewPath = baseVariantKey ? city.overview?.variants?.[baseVariantKey] : null;
   const element = document.createElement('article');
   element.className = 'card';
   element.style.setProperty('--stagger', `${index * 90}ms`);
+  element.style.setProperty('--overview-scale-factor', '1');
   element.style.setProperty('--flip-angle', `${index % 2 === 0 ? -12 : 12}deg`);
   element.style.setProperty('--flip-origin', index % 2 === 0 ? '0% 50%' : '100% 50%');
   element.style.setProperty('--hover-shift-x', '0px');
@@ -194,29 +199,19 @@ function createCard(city, index, reducedMotion) {
   const [frontSelectButton, backSelectButton] = selectButtons;
   const frontFace = element.querySelector('.card__face--front');
   const backFace = element.querySelector('.card__face--back');
-  const overviewVariants = city.overview?.variants ?? {};
-  const fallbackVariantKey = overviewVariants[DEFAULT_OVERVIEW_VARIANT]
-    ? DEFAULT_OVERVIEW_VARIANT
-    : Object.keys(overviewVariants)[0] ?? null;
   const card = {
     element,
     flipped: false,
-    currentOverviewVariant: initialOverviewPath ? defaultVariant : null,
+    currentOverviewVariant: DEFAULT_OVERVIEW_VARIANT,
     setOverviewVariant(variantKey) {
-      if (!overviewImage) {
+      const zoomStep = ZOOM_STEP_BY_KEY.get(variantKey);
+
+      if (!zoomStep || variantKey === this.currentOverviewVariant) {
         return;
       }
 
-      const resolvedVariantKey = overviewVariants[variantKey]
-        ? variantKey
-        : fallbackVariantKey;
-
-      if (!resolvedVariantKey || resolvedVariantKey === this.currentOverviewVariant) {
-        return;
-      }
-
-      overviewImage.src = resolveAssetPath(overviewVariants[resolvedVariantKey]);
-      this.currentOverviewVariant = resolvedVariantKey;
+      element.style.setProperty('--overview-scale-factor', String(zoomStep.diagramScale));
+      this.currentOverviewVariant = variantKey;
     },
     setFlipped(isFlipped) {
       this.flipped = isFlipped;
