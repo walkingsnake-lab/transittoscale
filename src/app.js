@@ -27,6 +27,8 @@ const ZOOM_STEPS = [
 ];
 const DIAGRAM_ZOOM_SPRING = 10;
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
+const SEGMENT_SNAP_PRECISION = 0.1;
+const MIN_SEGMENT_DUPLICATE_SHARE = 0.15;
 
 export async function mountApp(root) {
   root.innerHTML = `
@@ -489,23 +491,19 @@ function projectLines(city, width, height) {
   const centerY = CARD_PADDING + HEADER_OFFSET + frameHeight / 2;
   const anchorPoint = city.focusPoint ?? city.centroid;
   const projectedFeatures = projectFeatureCollection(city.geojson, anchorPoint);
+  const projectedPaths = projectedFeatures.flatMap((feature) =>
+    feature.paths
+      .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
+      .map((translatedPath) => simplifyPath(translatedPath, city.display.simplifyTolerance))
+      .filter((path) => path.length > 1)
+  );
+  const { mergedPaths, duplicateShare } = mergeOverlappingPaths(projectedPaths);
+  const displayPaths = duplicateShare >= MIN_SEGMENT_DUPLICATE_SHARE ? mergedPaths : projectedPaths;
 
-  return projectedFeatures
-    .map((feature) => {
-      const paths = feature.paths
-        .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
-        .map((translatedPath) => simplifyPath(translatedPath, city.display.simplifyTolerance))
-        .map((simplifiedPath) => buildPathMetrics(simplifiedPath))
-        .filter((metrics) => metrics.totalLength > 0);
-
-      return {
-        ...feature,
-        paths,
-        visualLength: paths.reduce((total, metrics) => total + metrics.totalLength, 0)
-      };
-    })
-    .filter((feature) => feature.paths.length > 0)
-    .sort((left, right) => right.visualLength - left.visualLength);
+  return displayPaths
+    .map((path) => buildPathMetrics(path))
+    .filter((metrics) => metrics.totalLength > 0)
+    .sort((left, right) => right.totalLength - left.totalLength);
 }
 
 function drawCard({
@@ -588,15 +586,121 @@ function drawCard({
 function drawProjectedLines(ctx, projectedLines, lineWindow) {
   const lineCount = projectedLines.length;
 
-  projectedLines.forEach((line, index) => {
+  projectedLines.forEach((metrics, index) => {
     // Spread the reveal stagger across the full set so later lines still finish drawing.
     const offset = lineCount > 1 ? (index / (lineCount - 1)) * REVEAL_LINE_OFFSET : 0;
     const progress = easeOutCubic(clamp((lineWindow - offset) / Math.max(0.12, 1 - offset)));
-
-    for (const metrics of line.paths) {
-      drawProgressPath(ctx, metrics, progress);
-    }
+    drawProgressPath(ctx, metrics, progress);
   });
+}
+
+function mergeOverlappingPaths(paths, snapPrecision = SEGMENT_SNAP_PRECISION) {
+  const pointByKey = new Map();
+  const segmentByKey = new Map();
+  const adjacency = new Map();
+  let totalSegmentCount = 0;
+
+  for (const path of paths) {
+    for (let index = 1; index < path.length; index += 1) {
+      totalSegmentCount += 1;
+      const startPoint = path[index - 1];
+      const endPoint = path[index];
+      const startKey = getSnappedPointKey(startPoint, pointByKey, snapPrecision);
+      const endKey = getSnappedPointKey(endPoint, pointByKey, snapPrecision);
+
+      if (startKey === endKey) {
+        continue;
+      }
+
+      const segmentKey = startKey < endKey ? `${startKey}|${endKey}` : `${endKey}|${startKey}`;
+
+      if (segmentByKey.has(segmentKey)) {
+        continue;
+      }
+
+      segmentByKey.set(segmentKey, { startKey, endKey });
+      addAdjacency(adjacency, startKey, segmentKey);
+      addAdjacency(adjacency, endKey, segmentKey);
+    }
+  }
+
+  const unusedSegmentKeys = new Set(segmentByKey.keys());
+  const mergedPaths = [];
+
+  for (const [pointKey, connectedSegmentKeys] of adjacency.entries()) {
+    if (connectedSegmentKeys.size === 2) {
+      continue;
+    }
+
+    for (const segmentKey of connectedSegmentKeys) {
+      if (!unusedSegmentKeys.has(segmentKey)) {
+        continue;
+      }
+
+      mergedPaths.push(walkMergedPath(pointKey, segmentKey, unusedSegmentKeys, adjacency, segmentByKey, pointByKey));
+    }
+  }
+
+  for (const segmentKey of [...unusedSegmentKeys]) {
+    const segment = segmentByKey.get(segmentKey);
+    mergedPaths.push(
+      walkMergedPath(segment.startKey, segmentKey, unusedSegmentKeys, adjacency, segmentByKey, pointByKey)
+    );
+  }
+
+  return {
+    mergedPaths: mergedPaths.filter((path) => path.length > 1),
+    duplicateShare: totalSegmentCount > 0 ? 1 - segmentByKey.size / totalSegmentCount : 0
+  };
+}
+
+function getSnappedPointKey(point, pointByKey, snapPrecision) {
+  const snappedX = snapValue(point[0], snapPrecision);
+  const snappedY = snapValue(point[1], snapPrecision);
+  const pointKey = `${snappedX},${snappedY}`;
+
+  if (!pointByKey.has(pointKey)) {
+    pointByKey.set(pointKey, [snappedX, snappedY]);
+  }
+
+  return pointKey;
+}
+
+function addAdjacency(adjacency, pointKey, segmentKey) {
+  const connectedSegmentKeys = adjacency.get(pointKey) ?? new Set();
+  connectedSegmentKeys.add(segmentKey);
+  adjacency.set(pointKey, connectedSegmentKeys);
+}
+
+function walkMergedPath(startPointKey, firstSegmentKey, unusedSegmentKeys, adjacency, segmentByKey, pointByKey) {
+  const path = [pointByKey.get(startPointKey)];
+  let currentPointKey = startPointKey;
+  let currentSegmentKey = firstSegmentKey;
+
+  while (currentSegmentKey) {
+    unusedSegmentKeys.delete(currentSegmentKey);
+    const segment = segmentByKey.get(currentSegmentKey);
+    const nextPointKey = segment.startKey === currentPointKey ? segment.endKey : segment.startKey;
+
+    path.push(pointByKey.get(nextPointKey));
+    currentPointKey = nextPointKey;
+
+    const nextSegmentKey = [...(adjacency.get(currentPointKey) ?? [])].find((segmentKey) =>
+      unusedSegmentKeys.has(segmentKey)
+    );
+
+    if (!nextSegmentKey || (adjacency.get(currentPointKey)?.size ?? 0) !== 2) {
+      break;
+    }
+
+    currentSegmentKey = nextSegmentKey;
+  }
+
+  return path;
+}
+
+function snapValue(value, precision) {
+  return Math.round(value / precision) * precision;
 }
 
 function drawArcLabel(

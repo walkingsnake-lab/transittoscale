@@ -4,7 +4,7 @@ export const DISPLAY_PROFILES = Object.freeze({
     lineAlpha: 0.94
   }),
   dense: Object.freeze({
-    simplifyTolerance: 1.3,
+    simplifyTolerance: 1.6,
     lineAlpha: 0.8
   }),
   mega: Object.freeze({
