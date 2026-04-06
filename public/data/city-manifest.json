@@ -36,6 +36,12 @@
         "standard": "data/overview/edmonton--standard.png",
         "close": "data/overview/edmonton--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/edmonton--detail.png"
     }
   },
   {
@@ -75,6 +81,12 @@
         "standard": "data/overview/montreal--standard.png",
         "close": "data/overview/montreal--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/montreal--detail.png"
     }
   },
   {
@@ -114,6 +126,12 @@
         "standard": "data/overview/toronto--standard.png",
         "close": "data/overview/toronto--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/toronto--detail.png"
     }
   },
   {
@@ -153,6 +171,12 @@
         "standard": "data/overview/vancouver--standard.png",
         "close": "data/overview/vancouver--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/vancouver--detail.png"
     }
   },
   {
@@ -192,6 +216,12 @@
         "standard": "data/overview/london--standard.png",
         "close": "data/overview/london--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/london--detail.png"
     }
   },
   {
@@ -231,6 +261,12 @@
         "standard": "data/overview/atlanta--standard.png",
         "close": "data/overview/atlanta--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/atlanta--detail.png"
     }
   },
   {
@@ -270,6 +306,12 @@
         "standard": "data/overview/baltimore--standard.png",
         "close": "data/overview/baltimore--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/baltimore--detail.png"
     }
   },
   {
@@ -309,6 +351,12 @@
         "standard": "data/overview/boston--standard.png",
         "close": "data/overview/boston--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/boston--detail.png"
     }
   },
   {
@@ -348,6 +396,12 @@
         "standard": "data/overview/chicago--standard.png",
         "close": "data/overview/chicago--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/chicago--detail.png"
     }
   },
   {
@@ -387,6 +441,12 @@
         "standard": "data/overview/los-angeles--standard.png",
         "close": "data/overview/los-angeles--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/los-angeles--detail.png"
     }
   },
   {
@@ -426,6 +486,12 @@
         "standard": "data/overview/minneapolis-st-paul--standard.png",
         "close": "data/overview/minneapolis-st-paul--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/minneapolis-st-paul--detail.png"
     }
   },
   {
@@ -465,6 +531,12 @@
         "standard": "data/overview/new-york--standard.png",
         "close": "data/overview/new-york--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/new-york--detail.png"
     }
   },
   {
@@ -504,6 +576,12 @@
         "standard": "data/overview/philadelphia--standard.png",
         "close": "data/overview/philadelphia--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/philadelphia--detail.png"
     }
   },
   {
@@ -543,6 +621,12 @@
         "standard": "data/overview/san-francisco-bay-area--standard.png",
         "close": "data/overview/san-francisco-bay-area--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/san-francisco-bay-area--detail.png"
     }
   },
   {
@@ -582,6 +666,12 @@
         "standard": "data/overview/san-jose-santa-clara-valley--standard.png",
         "close": "data/overview/san-jose-santa-clara-valley--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/san-jose-santa-clara-valley--detail.png"
     }
   },
   {
@@ -621,6 +711,12 @@
         "standard": "data/overview/seattle--standard.png",
         "close": "data/overview/seattle--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/seattle--detail.png"
     }
   },
   {
@@ -660,6 +756,12 @@
         "standard": "data/overview/st-louis--standard.png",
         "close": "data/overview/st-louis--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/st-louis--detail.png"
     }
   },
   {
@@ -699,6 +801,12 @@
         "standard": "data/overview/washington-dc--standard.png",
         "close": "data/overview/washington-dc--close.png"
       }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/washington-dc--detail.png"
     }
   }
 ]

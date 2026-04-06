@@ -4,7 +4,7 @@ import {
   REFERENCE_RADIUS_PIXELS,
   getCityTheme
 } from '../config.js';
-import { OVERVIEW_BASE_HEIGHT, OVERVIEW_BASE_WIDTH } from './overview-config.js';
+import { OVERVIEW_BASE_HEIGHT, OVERVIEW_BASE_WIDTH, OVERVIEW_SAFE_INSET } from './overview-config.js';
 import { projectFeatureCollection } from './projection.js';
 
 const SEGMENT_SNAP_PRECISION = 0.1;
@@ -23,13 +23,20 @@ export function createOverviewDiagramSvg({
   height = OVERVIEW_BASE_HEIGHT,
   diagramScale = 1,
   theme = getCityTheme(city.slug),
-  idPrefix = 'overview'
+  idPrefix = 'overview',
+  safeInset = OVERVIEW_SAFE_INSET
 }) {
-  const effectiveScale = diagramScale * OVERVIEW_SCALE_BIAS;
-  const displayPaths = getOverviewDisplayPaths(city, width, height, effectiveScale);
+  const targetScale = diagramScale * OVERVIEW_SCALE_BIAS;
+  const { paths: displayPaths, appliedScale } = getOverviewDisplayPaths({
+    city,
+    width,
+    height,
+    diagramScale: targetScale,
+    safeInset
+  });
   const circleCenterX = width / 2;
   const circleCenterY = height / 2;
-  const referenceRadius = REFERENCE_RADIUS_PIXELS * effectiveScale;
+  const referenceRadius = REFERENCE_RADIUS_PIXELS * appliedScale;
   const arcId = `${idPrefix}-arc`;
   const lineMarkup = displayPaths
     .map((path) => `<path d="${toSvgPathData(path)}" />`)
@@ -74,11 +81,20 @@ export function createOverviewDiagramSvg({
 </svg>`.trim();
 }
 
-export function getOverviewDisplayPaths(city, width = OVERVIEW_BASE_WIDTH, height = OVERVIEW_BASE_HEIGHT, diagramScale = 1) {
+export function getOverviewDisplayPaths({
+  city,
+  width = OVERVIEW_BASE_WIDTH,
+  height = OVERVIEW_BASE_HEIGHT,
+  diagramScale = 1,
+  safeInset = OVERVIEW_SAFE_INSET
+}) {
   const featureCollection = city.featureCollection ?? city.geojson;
 
   if (!featureCollection) {
-    return [];
+    return {
+      paths: [],
+      appliedScale: diagramScale
+    };
   }
 
   const frameWidth = width - OVERVIEW_FRAME_PADDING * 2;
@@ -94,12 +110,25 @@ export function getOverviewDisplayPaths(city, width = OVERVIEW_BASE_WIDTH, heigh
   );
   const { mergedPaths, duplicateShare } = mergeOverlappingPaths(projectedPaths);
   let displayPaths = duplicateShare >= MIN_SEGMENT_DUPLICATE_SHARE ? mergedPaths : projectedPaths;
+  const appliedScale = clampPathScaleToFrame(
+    displayPaths,
+    centerX,
+    centerY,
+    diagramScale,
+    safeInset,
+    width - safeInset,
+    safeInset,
+    height - safeInset
+  );
 
-  if (Math.abs(diagramScale - 1) > 0.001) {
-    displayPaths = displayPaths.map((path) => scalePathAroundPoint(path, centerX, centerY, diagramScale));
+  if (Math.abs(appliedScale - 1) > 0.001) {
+    displayPaths = displayPaths.map((path) => scalePathAroundPoint(path, centerX, centerY, appliedScale));
   }
 
-  return displayPaths;
+  return {
+    paths: displayPaths,
+    appliedScale
+  };
 }
 
 function mergeOverlappingPaths(paths, snapPrecision = SEGMENT_SNAP_PRECISION) {
@@ -167,6 +196,35 @@ function scalePathAroundPoint(path, centerX, centerY, scale) {
     centerX + (x - centerX) * scale,
     centerY + (y - centerY) * scale
   ]);
+}
+
+function clampPathScaleToFrame(paths, centerX, centerY, targetScale, minX, maxX, minY, maxY) {
+  let maxAllowedScale = Number.POSITIVE_INFINITY;
+
+  for (const path of paths) {
+    for (const [x, y] of path) {
+      const dx = x - centerX;
+      const dy = y - centerY;
+
+      if (dx > 0) {
+        maxAllowedScale = Math.min(maxAllowedScale, (maxX - centerX) / dx);
+      } else if (dx < 0) {
+        maxAllowedScale = Math.min(maxAllowedScale, (minX - centerX) / dx);
+      }
+
+      if (dy > 0) {
+        maxAllowedScale = Math.min(maxAllowedScale, (maxY - centerY) / dy);
+      } else if (dy < 0) {
+        maxAllowedScale = Math.min(maxAllowedScale, (minY - centerY) / dy);
+      }
+    }
+  }
+
+  if (!Number.isFinite(maxAllowedScale) || maxAllowedScale <= 0) {
+    return targetScale;
+  }
+
+  return Math.min(targetScale, maxAllowedScale);
 }
 
 function getSnappedPointKey(point, pointByKey, snapPrecision) {

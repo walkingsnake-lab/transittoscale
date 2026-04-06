@@ -390,7 +390,6 @@
     "sourceName": "Transport for London (TfL)",
     "sourceUrl": "https://api.tfl.gov.uk",
     "focusPoint": [-0.1276, 51.5074],
-    "minPointSpacingMeters": 20,
     "lineIds": [
       "bakerloo",
       "central",

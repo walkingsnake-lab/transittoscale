@@ -4,7 +4,18 @@ import { fileURLToPath } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
 import { getCityTheme } from '../src/config.js';
 import { createCityDisplay } from '../src/lib/display-profiles.js';
-import { OVERVIEW_BASE_HEIGHT, OVERVIEW_BASE_WIDTH, OVERVIEW_RASTER_SCALE, OVERVIEW_ZOOM_STEPS } from '../src/lib/overview-config.js';
+import {
+  DETAIL_BASE_HEIGHT,
+  DETAIL_BASE_WIDTH,
+  DETAIL_DIAGRAM_SCALE,
+  DETAIL_RASTER_SCALE,
+  DETAIL_SAFE_INSET,
+  OVERVIEW_BASE_HEIGHT,
+  OVERVIEW_BASE_WIDTH,
+  OVERVIEW_RASTER_SCALE,
+  OVERVIEW_SAFE_INSET,
+  OVERVIEW_ZOOM_STEPS
+} from '../src/lib/overview-config.js';
 import { createOverviewDiagramSvg } from '../src/lib/overview-diagram.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -42,7 +53,10 @@ await pruneGeneratedFiles(
 await pruneGeneratedFiles(
   overviewDir,
   new Set(
-    manifest.flatMap((city) => OVERVIEW_ZOOM_STEPS.map((step) => `${city.slug}--${step.key}.png`))
+    manifest.flatMap((city) => [
+      ...OVERVIEW_ZOOM_STEPS.map((step) => `${city.slug}--${step.key}.png`),
+      `${city.slug}--detail.png`
+    ])
   )
 );
 
@@ -139,7 +153,8 @@ async function attachOverviewAssets(city, index) {
       height: OVERVIEW_BASE_HEIGHT,
       diagramScale: step.diagramScale,
       theme,
-      idPrefix: `${city.slug}-${step.key}`
+      idPrefix: `${city.slug}-${step.key}`,
+      safeInset: OVERVIEW_SAFE_INSET
     });
     const png = new Resvg(svg, {
       fitTo: {
@@ -152,6 +167,25 @@ async function attachOverviewAssets(city, index) {
     variants[step.key] = `data/overview/${fileName}`;
   }
 
+  const detailFileName = `${city.slug}--detail.png`;
+  const detailSvg = createOverviewDiagramSvg({
+    city,
+    width: DETAIL_BASE_WIDTH,
+    height: DETAIL_BASE_HEIGHT,
+    diagramScale: DETAIL_DIAGRAM_SCALE,
+    theme,
+    idPrefix: `${city.slug}-detail`,
+    safeInset: DETAIL_SAFE_INSET
+  });
+  const detailPng = new Resvg(detailSvg, {
+    fitTo: {
+      mode: 'width',
+      value: DETAIL_BASE_WIDTH * DETAIL_RASTER_SCALE
+    }
+  }).render().asPng();
+
+  await writeFile(path.join(overviewDir, detailFileName), detailPng);
+
   return {
     ...city,
     overview: {
@@ -160,6 +194,12 @@ async function attachOverviewAssets(city, index) {
       rasterScale: OVERVIEW_RASTER_SCALE,
       defaultVariant: 'standard',
       variants
+    },
+    detail: {
+      width: DETAIL_BASE_WIDTH,
+      height: DETAIL_BASE_HEIGHT,
+      rasterScale: DETAIL_RASTER_SCALE,
+      imagePath: `data/overview/${detailFileName}`
     }
   };
 }
