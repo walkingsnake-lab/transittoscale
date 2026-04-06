@@ -23,7 +23,7 @@
     "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -51,7 +51,7 @@
     "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -191,7 +191,7 @@
     "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -219,7 +219,7 @@
     "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -275,7 +275,7 @@
     "sourceUrl": "https://gtfs-static.translink.ca/gtfs/google_transit.zip",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -303,7 +303,7 @@
     "sourceUrl": "https://gtfs.edmonton.ca/TMGTFSRealTimeWebService/GTFS/gtfs.zip",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -331,7 +331,7 @@
     "sourceUrl": "https://www.metrostlouis.org/Transit/google_transit.zip",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -387,7 +387,7 @@
     "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -415,7 +415,7 @@
     "sourceUrl": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   },
@@ -499,7 +499,7 @@
     "sourceUrl": "https://www.vta.org/go/routes",
     "display": {
       "profile": "standard",
-      "simplifyTolerance": 0.5,
+      "simplifyTolerance": 1,
       "lineAlpha": 0.94
     }
   }

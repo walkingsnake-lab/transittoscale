@@ -1,6 +1,6 @@
 export const DISPLAY_PROFILES = Object.freeze({
   standard: Object.freeze({
-    simplifyTolerance: 0.5,
+    simplifyTolerance: 1,
     lineAlpha: 0.94
   }),
   dense: Object.freeze({
