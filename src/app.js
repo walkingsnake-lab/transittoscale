@@ -2,7 +2,6 @@ import {
   CARD_CANVAS_HEIGHT,
   CARD_PADDING,
   CARD_STYLE,
-  FONT_STACK,
   FONT_STACK_TIGHT,
   HEADER_OFFSET,
   INTRO_CIRCLE_PORTION,
@@ -16,6 +15,7 @@ import {
   getCityTheme
 } from './config.js';
 import { clearHiDpiCanvas, buildPathMetrics, drawProgressPath, simplifyPath } from './lib/canvas.js';
+import { createCityDisplay } from './lib/display-profiles.js';
 import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
 import { clamp, damp, invLerp, nearlyEqual } from './lib/math.js';
 import { projectFeatureCollection } from './lib/projection.js';
@@ -165,6 +165,7 @@ function resolveAssetPath(relativePath) {
 }
 
 function createCard(city, index, animator, reducedMotion, onSelect) {
+  const display = city.display ?? createCityDisplay(city.displayProfile, city.lineCount);
   const theme = getCityTheme(city.slug, index);
   const lineLabel = formatLineLabel(city.lineCount);
   const systemLabel = formatSystemLabel(city);
@@ -243,7 +244,10 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
   });
 
   const card = {
-    city,
+    city: {
+      ...city,
+      display
+    },
     theme,
     element,
     canvas,
@@ -269,7 +273,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
       this.width = width;
       this.height = height;
       clearHiDpiCanvas(canvas, ctx, width, height, window.devicePixelRatio || 1);
-      this.projectedLines = projectLines(city, width, height);
+      this.projectedLines = projectLines(this.city, width, height);
       this.draw();
     },
     setDiagramScale(diagramScale) {
@@ -390,6 +394,7 @@ function createCard(city, index, animator, reducedMotion, onSelect) {
         height: this.height,
         projectedLines: this.projectedLines,
         diagramScale: this.diagramScaleValue,
+        display: this.city.display,
         theme: this.theme,
         introValue: this.introValue,
         selectedValue: this.selectedValue,
@@ -480,7 +485,7 @@ function projectLines(city, width, height) {
     .map((feature) => {
       const paths = feature.paths
         .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
-        .map((translatedPath) => simplifyPath(translatedPath, CARD_STYLE.simplifyTolerance))
+        .map((translatedPath) => simplifyPath(translatedPath, city.display.simplifyTolerance))
         .map((simplifiedPath) => buildPathMetrics(simplifiedPath))
         .filter((metrics) => metrics.totalLength > 0);
 
@@ -500,6 +505,7 @@ function drawCard({
   height,
   projectedLines,
   diagramScale,
+  display,
   theme,
   introValue,
   selectedValue,
@@ -553,13 +559,14 @@ function drawCard({
   ctx.lineJoin = 'round';
   ctx.imageSmoothingEnabled = true;
   const emphasisStrength = Math.max(emphasis, hover * 0.65);
-  const lineWidth =
-    CARD_STYLE.baseLineWidth + (CARD_STYLE.selectedLineWidth - CARD_STYLE.baseLineWidth) * emphasisStrength;
+  const baseLineWidth = display.lineWidth;
+  const selectedLineWidth = baseLineWidth + 0.5;
+  const lineWidth = baseLineWidth + (selectedLineWidth - baseLineWidth) * emphasisStrength;
 
   ctx.strokeStyle = theme.ink;
   // Keep shared corridors from compounding into visibly darker knots.
   ctx.globalCompositeOperation = 'darken';
-  ctx.globalAlpha = CARD_STYLE.baseAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
+  ctx.globalAlpha = display.lineAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
   ctx.translate(circleCenterX, circleCenterY);
   ctx.scale(diagramScale, diagramScale);
   ctx.translate(-circleCenterX, -circleCenterY);
@@ -653,6 +660,8 @@ function formatSystemLabel(city) {
     'washington-dc': 'Washington Metro',
     'minneapolis-st-paul': 'Metro light rail',
     seattle: 'Link light rail',
+    'los-angeles': 'Metro Rail',
+    vancouver: 'SkyTrain',
     toronto: 'TTC subway + light metro',
     montreal: 'Montreal Metro',
     london: 'Underground + DLR + Overground + Elizabeth',

@@ -1,23 +1,27 @@
 import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createCityDisplay } from '../src/lib/display-profiles.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const rawDataPath = path.join(repoRoot, 'data', 'raw', 'city-seeds.json');
 const normalizedDataPath = path.join(repoRoot, 'data', 'normalized', 'cities.json');
+const sourceDataPath = path.join(repoRoot, 'data', 'sources', 'gtfs-sources.json');
 const publicDataDir = path.join(repoRoot, 'public', 'data');
 const cityDir = path.join(publicDataDir, 'cities');
 
 const raw = JSON.parse(await readFile(rawDataPath, 'utf8'));
+const sourceConfigs = JSON.parse(await readFile(sourceDataPath, 'utf8'));
+const sourceConfigBySlug = new Map(sourceConfigs.map((sourceConfig) => [sourceConfig.slug, sourceConfig]));
 const normalized = await readNormalizedCities();
 
 await mkdir(cityDir, { recursive: true });
 
 const manifest =
   normalized.size > 0
-    ? [...normalized.values()]
-    : raw.map((city) => buildSeedCity(city));
+    ? [...normalized.values()].map((city) => attachDisplaySettings(city))
+    : raw.map((city) => attachDisplaySettings(buildSeedCity(city)));
 
 for (const city of manifest) {
   const cityPath = path.join(cityDir, `${city.slug}.geojson`);
@@ -97,6 +101,15 @@ function buildSeedCity(city) {
     bounds,
     lineCount: features.length,
     featureCollection
+  };
+}
+
+function attachDisplaySettings(city) {
+  const requestedProfile = city.displayProfile ?? sourceConfigBySlug.get(city.slug)?.displayProfile;
+
+  return {
+    ...city,
+    display: createCityDisplay(requestedProfile, city.lineCount)
   };
 }
 

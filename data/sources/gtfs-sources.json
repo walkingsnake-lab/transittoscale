@@ -220,6 +220,55 @@
     }
   },
   {
+    "slug": "los-angeles",
+    "name": "Los Angeles",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Los Angeles County Metropolitan Transportation Authority (LA Metro)",
+    "sourceUrl": "https://gitlab.com/LACMTA/gtfs_rail/raw/master/gtfs_rail.zip",
+    "focusPoint": [-118.2437, 34.0522],
+    "routeTypes": ["0", "1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["801", "802", "803", "804", "805", "807"],
+    "routeIdAliases": {
+      "801": "A",
+      "802": "B",
+      "803": "C",
+      "804": "E",
+      "805": "D",
+      "807": "K"
+    },
+    "lineNameOverrides": {
+      "A": "A Line",
+      "B": "B Line",
+      "C": "C Line",
+      "D": "D Line",
+      "E": "E Line",
+      "K": "K Line"
+    }
+  },
+  {
+    "slug": "vancouver",
+    "name": "Vancouver",
+    "region": "Canada",
+    "sourceType": "gtfs",
+    "sourceName": "TransLink",
+    "sourceUrl": "https://gtfs-static.translink.ca/gtfs/google_transit.zip",
+    "focusPoint": [-123.1207, 49.2827],
+    "routeTypes": ["1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["30053", "30052", "13686"],
+    "lineNameOverrides": {
+      "30053": "Expo Line",
+      "30052": "Millennium Line",
+      "13686": "Canada Line"
+    }
+  },
+  {
     "slug": "toronto",
     "name": "Toronto",
     "region": "Canada",

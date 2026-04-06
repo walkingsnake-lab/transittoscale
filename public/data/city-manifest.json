@@ -20,7 +20,13 @@
     ],
     "lineCount": 4,
     "sourceName": "Metropolitan Atlanta Rapid Transit Authority (MARTA)",
-    "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip"
+    "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
   },
   {
     "slug": "baltimore",
@@ -43,7 +49,13 @@
     ],
     "lineCount": 2,
     "sourceName": "Maryland Transit Administration (MTA Maryland)",
-    "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources"
+    "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
   },
   {
     "slug": "chicago",
@@ -66,7 +78,13 @@
     ],
     "lineCount": 8,
     "sourceName": "Chicago Transit Authority (CTA)",
-    "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip"
+    "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 0.9,
+      "lineWidth": 1.45,
+      "lineAlpha": 0.88
+    }
   },
   {
     "slug": "new-york",
@@ -89,7 +107,13 @@
     ],
     "lineCount": 26,
     "sourceName": "MTA New York City Transit",
-    "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip"
+    "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
+    "display": {
+      "profile": "mega",
+      "simplifyTolerance": 1.4,
+      "lineWidth": 1.2,
+      "lineAlpha": 0.8
+    }
   },
   {
     "slug": "boston",
@@ -112,7 +136,13 @@
     ],
     "lineCount": 8,
     "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
-    "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip"
+    "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 0.9,
+      "lineWidth": 1.45,
+      "lineAlpha": 0.88
+    }
   },
   {
     "slug": "washington-dc",
@@ -135,7 +165,13 @@
     ],
     "lineCount": 6,
     "sourceName": "Washington Metropolitan Area Transit Authority (WMATA)",
-    "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip"
+    "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 0.9,
+      "lineWidth": 1.45,
+      "lineAlpha": 0.88
+    }
   },
   {
     "slug": "minneapolis-st-paul",
@@ -158,7 +194,13 @@
     ],
     "lineCount": 2,
     "sourceName": "Metro Transit",
-    "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip"
+    "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
   },
   {
     "slug": "seattle",
@@ -181,7 +223,13 @@
     ],
     "lineCount": 2,
     "sourceName": "Sound Transit",
-    "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip"
+    "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
   },
   {
     "slug": "toronto",
@@ -204,7 +252,13 @@
     ],
     "lineCount": 5,
     "sourceName": "Toronto Transit Commission (TTC)",
-    "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip"
+    "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
   },
   {
     "slug": "montreal",
@@ -227,7 +281,13 @@
     ],
     "lineCount": 4,
     "sourceName": "Societe de transport de Montreal (STM)",
-    "sourceUrl": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip"
+    "sourceUrl": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
   },
   {
     "slug": "london",
@@ -250,7 +310,13 @@
     ],
     "lineCount": 19,
     "sourceName": "Transport for London (TfL)",
-    "sourceUrl": "https://api.tfl.gov.uk"
+    "sourceUrl": "https://api.tfl.gov.uk",
+    "display": {
+      "profile": "mega",
+      "simplifyTolerance": 1.4,
+      "lineWidth": 1.2,
+      "lineAlpha": 0.8
+    }
   },
   {
     "slug": "san-francisco-bay-area",
@@ -273,7 +339,13 @@
     ],
     "lineCount": 12,
     "sourceName": "BART + Muni Metro",
-    "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip"
+    "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 0.9,
+      "lineWidth": 1.45,
+      "lineAlpha": 0.88
+    }
   },
   {
     "slug": "san-jose-santa-clara-valley",
@@ -296,6 +368,12 @@
     ],
     "lineCount": 5,
     "sourceName": "VTA Light Rail + BART",
-    "sourceUrl": "https://www.vta.org/go/routes"
+    "sourceUrl": "https://www.vta.org/go/routes",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
   }
 ]

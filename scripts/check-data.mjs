@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { DISPLAY_PROFILES } from '../src/lib/display-profiles.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -22,6 +23,25 @@ for (const city of manifest) {
   }
   assert(Array.isArray(city.bounds) && city.bounds.length === 4, 'City bounds must be a [minLon, minLat, maxLon, maxLat] tuple.');
   assert(typeof city.lineCount === 'number' && city.lineCount > 0, 'City line count must be a positive number.');
+  assert(city.display && typeof city.display === 'object', `${city.slug} must include display settings.`);
+  assert(
+    typeof city.display.profile === 'string' && city.display.profile in DISPLAY_PROFILES,
+    `${city.slug} display.profile must be one of ${Object.keys(DISPLAY_PROFILES).join(', ')}.`
+  );
+  assert(
+    typeof city.display.simplifyTolerance === 'number' && city.display.simplifyTolerance > 0,
+    `${city.slug} display.simplifyTolerance must be a positive number.`
+  );
+  assert(
+    typeof city.display.lineWidth === 'number' && city.display.lineWidth > 0,
+    `${city.slug} display.lineWidth must be a positive number.`
+  );
+  assert(
+    typeof city.display.lineAlpha === 'number' &&
+      city.display.lineAlpha > 0 &&
+      city.display.lineAlpha <= 1,
+    `${city.slug} display.lineAlpha must be between 0 and 1.`
+  );
 
   const cityPath = path.join(repoRoot, 'public', city.dataPath);
   const geojson = JSON.parse(stripBom(await readFile(cityPath, 'utf8')));
