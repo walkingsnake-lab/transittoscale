@@ -269,6 +269,25 @@
     }
   },
   {
+    "slug": "edmonton",
+    "name": "Edmonton",
+    "region": "Canada",
+    "sourceType": "gtfs",
+    "sourceName": "Edmonton Transit Service (ETS)",
+    "sourceUrl": "https://gtfs.edmonton.ca/TMGTFSRealTimeWebService/GTFS/gtfs.zip",
+    "focusPoint": [-113.4938, 53.5461],
+    "routeTypes": ["0"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["021R", "022R", "023R"],
+    "lineNameOverrides": {
+      "021R": "Capital Line",
+      "022R": "Metro Line",
+      "023R": "Valley Line"
+    }
+  },
+  {
     "slug": "toronto",
     "name": "Toronto",
     "region": "Canada",

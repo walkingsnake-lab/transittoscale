@@ -72,4 +72,4 @@ Transit To Scale is a static web visualization that compares world metro systems
 ## Current Imported Dataset
 
 - The live manifest currently includes only normalized real-data cities.
-- Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, Los Angeles, Vancouver, Toronto, Montreal, London, San Francisco Bay Area, San Jose / Santa Clara Valley, Atlanta, and Baltimore are imported from official agency feeds or APIs and rendered in the app.
+- Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, Los Angeles, Vancouver, Edmonton, Toronto, Montreal, London, San Francisco Bay Area, San Jose / Santa Clara Valley, Atlanta, and Baltimore are imported from official agency feeds or APIs and rendered in the app.

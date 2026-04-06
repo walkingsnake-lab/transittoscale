@@ -230,6 +230,29 @@
     "sourceUrl": "https://gtfs-static.translink.ca/gtfs/google_transit.zip"
   },
   {
+    "slug": "edmonton",
+    "name": "Edmonton",
+    "region": "Canada",
+    "dataPath": "data/cities/edmonton.geojson",
+    "centroid": [
+      -113.92264800000001,
+      53.651538
+    ],
+    "focusPoint": [
+      -113.4938,
+      53.5461
+    ],
+    "bounds": [
+      -114.433546,
+      53.45722,
+      -113.41175,
+      53.845856
+    ],
+    "lineCount": 3,
+    "sourceName": "Edmonton Transit Service (ETS)",
+    "sourceUrl": "https://gtfs.edmonton.ca/TMGTFSRealTimeWebService/GTFS/gtfs.zip"
+  },
+  {
     "slug": "toronto",
     "name": "Toronto",
     "region": "Canada",
