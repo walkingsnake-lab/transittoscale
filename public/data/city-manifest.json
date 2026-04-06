@@ -1,285 +1,5 @@
 [
   {
-    "slug": "atlanta",
-    "name": "Atlanta",
-    "region": "United States",
-    "dataPath": "data/cities/atlanta.geojson",
-    "centroid": [
-      -84.3487005,
-      33.7926435
-    ],
-    "focusPoint": [
-      -84.3879,
-      33.7488
-    ],
-    "bounds": [
-      -84.469057,
-      33.639219,
-      -84.228344,
-      33.946068
-    ],
-    "lineCount": 4,
-    "sourceName": "Metropolitan Atlanta Rapid Transit Authority (MARTA)",
-    "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip",
-    "display": {
-      "profile": "standard",
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
-    }
-  },
-  {
-    "slug": "baltimore",
-    "name": "Baltimore",
-    "region": "United States",
-    "dataPath": "data/cities/baltimore.geojson",
-    "centroid": [
-      -76.68852079999999,
-      39.334028243999995
-    ],
-    "focusPoint": [
-      -76.6122,
-      39.2904
-    ],
-    "bounds": [
-      -76.7829216,
-      39.171772003,
-      -76.59412,
-      39.496284485
-    ],
-    "lineCount": 2,
-    "sourceName": "Maryland Transit Administration (MTA Maryland)",
-    "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources",
-    "display": {
-      "profile": "standard",
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
-    }
-  },
-  {
-    "slug": "chicago",
-    "name": "Chicago",
-    "region": "United States",
-    "dataPath": "data/cities/chicago.geojson",
-    "centroid": [
-      -87.75504603,
-      41.89777223
-    ],
-    "focusPoint": [
-      -87.6298,
-      41.8781
-    ],
-    "bounds": [
-      -87.90422891,
-      41.72238381,
-      -87.60586315,
-      42.07316065
-    ],
-    "lineCount": 8,
-    "sourceName": "Chicago Transit Authority (CTA)",
-    "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
-    "display": {
-      "profile": "dense",
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
-    }
-  },
-  {
-    "slug": "new-york",
-    "name": "New York",
-    "region": "United States",
-    "dataPath": "data/cities/new-york.geojson",
-    "centroid": [
-      -74.003683,
-      40.707944499999996
-    ],
-    "focusPoint": [
-      -74.006,
-      40.7128
-    ],
-    "bounds": [
-      -74.251961,
-      40.512764,
-      -73.755405,
-      40.903125
-    ],
-    "lineCount": 26,
-    "sourceName": "MTA New York City Transit",
-    "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
-    "display": {
-      "profile": "mega",
-      "simplifyTolerance": 2.4,
-      "lineAlpha": 0.7
-    }
-  },
-  {
-    "slug": "boston",
-    "name": "Boston",
-    "region": "United States",
-    "dataPath": "data/cities/boston.geojson",
-    "centroid": [
-      -71.12187499999999,
-      42.3221145
-    ],
-    "focusPoint": [
-      -71.0603,
-      42.3555
-    ],
-    "bounds": [
-      -71.252372,
-      42.207262,
-      -70.991378,
-      42.436967
-    ],
-    "lineCount": 8,
-    "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
-    "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip",
-    "display": {
-      "profile": "dense",
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
-    }
-  },
-  {
-    "slug": "washington-dc",
-    "name": "Washington, DC",
-    "region": "United States",
-    "dataPath": "data/cities/washington-dc.geojson",
-    "centroid": [
-      -77.168093,
-      38.9431795
-    ],
-    "focusPoint": [
-      -77.0283,
-      38.8981
-    ],
-    "bounds": [
-      -77.491534,
-      38.766358,
-      -76.844652,
-      39.120001
-    ],
-    "lineCount": 6,
-    "sourceName": "Washington Metropolitan Area Transit Authority (WMATA)",
-    "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip",
-    "display": {
-      "profile": "dense",
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
-    }
-  },
-  {
-    "slug": "minneapolis-st-paul",
-    "name": "Minneapolis-St. Paul",
-    "region": "United States",
-    "dataPath": "data/cities/minneapolis-st-paul.geojson",
-    "centroid": [
-      -93.1827175,
-      44.9176875
-    ],
-    "focusPoint": [
-      -93.265,
-      44.9778
-    ],
-    "bounds": [
-      -93.278722,
-      44.851862,
-      -93.086713,
-      44.983513
-    ],
-    "lineCount": 2,
-    "sourceName": "Metro Transit",
-    "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip",
-    "display": {
-      "profile": "standard",
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
-    }
-  },
-  {
-    "slug": "seattle",
-    "name": "Seattle",
-    "region": "United States",
-    "dataPath": "data/cities/seattle.geojson",
-    "centroid": [
-      -122.222911,
-      47.565711
-    ],
-    "focusPoint": [
-      -122.3321,
-      47.6062
-    ],
-    "bounds": [
-      -122.338382,
-      47.31554,
-      -122.10744,
-      47.815882
-    ],
-    "lineCount": 2,
-    "sourceName": "Sound Transit",
-    "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip",
-    "display": {
-      "profile": "standard",
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
-    }
-  },
-  {
-    "slug": "los-angeles",
-    "name": "Los Angeles",
-    "region": "United States",
-    "dataPath": "data/cities/los-angeles.geojson",
-    "centroid": [
-      -118.12033149999999,
-      33.9694216439
-    ],
-    "focusPoint": [
-      -118.2437,
-      34.0522
-    ],
-    "bounds": [
-      -118.491688,
-      33.767995,
-      -117.748975,
-      34.1708482878
-    ],
-    "lineCount": 6,
-    "sourceName": "Los Angeles County Metropolitan Transportation Authority (LA Metro)",
-    "sourceUrl": "https://gitlab.com/LACMTA/gtfs_rail/raw/master/gtfs_rail.zip",
-    "display": {
-      "profile": "dense",
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
-    }
-  },
-  {
-    "slug": "vancouver",
-    "name": "Vancouver",
-    "region": "Canada",
-    "dataPath": "data/cities/vancouver.geojson",
-    "centroid": [
-      -122.98526799999999,
-      49.2278355
-    ],
-    "focusPoint": [
-      -123.1207,
-      49.2827
-    ],
-    "bounds": [
-      -123.179452,
-      49.16753,
-      -122.791084,
-      49.288141
-    ],
-    "lineCount": 3,
-    "sourceName": "TransLink",
-    "sourceUrl": "https://gtfs-static.translink.ca/gtfs/google_transit.zip",
-    "display": {
-      "profile": "standard",
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
-    }
-  },
-  {
     "slug": "edmonton",
     "name": "Edmonton",
     "region": "Canada",
@@ -305,90 +25,17 @@
       "profile": "standard",
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
-    }
-  },
-  {
-    "slug": "st-louis",
-    "name": "St. Louis",
-    "region": "United States",
-    "dataPath": "data/cities/st-louis.geojson",
-    "centroid": [
-      -90.1211265,
-      38.624990999999994
-    ],
-    "focusPoint": [
-      -90.1994,
-      38.627
-    ],
-    "bounds": [
-      -90.364617,
-      38.508674,
-      -89.877636,
-      38.741308
-    ],
-    "lineCount": 2,
-    "sourceName": "Metro Transit - St. Louis",
-    "sourceUrl": "https://www.metrostlouis.org/Transit/google_transit.zip",
-    "display": {
-      "profile": "standard",
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
-    }
-  },
-  {
-    "slug": "philadelphia",
-    "name": "Philadelphia",
-    "region": "United States",
-    "dataPath": "data/cities/philadelphia.geojson",
-    "centroid": [
-      -75.21578199999999,
-      40.009446999999994
-    ],
-    "focusPoint": [
-      -75.1652,
-      39.9526
-    ],
-    "bounds": [
-      -75.353669,
-      39.905429,
-      -75.077895,
-      40.113465
-    ],
-    "lineCount": 9,
-    "sourceName": "Southeastern Pennsylvania Transportation Authority (SEPTA)",
-    "sourceUrl": "https://github.com/septadev/GTFS/releases/latest/download/gtfs_public.zip",
-    "display": {
-      "profile": "dense",
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
-    }
-  },
-  {
-    "slug": "toronto",
-    "name": "Toronto",
-    "region": "Canada",
-    "dataPath": "data/cities/toronto.geojson",
-    "centroid": [
-      -79.43386749999999,
-      43.717288499999995
-    ],
-    "focusPoint": [
-      -79.3832,
-      43.6532
-    ],
-    "bounds": [
-      -79.6032,
-      43.637805,
-      -79.264535,
-      43.796772
-    ],
-    "lineCount": 5,
-    "sourceName": "Toronto Transit Commission (TTC)",
-    "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip",
-    "display": {
-      "profile": "standard",
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/edmonton--wide.png",
+        "standard": "data/overview/edmonton--standard.png",
+        "close": "data/overview/edmonton--close.png"
+      }
     }
   },
   {
@@ -417,6 +64,95 @@
       "profile": "standard",
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/montreal--wide.png",
+        "standard": "data/overview/montreal--standard.png",
+        "close": "data/overview/montreal--close.png"
+      }
+    }
+  },
+  {
+    "slug": "toronto",
+    "name": "Toronto",
+    "region": "Canada",
+    "dataPath": "data/cities/toronto.geojson",
+    "centroid": [
+      -79.43386749999999,
+      43.717288499999995
+    ],
+    "focusPoint": [
+      -79.3832,
+      43.6532
+    ],
+    "bounds": [
+      -79.6032,
+      43.637805,
+      -79.264535,
+      43.796772
+    ],
+    "lineCount": 5,
+    "sourceName": "Toronto Transit Commission (TTC)",
+    "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/toronto--wide.png",
+        "standard": "data/overview/toronto--standard.png",
+        "close": "data/overview/toronto--close.png"
+      }
+    }
+  },
+  {
+    "slug": "vancouver",
+    "name": "Vancouver",
+    "region": "Canada",
+    "dataPath": "data/cities/vancouver.geojson",
+    "centroid": [
+      -122.98526799999999,
+      49.2278355
+    ],
+    "focusPoint": [
+      -123.1207,
+      49.2827
+    ],
+    "bounds": [
+      -123.179452,
+      49.16753,
+      -122.791084,
+      49.288141
+    ],
+    "lineCount": 3,
+    "sourceName": "TransLink",
+    "sourceUrl": "https://gtfs-static.translink.ca/gtfs/google_transit.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/vancouver--wide.png",
+        "standard": "data/overview/vancouver--standard.png",
+        "close": "data/overview/vancouver--close.png"
+      }
     }
   },
   {
@@ -445,6 +181,329 @@
       "profile": "mega",
       "simplifyTolerance": 2.4,
       "lineAlpha": 0.7
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/london--wide.png",
+        "standard": "data/overview/london--standard.png",
+        "close": "data/overview/london--close.png"
+      }
+    }
+  },
+  {
+    "slug": "atlanta",
+    "name": "Atlanta",
+    "region": "United States",
+    "dataPath": "data/cities/atlanta.geojson",
+    "centroid": [
+      -84.3487005,
+      33.7926435
+    ],
+    "focusPoint": [
+      -84.3879,
+      33.7488
+    ],
+    "bounds": [
+      -84.469057,
+      33.639219,
+      -84.228344,
+      33.946068
+    ],
+    "lineCount": 4,
+    "sourceName": "Metropolitan Atlanta Rapid Transit Authority (MARTA)",
+    "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/atlanta--wide.png",
+        "standard": "data/overview/atlanta--standard.png",
+        "close": "data/overview/atlanta--close.png"
+      }
+    }
+  },
+  {
+    "slug": "baltimore",
+    "name": "Baltimore",
+    "region": "United States",
+    "dataPath": "data/cities/baltimore.geojson",
+    "centroid": [
+      -76.68852079999999,
+      39.334028243999995
+    ],
+    "focusPoint": [
+      -76.6122,
+      39.2904
+    ],
+    "bounds": [
+      -76.7829216,
+      39.171772003,
+      -76.59412,
+      39.496284485
+    ],
+    "lineCount": 2,
+    "sourceName": "Maryland Transit Administration (MTA Maryland)",
+    "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/baltimore--wide.png",
+        "standard": "data/overview/baltimore--standard.png",
+        "close": "data/overview/baltimore--close.png"
+      }
+    }
+  },
+  {
+    "slug": "boston",
+    "name": "Boston",
+    "region": "United States",
+    "dataPath": "data/cities/boston.geojson",
+    "centroid": [
+      -71.12187499999999,
+      42.3221145
+    ],
+    "focusPoint": [
+      -71.0603,
+      42.3555
+    ],
+    "bounds": [
+      -71.252372,
+      42.207262,
+      -70.991378,
+      42.436967
+    ],
+    "lineCount": 8,
+    "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
+    "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 1.6,
+      "lineAlpha": 0.8
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/boston--wide.png",
+        "standard": "data/overview/boston--standard.png",
+        "close": "data/overview/boston--close.png"
+      }
+    }
+  },
+  {
+    "slug": "chicago",
+    "name": "Chicago",
+    "region": "United States",
+    "dataPath": "data/cities/chicago.geojson",
+    "centroid": [
+      -87.75504603,
+      41.89777223
+    ],
+    "focusPoint": [
+      -87.6298,
+      41.8781
+    ],
+    "bounds": [
+      -87.90422891,
+      41.72238381,
+      -87.60586315,
+      42.07316065
+    ],
+    "lineCount": 8,
+    "sourceName": "Chicago Transit Authority (CTA)",
+    "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 1.6,
+      "lineAlpha": 0.8
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/chicago--wide.png",
+        "standard": "data/overview/chicago--standard.png",
+        "close": "data/overview/chicago--close.png"
+      }
+    }
+  },
+  {
+    "slug": "los-angeles",
+    "name": "Los Angeles",
+    "region": "United States",
+    "dataPath": "data/cities/los-angeles.geojson",
+    "centroid": [
+      -118.12033149999999,
+      33.9694216439
+    ],
+    "focusPoint": [
+      -118.2437,
+      34.0522
+    ],
+    "bounds": [
+      -118.491688,
+      33.767995,
+      -117.748975,
+      34.1708482878
+    ],
+    "lineCount": 6,
+    "sourceName": "Los Angeles County Metropolitan Transportation Authority (LA Metro)",
+    "sourceUrl": "https://gitlab.com/LACMTA/gtfs_rail/raw/master/gtfs_rail.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 1.6,
+      "lineAlpha": 0.8
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/los-angeles--wide.png",
+        "standard": "data/overview/los-angeles--standard.png",
+        "close": "data/overview/los-angeles--close.png"
+      }
+    }
+  },
+  {
+    "slug": "minneapolis-st-paul",
+    "name": "Minneapolis-St. Paul",
+    "region": "United States",
+    "dataPath": "data/cities/minneapolis-st-paul.geojson",
+    "centroid": [
+      -93.1827175,
+      44.9176875
+    ],
+    "focusPoint": [
+      -93.265,
+      44.9778
+    ],
+    "bounds": [
+      -93.278722,
+      44.851862,
+      -93.086713,
+      44.983513
+    ],
+    "lineCount": 2,
+    "sourceName": "Metro Transit",
+    "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/minneapolis-st-paul--wide.png",
+        "standard": "data/overview/minneapolis-st-paul--standard.png",
+        "close": "data/overview/minneapolis-st-paul--close.png"
+      }
+    }
+  },
+  {
+    "slug": "new-york",
+    "name": "New York",
+    "region": "United States",
+    "dataPath": "data/cities/new-york.geojson",
+    "centroid": [
+      -74.003683,
+      40.707944499999996
+    ],
+    "focusPoint": [
+      -74.006,
+      40.7128
+    ],
+    "bounds": [
+      -74.251961,
+      40.512764,
+      -73.755405,
+      40.903125
+    ],
+    "lineCount": 26,
+    "sourceName": "MTA New York City Transit",
+    "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
+    "display": {
+      "profile": "mega",
+      "simplifyTolerance": 2.4,
+      "lineAlpha": 0.7
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/new-york--wide.png",
+        "standard": "data/overview/new-york--standard.png",
+        "close": "data/overview/new-york--close.png"
+      }
+    }
+  },
+  {
+    "slug": "philadelphia",
+    "name": "Philadelphia",
+    "region": "United States",
+    "dataPath": "data/cities/philadelphia.geojson",
+    "centroid": [
+      -75.21578199999999,
+      40.009446999999994
+    ],
+    "focusPoint": [
+      -75.1652,
+      39.9526
+    ],
+    "bounds": [
+      -75.353669,
+      39.905429,
+      -75.077895,
+      40.113465
+    ],
+    "lineCount": 9,
+    "sourceName": "Southeastern Pennsylvania Transportation Authority (SEPTA)",
+    "sourceUrl": "https://github.com/septadev/GTFS/releases/latest/download/gtfs_public.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 1.6,
+      "lineAlpha": 0.8
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/philadelphia--wide.png",
+        "standard": "data/overview/philadelphia--standard.png",
+        "close": "data/overview/philadelphia--close.png"
+      }
     }
   },
   {
@@ -473,6 +532,17 @@
       "profile": "dense",
       "simplifyTolerance": 1.6,
       "lineAlpha": 0.8
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/san-francisco-bay-area--wide.png",
+        "standard": "data/overview/san-francisco-bay-area--standard.png",
+        "close": "data/overview/san-francisco-bay-area--close.png"
+      }
     }
   },
   {
@@ -501,6 +571,134 @@
       "profile": "standard",
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/san-jose-santa-clara-valley--wide.png",
+        "standard": "data/overview/san-jose-santa-clara-valley--standard.png",
+        "close": "data/overview/san-jose-santa-clara-valley--close.png"
+      }
+    }
+  },
+  {
+    "slug": "seattle",
+    "name": "Seattle",
+    "region": "United States",
+    "dataPath": "data/cities/seattle.geojson",
+    "centroid": [
+      -122.222911,
+      47.565711
+    ],
+    "focusPoint": [
+      -122.3321,
+      47.6062
+    ],
+    "bounds": [
+      -122.338382,
+      47.31554,
+      -122.10744,
+      47.815882
+    ],
+    "lineCount": 2,
+    "sourceName": "Sound Transit",
+    "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/seattle--wide.png",
+        "standard": "data/overview/seattle--standard.png",
+        "close": "data/overview/seattle--close.png"
+      }
+    }
+  },
+  {
+    "slug": "st-louis",
+    "name": "St. Louis",
+    "region": "United States",
+    "dataPath": "data/cities/st-louis.geojson",
+    "centroid": [
+      -90.1211265,
+      38.624990999999994
+    ],
+    "focusPoint": [
+      -90.1994,
+      38.627
+    ],
+    "bounds": [
+      -90.364617,
+      38.508674,
+      -89.877636,
+      38.741308
+    ],
+    "lineCount": 2,
+    "sourceName": "Metro Transit - St. Louis",
+    "sourceUrl": "https://www.metrostlouis.org/Transit/google_transit.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/st-louis--wide.png",
+        "standard": "data/overview/st-louis--standard.png",
+        "close": "data/overview/st-louis--close.png"
+      }
+    }
+  },
+  {
+    "slug": "washington-dc",
+    "name": "Washington, DC",
+    "region": "United States",
+    "dataPath": "data/cities/washington-dc.geojson",
+    "centroid": [
+      -77.168093,
+      38.9431795
+    ],
+    "focusPoint": [
+      -77.0283,
+      38.8981
+    ],
+    "bounds": [
+      -77.491534,
+      38.766358,
+      -76.844652,
+      39.120001
+    ],
+    "lineCount": 6,
+    "sourceName": "Washington Metropolitan Area Transit Authority (WMATA)",
+    "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip",
+    "display": {
+      "profile": "dense",
+      "simplifyTolerance": 1.6,
+      "lineAlpha": 0.8
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/washington-dc--wide.png",
+        "standard": "data/overview/washington-dc--standard.png",
+        "close": "data/overview/washington-dc--close.png"
+      }
     }
   }
 ]

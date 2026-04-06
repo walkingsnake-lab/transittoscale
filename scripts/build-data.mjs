@@ -1,7 +1,11 @@
 import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Resvg } from '@resvg/resvg-js';
+import { getCityTheme } from '../src/config.js';
 import { createCityDisplay } from '../src/lib/display-profiles.js';
+import { OVERVIEW_BASE_HEIGHT, OVERVIEW_BASE_WIDTH, OVERVIEW_RASTER_SCALE, OVERVIEW_ZOOM_STEPS } from '../src/lib/overview-config.js';
+import { createOverviewDiagramSvg } from '../src/lib/overview-diagram.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -10,6 +14,8 @@ const normalizedDataPath = path.join(repoRoot, 'data', 'normalized', 'cities.jso
 const sourceDataPath = path.join(repoRoot, 'data', 'sources', 'gtfs-sources.json');
 const publicDataDir = path.join(repoRoot, 'public', 'data');
 const cityDir = path.join(publicDataDir, 'cities');
+const overviewDir = path.join(publicDataDir, 'overview');
+const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
 
 const raw = JSON.parse(await readFile(rawDataPath, 'utf8'));
 const sourceConfigs = JSON.parse(await readFile(sourceDataPath, 'utf8'));
@@ -17,11 +23,13 @@ const sourceConfigBySlug = new Map(sourceConfigs.map((sourceConfig) => [sourceCo
 const normalized = await readNormalizedCities();
 
 await mkdir(cityDir, { recursive: true });
+await mkdir(overviewDir, { recursive: true });
 
-const manifest =
+const manifestSeed =
   normalized.size > 0
     ? [...normalized.values()].map((city) => attachDisplaySettings(city))
     : raw.map((city) => attachDisplaySettings(buildSeedCity(city)));
+const manifest = await Promise.all(sortCitiesForDisplay(manifestSeed).map((city, index) => attachOverviewAssets(city, index)));
 
 for (const city of manifest) {
   const cityPath = path.join(cityDir, `${city.slug}.geojson`);
@@ -30,6 +38,12 @@ for (const city of manifest) {
 await pruneGeneratedFiles(
   cityDir,
   new Set(manifest.map((city) => `${city.slug}.geojson`))
+);
+await pruneGeneratedFiles(
+  overviewDir,
+  new Set(
+    manifest.flatMap((city) => OVERVIEW_ZOOM_STEPS.map((step) => `${city.slug}--${step.key}.png`))
+  )
 );
 
 const manifestOutput = manifest.map(({ featureCollection, ...city }) => city);
@@ -111,6 +125,55 @@ function attachDisplaySettings(city) {
     ...city,
     display: createCityDisplay(requestedProfile, city.lineCount)
   };
+}
+
+async function attachOverviewAssets(city, index) {
+  const theme = getCityTheme(city.slug, index);
+  const variants = {};
+
+  for (const step of OVERVIEW_ZOOM_STEPS) {
+    const fileName = `${city.slug}--${step.key}.png`;
+    const svg = createOverviewDiagramSvg({
+      city,
+      width: OVERVIEW_BASE_WIDTH,
+      height: OVERVIEW_BASE_HEIGHT,
+      diagramScale: step.diagramScale,
+      theme,
+      idPrefix: `${city.slug}-${step.key}`
+    });
+    const png = new Resvg(svg, {
+      fitTo: {
+        mode: 'width',
+        value: OVERVIEW_BASE_WIDTH * OVERVIEW_RASTER_SCALE
+      }
+    }).render().asPng();
+
+    await writeFile(path.join(overviewDir, fileName), png);
+    variants[step.key] = `data/overview/${fileName}`;
+  }
+
+  return {
+    ...city,
+    overview: {
+      width: OVERVIEW_BASE_WIDTH,
+      height: OVERVIEW_BASE_HEIGHT,
+      rasterScale: OVERVIEW_RASTER_SCALE,
+      defaultVariant: 'standard',
+      variants
+    }
+  };
+}
+
+function sortCitiesForDisplay(cities) {
+  return [...cities].sort((left, right) => {
+    const regionComparison = CITY_ORDER_COLLATOR.compare(left.region ?? '', right.region ?? '');
+
+    if (regionComparison !== 0) {
+      return regionComparison;
+    }
+
+    return CITY_ORDER_COLLATOR.compare(left.name, right.name);
+  });
 }
 
 function computeBounds(lines) {
