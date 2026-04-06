@@ -568,8 +568,8 @@ function drawCard({
   ctx.lineJoin = 'round';
   ctx.imageSmoothingEnabled = true;
   const emphasisStrength = Math.max(emphasis, hover * 0.65);
-  const baseLineWidth = display.lineWidth;
-  const selectedLineWidth = baseLineWidth + 0.5;
+  const baseLineWidth = CARD_STYLE.baseLineWidth;
+  const selectedLineWidth = CARD_STYLE.selectedLineWidth;
   const lineWidth = baseLineWidth + (selectedLineWidth - baseLineWidth) * emphasisStrength;
 
   ctx.strokeStyle = theme.ink;
