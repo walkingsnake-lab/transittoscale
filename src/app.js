@@ -672,6 +672,8 @@ function formatSystemLabel(city) {
     'los-angeles': 'Metro Rail',
     vancouver: 'SkyTrain',
     edmonton: 'ETS LRT',
+    'st-louis': 'MetroLink',
+    philadelphia: 'SEPTA Metro + NHSL',
     toronto: 'TTC subway + light metro',
     montreal: 'Montreal Metro',
     london: 'Underground + DLR + Overground + Elizabeth',

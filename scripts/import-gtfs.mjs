@@ -257,7 +257,7 @@ async function importGtfsFeatures(sourceConfig, requestHeaders) {
     throw new Error(`Failed to download ${sourceConfig.slug}: ${response.status} ${response.statusText}`);
   }
 
-  const zip = new AdmZip(Buffer.from(await response.arrayBuffer()));
+  const zip = openSourceArchive(Buffer.from(await response.arrayBuffer()), sourceConfig);
   const routes = parseCsvFromZip(zip, 'routes.txt');
   const trips = parseCsvFromZip(zip, 'trips.txt');
   const shapes = parseCsvFromZip(zip, 'shapes.txt');
@@ -311,6 +311,23 @@ async function importGtfsFeatures(sourceConfig, requestHeaders) {
   }
 
   return features;
+}
+
+function openSourceArchive(buffer, sourceConfig) {
+  const zip = new AdmZip(buffer);
+  const archiveEntry = normalizeValue(sourceConfig.archiveEntry);
+
+  if (!archiveEntry) {
+    return zip;
+  }
+
+  const nestedEntry = zip.getEntry(archiveEntry);
+
+  if (!nestedEntry) {
+    throw new Error(`Missing nested archive ${archiveEntry} in GTFS archive for ${sourceConfig.slug}`);
+  }
+
+  return new AdmZip(nestedEntry.getData());
 }
 
 function buildImportedCity(sourceConfig, features) {

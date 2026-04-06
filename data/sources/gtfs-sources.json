@@ -288,6 +288,52 @@
     }
   },
   {
+    "slug": "st-louis",
+    "name": "St. Louis",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Metro Transit - St. Louis",
+    "sourceUrl": "https://www.metrostlouis.org/Transit/google_transit.zip",
+    "focusPoint": [-90.1994, 38.627],
+    "routeTypes": ["2"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["19251B", "19251R", "19651B", "19651R"],
+    "routeIdAliases": {
+      "19251B": "MLB",
+      "19651B": "MLB",
+      "19251R": "MLR",
+      "19651R": "MLR"
+    },
+    "lineNameOverrides": {
+      "MLB": "MetroLink Blue Line",
+      "MLR": "MetroLink Red Line"
+    }
+  },
+  {
+    "slug": "philadelphia",
+    "name": "Philadelphia",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Southeastern Pennsylvania Transportation Authority (SEPTA)",
+    "sourceUrl": "https://github.com/septadev/GTFS/releases/latest/download/gtfs_public.zip",
+    "archiveEntry": "google_bus.zip",
+    "focusPoint": [-75.1652, 39.9526],
+    "routeTypes": ["1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["L1", "B1", "B2", "B3", "M1"],
+    "lineNameOverrides": {
+      "L1": "Market-Frankford Line",
+      "B1": "Broad Street Line Local",
+      "B2": "Broad Street Line Express",
+      "B3": "Broad-Ridge Spur",
+      "M1": "Norristown High Speed Line"
+    }
+  },
+  {
     "slug": "toronto",
     "name": "Toronto",
     "region": "Canada",

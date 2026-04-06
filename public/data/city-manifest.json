@@ -319,6 +319,64 @@
     }
   },
   {
+    "slug": "st-louis",
+    "name": "St. Louis",
+    "region": "United States",
+    "dataPath": "data/cities/st-louis.geojson",
+    "centroid": [
+      -90.1211265,
+      38.624990999999994
+    ],
+    "focusPoint": [
+      -90.1994,
+      38.627
+    ],
+    "bounds": [
+      -90.364617,
+      38.508674,
+      -89.877636,
+      38.741308
+    ],
+    "lineCount": 2,
+    "sourceName": "Metro Transit - St. Louis",
+    "sourceUrl": "https://www.metrostlouis.org/Transit/google_transit.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
+  },
+  {
+    "slug": "philadelphia",
+    "name": "Philadelphia",
+    "region": "United States",
+    "dataPath": "data/cities/philadelphia.geojson",
+    "centroid": [
+      -75.21578199999999,
+      40.009446999999994
+    ],
+    "focusPoint": [
+      -75.1652,
+      39.9526
+    ],
+    "bounds": [
+      -75.353669,
+      39.905429,
+      -75.077895,
+      40.113465
+    ],
+    "lineCount": 5,
+    "sourceName": "Southeastern Pennsylvania Transportation Authority (SEPTA)",
+    "sourceUrl": "https://github.com/septadev/GTFS/releases/latest/download/gtfs_public.zip",
+    "display": {
+      "profile": "standard",
+      "simplifyTolerance": 0.5,
+      "lineWidth": 1.65,
+      "lineAlpha": 0.94
+    }
+  },
+  {
     "slug": "toronto",
     "name": "Toronto",
     "region": "Canada",
