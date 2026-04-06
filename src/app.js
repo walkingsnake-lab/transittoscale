@@ -10,7 +10,6 @@ import {
   INTRO_DURATION_MS,
   INTRO_LINES_DELAY,
   INTRO_STAGGER_MS,
-  LINE_TRACER_WINDOW,
   REFERENCE_RADIUS_PIXELS,
   REVEAL_LINE_OFFSET,
   SELECTION_SPRING,
@@ -21,10 +20,8 @@ import {
 import {
   clearHiDpiCanvas,
   buildPathMetrics,
-  drawPathWindow,
   drawProgressPath,
-  simplifyPath,
-  strokeCircleProgress
+  simplifyPath
 } from './lib/canvas.js';
 import { createCityDisplay } from './lib/display-profiles.js';
 import { easeInOutCubic, easeOutCubic } from './lib/easing.js';
@@ -536,7 +533,6 @@ function drawCard({
   const circleValue = easeInOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION));
   const labelValue = easeOutCubic(invLerp(introValue, INTRO_CIRCLE_DELAY + 0.16, INTRO_CIRCLE_DELAY + INTRO_CIRCLE_PORTION + 0.18));
   const lineWindow = easeInOutCubic(invLerp(introValue, INTRO_LINES_DELAY, 0.98));
-  const tracerValue = easeOutCubic(invLerp(introValue, INTRO_LINES_DELAY + 0.04, 1));
   const emphasis = selectedValue;
   const hover = hoverValue;
   const dimmed = dimValue;
@@ -561,13 +557,6 @@ function drawCard({
   ctx.fill();
   ctx.restore();
 
-  ctx.save();
-  ctx.strokeStyle = theme.referenceFill;
-  ctx.globalAlpha = clamp(circleAlpha * 0.68 + hover * 0.06, 0, 0.44);
-  ctx.lineWidth = 1.35;
-  strokeCircleProgress(ctx, circleCenterX, circleCenterY, referenceRadius + 6, circleValue);
-  ctx.restore();
-
   drawArcLabel(ctx, {
     text: '5 MILES',
     centerX: circleCenterX,
@@ -575,10 +564,10 @@ function drawCard({
     radius: referenceRadius + 10,
     startAngle: Math.PI + 0.08,
     endAngle: Math.PI * 1.5 - 0.08,
-    fillStyle: theme.referenceFill,
+    fillStyle: theme.mutedText,
     font: `800 15px ${FONT_STACK_TIGHT}`,
     letterSpacing: 0.9,
-    globalAlpha: circleAlpha * labelValue
+    globalAlpha: clamp(labelValue * (0.08 + hover * 0.08 + emphasis * 0.04 - dimmed * 0.03), 0, 0.18)
   });
 
   ctx.save();
@@ -596,24 +585,6 @@ function drawCard({
   ctx.scale(diagramScale, diagramScale);
   ctx.translate(-circleCenterX, -circleCenterY);
 
-  if (tracerValue > 0.001) {
-    ctx.save();
-    ctx.strokeStyle = theme.referenceFill;
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.globalAlpha = clamp((0.12 + tracerValue * 0.16 + hover * 0.04) * (1 - dimmed * 0.7), 0, 0.32);
-    ctx.lineWidth = scaledLineWidth + 4 / scaleSafe;
-    drawProjectedLineTracers(ctx, projectedLines, lineWindow, LINE_TRACER_WINDOW + emphasisStrength * 0.03);
-    ctx.restore();
-
-    ctx.save();
-    ctx.strokeStyle = theme.referenceFill;
-    ctx.globalCompositeOperation = 'screen';
-    ctx.globalAlpha = clamp((0.2 + tracerValue * 0.48 + hover * 0.08) * (1 - dimmed * 0.82), 0, 0.66);
-    ctx.lineWidth = scaledLineWidth + 1.2 / scaleSafe;
-    drawProjectedLineTracers(ctx, projectedLines, lineWindow, LINE_TRACER_WINDOW * 0.72);
-    ctx.restore();
-  }
-
   ctx.strokeStyle = theme.ink;
   // Keep shared corridors from compounding into visibly darker knots.
   ctx.globalCompositeOperation = 'darken';
@@ -630,20 +601,6 @@ function drawProjectedLines(ctx, projectedLines, lineWindow) {
   projectedLines.forEach((metrics, index) => {
     const progress = getLineRevealProgress(lineCount, index, lineWindow);
     drawProgressPath(ctx, metrics, progress);
-  });
-}
-
-function drawProjectedLineTracers(ctx, projectedLines, lineWindow, tracerWindow) {
-  const lineCount = projectedLines.length;
-
-  projectedLines.forEach((metrics, index) => {
-    const progress = getLineRevealProgress(lineCount, index, lineWindow);
-
-    if (progress <= 0) {
-      return;
-    }
-
-    drawPathWindow(ctx, metrics, Math.max(0, progress - tracerWindow), progress);
   });
 }
 
