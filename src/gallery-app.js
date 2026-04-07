@@ -1,6 +1,7 @@
 ﻿import { getCityTheme } from './config.js';
 import { DEFAULT_OVERVIEW_VARIANT, OVERVIEW_ZOOM_STEPS } from './lib/overview-config.js';
 import { clamp } from './lib/math.js';
+import { shouldUseSoftHoverEffects, supportsInteractiveDepthEffects } from './lib/platform.js';
 
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
 const IMAGE_LOAD_CACHE = new Map();
@@ -54,7 +55,9 @@ export async function mountApp(root) {
   const detailBackdrop = root.querySelector('[data-detail-backdrop]');
   const detailCloseButton = root.querySelector('[data-detail-close]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const softHoverEffects = shouldUseSoftHoverEffects();
   const interactiveDepth = !reducedMotion && supportsInteractiveDepthEffects();
+  shell.classList.toggle('shell--soft-hover', softHoverEffects);
   let selectedCard = null;
   let detailHideTimeoutId = 0;
   let lastActiveTrigger = null;
@@ -268,10 +271,6 @@ async function loadCities() {
 
 function resolveAssetPath(relativePath) {
   return new URL(relativePath, document.baseURI).toString();
-}
-
-function supportsInteractiveDepthEffects() {
-  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 }
 
 function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {

@@ -1,6 +1,7 @@
 import { getCityTheme } from './config.js';
 import { DEFAULT_OVERVIEW_VARIANT, OVERVIEW_ZOOM_STEPS } from './lib/overview-config.js';
 import { clamp } from './lib/math.js';
+import { shouldUseSoftHoverEffects, supportsInteractiveDepthEffects } from './lib/platform.js';
 
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
 const ZOOM_STEP_BY_KEY = new Map(OVERVIEW_ZOOM_STEPS.map((step) => [step.key, step]));
@@ -34,6 +35,7 @@ export async function mountApp(root) {
     </main>
   `;
 
+  const shell = root.querySelector('.shell');
   const toolbar = root.querySelector('[data-toolbar]');
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
@@ -42,7 +44,9 @@ export async function mountApp(root) {
   const zoomOutButton = root.querySelector('[data-zoom-out]');
   const zoomInButton = root.querySelector('[data-zoom-in]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const softHoverEffects = shouldUseSoftHoverEffects();
   const interactiveDepth = !reducedMotion && supportsInteractiveDepthEffects();
+  shell.classList.toggle('shell--soft-hover', softHoverEffects);
 
   try {
     const cities = await loadCities();
@@ -122,10 +126,6 @@ async function loadCities() {
 
 function resolveAssetPath(relativePath) {
   return new URL(relativePath, document.baseURI).toString();
-}
-
-function supportsInteractiveDepthEffects() {
-  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 }
 
 function createCard(city, index, { reducedMotion, interactiveDepth }) {

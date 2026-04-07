@@ -207,6 +207,7 @@ body.body--detail-open {
   grid-template-columns: repeat(var(--card-columns, 3), minmax(0, 1fr));
   gap: 10px;
   align-items: start;
+  overflow: visible;
   perspective: 1800px;
   transition:
     filter 220ms var(--ease-out),
@@ -226,7 +227,8 @@ body.body--detail-open {
   position: relative;
   display: block;
   width: 100%;
-  content-visibility: auto;
+  overflow: visible;
+  content-visibility: visible;
   contain-intrinsic-size: 360px 440px;
   padding: 0;
   background: transparent;
@@ -235,6 +237,12 @@ body.body--detail-open {
   transition: opacity 240ms ease;
   color: var(--card-text);
   --card-intro-shadow: 0 28px 54px rgba(0, 0, 0, 0.16);
+  --card-hover-lift: -4px;
+  --card-hover-shift-x: var(--hover-shift-x, 0px);
+  --card-hover-shift-y: var(--hover-shift-y, 0px);
+  --card-hover-rotate-x: var(--hover-rotate-x, 0deg);
+  --card-hover-rotate-y: var(--hover-rotate-y, 0deg);
+  --card-hover-scale: 1.008;
 }
 
 .card--muted {
@@ -244,6 +252,7 @@ body.body--detail-open {
 .card__stage {
   position: relative;
   min-height: var(--card-canvas-height, 360px);
+  overflow: visible;
   perspective: 1800px;
   -webkit-perspective: 1800px;
   transform-origin: center center;
@@ -419,14 +428,29 @@ body.body--detail-open {
 .card:hover .card__stage,
 .card--hovered .card__stage {
   transform:
-    translate3d(var(--hover-shift-x, 0px), calc(-4px + var(--hover-shift-y, 0px)), 0)
-    rotateX(var(--hover-rotate-x, 0deg))
-    rotateY(var(--hover-rotate-y, 0deg))
-    scale(1.008);
+    translate3d(var(--card-hover-shift-x), calc(var(--card-hover-lift) + var(--card-hover-shift-y)), 0)
+    rotateX(var(--card-hover-rotate-x))
+    rotateY(var(--card-hover-rotate-y))
+    scale(var(--card-hover-scale));
 }
 
 .card--static:hover .card__stage,
 .card--static.card--hovered .card__stage {
+  transform: none;
+}
+
+.shell--soft-hover .card {
+  --card-hover-shift-x: 0px;
+  --card-hover-shift-y: 0px;
+  --card-hover-rotate-x: 0deg;
+  --card-hover-rotate-y: 0deg;
+  --card-hover-scale: 1;
+}
+
+.shell--soft-hover .card:hover .card__overlay,
+.shell--soft-hover .card--hovered .card__overlay,
+.shell--soft-hover .card:hover .card__flag,
+.shell--soft-hover .card--hovered .card__flag {
   transform: none;
 }
 
