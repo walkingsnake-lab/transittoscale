@@ -598,7 +598,7 @@ body.body--detail-open {
 }
 
 .card__reference--label {
-  z-index: 2;
+  z-index: 0;
   color: var(--card-reference-fill);
 }
 
