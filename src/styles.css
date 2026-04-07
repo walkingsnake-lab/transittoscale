@@ -599,7 +599,7 @@ body.body--detail-open {
 
 .card__reference--label {
   z-index: 2;
-  color: var(--card-reference-label);
+  color: var(--card-reference-fill);
 }
 
 .card__reference-circle {

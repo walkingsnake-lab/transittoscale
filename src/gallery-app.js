@@ -623,7 +623,6 @@ function applyThemeVars(element, theme) {
   element.style.setProperty('--card-text', theme.text);
   element.style.setProperty('--card-ink', theme.ink);
   element.style.setProperty('--card-reference-fill', theme.referenceFill);
-  element.style.setProperty('--card-reference-label', theme.referenceLabel);
   element.style.setProperty('--card-shadow', theme.shadow);
 }
 

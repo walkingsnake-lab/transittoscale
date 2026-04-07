@@ -58,7 +58,6 @@ export function getCityTheme(slug, index = 0) {
   const paperStrongColor = hexToRgb(DEFAULT_PAPER_STRONG);
   const inkColor = hexToRgb(DEFAULT_INK);
   const referenceCircleRgb = toRgbTriplet(mixRgb(accentColor, paperStrongColor, 0.82));
-  const referenceLabelRgb = toRgbTriplet(mixRgb(accentColor, inkColor, 0.34));
   const inkRgb = '17, 17, 17';
 
   return {
@@ -73,7 +72,6 @@ export function getCityTheme(slug, index = 0) {
     regionText: `rgba(${inkRgb}, 0.56)`,
     cardStroke: `rgba(${inkRgb}, 0.12)`,
     referenceFill: `rgb(${referenceCircleRgb})`,
-    referenceLabel: `rgb(${referenceLabelRgb})`,
     selectedGlow: `rgba(${accentRgb}, 0.06)`,
     selectedCardStroke: accent,
     shadow: 'rgba(0, 0, 0, 0.18)'
