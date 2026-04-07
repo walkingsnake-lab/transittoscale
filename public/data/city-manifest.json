@@ -28,43 +28,57 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/edmonton--wide.png",
-        "standard": "data/overview/edmonton--standard.png",
-        "close": "data/overview/edmonton--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/edmonton--wide.png",
+          "width": 636,
+          "height": 579,
+          "referenceMarker": {
+            "centerX": 318,
+            "centerY": 289.5,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/edmonton--standard.png",
+          "width": 770,
+          "height": 701,
+          "referenceMarker": {
+            "centerX": 385,
+            "centerY": 350.5,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/edmonton--close.png",
+          "width": 905,
+          "height": 823,
+          "referenceMarker": {
+            "centerX": 452.5,
+            "centerY": 411.5,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 917,
+      "imageHeight": 880,
       "imagePath": "data/overview/edmonton--detail.png",
       "referenceMarker": {
-        "centerX": 360,
+        "centerX": 458.5,
         "centerY": 440,
         "radius": 56.97,
         "labelRadius": 66.97
@@ -100,40 +114,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/montreal--wide.png",
-        "standard": "data/overview/montreal--standard.png",
-        "close": "data/overview/montreal--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/montreal--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/montreal--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/montreal--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/montreal--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -172,40 +200,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/toronto--wide.png",
-        "standard": "data/overview/toronto--standard.png",
-        "close": "data/overview/toronto--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/toronto--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/toronto--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/toronto--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/toronto--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -244,40 +286,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/vancouver--wide.png",
-        "standard": "data/overview/vancouver--standard.png",
-        "close": "data/overview/vancouver--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/vancouver--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/vancouver--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/vancouver--close.png",
+          "width": 363,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 181.5,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/vancouver--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -316,40 +372,54 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/mexico-city--wide.png",
-        "standard": "data/overview/mexico-city--standard.png",
-        "close": "data/overview/mexico-city--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/mexico-city--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/mexico-city--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/mexico-city--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/mexico-city--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -388,40 +458,54 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/madrid--wide.png",
-        "standard": "data/overview/madrid--standard.png",
-        "close": "data/overview/madrid--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/madrid--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/madrid--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/madrid--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/madrid--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -460,40 +544,54 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/stockholm--wide.png",
-        "standard": "data/overview/stockholm--standard.png",
-        "close": "data/overview/stockholm--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/stockholm--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/stockholm--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/stockholm--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/stockholm--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -532,43 +630,57 @@
       "lineAlpha": 0.7
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/london--wide.png",
-        "standard": "data/overview/london--standard.png",
-        "close": "data/overview/london--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/london--wide.png",
+          "width": 600,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 300,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/london--standard.png",
+          "width": 726,
+          "height": 450,
+          "referenceMarker": {
+            "centerX": 363,
+            "centerY": 225,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/london--close.png",
+          "width": 853,
+          "height": 527,
+          "referenceMarker": {
+            "centerX": 426.5,
+            "centerY": 263.5,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 865,
+      "imageHeight": 880,
       "imagePath": "data/overview/london--detail.png",
       "referenceMarker": {
-        "centerX": 360,
+        "centerX": 432.5,
         "centerY": 440,
         "radius": 56.97,
         "labelRadius": 66.97
@@ -604,40 +716,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/atlanta--wide.png",
-        "standard": "data/overview/atlanta--standard.png",
-        "close": "data/overview/atlanta--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/atlanta--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/atlanta--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/atlanta--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/atlanta--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -676,40 +802,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/baltimore--wide.png",
-        "standard": "data/overview/baltimore--standard.png",
-        "close": "data/overview/baltimore--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/baltimore--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/baltimore--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/baltimore--close.png",
+          "width": 360,
+          "height": 445,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 222.5,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/baltimore--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -748,40 +888,54 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/boston--wide.png",
-        "standard": "data/overview/boston--standard.png",
-        "close": "data/overview/boston--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/boston--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/boston--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/boston--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/boston--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -820,40 +974,54 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/chicago--wide.png",
-        "standard": "data/overview/chicago--standard.png",
-        "close": "data/overview/chicago--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/chicago--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/chicago--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/chicago--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/chicago--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -892,40 +1060,54 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/los-angeles--wide.png",
-        "standard": "data/overview/los-angeles--standard.png",
-        "close": "data/overview/los-angeles--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/los-angeles--wide.png",
+          "width": 473,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 236.5,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/los-angeles--standard.png",
+          "width": 572,
+          "height": 482,
+          "referenceMarker": {
+            "centerX": 286,
+            "centerY": 241,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/los-angeles--close.png",
+          "width": 671,
+          "height": 564,
+          "referenceMarker": {
+            "centerX": 335.5,
+            "centerY": 282,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/los-angeles--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -964,40 +1146,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/minneapolis-st-paul--wide.png",
-        "standard": "data/overview/minneapolis-st-paul--standard.png",
-        "close": "data/overview/minneapolis-st-paul--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/minneapolis-st-paul--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/minneapolis-st-paul--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/minneapolis-st-paul--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/minneapolis-st-paul--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -1036,40 +1232,54 @@
       "lineAlpha": 0.7
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/new-york--wide.png",
-        "standard": "data/overview/new-york--standard.png",
-        "close": "data/overview/new-york--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/new-york--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/new-york--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/new-york--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/new-york--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -1108,40 +1318,54 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/philadelphia--wide.png",
-        "standard": "data/overview/philadelphia--standard.png",
-        "close": "data/overview/philadelphia--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/philadelphia--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/philadelphia--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/philadelphia--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/philadelphia--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -1180,40 +1404,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/pittsburgh--wide.png",
-        "standard": "data/overview/pittsburgh--standard.png",
-        "close": "data/overview/pittsburgh--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/pittsburgh--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/pittsburgh--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/pittsburgh--close.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/pittsburgh--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -1252,43 +1490,57 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/san-francisco-bay-area--wide.png",
-        "standard": "data/overview/san-francisco-bay-area--standard.png",
-        "close": "data/overview/san-francisco-bay-area--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/san-francisco-bay-area--wide.png",
+          "width": 578,
+          "height": 586,
+          "referenceMarker": {
+            "centerX": 289,
+            "centerY": 293,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/san-francisco-bay-area--standard.png",
+          "width": 699,
+          "height": 709,
+          "referenceMarker": {
+            "centerX": 349.5,
+            "centerY": 354.5,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/san-francisco-bay-area--close.png",
+          "width": 820,
+          "height": 833,
+          "referenceMarker": {
+            "centerX": 410,
+            "centerY": 416.5,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 832,
+      "imageHeight": 880,
       "imagePath": "data/overview/san-francisco-bay-area--detail.png",
       "referenceMarker": {
-        "centerX": 360,
+        "centerX": 416,
         "centerY": 440,
         "radius": 56.97,
         "labelRadius": 66.97
@@ -1324,44 +1576,58 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/san-jose-santa-clara-valley--wide.png",
-        "standard": "data/overview/san-jose-santa-clara-valley--standard.png",
-        "close": "data/overview/san-jose-santa-clara-valley--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/san-jose-santa-clara-valley--wide.png",
+          "width": 532,
+          "height": 852,
+          "referenceMarker": {
+            "centerX": 266,
+            "centerY": 426,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/san-jose-santa-clara-valley--standard.png",
+          "width": 643,
+          "height": 1034,
+          "referenceMarker": {
+            "centerX": 321.5,
+            "centerY": 517,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/san-jose-santa-clara-valley--close.png",
+          "width": 755,
+          "height": 1216,
+          "referenceMarker": {
+            "centerX": 377.5,
+            "centerY": 608,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 767,
+      "imageHeight": 1228,
       "imagePath": "data/overview/san-jose-santa-clara-valley--detail.png",
       "referenceMarker": {
-        "centerX": 360,
-        "centerY": 440,
+        "centerX": 383.5,
+        "centerY": 614,
         "radius": 56.97,
         "labelRadius": 66.97
       }
@@ -1396,40 +1662,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/seattle--wide.png",
-        "standard": "data/overview/seattle--standard.png",
-        "close": "data/overview/seattle--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/seattle--wide.png",
+          "width": 360,
+          "height": 495,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 247.5,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/seattle--standard.png",
+          "width": 360,
+          "height": 599,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 299.5,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/seattle--close.png",
+          "width": 360,
+          "height": 702,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 351,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/seattle--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -1468,40 +1748,54 @@
       "lineAlpha": 0.94
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/st-louis--wide.png",
-        "standard": "data/overview/st-louis--standard.png",
-        "close": "data/overview/st-louis--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/st-louis--wide.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/st-louis--standard.png",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/st-louis--close.png",
+          "width": 421,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 210.5,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/st-louis--detail.png",
       "referenceMarker": {
         "centerX": 360,
@@ -1540,40 +1834,54 @@
       "lineAlpha": 0.8
     },
     "overview": {
-      "width": 360,
-      "height": 440,
+      "viewportWidth": 360,
+      "viewportHeight": 440,
       "rasterScale": 2,
       "defaultVariant": "standard",
       "variants": {
-        "wide": "data/overview/washington-dc--wide.png",
-        "standard": "data/overview/washington-dc--standard.png",
-        "close": "data/overview/washington-dc--close.png"
-      },
-      "referenceMarkers": {
         "wide": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 39.59,
-          "labelRadius": 49.59
+          "imagePath": "data/overview/washington-dc--wide.png",
+          "width": 419,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 209.5,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
         },
         "standard": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 48.28,
-          "labelRadius": 58.28
+          "imagePath": "data/overview/washington-dc--standard.png",
+          "width": 506,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 253,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
         },
         "close": {
-          "centerX": 180,
-          "centerY": 220,
-          "radius": 56.97,
-          "labelRadius": 66.97
+          "imagePath": "data/overview/washington-dc--close.png",
+          "width": 593,
+          "height": 475,
+          "referenceMarker": {
+            "centerX": 296.5,
+            "centerY": 237.5,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
         }
       }
     },
     "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
       "width": 720,
       "height": 880,
       "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
       "imagePath": "data/overview/washington-dc--detail.png",
       "referenceMarker": {
         "centerX": 360,

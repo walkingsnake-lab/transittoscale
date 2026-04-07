@@ -557,18 +557,17 @@ body.body--detail-open {
 .card__diagram-shell {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
+  overflow: visible;
   pointer-events: none;
 }
 
 .card__diagram {
-  position: relative;
-  height: 100%;
-  width: auto;
-  max-width: 100%;
-  max-height: 100%;
-  aspect-ratio: var(--diagram-aspect, 340 / 440);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--diagram-width, 360px);
+  height: var(--diagram-height, 440px);
+  transform: translate(-50%, -50%);
 }
 
 .card__canvas-frame::after {
@@ -710,7 +709,6 @@ body.body--detail-open {
 .card--detail-active .card__paper,
 .card--detail-active .card__canvas-frame,
 .card--detail-active .card__diagram-shell,
-.card--detail-active .card__diagram,
 .card--detail-active .card__canvas,
 .card--detail-active .card__reference {
   min-height: 0;
@@ -1125,9 +1123,7 @@ body.body--detail-open {
   }
 
   .card__canvas-frame,
-  .card__diagram-shell,
-  .card__diagram,
-  .card__canvas {
+  .card__diagram-shell {
     min-height: var(--card-canvas-height, 280px);
     height: var(--card-canvas-height, 280px);
   }

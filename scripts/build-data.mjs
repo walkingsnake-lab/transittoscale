@@ -144,21 +144,20 @@ function attachDisplaySettings(city) {
 async function attachOverviewAssets(city, index) {
   const theme = getCityTheme(city.slug, index);
   const variants = {};
-  const referenceMarkers = {};
 
   for (const step of OVERVIEW_ZOOM_STEPS) {
     const fileName = `${city.slug}--${step.key}.png`;
     const layout = getOverviewDiagramLayout({
       city,
-      width: OVERVIEW_BASE_WIDTH,
-      height: OVERVIEW_BASE_HEIGHT,
+      minWidth: OVERVIEW_BASE_WIDTH,
+      minHeight: OVERVIEW_BASE_HEIGHT,
       diagramScale: step.diagramScale,
-      safeInset: OVERVIEW_SAFE_INSET
+      planePadding: OVERVIEW_SAFE_INSET
     });
     const svg = createOverviewDiagramSvg({
       city,
-      width: OVERVIEW_BASE_WIDTH,
-      height: OVERVIEW_BASE_HEIGHT,
+      width: layout.width,
+      height: layout.height,
       theme,
       idPrefix: `${city.slug}-${step.key}`,
       includeReferenceMarker: false,
@@ -167,27 +166,31 @@ async function attachOverviewAssets(city, index) {
     const png = new Resvg(svg, {
       fitTo: {
         mode: 'width',
-        value: OVERVIEW_BASE_WIDTH * OVERVIEW_RASTER_SCALE
+        value: layout.width * OVERVIEW_RASTER_SCALE
       }
     }).render().asPng();
 
     await writeFile(path.join(overviewDir, fileName), png);
-    variants[step.key] = `data/overview/${fileName}`;
-    referenceMarkers[step.key] = serializeReferenceMarker(layout);
+    variants[step.key] = {
+      imagePath: `data/overview/${fileName}`,
+      width: layout.width,
+      height: layout.height,
+      referenceMarker: serializeReferenceMarker(layout)
+    };
   }
 
   const detailFileName = `${city.slug}--detail.png`;
   const detailLayout = getOverviewDiagramLayout({
     city,
-    width: DETAIL_BASE_WIDTH,
-    height: DETAIL_BASE_HEIGHT,
+    minWidth: DETAIL_BASE_WIDTH,
+    minHeight: DETAIL_BASE_HEIGHT,
     diagramScale: DETAIL_DIAGRAM_SCALE,
-    safeInset: DETAIL_SAFE_INSET
+    planePadding: DETAIL_SAFE_INSET
   });
   const detailSvg = createOverviewDiagramSvg({
     city,
-    width: DETAIL_BASE_WIDTH,
-    height: DETAIL_BASE_HEIGHT,
+    width: detailLayout.width,
+    height: detailLayout.height,
     theme,
     idPrefix: `${city.slug}-detail`,
     includeReferenceMarker: false,
@@ -196,7 +199,7 @@ async function attachOverviewAssets(city, index) {
   const detailPng = new Resvg(detailSvg, {
     fitTo: {
       mode: 'width',
-      value: DETAIL_BASE_WIDTH * DETAIL_RASTER_SCALE
+      value: detailLayout.width * DETAIL_RASTER_SCALE
     }
   }).render().asPng();
 
@@ -205,17 +208,20 @@ async function attachOverviewAssets(city, index) {
   return {
     ...city,
     overview: {
-      width: OVERVIEW_BASE_WIDTH,
-      height: OVERVIEW_BASE_HEIGHT,
+      viewportWidth: OVERVIEW_BASE_WIDTH,
+      viewportHeight: OVERVIEW_BASE_HEIGHT,
       rasterScale: OVERVIEW_RASTER_SCALE,
       defaultVariant: 'standard',
-      variants,
-      referenceMarkers
+      variants
     },
     detail: {
+      viewportWidth: DETAIL_BASE_WIDTH,
+      viewportHeight: DETAIL_BASE_HEIGHT,
       width: DETAIL_BASE_WIDTH,
       height: DETAIL_BASE_HEIGHT,
       rasterScale: DETAIL_RASTER_SCALE,
+      imageWidth: detailLayout.width,
+      imageHeight: detailLayout.height,
       imagePath: `data/overview/${detailFileName}`,
       referenceMarker: serializeReferenceMarker(detailLayout)
     }

@@ -3,7 +3,6 @@ import {
   DEFAULT_OVERVIEW_VARIANT,
   DETAIL_BASE_HEIGHT,
   DETAIL_BASE_WIDTH,
-  OVERVIEW_BASE_HEIGHT,
   OVERVIEW_ZOOM_STEPS
 } from './lib/overview-config.js';
 import { clamp } from './lib/math.js';
@@ -11,6 +10,7 @@ import { shouldUseSoftHoverEffects, supportsInteractiveDepthEffects } from './li
 
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
 const IMAGE_LOAD_CACHE = new Map();
+const MAX_OVERVIEW_CARD_HEIGHT = 560;
 
 export async function mountApp(root) {
   root.innerHTML = `
@@ -284,22 +284,30 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   const lineLabel = formatLineLabel(city.lineCount);
   const systemLabel = formatSystemLabel(city);
   const flag = getCountryFlag(city);
-  const overviewWidth = city.overview?.width ?? 340;
-  const overviewHeight = city.overview?.height ?? 440;
-  const overviewReferenceMarkers = city.overview?.referenceMarkers ?? {};
-  const overviewVariantPaths = Object.fromEntries(
-    Object.entries(city.overview?.variants ?? {}).map(([key, relativePath]) => [key, resolveAssetPath(relativePath)])
+  const overviewVariants = Object.fromEntries(
+    Object.entries(city.overview?.variants ?? {}).map(([key, variant]) => [
+      key,
+      variant
+        ? {
+            ...variant,
+            imagePath: variant.imagePath ? resolveAssetPath(variant.imagePath) : null
+          }
+        : null
+    ])
   );
-  const detailWidth = city.detail?.width ?? overviewWidth;
-  const detailHeight = city.detail?.height ?? overviewHeight;
-  const detailReferenceMarker = city.detail?.referenceMarker ?? null;
-  const detailImagePath = city.detail?.imagePath ? resolveAssetPath(city.detail.imagePath) : null;
+  const detailAsset = city.detail?.imagePath
+    ? {
+        imagePath: resolveAssetPath(city.detail.imagePath),
+        width: city.detail.imageWidth ?? city.detail.width ?? DETAIL_BASE_WIDTH,
+        height: city.detail.imageHeight ?? city.detail.height ?? DETAIL_BASE_HEIGHT,
+        referenceMarker: city.detail.referenceMarker ?? null
+      }
+    : null;
   const initialVariantKey =
-    overviewVariantPaths[DEFAULT_OVERVIEW_VARIANT]
+    overviewVariants[DEFAULT_OVERVIEW_VARIANT]
       ? DEFAULT_OVERVIEW_VARIANT
-      : city.overview?.defaultVariant ?? Object.keys(overviewVariantPaths)[0] ?? null;
-  const initialOverviewPath = initialVariantKey ? overviewVariantPaths[initialVariantKey] : null;
-  const initialReferenceMarker = initialVariantKey ? overviewReferenceMarkers[initialVariantKey] ?? null : null;
+      : city.overview?.defaultVariant ?? Object.keys(overviewVariants)[0] ?? null;
+  const initialOverviewVariant = initialVariantKey ? overviewVariants[initialVariantKey] ?? null : null;
   const referenceArcId = `reference-arc-${city.slug}-${index}`;
   const element = document.createElement('article');
   element.className = 'card';
@@ -326,7 +334,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
         <div class="card__canvas-frame">
           <div class="card__diagram-shell">
             <div class="card__diagram">
-              ${initialOverviewPath ? `<img class="card__canvas" src="${initialOverviewPath}" alt="" loading="lazy" decoding="async" />` : ''}
+              ${initialOverviewVariant?.imagePath ? `<img class="card__canvas" src="${initialOverviewVariant.imagePath}" alt="" loading="lazy" decoding="async" />` : ''}
               <svg class="card__reference card__reference--circle" aria-hidden="true" focusable="false"></svg>
               <svg class="card__reference card__reference--label" aria-hidden="true" focusable="false"></svg>
             </div>
@@ -348,20 +356,24 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   const referenceCircleSvg = element.querySelector('.card__reference--circle');
   const referenceLabelSvg = element.querySelector('.card__reference--label');
 
-  function setDiagramPresentation({ imagePath, marker, width, height }) {
+  function setDiagramPresentation(asset) {
+    const width = asset?.width ?? 0;
+    const height = asset?.height ?? 0;
+
     if (diagram) {
-      diagram.style.setProperty('--diagram-aspect', `${width} / ${height}`);
+      diagram.style.setProperty('--diagram-width', `${Math.round(width)}px`);
+      diagram.style.setProperty('--diagram-height', `${Math.round(height)}px`);
     }
 
     renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
-      marker,
+      marker: asset?.referenceMarker ?? null,
       width,
       height,
       arcId: referenceArcId
     });
 
-    if (overviewImage && imagePath) {
-      setImageSource(overviewImage, imagePath);
+    if (overviewImage && asset?.imagePath) {
+      setImageSource(overviewImage, asset.imagePath);
     }
   }
 
@@ -370,25 +382,18 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     theme,
     element,
     currentOverviewVariant: initialVariantKey,
-    detailImagePath,
     isDetailActive: false,
     setOverviewVariant(variantKey) {
-      const nextOverviewPath = overviewVariantPaths[variantKey];
-      const nextReferenceMarker = overviewReferenceMarkers[variantKey] ?? null;
+      const nextOverviewVariant = overviewVariants[variantKey];
 
-      if (!nextOverviewPath || variantKey === this.currentOverviewVariant) {
+      if (!nextOverviewVariant || variantKey === this.currentOverviewVariant) {
         return;
       }
 
       this.currentOverviewVariant = variantKey;
 
       if (!this.isDetailActive) {
-        setDiagramPresentation({
-          imagePath: nextOverviewPath,
-          marker: nextReferenceMarker,
-          width: overviewWidth,
-          height: overviewHeight
-        });
+        setDiagramPresentation(nextOverviewVariant);
       }
     },
     setDetailActive(isActive) {
@@ -398,31 +403,19 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
 
       if (isActive) {
         const fallbackVariantKey =
-          overviewVariantPaths.close
+          overviewVariants.close
             ? 'close'
             : this.currentOverviewVariant ?? initialVariantKey;
-        const fallbackPath = overviewVariantPaths[fallbackVariantKey] ?? initialOverviewPath;
-        const fallbackReferenceMarker = overviewReferenceMarkers[fallbackVariantKey] ?? initialReferenceMarker;
+        const fallbackAsset = overviewVariants[fallbackVariantKey] ?? initialOverviewVariant;
 
-        setDiagramPresentation({
-          imagePath: this.detailImagePath ?? fallbackPath,
-          marker: detailReferenceMarker ?? fallbackReferenceMarker,
-          width: detailWidth,
-          height: detailHeight
-        });
+        setDiagramPresentation(detailAsset ?? fallbackAsset);
         return;
       }
 
-      const restorePath = overviewVariantPaths[this.currentOverviewVariant] ?? initialOverviewPath;
-      const restoreReferenceMarker = overviewReferenceMarkers[this.currentOverviewVariant] ?? initialReferenceMarker;
+      const restoreAsset = overviewVariants[this.currentOverviewVariant] ?? initialOverviewVariant;
 
-      if (restorePath) {
-        setDiagramPresentation({
-          imagePath: restorePath,
-          marker: restoreReferenceMarker,
-          width: overviewWidth,
-          height: overviewHeight
-        });
+      if (restoreAsset) {
+        setDiagramPresentation(restoreAsset);
       }
     },
     setSelected(isSelected, hasSelection) {
@@ -483,16 +476,11 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     }
   };
 
-  if (overviewImage && initialOverviewPath) {
-    overviewImage.dataset.loadedSrc = initialOverviewPath;
+  if (overviewImage && initialOverviewVariant?.imagePath) {
+    overviewImage.dataset.loadedSrc = initialOverviewVariant.imagePath;
   }
 
-  setDiagramPresentation({
-    imagePath: initialOverviewPath,
-    marker: initialReferenceMarker,
-    width: overviewWidth,
-    height: overviewHeight
-  });
+  setDiagramPresentation(initialOverviewVariant);
 
   if (interactiveDepth) {
     element.addEventListener('pointerenter', (event) => {
@@ -532,7 +520,7 @@ function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
   const cardHeight =
     isMobile
       ? clamp(Math.min(availableHeight * 0.52, viewportWidth * 1.08), 250, 360)
-      : clamp(availableHeight / rowTarget, 250, OVERVIEW_BASE_HEIGHT);
+      : clamp(availableHeight / rowTarget, 250, MAX_OVERVIEW_CARD_HEIGHT);
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
@@ -735,11 +723,11 @@ function formatSvgNumber(value) {
 
 function getDetailTargetRect(card) {
   const viewportPadding = window.innerWidth < 720 ? 10 : 24;
-  const naturalWidth = card.city.detail?.width ?? DETAIL_BASE_WIDTH;
-  const naturalHeight = card.city.detail?.height ?? DETAIL_BASE_HEIGHT;
-  const maxWidth = Math.max(280, Math.min(window.innerWidth - viewportPadding * 2, naturalWidth));
-  const maxHeight = Math.max(320, Math.min(window.innerHeight - viewportPadding * 2, naturalHeight));
-  const aspectRatio = naturalHeight / naturalWidth;
+  const viewportWidth = card.city.detail?.viewportWidth ?? DETAIL_BASE_WIDTH;
+  const viewportHeight = card.city.detail?.viewportHeight ?? DETAIL_BASE_HEIGHT;
+  const maxWidth = Math.max(280, Math.min(window.innerWidth - viewportPadding * 2, viewportWidth));
+  const maxHeight = Math.max(320, Math.min(window.innerHeight - viewportPadding * 2, viewportHeight));
+  const aspectRatio = viewportHeight / viewportWidth;
   let width = maxWidth;
   let height = width * aspectRatio;
 

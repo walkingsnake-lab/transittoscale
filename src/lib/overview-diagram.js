@@ -1,6 +1,5 @@
 import {
   CARD_STYLE,
-  HEADER_OFFSET,
   REFERENCE_RADIUS_PIXELS,
   getCityTheme
 } from '../config.js';
@@ -9,10 +8,10 @@ import { projectFeatureCollection } from './projection.js';
 
 const SEGMENT_SNAP_PRECISION = 0.1;
 const MIN_SEGMENT_DUPLICATE_SHARE = 0.15;
-const OVERVIEW_FRAME_PADDING = 8;
 const OVERVIEW_SCALE_BIAS = 1.08;
 const OVERVIEW_CIRCLE_ALPHA = 0.24;
 const OVERVIEW_LABEL_ALPHA = 0.22;
+const REFERENCE_LABEL_PADDING = 26;
 const ARC_LABEL_START_ANGLE = Math.PI + 0.08;
 const ARC_LABEL_END_ANGLE = Math.PI * 1.5 - 0.08;
 const ARC_LABEL_FONT_FAMILY = 'Arial, sans-serif';
@@ -32,12 +31,14 @@ export function createOverviewDiagramSvg({
     layout ??
     getOverviewDiagramLayout({
       city,
-      width,
-      height,
+      minWidth: width,
+      minHeight: height,
       diagramScale,
-      safeInset
+      planePadding: safeInset
     });
   const {
+    width: layoutWidth,
+    height: layoutHeight,
     paths: displayPaths,
     referenceCenterX,
     referenceCenterY,
@@ -79,7 +80,7 @@ export function createOverviewDiagramSvg({
   }
 
   return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${layoutWidth} ${layoutHeight}" width="${layoutWidth}" height="${layoutHeight}" fill="none">
   <g shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
     ${referenceMarkerMarkup}
     <g
@@ -97,24 +98,31 @@ export function createOverviewDiagramSvg({
 
 export function getOverviewDiagramLayout({
   city,
-  width = OVERVIEW_BASE_WIDTH,
-  height = OVERVIEW_BASE_HEIGHT,
+  minWidth = OVERVIEW_BASE_WIDTH,
+  minHeight = OVERVIEW_BASE_HEIGHT,
   diagramScale = 1,
-  safeInset = OVERVIEW_SAFE_INSET
+  planePadding = OVERVIEW_SAFE_INSET
 }) {
   const targetScale = diagramScale * OVERVIEW_SCALE_BIAS;
-  const {
-    paths,
-    referenceCenterX,
-    referenceCenterY
-  } = getOverviewDisplayPaths({
+  const { paths: localPaths } = getOverviewDisplayPaths({
     city,
-    width,
-    height,
-    diagramScale: targetScale,
-    safeInset
+    diagramScale: targetScale
   });
   const referenceRadius = REFERENCE_RADIUS_PIXELS * targetScale;
+  const bounds = getPathBounds(localPaths);
+  const halfWidth = Math.max(
+    referenceRadius + REFERENCE_LABEL_PADDING,
+    bounds ? Math.max(Math.abs(bounds.minX), Math.abs(bounds.maxX)) : 0
+  );
+  const halfHeight = Math.max(
+    referenceRadius + REFERENCE_LABEL_PADDING,
+    bounds ? Math.max(Math.abs(bounds.minY), Math.abs(bounds.maxY)) : 0
+  );
+  const width = Math.max(minWidth, Math.ceil(halfWidth * 2 + planePadding * 2));
+  const height = Math.max(minHeight, Math.ceil(halfHeight * 2 + planePadding * 2));
+  const referenceCenterX = width / 2;
+  const referenceCenterY = height / 2;
+  const paths = localPaths.map((path) => translatePath(path, referenceCenterX, referenceCenterY));
 
   return {
     width,
@@ -129,43 +137,35 @@ export function getOverviewDiagramLayout({
 
 export function getOverviewDisplayPaths({
   city,
-  width = OVERVIEW_BASE_WIDTH,
-  height = OVERVIEW_BASE_HEIGHT,
-  diagramScale = 1,
-  safeInset = OVERVIEW_SAFE_INSET
+  diagramScale = 1
 }) {
   const featureCollection = city.featureCollection ?? city.geojson;
 
   if (!featureCollection) {
     return {
       paths: [],
-      referenceCenterX: width / 2,
-      referenceCenterY: height / 2
+      referenceCenterX: 0,
+      referenceCenterY: 0
     };
   }
 
-  const frameWidth = width - OVERVIEW_FRAME_PADDING * 2;
-  const frameHeight = height - OVERVIEW_FRAME_PADDING * 2 - HEADER_OFFSET;
-  const centerX = OVERVIEW_FRAME_PADDING + frameWidth / 2;
-  const centerY = OVERVIEW_FRAME_PADDING + HEADER_OFFSET + frameHeight / 2;
   const anchorPoint = city.focusPoint ?? city.centroid;
   const projectedFeatures = projectFeatureCollection(featureCollection, anchorPoint);
   const projectedPaths = projectedFeatures.flatMap((feature) =>
     feature.paths
-      .map((path) => path.map(([x, y]) => [centerX + x, centerY + y]))
       .filter((path) => path.length > 1)
   );
   const { mergedPaths, duplicateShare } = mergeOverlappingPaths(projectedPaths);
   let displayPaths = duplicateShare >= MIN_SEGMENT_DUPLICATE_SHARE ? mergedPaths : projectedPaths;
 
   if (Math.abs(diagramScale - 1) > 0.001) {
-    displayPaths = displayPaths.map((path) => scalePathAroundPoint(path, centerX, centerY, diagramScale));
+    displayPaths = displayPaths.map((path) => scalePathAroundPoint(path, 0, 0, diagramScale));
   }
 
   return {
     paths: displayPaths,
-    referenceCenterX: centerX,
-    referenceCenterY: centerY
+    referenceCenterX: 0,
+    referenceCenterY: 0
   };
 }
 
@@ -238,6 +238,28 @@ function scalePathAroundPoint(path, centerX, centerY, scale) {
 
 function translatePath(path, offsetX, offsetY) {
   return path.map(([x, y]) => [x + offsetX, y + offsetY]);
+}
+
+function getPathBounds(paths) {
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+
+  for (const path of paths) {
+    for (const [x, y] of path) {
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x);
+      maxY = Math.max(maxY, y);
+    }
+  }
+
+  if (!Number.isFinite(minX)) {
+    return null;
+  }
+
+  return { minX, minY, maxX, maxY };
 }
 
 function getSnappedPointKey(point, pointByKey, snapPrecision) {
