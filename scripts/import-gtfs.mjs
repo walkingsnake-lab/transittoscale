@@ -13,7 +13,7 @@ const publicCityDir = path.join(publicDataDir, 'cities');
 
 const sourceConfigs = JSON.parse(stripBom(await readFile(sourcesPath, 'utf8')));
 const importSourceConfigs = sourceConfigs.filter((sourceConfig) =>
-  ['gtfs', 'gtfs-merge', 'tfl-api'].includes(sourceConfig.sourceType)
+  ['geojson', 'gtfs', 'gtfs-merge', 'merge', 'tfl-api'].includes(sourceConfig.sourceType)
 );
 const sourceConfigBySlug = new Map(importSourceConfigs.map((sourceConfig) => [sourceConfig.slug, sourceConfig]));
 const selectedCitySlugs = parseSelectedCitySlugs(process.argv.slice(2));
@@ -221,84 +221,171 @@ function resolveRequestUrl(sourceConfig) {
 }
 
 async function importSourceCity(sourceConfig, existingCitiesBySlug) {
+  const features = await importSourceFeatures(sourceConfig, existingCitiesBySlug, sourceConfig);
+  return buildImportedCity(sourceConfig, features);
+}
+
+async function importSourceFeatures(sourceConfig, existingCitiesBySlug, rootSourceConfig = sourceConfig) {
+  if (sourceConfig.sourceType === 'geojson') {
+    const requestHeaders = resolveRequestHeaders(sourceConfig);
+    const requestUrl = resolveRequestUrl(sourceConfig);
+
+    if (requestHeaders === null || requestUrl === null) {
+      return reuseExistingCityFeatures(existingCitiesBySlug, rootSourceConfig);
+    }
+
+    return importGeoJsonFeatures(sourceConfig, requestHeaders, requestUrl);
+  }
+
   if (sourceConfig.sourceType === 'gtfs') {
     const requestHeaders = resolveRequestHeaders(sourceConfig);
     const requestUrl = resolveRequestUrl(sourceConfig);
 
     if (requestHeaders === null || requestUrl === null) {
-      const existingCity = existingCitiesBySlug.get(sourceConfig.slug);
-
-      if (existingCity) {
-        console.warn(`Skipping ${sourceConfig.slug}: missing required credentials, reusing existing data.`);
-        return existingCity;
-      }
-
-      throw new Error(`Missing required credentials for ${sourceConfig.slug}`);
+      return reuseExistingCityFeatures(existingCitiesBySlug, rootSourceConfig);
     }
 
-    return importGtfsCity(sourceConfig, requestHeaders, requestUrl);
+    return importGtfsFeatures(sourceConfig, requestHeaders, requestUrl);
   }
 
-  if (sourceConfig.sourceType === 'gtfs-merge') {
-    return importMergedGtfsCity(sourceConfig, existingCitiesBySlug);
+  if (sourceConfig.sourceType === 'gtfs-merge' || sourceConfig.sourceType === 'merge') {
+    return importMergedSourceFeatures(sourceConfig, existingCitiesBySlug, rootSourceConfig);
   }
 
   if (sourceConfig.sourceType === 'tfl-api') {
-    return importTflApiCity(sourceConfig);
+    return importTflApiFeatures(sourceConfig);
   }
 
-  throw new Error(`Unsupported source type for ${sourceConfig.slug}: ${sourceConfig.sourceType}`);
+  throw new Error(`Unsupported source type for ${rootSourceConfig.slug}: ${sourceConfig.sourceType}`);
 }
 
-async function importGtfsCity(sourceConfig, requestHeaders, requestUrl) {
-  const features = await importGtfsFeatures(sourceConfig, requestHeaders, requestUrl);
-  return buildImportedCity(sourceConfig, features);
+function reuseExistingCityFeatures(existingCitiesBySlug, rootSourceConfig) {
+  const existingCity = existingCitiesBySlug.get(rootSourceConfig.slug);
+
+  if (existingCity) {
+    console.warn(`Skipping ${rootSourceConfig.slug}: missing required credentials, reusing existing data.`);
+    return existingCity.featureCollection.features;
+  }
+
+  throw new Error(`Missing required credentials for ${rootSourceConfig.slug}`);
 }
 
-async function importMergedGtfsCity(sourceConfig, existingCitiesBySlug) {
+async function importMergedSourceFeatures(sourceConfig, existingCitiesBySlug, rootSourceConfig) {
   const mergedSourceConfigs = sourceConfig.sources ?? [];
 
   if (mergedSourceConfigs.length === 0) {
-    throw new Error(`No GTFS sources configured for ${sourceConfig.slug}`);
+    throw new Error(`No merged sources configured for ${sourceConfig.slug}`);
   }
 
   const features = [];
 
   for (const mergedSourceConfig of mergedSourceConfigs) {
-    const effectiveSourceConfig = {
-      ...sourceConfig,
-      ...mergedSourceConfig
-    };
-    const requestHeaders = resolveRequestHeaders(effectiveSourceConfig);
-    const requestUrl = resolveRequestUrl(effectiveSourceConfig);
-
-    if (requestHeaders === null || requestUrl === null) {
-      const existingCity = existingCitiesBySlug.get(sourceConfig.slug);
-
-      if (existingCity) {
-        console.warn(`Skipping ${sourceConfig.slug}: missing required credentials, reusing existing data.`);
-        return existingCity;
-      }
-
-      throw new Error(`Missing required credentials for ${sourceConfig.slug}`);
-    }
-
-    features.push(...(await importGtfsFeatures(effectiveSourceConfig, requestHeaders, requestUrl)));
+    const effectiveSourceConfig = inheritMergedSourceConfig(sourceConfig, mergedSourceConfig);
+    features.push(...(await importSourceFeatures(effectiveSourceConfig, existingCitiesBySlug, rootSourceConfig)));
   }
 
-  return buildImportedCity(sourceConfig, features);
+  return features;
+}
+
+function inheritMergedSourceConfig(sourceConfig, mergedSourceConfig) {
+  return {
+    ...sourceConfig,
+    ...mergedSourceConfig,
+    slug: sourceConfig.slug,
+    name: sourceConfig.name,
+    region: sourceConfig.region,
+    focusPoint: mergedSourceConfig.focusPoint ?? sourceConfig.focusPoint,
+    bounds: mergedSourceConfig.bounds ?? sourceConfig.bounds,
+    centroid: mergedSourceConfig.centroid ?? sourceConfig.centroid
+  };
+}
+
+async function importGeoJsonFeatures(sourceConfig, requestHeaders, requestUrl = sourceConfig.sourceUrl) {
+  const geojson = JSON.parse(
+    stripBom(
+      await fetchTextWithRetries(requestUrl, {
+        headers: requestHeaders
+      })
+    )
+  );
+  const lineIdProperty = normalizeValue(sourceConfig.lineIdProperty);
+
+  if (!lineIdProperty) {
+    throw new Error(`Missing lineIdProperty for ${sourceConfig.slug}`);
+  }
+
+  const allowedLineIds = sourceConfig.lineIdAllowlist ? new Set(sourceConfig.lineIdAllowlist) : null;
+  const segmentsByCanonicalLine = new Map();
+  const seenSegmentsByCanonicalLine = new Map();
+
+  for (const feature of geojson.features ?? []) {
+    const rawLineId = normalizeValue(String(feature.properties?.[lineIdProperty] ?? ''));
+
+    if (!rawLineId || (allowedLineIds && !allowedLineIds.has(rawLineId))) {
+      continue;
+    }
+
+    const canonicalLineId = sourceConfig.lineIdAliases?.[rawLineId] ?? rawLineId;
+    const existingSegments = segmentsByCanonicalLine.get(canonicalLineId) ?? [];
+    const seenSegments = seenSegmentsByCanonicalLine.get(canonicalLineId) ?? new Set();
+
+    for (const segment of normalizeGeoJsonLineGeometry(feature.geometry, sourceConfig)) {
+      const forwardKey = JSON.stringify(segment);
+      const reverseKey = JSON.stringify([...segment].reverse());
+      const dedupeKey = forwardKey < reverseKey ? forwardKey : reverseKey;
+
+      if (seenSegments.has(dedupeKey)) {
+        continue;
+      }
+
+      seenSegments.add(dedupeKey);
+      existingSegments.push(segment);
+    }
+
+    if (existingSegments.length > 0) {
+      segmentsByCanonicalLine.set(canonicalLineId, existingSegments);
+      seenSegmentsByCanonicalLine.set(canonicalLineId, seenSegments);
+    }
+  }
+
+  const features = [];
+
+  for (const [canonicalLineId, segments] of segmentsByCanonicalLine.entries()) {
+    if (segments.length === 0) {
+      continue;
+    }
+
+    const lineName = sourceConfig.lineNameOverrides?.[canonicalLineId] ?? canonicalLineId;
+    features.push({
+      type: 'Feature',
+      properties: {
+        lineId: canonicalLineId,
+        lineName,
+        systemName: sourceConfig.name,
+        sourceName: sourceConfig.sourceName,
+        sourceUrl: sourceConfig.sourceUrl
+      },
+      geometry: {
+        type: segments.length === 1 ? 'LineString' : 'MultiLineString',
+        coordinates: segments.length === 1 ? segments[0] : segments
+      }
+    });
+  }
+
+  if (features.length === 0) {
+    throw new Error(`No features were produced for ${sourceConfig.slug}`);
+  }
+
+  return features;
 }
 
 async function importGtfsFeatures(sourceConfig, requestHeaders, requestUrl = sourceConfig.sourceUrl) {
-  const response = await fetch(requestUrl, {
-    headers: requestHeaders
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to download ${sourceConfig.slug}: ${response.status} ${response.statusText}`);
-  }
-
-  const zip = openSourceArchive(Buffer.from(await response.arrayBuffer()), sourceConfig);
+  const zip = openSourceArchive(
+    await fetchBufferWithRetries(requestUrl, {
+      headers: requestHeaders
+    }),
+    sourceConfig
+  );
   const routes = parseCsvFromZip(zip, 'routes.txt');
   const trips = parseCsvFromZip(zip, 'trips.txt');
   const shapes = parseCsvFromZip(zip, 'shapes.txt');
@@ -403,7 +490,7 @@ function buildImportedCity(sourceConfig, features) {
   };
 }
 
-async function importTflApiCity(sourceConfig) {
+async function importTflApiFeatures(sourceConfig) {
   const lineIds = sourceConfig.lineIds ?? [];
 
   if (lineIds.length === 0) {
@@ -413,13 +500,9 @@ async function importTflApiCity(sourceConfig) {
   const features = [];
 
   for (const lineId of lineIds) {
-    const response = await fetch(`${sourceConfig.sourceUrl.replace(/\/$/, '')}/Line/${lineId}/Route/Sequence/all`);
-
-    if (!response.ok) {
-      throw new Error(`Failed to download ${sourceConfig.slug}/${lineId}: ${response.status} ${response.statusText}`);
-    }
-
-    const routeSequence = await response.json();
+    const routeSequence = await fetchJsonWithRetries(
+      `${sourceConfig.sourceUrl.replace(/\/$/, '')}/Line/${lineId}/Route/Sequence/all`
+    );
     const multiLineCoordinates = normalizeTflLineStrings(routeSequence.lineStrings, sourceConfig);
 
     if (multiLineCoordinates.length === 0) {
@@ -447,35 +530,7 @@ async function importTflApiCity(sourceConfig) {
     throw new Error(`No features were produced for ${sourceConfig.slug}`);
   }
 
-  const bounds = computeBoundsFromFeatures(features);
-  const centroid = computeCentroidFromBounds(bounds);
-
-  return {
-    slug: sourceConfig.slug,
-    name: sourceConfig.name,
-    region: sourceConfig.region,
-    dataPath: `data/cities/${sourceConfig.slug}.geojson`,
-    centroid,
-    focusPoint: sourceConfig.focusPoint ?? centroid,
-    bounds,
-    lineCount: features.length,
-    sourceName: sourceConfig.sourceName,
-    sourceUrl: sourceConfig.sourceUrl,
-    featureCollection: {
-      type: 'FeatureCollection',
-      properties: {
-        slug: sourceConfig.slug,
-        name: sourceConfig.name,
-        region: sourceConfig.region,
-        centroid,
-        focusPoint: sourceConfig.focusPoint ?? centroid,
-        bounds,
-        sourceName: sourceConfig.sourceName,
-        sourceUrl: sourceConfig.sourceUrl
-      },
-      features
-    }
-  };
+  return features;
 }
 
 function parseCsvFromZip(zip, filename) {
@@ -629,6 +684,36 @@ function simplifyPoints(points, minPointSpacingMeters) {
   return simplified;
 }
 
+function normalizeGeoJsonLineGeometry(geometry, sourceConfig) {
+  if (!geometry) {
+    return [];
+  }
+
+  const segments =
+    geometry.type === 'MultiLineString'
+      ? geometry.coordinates
+      : geometry.type === 'LineString'
+        ? [geometry.coordinates]
+        : [];
+
+  return segments
+    .filter((segment) => Array.isArray(segment) && segment.length > 1)
+    .map((segment) =>
+      simplifyPoints(
+        dedupeAdjacentPoints(
+          segment
+            .map(([lon, lat]) => ({
+              lon: Number(lon),
+              lat: Number(lat)
+            }))
+            .filter((point) => Number.isFinite(point.lon) && Number.isFinite(point.lat))
+        ),
+        sourceConfig.minPointSpacingMeters ?? 0
+      ).map(({ lon, lat }) => [lon, lat])
+    )
+    .filter((segment) => segment.length > 1);
+}
+
 function normalizeTflLineStrings(lineStrings, sourceConfig) {
   const segments = [];
 
@@ -691,6 +776,55 @@ function normalizeValue(value) {
 
 function stripBom(content) {
   return content.replace(/^\uFEFF/, '');
+}
+
+async function fetchBufferWithRetries(url, options = {}, retries = 3) {
+  return withFetchRetries(
+    async () => Buffer.from(await fetchOk(url, options).then((response) => response.arrayBuffer())),
+    retries
+  );
+}
+
+async function fetchJsonWithRetries(url, options = {}, retries = 3) {
+  return withFetchRetries(async () => fetchOk(url, options).then((response) => response.json()), retries);
+}
+
+async function fetchTextWithRetries(url, options = {}, retries = 3) {
+  return withFetchRetries(async () => fetchOk(url, options).then((response) => response.text()), retries);
+}
+
+async function fetchOk(url, options = {}) {
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    throw new Error(`Failed to download ${url}: ${response.status} ${response.statusText}`);
+  }
+
+  return response;
+}
+
+async function withFetchRetries(action, retries = 3, delayMs = 300) {
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      return await action();
+    } catch (error) {
+      if (!isRetryableFetchError(error) || attempt === retries) {
+        throw error;
+      }
+
+      await sleep(delayMs * (attempt + 1));
+    }
+  }
+}
+
+function isRetryableFetchError(error) {
+  return (
+    error?.cause?.code === 'UND_ERR_SOCKET' ||
+    error?.cause?.code === 'ECONNRESET' ||
+    error?.cause?.code === 'ETIMEDOUT' ||
+    error?.cause?.code === 'EPIPE' ||
+    error?.name === 'TypeError'
+  );
 }
 
 function computeBoundsFromFeatures(features) {

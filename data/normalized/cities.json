@@ -373,22 +373,22 @@
     "region": "Spain",
     "dataPath": "data/cities/madrid.geojson",
     "centroid": [
-      -3.723637250319965,
-      40.39141799637495
+      -3.67569662684344,
+      40.39066412221235
     ],
     "focusPoint": [
       -3.7038,
       40.4168
     ],
     "bounds": [
-      -3.87556068943441,
-      40.2816326699816,
-      -3.57171381120552,
-      40.5012033227683
+      -3.90379433150862,
+      40.2214578899427,
+      -3.44759892217826,
+      40.559870354482
     ],
-    "lineCount": 12,
+    "lineCount": 17,
     "sourceName": "Consorcio Regional de Transportes de Madrid (CRTM)",
-    "sourceUrl": "https://crtm.maps.arcgis.com/sharing/rest/content/items/5c7f2951962540d69ffe8f640d94c246/data"
+    "sourceUrl": "https://datos.crtm.es/"
   },
   {
     "slug": "stockholm",
