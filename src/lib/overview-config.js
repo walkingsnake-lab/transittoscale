@@ -1,11 +1,11 @@
 import { CARD_CANVAS_HEIGHT } from '../config.js';
 
-export const OVERVIEW_BASE_WIDTH = 340;
+export const OVERVIEW_BASE_WIDTH = 360;
 export const OVERVIEW_BASE_HEIGHT = CARD_CANVAS_HEIGHT;
 export const OVERVIEW_RASTER_SCALE = 2;
 export const OVERVIEW_SAFE_INSET = 12;
 export const DEFAULT_OVERVIEW_VARIANT = 'standard';
-export const DETAIL_BASE_WIDTH = 680;
+export const DETAIL_BASE_WIDTH = 720;
 export const DETAIL_BASE_HEIGHT = DETAIL_BASE_WIDTH * OVERVIEW_BASE_HEIGHT / OVERVIEW_BASE_WIDTH;
 export const DETAIL_RASTER_SCALE = 2;
 export const DETAIL_SAFE_INSET = 18;
