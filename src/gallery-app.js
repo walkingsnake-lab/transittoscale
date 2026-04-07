@@ -65,10 +65,9 @@ export async function mountApp(root) {
   const interactiveDepth = !reducedMotion && supportsInteractiveDepthEffects();
   shell.classList.toggle('shell--soft-hover', softHoverEffects);
   let selectedCard = null;
+  let detailCard = null;
   let detailHideTimeoutId = 0;
   let lastActiveTrigger = null;
-  let selectedPlaceholder = null;
-  let selectedHomeParent = null;
 
   try {
     const cities = await loadCities();
@@ -108,8 +107,8 @@ export async function mountApp(root) {
       updateGridLayout(grid, cards.length, { chromeHeight });
       syncZoomControls();
 
-      if (selectedCard) {
-        applyFixedRect(selectedCard.element, getDetailTargetRect(selectedCard));
+      if (selectedCard && detailCard) {
+        applyFixedRect(detailCard, getDetailTargetRect(selectedCard));
       }
     }
 
@@ -154,26 +153,24 @@ export async function mountApp(root) {
 
       lastActiveTrigger = triggerElement;
       selectedCard = card;
-      selectedHomeParent = card.element.parentNode;
-      selectedPlaceholder = document.createElement('div');
-      selectedPlaceholder.className = 'card card--placeholder';
-      selectedPlaceholder.setAttribute('aria-hidden', 'true');
-      selectedPlaceholder.style.height = `${card.element.getBoundingClientRect().height}px`;
-      selectedHomeParent.insertBefore(selectedPlaceholder, card.element);
+      detailCard = createDetailCard(card);
 
       const startRect = card.element.getBoundingClientRect();
 
       showDetailView();
-      detailSlot.append(card.element);
-      card.setDetailActive(true);
+      detailSlot.replaceChildren(detailCard);
       card.setHovered(false);
       card.resetTilt();
       syncSelection();
-      applyFixedRect(card.element, startRect);
+      applyFixedRect(detailCard, startRect);
 
       requestAnimationFrame(() => {
+        if (!detailCard || selectedCard !== card) {
+          return;
+        }
+
         detailView.classList.add('detail-view--open');
-        applyFixedRect(card.element, getDetailTargetRect(card));
+        applyFixedRect(detailCard, getDetailTargetRect(card));
       });
 
       detailCloseButton.focus({ preventScroll: true });
@@ -186,8 +183,13 @@ export async function mountApp(root) {
 
       const focusTarget = lastActiveTrigger;
       const card = selectedCard;
+      const activeDetailCard = detailCard;
 
-      if (!card) {
+      if (!card || !activeDetailCard) {
+        detailSlot.textContent = '';
+        detailCard = null;
+        selectedCard = null;
+        syncSelection();
         detailView.hidden = true;
         detailView.setAttribute('aria-hidden', 'true');
         return;
@@ -195,25 +197,17 @@ export async function mountApp(root) {
 
       detailView.classList.remove('detail-view--open');
       detailView.setAttribute('aria-hidden', 'true');
-      applyFixedRect(card.element, selectedPlaceholder.getBoundingClientRect());
+      applyFixedRect(activeDetailCard, card.element.getBoundingClientRect());
 
       if (detailHideTimeoutId) {
         window.clearTimeout(detailHideTimeoutId);
       }
 
       const finalizeClose = () => {
-        if (selectedHomeParent) {
-          selectedHomeParent.insertBefore(card.element, selectedPlaceholder);
-        }
-
-        selectedPlaceholder?.remove();
-        selectedPlaceholder = null;
-        selectedHomeParent = null;
-        card.setDetailActive(false);
-        clearFixedRect(card.element);
+        detailSlot.textContent = '';
+        detailCard = null;
         selectedCard = null;
         syncSelection();
-        detailSlot.textContent = '';
         detailView.hidden = true;
         detailHideTimeoutId = 0;
 
@@ -381,8 +375,19 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     city,
     theme,
     element,
+    systemLabel,
+    lineLabel,
+    flag,
+    detailAsset,
     currentOverviewVariant: initialVariantKey,
-    isDetailActive: false,
+    getDetailPresentationAsset() {
+      const fallbackVariantKey =
+        overviewVariants.close
+          ? 'close'
+          : this.currentOverviewVariant ?? initialVariantKey;
+
+      return detailAsset ?? overviewVariants[fallbackVariantKey] ?? initialOverviewVariant;
+    },
     setOverviewVariant(variantKey) {
       const nextOverviewVariant = overviewVariants[variantKey];
 
@@ -391,39 +396,14 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
       }
 
       this.currentOverviewVariant = variantKey;
-
-      if (!this.isDetailActive) {
-        setDiagramPresentation(nextOverviewVariant);
-      }
-    },
-    setDetailActive(isActive) {
-      this.isDetailActive = isActive;
-      element.classList.toggle('card--detail-active', isActive);
-      openButton.disabled = isActive;
-
-      if (isActive) {
-        const fallbackVariantKey =
-          overviewVariants.close
-            ? 'close'
-            : this.currentOverviewVariant ?? initialVariantKey;
-        const fallbackAsset = overviewVariants[fallbackVariantKey] ?? initialOverviewVariant;
-
-        setDiagramPresentation(detailAsset ?? fallbackAsset);
-        return;
-      }
-
-      const restoreAsset = overviewVariants[this.currentOverviewVariant] ?? initialOverviewVariant;
-
-      if (restoreAsset) {
-        setDiagramPresentation(restoreAsset);
-      }
+      setDiagramPresentation(nextOverviewVariant);
     },
     setSelected(isSelected, hasSelection) {
       element.classList.toggle('card--selected', isSelected);
       element.classList.toggle('card--muted', hasSelection && !isSelected);
     },
     setHovered(isHovered) {
-      if (!interactiveDepth || this.isDetailActive) {
+      if (!interactiveDepth) {
         return;
       }
 
@@ -434,7 +414,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
       }
     },
     updateTilt(clientX, clientY) {
-      if (!interactiveDepth || reducedMotion || this.isDetailActive) {
+      if (!interactiveDepth || reducedMotion) {
         return;
       }
 
@@ -503,6 +483,49 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   openButton.addEventListener('click', () => onOpen(card, openButton));
 
   return card;
+}
+
+function createDetailCard(card) {
+  const detailPresentation = card.getDetailPresentationAsset();
+  const element = document.createElement('article');
+  const flagMarkup = card.flag
+    ? `<img class="detail-card__flag" src="${card.flag.src}" alt="${card.flag.alt}" loading="lazy" decoding="async" />`
+    : '';
+
+  element.className = 'detail-card';
+  applyThemeVars(element, card.theme);
+  element.innerHTML = `
+    <div class="detail-card__paper">
+      <div class="detail-card__canvas-frame">
+        ${detailPresentation?.imagePath ? `<img class="detail-card__canvas" src="${detailPresentation.imagePath}" alt="" decoding="async" />` : ''}
+        <svg class="card__reference card__reference--circle" aria-hidden="true" focusable="false"></svg>
+        <svg class="card__reference card__reference--label" aria-hidden="true" focusable="false"></svg>
+      </div>
+      <div class="detail-card__overlay">
+        <p class="detail-card__agency">${card.systemLabel}</p>
+        <h2>${card.city.name}</h2>
+        <p class="detail-card__count">${card.lineLabel}</p>
+      </div>
+      ${flagMarkup}
+    </div>
+  `;
+
+  const detailImage = element.querySelector('.detail-card__canvas');
+  const referenceCircleSvg = element.querySelector('.card__reference--circle');
+  const referenceLabelSvg = element.querySelector('.card__reference--label');
+
+  if (detailImage && detailPresentation?.imagePath) {
+    detailImage.dataset.loadedSrc = detailPresentation.imagePath;
+  }
+
+  renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
+    marker: detailPresentation?.referenceMarker ?? null,
+    width: detailPresentation?.width ?? 0,
+    height: detailPresentation?.height ?? 0,
+    arcId: `detail-reference-${card.city.slug}`
+  });
+
+  return element;
 }
 
 function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
@@ -588,6 +611,7 @@ function getCountryFlag(city) {
   const flagCodeByRegion = {
     'United States': 'us',
     Canada: 'ca',
+    Mexico: 'mx',
     Spain: 'es',
     Sweden: 'se',
     'United Kingdom': 'gb'
@@ -756,19 +780,5 @@ function applyFixedRect(element, rect) {
   element.style.height = `${Math.round(rect.height)}px`;
   element.style.margin = '0';
   element.style.zIndex = '25';
-}
-
-function clearFixedRect(element) {
-  if (!element) {
-    return;
-  }
-
-  element.style.removeProperty('position');
-  element.style.removeProperty('top');
-  element.style.removeProperty('left');
-  element.style.removeProperty('width');
-  element.style.removeProperty('height');
-  element.style.removeProperty('margin');
-  element.style.removeProperty('z-index');
 }
 

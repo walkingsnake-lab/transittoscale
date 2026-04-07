@@ -675,14 +675,12 @@ body.body--detail-open {
   pointer-events: none;
 }
 
-.card--placeholder {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.card--detail-active {
+.detail-card {
+  position: fixed;
+  z-index: 1;
   content-visibility: visible;
   contain: layout style paint;
+  pointer-events: none;
   transition:
     top 260ms var(--ease-out),
     left 260ms var(--ease-out),
@@ -690,75 +688,9 @@ body.body--detail-open {
     height 260ms var(--ease-out);
 }
 
-.card--detail-active .card__stage {
-  min-height: 100%;
-  height: 100%;
-  perspective: none;
-  -webkit-perspective: none;
-  transform: none !important;
-}
-
-.card--detail-active .card__paper {
-  box-shadow:
-    0 4px 0 rgba(255, 255, 255, 0.58) inset,
-    0 -2px 0 rgba(17, 17, 17, 0.08) inset,
-    0 34px 64px rgba(0, 0, 0, 0.34),
-    0 58px 104px rgba(0, 0, 0, 0.24);
-}
-
-.card--detail-active .card__paper,
-.card--detail-active .card__canvas-frame,
-.card--detail-active .card__diagram-shell,
-.card--detail-active .card__canvas,
-.card--detail-active .card__reference {
-  min-height: 0;
-  height: 100%;
-}
-
-.card--detail-active .card__overlay {
-  inset: 24px 82px auto 24px;
-  gap: 6px;
-  transform: none;
-}
-
-.card--detail-active .card__agency {
-  font-size: 0.98rem;
-}
-
-.card--detail-active .card__count {
-  font-size: 0.9rem;
-}
-
-.card--detail-active .card__overlay h2 {
-  font-size: clamp(2.2rem, 4.8vw, 3.3rem);
-}
-
-.card--detail-active .card__flag {
-  top: 22px;
-  right: 22px;
-  width: 40px;
-  height: 40px;
-  transform: none;
-}
-
-.card--detail-active .card__select {
-  pointer-events: none;
-}
-
-.detail-card {
-  position: relative;
-  z-index: 1;
-  width: min(92vw, 720px);
-  transform: translateY(18px) scale(0.97);
-  transition: transform 260ms var(--ease-out);
-}
-
-.detail-view--open .detail-card {
-  transform: translateY(0) scale(1);
-}
-
 .detail-card__paper {
   position: relative;
+  height: 100%;
   overflow: hidden;
   border-radius: 24px;
   background:
@@ -784,6 +716,8 @@ body.body--detail-open {
 
 .detail-card__canvas-frame {
   position: relative;
+  min-height: 0;
+  height: 100%;
   aspect-ratio: 17 / 22;
   overflow: hidden;
   isolation: isolate;
@@ -793,6 +727,9 @@ body.body--detail-open {
 }
 
 .detail-card__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
@@ -801,6 +738,11 @@ body.body--detail-open {
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.detail-card .card__reference {
+  min-height: 0;
+  height: 100%;
 }
 
 .detail-card__overlay {
@@ -1163,30 +1105,6 @@ body.body--detail-open {
   .detail-card__close {
     top: 10px;
     right: 10px;
-    width: 34px;
-    height: 34px;
-  }
-
-  .card--detail-active .card__overlay {
-    inset: 16px 64px auto 16px;
-    gap: 4px;
-  }
-
-  .card--detail-active .card__agency {
-    font-size: 0.86rem;
-  }
-
-  .card--detail-active .card__count {
-    font-size: 0.8rem;
-  }
-
-  .card--detail-active .card__overlay h2 {
-    font-size: clamp(1.9rem, 7.6vw, 2.56rem);
-  }
-
-  .card--detail-active .card__flag {
-    top: 16px;
-    right: 16px;
     width: 34px;
     height: 34px;
   }
