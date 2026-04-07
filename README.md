@@ -39,6 +39,7 @@ Transit To Scale is a static web visualization that compares world metro systems
 - Add or edit an import source entry in `data/sources/gtfs-sources.json`.
 - Keep scope to `metro / rapid transit only`, and use allowlists or aliases so each city maps to the intended lines.
 - Feeds can authenticate with env-backed request headers or env-backed query params, so API keys stay out of the repo.
+- For flaky or access-controlled sources, you can also point a city at a repo-local `sourceFile` ZIP or GeoJSON and rerun the importer.
 - For a new city or a single-city tuning pass, run `npm run data:import -- --city <slug>`.
 - For a city that requires credentials, the importer reuses the last generated normalized copy when credentials are unavailable, instead of dropping the city from the catalog.
 - After importing, run `npm run data:build` and `npm run data:check`.

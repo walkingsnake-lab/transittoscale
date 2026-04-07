@@ -301,11 +301,23 @@ function inheritMergedSourceConfig(sourceConfig, mergedSourceConfig) {
 }
 
 async function importGeoJsonFeatures(sourceConfig, requestHeaders, requestUrl = sourceConfig.sourceUrl) {
+  const localSourcePath = resolveLocalSourcePath(sourceConfig);
+  const localSource = await readLocalSourceIfAvailable(sourceConfig, 'utf8');
+
+  if (localSourcePath) {
+    console.log(
+      localSource !== null
+        ? `Using local source file for ${sourceConfig.slug}: ${path.relative(repoRoot, localSourcePath)}`
+        : `Local source file not found for ${sourceConfig.slug}, falling back to remote source: ${path.relative(repoRoot, localSourcePath)}`
+    );
+  }
+
   const geojson = JSON.parse(
     stripBom(
-      await fetchTextWithRetries(requestUrl, {
-        headers: requestHeaders
-      })
+      localSource ??
+        (await fetchTextWithRetries(requestUrl, {
+          headers: requestHeaders
+        }))
     )
   );
   const lineIdProperty = normalizeValue(sourceConfig.lineIdProperty);
@@ -380,10 +392,22 @@ async function importGeoJsonFeatures(sourceConfig, requestHeaders, requestUrl = 
 }
 
 async function importGtfsFeatures(sourceConfig, requestHeaders, requestUrl = sourceConfig.sourceUrl) {
+  const localSourcePath = resolveLocalSourcePath(sourceConfig);
+  const localSource = await readLocalSourceIfAvailable(sourceConfig);
+
+  if (localSourcePath) {
+    console.log(
+      localSource !== null
+        ? `Using local source file for ${sourceConfig.slug}: ${path.relative(repoRoot, localSourcePath)}`
+        : `Local source file not found for ${sourceConfig.slug}, falling back to remote source: ${path.relative(repoRoot, localSourcePath)}`
+    );
+  }
+
   const zip = openSourceArchive(
-    await fetchBufferWithRetries(requestUrl, {
-      headers: requestHeaders
-    }),
+    localSource ??
+      (await fetchBufferWithRetries(requestUrl, {
+        headers: requestHeaders
+      })),
     sourceConfig
   );
   const routes = parseCsvFromZip(zip, 'routes.txt');
@@ -774,8 +798,36 @@ function normalizeValue(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function resolveLocalSourcePath(sourceConfig) {
+  const sourceFile = normalizeValue(sourceConfig.sourceFile);
+
+  if (!sourceFile) {
+    return null;
+  }
+
+  return path.isAbsolute(sourceFile) ? sourceFile : path.resolve(repoRoot, sourceFile);
+}
+
 function stripBom(content) {
   return content.replace(/^\uFEFF/, '');
+}
+
+async function readLocalSourceIfAvailable(sourceConfig, encoding) {
+  const localSourcePath = resolveLocalSourcePath(sourceConfig);
+
+  if (!localSourcePath) {
+    return null;
+  }
+
+  try {
+    return await readFile(localSourcePath, encoding);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return null;
+    }
+
+    throw error;
+  }
 }
 
 async function fetchBufferWithRetries(url, options = {}, retries = 3) {

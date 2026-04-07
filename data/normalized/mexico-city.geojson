@@ -1,0 +1,1058 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "slug": "mexico-city",
+    "name": "Mexico City",
+    "region": "Mexico",
+    "centroid": [
+      -99.08763,
+      19.41062
+    ],
+    "focusPoint": [
+      -99.1332,
+      19.4326
+    ],
+    "bounds": [
+      -99.21464,
+      19.2868,
+      -98.96062,
+      19.53444
+    ],
+    "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+    "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14243",
+        "lineName": "Pantitlán - Observatorio",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.07434,
+            19.41617
+          ],
+          [
+            -99.08323,
+            19.4118
+          ],
+          [
+            -99.0907,
+            19.41609
+          ],
+          [
+            -99.09607,
+            19.41959
+          ],
+          [
+            -99.10282,
+            19.42289
+          ],
+          [
+            -99.1098,
+            19.42627
+          ],
+          [
+            -99.11458,
+            19.4308
+          ],
+          [
+            -99.1199,
+            19.4291
+          ],
+          [
+            -99.12541,
+            19.42547
+          ],
+          [
+            -99.13274,
+            19.42602
+          ],
+          [
+            -99.13782,
+            19.42609
+          ],
+          [
+            -99.14332,
+            19.42699
+          ],
+          [
+            -99.14912,
+            19.4273
+          ],
+          [
+            -99.1546,
+            19.4254
+          ],
+          [
+            -99.16325,
+            19.4236
+          ],
+          [
+            -99.17063,
+            19.42159
+          ],
+          [
+            -99.17659,
+            19.42026
+          ],
+          [
+            -99.18207,
+            19.4129
+          ],
+          [
+            -99.18686,
+            19.40269
+          ],
+          [
+            -99.20067,
+            19.39749
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14244",
+        "lineName": "Cuatro Caminos - Tasqueña",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.14105,
+            19.34401
+          ],
+          [
+            -99.14479,
+            19.3532
+          ],
+          [
+            -99.14263,
+            19.36186
+          ],
+          [
+            -99.1413,
+            19.36977
+          ],
+          [
+            -99.13987,
+            19.37938
+          ],
+          [
+            -99.13863,
+            19.38747
+          ],
+          [
+            -99.13759,
+            19.39503
+          ],
+          [
+            -99.13663,
+            19.40075
+          ],
+          [
+            -99.13542,
+            19.40891
+          ],
+          [
+            -99.13429,
+            19.41591
+          ],
+          [
+            -99.13314,
+            19.42433
+          ],
+          [
+            -99.13188,
+            19.4326
+          ],
+          [
+            -99.13671,
+            19.43547
+          ],
+          [
+            -99.14215,
+            19.43659
+          ],
+          [
+            -99.14731,
+            19.4377
+          ],
+          [
+            -99.1539,
+            19.4388
+          ],
+          [
+            -99.16095,
+            19.44186
+          ],
+          [
+            -99.16719,
+            19.44425
+          ],
+          [
+            -99.17122,
+            19.44865
+          ],
+          [
+            -99.17546,
+            19.45261
+          ],
+          [
+            -99.18155,
+            19.45668
+          ],
+          [
+            -99.18804,
+            19.45914
+          ],
+          [
+            -99.20294,
+            19.45822
+          ],
+          [
+            -99.21464,
+            19.45845
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14245",
+        "lineName": "Indios Verdes - Universidad",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.17408,
+            19.32434
+          ],
+          [
+            -99.17658,
+            19.33598
+          ],
+          [
+            -99.18054,
+            19.34652
+          ],
+          [
+            -99.17543,
+            19.35376
+          ],
+          [
+            -99.17057,
+            19.36143
+          ],
+          [
+            -99.16455,
+            19.37074
+          ],
+          [
+            -99.15951,
+            19.37893
+          ],
+          [
+            -99.15724,
+            19.38629
+          ],
+          [
+            -99.15617,
+            19.39604
+          ],
+          [
+            -99.15531,
+            19.4075
+          ],
+          [
+            -99.1532,
+            19.4137
+          ],
+          [
+            -99.15024,
+            19.41947
+          ],
+          [
+            -99.14881,
+            19.42692
+          ],
+          [
+            -99.14772,
+            19.43337
+          ],
+          [
+            -99.14682,
+            19.43675
+          ],
+          [
+            -99.14501,
+            19.44475
+          ],
+          [
+            -99.14308,
+            19.4552
+          ],
+          [
+            -99.13905,
+            19.46907
+          ],
+          [
+            -99.13175,
+            19.47641
+          ],
+          [
+            -99.12543,
+            19.48405
+          ],
+          [
+            -99.11914,
+            19.49532
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14246",
+        "lineName": "Santa Anita - Martín Carrera",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.12121,
+            19.40426
+          ],
+          [
+            -99.12203,
+            19.41015
+          ],
+          [
+            -99.12034,
+            19.42149
+          ],
+          [
+            -99.11891,
+            19.42917
+          ],
+          [
+            -99.1179,
+            19.43973
+          ],
+          [
+            -99.1159,
+            19.44867
+          ],
+          [
+            -99.11389,
+            19.45682
+          ],
+          [
+            -99.11175,
+            19.46451
+          ],
+          [
+            -99.10779,
+            19.47416
+          ],
+          [
+            -99.10599,
+            19.48377
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14247",
+        "lineName": "Politécnico - Pantitlán",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.14881,
+            19.49996
+          ],
+          [
+            -99.14455,
+            19.48984
+          ],
+          [
+            -99.14047,
+            19.47859
+          ],
+          [
+            -99.13618,
+            19.46897
+          ],
+          [
+            -99.13052,
+            19.4629
+          ],
+          [
+            -99.11989,
+            19.45868
+          ],
+          [
+            -99.11348,
+            19.45548
+          ],
+          [
+            -99.10545,
+            19.45112
+          ],
+          [
+            -99.09598,
+            19.45101
+          ],
+          [
+            -99.08654,
+            19.44439
+          ],
+          [
+            -99.0882,
+            19.4338
+          ],
+          [
+            -99.08709,
+            19.42325
+          ],
+          [
+            -99.07505,
+            19.41526
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14248",
+        "lineName": "El Rosario - Martín Carrera",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.19948,
+            19.50523
+          ],
+          [
+            -99.19593,
+            19.49449
+          ],
+          [
+            -99.18621,
+            19.49068
+          ],
+          [
+            -99.1737,
+            19.49039
+          ],
+          [
+            -99.16249,
+            19.48824
+          ],
+          [
+            -99.1548,
+            19.49031
+          ],
+          [
+            -99.14639,
+            19.49054
+          ],
+          [
+            -99.13435,
+            19.48758
+          ],
+          [
+            -99.12577,
+            19.48359
+          ],
+          [
+            -99.11816,
+            19.48147
+          ],
+          [
+            -99.10554,
+            19.48231
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14249",
+        "lineName": "El Rosario - Barranca del Muerto",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.2003,
+            19.50395
+          ],
+          [
+            -99.19451,
+            19.48937
+          ],
+          [
+            -99.18895,
+            19.47873
+          ],
+          [
+            -99.18986,
+            19.46911
+          ],
+          [
+            -99.1885,
+            19.45838
+          ],
+          [
+            -99.19161,
+            19.44553
+          ],
+          [
+            -99.19079,
+            19.43338
+          ],
+          [
+            -99.19174,
+            19.42531
+          ],
+          [
+            -99.19138,
+            19.41129
+          ],
+          [
+            -99.18736,
+            19.4033
+          ],
+          [
+            -99.18663,
+            19.40222
+          ],
+          [
+            -99.18573,
+            19.39122
+          ],
+          [
+            -99.18662,
+            19.38482
+          ],
+          [
+            -99.18766,
+            19.37646
+          ],
+          [
+            -99.18896,
+            19.36149
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14250",
+        "lineName": "Garibaldi - Constitución de 1917",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.06337,
+            19.34514
+          ],
+          [
+            -99.07481,
+            19.35033
+          ],
+          [
+            -99.08587,
+            19.3556
+          ],
+          [
+            -99.09342,
+            19.3576
+          ],
+          [
+            -99.10157,
+            19.35571
+          ],
+          [
+            -99.10932,
+            19.36449
+          ],
+          [
+            -99.1074,
+            19.37293
+          ],
+          [
+            -99.10934,
+            19.3783
+          ],
+          [
+            -99.11209,
+            19.38809
+          ],
+          [
+            -99.11254,
+            19.38974
+          ],
+          [
+            -99.11314,
+            19.39123
+          ],
+          [
+            -99.11374,
+            19.39281
+          ],
+          [
+            -99.11333,
+            19.39538
+          ],
+          [
+            -99.11341,
+            19.39769
+          ],
+          [
+            -99.12137,
+            19.40398
+          ],
+          [
+            -99.12597,
+            19.40611
+          ],
+          [
+            -99.13574,
+            19.40854
+          ],
+          [
+            -99.14393,
+            19.41301
+          ],
+          [
+            -99.14335,
+            19.4205
+          ],
+          [
+            -99.14207,
+            19.42721
+          ],
+          [
+            -99.14116,
+            19.43098
+          ],
+          [
+            -99.14061,
+            19.4365
+          ],
+          [
+            -99.13981,
+            19.44134
+          ],
+          [
+            -99.13904,
+            19.44345
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14251",
+        "lineName": "Pantitlán - Tacubaya",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.07252,
+            19.41489
+          ],
+          [
+            -99.07617,
+            19.40915
+          ],
+          [
+            -99.0782,
+            19.40745
+          ],
+          [
+            -99.07902,
+            19.40696
+          ],
+          [
+            -99.08234,
+            19.40697
+          ],
+          [
+            -99.08668,
+            19.40775
+          ],
+          [
+            -99.09136,
+            19.40811
+          ],
+          [
+            -99.09436,
+            19.40876
+          ],
+          [
+            -99.09762,
+            19.40911
+          ],
+          [
+            -99.10284,
+            19.40811
+          ],
+          [
+            -99.10524,
+            19.40826
+          ],
+          [
+            -99.10784,
+            19.4083
+          ],
+          [
+            -99.11286,
+            19.4082
+          ],
+          [
+            -99.12228,
+            19.40894
+          ],
+          [
+            -99.13549,
+            19.40851
+          ],
+          [
+            -99.14434,
+            19.40702
+          ],
+          [
+            -99.15504,
+            19.40636
+          ],
+          [
+            -99.16831,
+            19.40576
+          ],
+          [
+            -99.17847,
+            19.40559
+          ],
+          [
+            -99.18731,
+            19.40248
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14252",
+        "lineName": "Pantitlán - La Paz",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.07263,
+            19.41461
+          ],
+          [
+            -99.06983,
+            19.40405
+          ],
+          [
+            -99.0597,
+            19.39822
+          ],
+          [
+            -99.04651,
+            19.39073
+          ],
+          [
+            -99.03579,
+            19.3846
+          ],
+          [
+            -99.01729,
+            19.37292
+          ],
+          [
+            -99.00598,
+            19.36425
+          ],
+          [
+            -98.99589,
+            19.3598
+          ],
+          [
+            -98.97671,
+            19.35878
+          ],
+          [
+            -98.96062,
+            19.35049
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14253",
+        "lineName": "Ciudad Azteca - Buenavista",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.02711,
+            19.53444
+          ],
+          [
+            -99.0298,
+            19.52822
+          ],
+          [
+            -99.03298,
+            19.52084
+          ],
+          [
+            -99.03569,
+            19.5147
+          ],
+          [
+            -99.04172,
+            19.50096
+          ],
+          [
+            -99.04635,
+            19.49024
+          ],
+          [
+            -99.04874,
+            19.48499
+          ],
+          [
+            -99.05437,
+            19.47253
+          ],
+          [
+            -99.05733,
+            19.46643
+          ],
+          [
+            -99.05879,
+            19.46323
+          ],
+          [
+            -99.06115,
+            19.46135
+          ],
+          [
+            -99.06471,
+            19.46081
+          ],
+          [
+            -99.0675,
+            19.45947
+          ],
+          [
+            -99.06927,
+            19.45817
+          ],
+          [
+            -99.07917,
+            19.45077
+          ],
+          [
+            -99.08683,
+            19.44572
+          ],
+          [
+            -99.0942,
+            19.44048
+          ],
+          [
+            -99.10343,
+            19.43628
+          ],
+          [
+            -99.11446,
+            19.43182
+          ],
+          [
+            -99.11933,
+            19.43843
+          ],
+          [
+            -99.12323,
+            19.44257
+          ],
+          [
+            -99.13108,
+            19.443
+          ],
+          [
+            -99.13995,
+            19.44338
+          ],
+          [
+            -99.14635,
+            19.44523
+          ],
+          [
+            -99.1529,
+            19.44616
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_14254",
+        "lineName": "Tláhuac - Mixcoac",
+        "systemName": "Mexico City",
+        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.18687,
+            19.37568
+          ],
+          [
+            -99.17859,
+            19.3736
+          ],
+          [
+            -99.171,
+            19.37192
+          ],
+          [
+            -99.16541,
+            19.37055
+          ],
+          [
+            -99.15766,
+            19.37047
+          ],
+          [
+            -99.15133,
+            19.36118
+          ],
+          [
+            -99.14483,
+            19.3603
+          ],
+          [
+            -99.12191,
+            19.35745
+          ],
+          [
+            -99.10632,
+            19.35264
+          ],
+          [
+            -99.10894,
+            19.33887
+          ],
+          [
+            -99.10259,
+            19.32723
+          ],
+          [
+            -99.0967,
+            19.322
+          ],
+          [
+            -99.08487,
+            19.32026
+          ],
+          [
+            -99.07472,
+            19.31749
+          ],
+          [
+            -99.06587,
+            19.30612
+          ],
+          [
+            -99.05831,
+            19.30329
+          ],
+          [
+            -99.04621,
+            19.2994
+          ],
+          [
+            -99.03402,
+            19.29639
+          ],
+          [
+            -99.02383,
+            19.29456
+          ],
+          [
+            -99.01443,
+            19.2868
+          ]
+        ]
+      }
+    }
+  ]
+}
