@@ -52,7 +52,12 @@ const CITY_THEME_SEQUENCE = ['#0039A6', '#FF6319', '#6CBE45', '#EE352E', '#B933A
 
 export function getCityTheme(slug, index = 0) {
   const accent = CITY_THEME_BY_SLUG[slug]?.accent ?? CITY_THEME_SEQUENCE[index % CITY_THEME_SEQUENCE.length];
-  const accentRgb = hexToRgbTriplet(accent);
+  const accentColor = hexToRgb(accent);
+  const accentRgb = toRgbTriplet(accentColor);
+  const paperStrongColor = hexToRgb(DEFAULT_PAPER_STRONG);
+  const inkColor = hexToRgb(DEFAULT_INK);
+  const referenceCircleRgb = toRgbTriplet(mixRgb(accentColor, paperStrongColor, 0.82));
+  const referenceLabelRgb = toRgbTriplet(mixRgb(accentColor, inkColor, 0.34));
   const inkRgb = '17, 17, 17';
 
   return {
@@ -66,7 +71,8 @@ export function getCityTheme(slug, index = 0) {
     mutedText: `rgba(${inkRgb}, 0.74)`,
     regionText: `rgba(${inkRgb}, 0.56)`,
     cardStroke: `rgba(${inkRgb}, 0.12)`,
-    referenceFill: `rgb(${accentRgb})`,
+    referenceFill: `rgb(${referenceCircleRgb})`,
+    referenceLabel: `rgb(${referenceLabelRgb})`,
     selectedGlow: `rgba(${accentRgb}, 0.06)`,
     selectedCardStroke: accent,
     shadow: 'rgba(0, 0, 0, 0.18)'
@@ -82,11 +88,27 @@ export const CARD_STYLE = {
   lineStroke: DEFAULT_INK
 };
 
-function hexToRgbTriplet(hex) {
+function hexToRgb(hex) {
   const normalized = hex.replace('#', '');
   const bigint = Number.parseInt(normalized, 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
+  return {
+    r: (bigint >> 16) & 255,
+    g: (bigint >> 8) & 255,
+    b: bigint & 255
+  };
+}
+
+function toRgbTriplet({ r, g, b }) {
   return `${r}, ${g}, ${b}`;
+}
+
+function mixRgb(left, right, rightShare) {
+  const clampedShare = Math.min(Math.max(rightShare, 0), 1);
+  const leftShare = 1 - clampedShare;
+
+  return {
+    r: Math.round(left.r * leftShare + right.r * clampedShare),
+    g: Math.round(left.g * leftShare + right.g * clampedShare),
+    b: Math.round(left.b * leftShare + right.b * clampedShare)
+  };
 }

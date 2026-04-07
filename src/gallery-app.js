@@ -322,7 +322,8 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
           <div class="card__diagram-shell">
             <div class="card__diagram">
               ${initialOverviewPath ? `<img class="card__canvas" src="${initialOverviewPath}" alt="" loading="lazy" decoding="async" />` : ''}
-              <svg class="card__reference" aria-hidden="true" focusable="false"></svg>
+              <svg class="card__reference card__reference--circle" aria-hidden="true" focusable="false"></svg>
+              <svg class="card__reference card__reference--label" aria-hidden="true" focusable="false"></svg>
             </div>
           </div>
           <div class="card__overlay">
@@ -339,14 +340,15 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   const openButton = element.querySelector('.card__select');
   const diagram = element.querySelector('.card__diagram');
   const overviewImage = element.querySelector('.card__canvas');
-  const referenceSvg = element.querySelector('.card__reference');
+  const referenceCircleSvg = element.querySelector('.card__reference--circle');
+  const referenceLabelSvg = element.querySelector('.card__reference--label');
 
   function setDiagramPresentation({ imagePath, marker, width, height }) {
     if (diagram) {
       diagram.style.setProperty('--diagram-aspect', `${width} / ${height}`);
     }
 
-    renderReferenceMarker(referenceSvg, {
+    renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
       marker,
       width,
       height,
@@ -621,6 +623,7 @@ function applyThemeVars(element, theme) {
   element.style.setProperty('--card-text', theme.text);
   element.style.setProperty('--card-ink', theme.ink);
   element.style.setProperty('--card-reference-fill', theme.referenceFill);
+  element.style.setProperty('--card-reference-label', theme.referenceLabel);
   element.style.setProperty('--card-shadow', theme.shadow);
 }
 
@@ -677,14 +680,16 @@ function setImageSource(image, nextSrc) {
     });
 }
 
-function renderReferenceMarker(referenceSvg, { marker, width, height, arcId }) {
-  if (!referenceSvg) {
+function renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, { marker, width, height, arcId }) {
+  if (!referenceCircleSvg || !referenceLabelSvg) {
     return;
   }
 
   if (!marker || !width || !height) {
-    referenceSvg.innerHTML = '';
-    referenceSvg.setAttribute('hidden', '');
+    referenceCircleSvg.innerHTML = '';
+    referenceCircleSvg.setAttribute('hidden', '');
+    referenceLabelSvg.innerHTML = '';
+    referenceLabelSvg.setAttribute('hidden', '');
     return;
   }
 
@@ -694,13 +699,18 @@ function renderReferenceMarker(referenceSvg, { marker, width, height, arcId }) {
   const [arcEndX, arcEndY] = polarToCartesian(marker.centerX, marker.centerY, marker.labelRadius, endAngle);
   const arcSweepFlag = endAngle - startAngle <= Math.PI ? 0 : 1;
 
-  referenceSvg.removeAttribute('hidden');
-  referenceSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-  referenceSvg.innerHTML = `
+  referenceCircleSvg.removeAttribute('hidden');
+  referenceCircleSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  referenceCircleSvg.innerHTML = `
+    <circle class="card__reference-circle" cx="${formatSvgNumber(marker.centerX)}" cy="${formatSvgNumber(marker.centerY)}" r="${formatSvgNumber(marker.radius)}"></circle>
+  `.trim();
+
+  referenceLabelSvg.removeAttribute('hidden');
+  referenceLabelSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  referenceLabelSvg.innerHTML = `
     <defs>
       <path id="${arcId}" d="M ${formatSvgNumber(arcStartX)} ${formatSvgNumber(arcStartY)} A ${formatSvgNumber(marker.labelRadius)} ${formatSvgNumber(marker.labelRadius)} 0 ${arcSweepFlag} 1 ${formatSvgNumber(arcEndX)} ${formatSvgNumber(arcEndY)}" />
     </defs>
-    <circle class="card__reference-circle" cx="${formatSvgNumber(marker.centerX)}" cy="${formatSvgNumber(marker.centerY)}" r="${formatSvgNumber(marker.radius)}"></circle>
     <text class="card__reference-label">
       <textPath href="#${arcId}" startOffset="50%" text-anchor="middle">5 MILES</textPath>
     </text>
