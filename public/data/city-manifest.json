@@ -378,14 +378,14 @@
       18.135028,
       59.414782
     ],
-    "lineCount": 3,
-    "sourceName": "Storstockholms Lokaltrafik (SL) via Trafiklab",
+    "lineCount": 7,
+    "sourceName": "Storstockholms Lokaltrafik (SL)",
     "sourceUrl": "https://opendata.samtrafiken.se/gtfs/sl/sl.zip",
     "display": {
-      "profile": "standard",
-      "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "profile": "dense",
+      "lineWidth": 1.55,
+      "simplifyTolerance": 1.6,
+      "lineAlpha": 0.8
     },
     "overview": {
       "width": 360,

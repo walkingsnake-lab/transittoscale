@@ -465,7 +465,7 @@
     "name": "Stockholm",
     "region": "Sweden",
     "sourceType": "gtfs",
-    "sourceName": "Storstockholms Lokaltrafik (SL) via Trafiklab",
+    "sourceName": "Storstockholms Lokaltrafik (SL)",
     "sourceUrl": "https://opendata.samtrafiken.se/gtfs/sl/sl.zip",
     "requestQuery": {
       "key": {
@@ -473,23 +473,37 @@
       }
     },
     "focusPoint": [18.0686, 59.3293],
-    "routeTypes": ["401"],
+    "routeTypes": ["401", "900"],
     "minPointSpacingMeters": 20,
     "minShapeTrips": 20,
     "shapeTripShareThreshold": 0.08,
-    "routeIdAliases": {
-      "9011001001000000": "BLUE",
-      "9011001001100000": "BLUE",
-      "9011001001300000": "RED",
-      "9011001001400000": "RED",
-      "9011001001700000": "GREEN",
-      "9011001001800000": "GREEN",
-      "9011001001900000": "GREEN"
-    },
+    "routeIdAllowlist": [
+      "9011001001000000",
+      "9011001001100000",
+      "9011001001300000",
+      "9011001001400000",
+      "9011001001700000",
+      "9011001001800000",
+      "9011001001900000",
+      "9011001000700000",
+      "9011001001200000",
+      "9011001002100000",
+      "9011001003000000",
+      "9011001003100000"
+    ],
     "lineNameOverrides": {
-      "BLUE": "Blue Line",
-      "RED": "Red Line",
-      "GREEN": "Green Line"
+      "9011001001000000": "Line 10",
+      "9011001001100000": "Line 11",
+      "9011001001300000": "Line 13",
+      "9011001001400000": "Line 14",
+      "9011001001700000": "Line 17",
+      "9011001001800000": "Line 18",
+      "9011001001900000": "Line 19",
+      "9011001000700000": "Line 7 Spårväg City",
+      "9011001001200000": "Line 12 Nockebybanan",
+      "9011001002100000": "Line 21 Lidingöbanan",
+      "9011001003000000": "Line 30 Tvärbanan",
+      "9011001003100000": "Line 31 Tvärbanan"
     }
   },
   {
