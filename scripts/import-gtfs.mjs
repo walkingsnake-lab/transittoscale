@@ -181,11 +181,51 @@ function resolveRequestHeaders(sourceConfig) {
   return headers;
 }
 
+function resolveRequestQuery(sourceConfig) {
+  const query = {};
+
+  for (const [paramName, paramConfig] of Object.entries(sourceConfig.requestQuery ?? {})) {
+    if (typeof paramConfig === 'string') {
+      query[paramName] = paramConfig;
+      continue;
+    }
+
+    if (paramConfig?.env) {
+      const envValue = process.env[paramConfig.env];
+
+      if (!envValue) {
+        return null;
+      }
+
+      query[paramName] = envValue;
+    }
+  }
+
+  return query;
+}
+
+function resolveRequestUrl(sourceConfig) {
+  const query = resolveRequestQuery(sourceConfig);
+
+  if (query === null) {
+    return null;
+  }
+
+  const url = new URL(sourceConfig.sourceUrl);
+
+  for (const [paramName, value] of Object.entries(query)) {
+    url.searchParams.set(paramName, value);
+  }
+
+  return url.toString();
+}
+
 async function importSourceCity(sourceConfig, existingCitiesBySlug) {
   if (sourceConfig.sourceType === 'gtfs') {
     const requestHeaders = resolveRequestHeaders(sourceConfig);
+    const requestUrl = resolveRequestUrl(sourceConfig);
 
-    if (requestHeaders === null) {
+    if (requestHeaders === null || requestUrl === null) {
       const existingCity = existingCitiesBySlug.get(sourceConfig.slug);
 
       if (existingCity) {
@@ -196,7 +236,7 @@ async function importSourceCity(sourceConfig, existingCitiesBySlug) {
       throw new Error(`Missing required credentials for ${sourceConfig.slug}`);
     }
 
-    return importGtfsCity(sourceConfig, requestHeaders);
+    return importGtfsCity(sourceConfig, requestHeaders, requestUrl);
   }
 
   if (sourceConfig.sourceType === 'gtfs-merge') {
@@ -210,8 +250,8 @@ async function importSourceCity(sourceConfig, existingCitiesBySlug) {
   throw new Error(`Unsupported source type for ${sourceConfig.slug}: ${sourceConfig.sourceType}`);
 }
 
-async function importGtfsCity(sourceConfig, requestHeaders) {
-  const features = await importGtfsFeatures(sourceConfig, requestHeaders);
+async function importGtfsCity(sourceConfig, requestHeaders, requestUrl) {
+  const features = await importGtfsFeatures(sourceConfig, requestHeaders, requestUrl);
   return buildImportedCity(sourceConfig, features);
 }
 
@@ -230,8 +270,9 @@ async function importMergedGtfsCity(sourceConfig, existingCitiesBySlug) {
       ...mergedSourceConfig
     };
     const requestHeaders = resolveRequestHeaders(effectiveSourceConfig);
+    const requestUrl = resolveRequestUrl(effectiveSourceConfig);
 
-    if (requestHeaders === null) {
+    if (requestHeaders === null || requestUrl === null) {
       const existingCity = existingCitiesBySlug.get(sourceConfig.slug);
 
       if (existingCity) {
@@ -242,14 +283,14 @@ async function importMergedGtfsCity(sourceConfig, existingCitiesBySlug) {
       throw new Error(`Missing required credentials for ${sourceConfig.slug}`);
     }
 
-    features.push(...(await importGtfsFeatures(effectiveSourceConfig, requestHeaders)));
+    features.push(...(await importGtfsFeatures(effectiveSourceConfig, requestHeaders, requestUrl)));
   }
 
   return buildImportedCity(sourceConfig, features);
 }
 
-async function importGtfsFeatures(sourceConfig, requestHeaders) {
-  const response = await fetch(sourceConfig.sourceUrl, {
+async function importGtfsFeatures(sourceConfig, requestHeaders, requestUrl = sourceConfig.sourceUrl) {
+  const response = await fetch(requestUrl, {
     headers: requestHeaders
   });
 

@@ -342,6 +342,25 @@
     }
   },
   {
+    "slug": "pittsburgh",
+    "name": "Pittsburgh",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Pittsburgh Regional Transit (PRT)",
+    "sourceUrl": "https://www.rideprt.org/developerresources/GTFS.zip",
+    "sourcePageUrl": "https://www.rideprt.org/business-center/developer-resources/",
+    "focusPoint": [-79.9959, 40.4406],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 12,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["BLUE", "RED", "SLVR"],
+    "lineNameOverrides": {
+      "BLUE": "Blue Line",
+      "RED": "Red Line",
+      "SLVR": "Silver Line"
+    }
+  },
+  {
     "slug": "toronto",
     "name": "Toronto",
     "region": "Canada",
@@ -380,6 +399,97 @@
       "2": "Orange Line",
       "4": "Yellow Line",
       "5": "Blue Line"
+    }
+  },
+  {
+    "slug": "madrid",
+    "name": "Madrid",
+    "region": "Spain",
+    "sourceType": "gtfs",
+    "sourceName": "Consorcio Regional de Transportes de Madrid (CRTM)",
+    "sourceUrl": "https://crtm.maps.arcgis.com/sharing/rest/content/items/5c7f2951962540d69ffe8f640d94c246/data",
+    "focusPoint": [-3.7038, 40.4168],
+    "routeTypes": ["1"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 12,
+    "shapeTripShareThreshold": 0.08,
+    "displayProfile": "dense",
+    "routeIdAllowlist": [
+      "4__1___",
+      "4__2___",
+      "4__3___",
+      "4__4___",
+      "4__5___",
+      "4__6___",
+      "4__7___",
+      "4__8___",
+      "4__9___",
+      "4__10___",
+      "4__11___",
+      "4__12___",
+      "4__R___"
+    ],
+    "routeIdAliases": {
+      "4__1___": "1",
+      "4__2___": "2",
+      "4__3___": "3",
+      "4__4___": "4",
+      "4__5___": "5",
+      "4__6___": "6",
+      "4__7___": "7",
+      "4__8___": "8",
+      "4__9___": "9",
+      "4__10___": "10",
+      "4__11___": "11",
+      "4__12___": "12",
+      "4__R___": "R"
+    },
+    "lineNameOverrides": {
+      "1": "Line 1",
+      "2": "Line 2",
+      "3": "Line 3",
+      "4": "Line 4",
+      "5": "Line 5",
+      "6": "Line 6",
+      "7": "Line 7",
+      "8": "Line 8",
+      "9": "Line 9",
+      "10": "Line 10",
+      "11": "Line 11",
+      "12": "Line 12",
+      "R": "Ramal"
+    }
+  },
+  {
+    "slug": "stockholm",
+    "name": "Stockholm",
+    "region": "Sweden",
+    "sourceType": "gtfs",
+    "sourceName": "Storstockholms Lokaltrafik (SL) via Trafiklab",
+    "sourceUrl": "https://opendata.samtrafiken.se/gtfs/sl/sl.zip",
+    "requestQuery": {
+      "key": {
+        "env": "TRAFIKLAB_GTFS_REGIONAL_STATIC_KEY"
+      }
+    },
+    "focusPoint": [18.0686, 59.3293],
+    "routeTypes": ["401"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAliases": {
+      "9011001001000000": "BLUE",
+      "9011001001100000": "BLUE",
+      "9011001001300000": "RED",
+      "9011001001400000": "RED",
+      "9011001001700000": "GREEN",
+      "9011001001800000": "GREEN",
+      "9011001001900000": "GREEN"
+    },
+    "lineNameOverrides": {
+      "BLUE": "Blue Line",
+      "RED": "Red Line",
+      "GREEN": "Green Line"
     }
   },
   {

@@ -299,6 +299,29 @@
     "sourceUrl": "https://github.com/septadev/GTFS/releases/latest/download/gtfs_public.zip"
   },
   {
+    "slug": "pittsburgh",
+    "name": "Pittsburgh",
+    "region": "United States",
+    "dataPath": "data/cities/pittsburgh.geojson",
+    "centroid": [
+      -80.0240405,
+      40.3676615
+    ],
+    "focusPoint": [
+      -79.9959,
+      40.4406
+    ],
+    "bounds": [
+      -80.053341,
+      40.287071,
+      -79.99474,
+      40.448252
+    ],
+    "lineCount": 3,
+    "sourceName": "Pittsburgh Regional Transit (PRT)",
+    "sourceUrl": "https://www.rideprt.org/developerresources/GTFS.zip"
+  },
+  {
     "slug": "toronto",
     "name": "Toronto",
     "region": "Canada",
@@ -343,6 +366,52 @@
     "lineCount": 4,
     "sourceName": "Societe de transport de Montreal (STM)",
     "sourceUrl": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip"
+  },
+  {
+    "slug": "madrid",
+    "name": "Madrid",
+    "region": "Spain",
+    "dataPath": "data/cities/madrid.geojson",
+    "centroid": [
+      -3.723637250319965,
+      40.39141799637495
+    ],
+    "focusPoint": [
+      -3.7038,
+      40.4168
+    ],
+    "bounds": [
+      -3.87556068943441,
+      40.2816326699816,
+      -3.57171381120552,
+      40.5012033227683
+    ],
+    "lineCount": 12,
+    "sourceName": "Consorcio Regional de Transportes de Madrid (CRTM)",
+    "sourceUrl": "https://crtm.maps.arcgis.com/sharing/rest/content/items/5c7f2951962540d69ffe8f640d94c246/data"
+  },
+  {
+    "slug": "stockholm",
+    "name": "Stockholm",
+    "region": "Sweden",
+    "dataPath": "data/cities/stockholm.geojson",
+    "centroid": [
+      17.974972,
+      59.325116
+    ],
+    "focusPoint": [
+      18.0686,
+      59.3293
+    ],
+    "bounds": [
+      17.814916,
+      59.23545,
+      18.135028,
+      59.414782
+    ],
+    "lineCount": 3,
+    "sourceName": "Storstockholms Lokaltrafik (SL) via Trafiklab",
+    "sourceUrl": "https://opendata.samtrafiken.se/gtfs/sl/sl.zip"
   },
   {
     "slug": "london",

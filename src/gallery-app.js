@@ -572,8 +572,10 @@ function formatSystemLabel(city) {
     edmonton: 'ETS LRT',
     'st-louis': 'MetroLink',
     philadelphia: 'SEPTA Metro + trolley',
+    pittsburgh: 'PRT light rail',
     toronto: 'TTC subway + light metro',
     montreal: 'Montreal Metro',
+    madrid: 'Metro de Madrid',
     london: 'Underground + DLR + Overground + Elizabeth',
     'san-francisco-bay-area': 'BART + Muni Metro',
     'san-jose-santa-clara-valley': 'VTA Light Rail + BART'
@@ -590,6 +592,7 @@ function getCountryFlag(city) {
   const flagCodeByRegion = {
     'United States': 'us',
     Canada: 'ca',
+    Spain: 'es',
     'United Kingdom': 'gb'
   };
 

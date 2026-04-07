@@ -23,6 +23,7 @@
     "sourceUrl": "https://gtfs.edmonton.ca/TMGTFSRealTimeWebService/GTFS/gtfs.zip",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -94,6 +95,7 @@
     "sourceUrl": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -165,6 +167,7 @@
     "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -236,6 +239,7 @@
     "sourceUrl": "https://gtfs-static.translink.ca/gtfs/google_transit.zip",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -284,6 +288,150 @@
     }
   },
   {
+    "slug": "madrid",
+    "name": "Madrid",
+    "region": "Spain",
+    "dataPath": "data/cities/madrid.geojson",
+    "centroid": [
+      -3.723637250319965,
+      40.39141799637495
+    ],
+    "focusPoint": [
+      -3.7038,
+      40.4168
+    ],
+    "bounds": [
+      -3.87556068943441,
+      40.2816326699816,
+      -3.57171381120552,
+      40.5012033227683
+    ],
+    "lineCount": 12,
+    "sourceName": "Consorcio Regional de Transportes de Madrid (CRTM)",
+    "sourceUrl": "https://crtm.maps.arcgis.com/sharing/rest/content/items/5c7f2951962540d69ffe8f640d94c246/data",
+    "display": {
+      "profile": "dense",
+      "lineWidth": 1.55,
+      "simplifyTolerance": 1.6,
+      "lineAlpha": 0.8
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/madrid--wide.png",
+        "standard": "data/overview/madrid--standard.png",
+        "close": "data/overview/madrid--close.png"
+      },
+      "referenceMarkers": {
+        "wide": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 39.59,
+          "labelRadius": 49.59
+        },
+        "standard": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 48.28,
+          "labelRadius": 58.28
+        },
+        "close": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 56.97,
+          "labelRadius": 66.97
+        }
+      }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/madrid--detail.png",
+      "referenceMarker": {
+        "centerX": 340,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
+    "slug": "stockholm",
+    "name": "Stockholm",
+    "region": "Sweden",
+    "dataPath": "data/cities/stockholm.geojson",
+    "centroid": [
+      17.974972,
+      59.325116
+    ],
+    "focusPoint": [
+      18.0686,
+      59.3293
+    ],
+    "bounds": [
+      17.814916,
+      59.23545,
+      18.135028,
+      59.414782
+    ],
+    "lineCount": 3,
+    "sourceName": "Storstockholms Lokaltrafik (SL) via Trafiklab",
+    "sourceUrl": "https://opendata.samtrafiken.se/gtfs/sl/sl.zip",
+    "display": {
+      "profile": "standard",
+      "lineWidth": 1.65,
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/stockholm--wide.png",
+        "standard": "data/overview/stockholm--standard.png",
+        "close": "data/overview/stockholm--close.png"
+      },
+      "referenceMarkers": {
+        "wide": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 39.59,
+          "labelRadius": 49.59
+        },
+        "standard": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 48.28,
+          "labelRadius": 58.28
+        },
+        "close": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 56.97,
+          "labelRadius": 66.97
+        }
+      }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/stockholm--detail.png",
+      "referenceMarker": {
+        "centerX": 340,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
     "slug": "london",
     "name": "London",
     "region": "United Kingdom",
@@ -307,6 +455,7 @@
     "sourceUrl": "https://api.tfl.gov.uk",
     "display": {
       "profile": "mega",
+      "lineWidth": 1.45,
       "simplifyTolerance": 2.4,
       "lineAlpha": 0.7
     },
@@ -378,6 +527,7 @@
     "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -449,6 +599,7 @@
     "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -520,6 +671,7 @@
     "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip",
     "display": {
       "profile": "dense",
+      "lineWidth": 1.55,
       "simplifyTolerance": 1.6,
       "lineAlpha": 0.8
     },
@@ -591,6 +743,7 @@
     "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
     "display": {
       "profile": "dense",
+      "lineWidth": 1.55,
       "simplifyTolerance": 1.6,
       "lineAlpha": 0.8
     },
@@ -662,6 +815,7 @@
     "sourceUrl": "https://gitlab.com/LACMTA/gtfs_rail/raw/master/gtfs_rail.zip",
     "display": {
       "profile": "dense",
+      "lineWidth": 1.55,
       "simplifyTolerance": 1.6,
       "lineAlpha": 0.8
     },
@@ -733,6 +887,7 @@
     "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -804,6 +959,7 @@
     "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
     "display": {
       "profile": "mega",
+      "lineWidth": 1.45,
       "simplifyTolerance": 2.4,
       "lineAlpha": 0.7
     },
@@ -875,6 +1031,7 @@
     "sourceUrl": "https://github.com/septadev/GTFS/releases/latest/download/gtfs_public.zip",
     "display": {
       "profile": "dense",
+      "lineWidth": 1.55,
       "simplifyTolerance": 1.6,
       "lineAlpha": 0.8
     },
@@ -923,6 +1080,78 @@
     }
   },
   {
+    "slug": "pittsburgh",
+    "name": "Pittsburgh",
+    "region": "United States",
+    "dataPath": "data/cities/pittsburgh.geojson",
+    "centroid": [
+      -80.0240405,
+      40.3676615
+    ],
+    "focusPoint": [
+      -79.9959,
+      40.4406
+    ],
+    "bounds": [
+      -80.053341,
+      40.287071,
+      -79.99474,
+      40.448252
+    ],
+    "lineCount": 3,
+    "sourceName": "Pittsburgh Regional Transit (PRT)",
+    "sourceUrl": "https://www.rideprt.org/developerresources/GTFS.zip",
+    "display": {
+      "profile": "standard",
+      "lineWidth": 1.65,
+      "simplifyTolerance": 1,
+      "lineAlpha": 0.94
+    },
+    "overview": {
+      "width": 340,
+      "height": 440,
+      "rasterScale": 2,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": "data/overview/pittsburgh--wide.png",
+        "standard": "data/overview/pittsburgh--standard.png",
+        "close": "data/overview/pittsburgh--close.png"
+      },
+      "referenceMarkers": {
+        "wide": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 39.59,
+          "labelRadius": 49.59
+        },
+        "standard": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 48.28,
+          "labelRadius": 58.28
+        },
+        "close": {
+          "centerX": 170,
+          "centerY": 220,
+          "radius": 56.97,
+          "labelRadius": 66.97
+        }
+      }
+    },
+    "detail": {
+      "width": 680,
+      "height": 880,
+      "rasterScale": 2,
+      "imagePath": "data/overview/pittsburgh--detail.png",
+      "referenceMarker": {
+        "centerX": 340,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
     "slug": "san-francisco-bay-area",
     "name": "San Francisco Bay Area",
     "region": "United States",
@@ -946,6 +1175,7 @@
     "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
     "display": {
       "profile": "dense",
+      "lineWidth": 1.55,
       "simplifyTolerance": 1.6,
       "lineAlpha": 0.8
     },
@@ -1017,6 +1247,7 @@
     "sourceUrl": "https://www.vta.org/go/routes",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -1088,6 +1319,7 @@
     "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -1159,6 +1391,7 @@
     "sourceUrl": "https://www.metrostlouis.org/Transit/google_transit.zip",
     "display": {
       "profile": "standard",
+      "lineWidth": 1.65,
       "simplifyTolerance": 1,
       "lineAlpha": 0.94
     },
@@ -1230,6 +1463,7 @@
     "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip",
     "display": {
       "profile": "dense",
+      "lineWidth": 1.55,
       "simplifyTolerance": 1.6,
       "lineAlpha": 0.8
     },

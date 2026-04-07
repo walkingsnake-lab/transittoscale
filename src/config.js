@@ -39,8 +39,10 @@ const CITY_THEME_BY_SLUG = {
   edmonton: { accent: '#005DAA' },
   'st-louis': { accent: '#005DAA' },
   philadelphia: { accent: '#004B87' },
+  pittsburgh: { accent: '#F2C230' },
   toronto: { accent: '#996633' },
   montreal: { accent: '#A7A9AC' },
+  madrid: { accent: '#C1003F' },
   london: { accent: '#DC241F' },
   'san-francisco-bay-area': { accent: '#00933C' },
   'san-jose-santa-clara-valley': { accent: '#0b8f6a' }
