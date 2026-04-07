@@ -365,7 +365,7 @@
     "region": "Sweden",
     "dataPath": "data/cities/stockholm.geojson",
     "centroid": [
-      17.974972,
+      18.024473,
       59.325116
     ],
     "focusPoint": [
@@ -375,10 +375,10 @@
     "bounds": [
       17.814916,
       59.23545,
-      18.135028,
+      18.23403,
       59.414782
     ],
-    "lineCount": 7,
+    "lineCount": 12,
     "sourceName": "Storstockholms Lokaltrafik (SL)",
     "sourceUrl": "https://opendata.samtrafiken.se/gtfs/sl/sl.zip",
     "display": {
