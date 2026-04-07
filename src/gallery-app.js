@@ -593,6 +593,7 @@ function getCountryFlag(city) {
     'United States': 'us',
     Canada: 'ca',
     Spain: 'es',
+    Sweden: 'se',
     'United Kingdom': 'gb'
   };
 
