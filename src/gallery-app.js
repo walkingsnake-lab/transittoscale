@@ -1,5 +1,11 @@
 ﻿import { getCityTheme } from './config.js';
-import { DEFAULT_OVERVIEW_VARIANT, OVERVIEW_ZOOM_STEPS } from './lib/overview-config.js';
+import {
+  DEFAULT_OVERVIEW_VARIANT,
+  DETAIL_BASE_HEIGHT,
+  DETAIL_BASE_WIDTH,
+  OVERVIEW_BASE_HEIGHT,
+  OVERVIEW_ZOOM_STEPS
+} from './lib/overview-config.js';
 import { clamp } from './lib/math.js';
 import { shouldUseSoftHoverEffects, supportsInteractiveDepthEffects } from './lib/platform.js';
 
@@ -526,7 +532,7 @@ function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
   const cardHeight =
     isMobile
       ? clamp(Math.min(availableHeight * 0.52, viewportWidth * 1.08), 250, 360)
-      : clamp(availableHeight / rowTarget, 250, 500);
+      : clamp(availableHeight / rowTarget, 250, OVERVIEW_BASE_HEIGHT);
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
@@ -729,9 +735,11 @@ function formatSvgNumber(value) {
 
 function getDetailTargetRect(card) {
   const viewportPadding = window.innerWidth < 720 ? 10 : 24;
-  const maxWidth = Math.max(280, Math.min(window.innerWidth - viewportPadding * 2, 720));
-  const maxHeight = Math.max(320, window.innerHeight - viewportPadding * 2);
-  const aspectRatio = (card.city.detail?.height ?? 880) / (card.city.detail?.width ?? 680);
+  const naturalWidth = card.city.detail?.width ?? DETAIL_BASE_WIDTH;
+  const naturalHeight = card.city.detail?.height ?? DETAIL_BASE_HEIGHT;
+  const maxWidth = Math.max(280, Math.min(window.innerWidth - viewportPadding * 2, naturalWidth));
+  const maxHeight = Math.max(320, Math.min(window.innerHeight - viewportPadding * 2, naturalHeight));
+  const aspectRatio = naturalHeight / naturalWidth;
   let width = maxWidth;
   let height = width * aspectRatio;
 
