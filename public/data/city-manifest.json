@@ -1445,6 +1445,91 @@
     }
   },
   {
+    "slug": "portland",
+    "name": "Portland",
+    "region": "United States",
+    "dataPath": "data/cities/portland.geojson",
+    "centroid": [
+      -122.70476,
+      45.518045
+    ],
+    "focusPoint": [
+      -122.6765,
+      45.5231
+    ],
+    "bounds": [
+      -122.991082,
+      45.430736,
+      -122.418438,
+      45.605354
+    ],
+    "lineCount": 7,
+    "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+    "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip",
+    "display": {
+      "profile": "dense",
+      "lineWidth": 1.55,
+      "simplifyTolerance": 1.6
+    },
+    "overview": {
+      "viewportWidth": 360,
+      "viewportHeight": 440,
+      "rasterScale": 3,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": {
+          "imagePath": "data/overview/portland--wide.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
+        },
+        "standard": {
+          "imagePath": "data/overview/portland--standard.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
+        },
+        "close": {
+          "imagePath": "data/overview/portland--close.webp",
+          "width": 372,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 186,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
+        }
+      }
+    },
+    "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
+      "width": 720,
+      "height": 880,
+      "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
+      "imagePath": "data/overview/portland--detail.png",
+      "referenceMarker": {
+        "centerX": 360,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
     "slug": "san-francisco-bay-area",
     "name": "San Francisco Bay Area",
     "region": "United States",

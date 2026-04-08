@@ -34,6 +34,7 @@ const CITY_THEME_BY_SLUG = {
   'washington-dc': { accent: '#c44b47' },
   'minneapolis-st-paul': { accent: '#8354ae' },
   seattle: { accent: '#b58f22' },
+  portland: { accent: '#3f8a5a' },
   'los-angeles': { accent: '#cc7d31' },
   vancouver: { accent: '#3a6ea6' },
   edmonton: { accent: '#4679a6' },

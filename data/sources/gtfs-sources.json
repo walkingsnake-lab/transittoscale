@@ -220,6 +220,39 @@
     }
   },
   {
+    "slug": "portland",
+    "name": "Portland",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+    "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip",
+    "focusPoint": [-122.6765, 45.5231],
+    "routeTypes": ["0"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["90", "100", "190", "193", "194", "195", "200", "290"],
+    "routeIdAliases": {
+      "90": "MAX-RED",
+      "100": "MAX-BLUE",
+      "190": "MAX-YELLOW",
+      "193": "SC-NS",
+      "194": "SC-LOOP",
+      "195": "SC-LOOP",
+      "200": "MAX-GREEN",
+      "290": "MAX-ORANGE"
+    },
+    "lineNameOverrides": {
+      "MAX-BLUE": "MAX Blue Line",
+      "MAX-GREEN": "MAX Green Line",
+      "MAX-ORANGE": "MAX Orange Line",
+      "MAX-RED": "MAX Red Line",
+      "MAX-YELLOW": "MAX Yellow Line",
+      "SC-NS": "Portland Streetcar NS Line",
+      "SC-LOOP": "Portland Streetcar Loop"
+    }
+  },
+  {
     "slug": "los-angeles",
     "name": "Los Angeles",
     "region": "United States",

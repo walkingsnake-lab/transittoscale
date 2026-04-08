@@ -184,6 +184,29 @@
     "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip"
   },
   {
+    "slug": "portland",
+    "name": "Portland",
+    "region": "United States",
+    "dataPath": "data/cities/portland.geojson",
+    "centroid": [
+      -122.70476,
+      45.518045
+    ],
+    "focusPoint": [
+      -122.6765,
+      45.5231
+    ],
+    "bounds": [
+      -122.991082,
+      45.430736,
+      -122.418438,
+      45.605354
+    ],
+    "lineCount": 7,
+    "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+    "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
+  },
+  {
     "slug": "los-angeles",
     "name": "Los Angeles",
     "region": "United States",

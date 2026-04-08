@@ -861,6 +861,7 @@ function formatSystemLabel(city) {
     'washington-dc': 'Washington Metro',
     'minneapolis-st-paul': 'Metro light rail',
     seattle: 'Link light rail',
+    portland: 'MAX + Streetcar (excluding Aerial Tram)',
     'los-angeles': 'Metro Rail',
     vancouver: 'SkyTrain',
     edmonton: 'ETS LRT',

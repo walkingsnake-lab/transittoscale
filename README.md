@@ -69,6 +69,7 @@ Transit To Scale is a static web visualization that compares world metro systems
 - Exclude adjacent or cross-jurisdiction systems unless they are explicitly part of the primary metro definition used across cities.
 - For New York, this means `NYC Subway + Staten Island Railway`, and excludes `PATH`, `LIRR`, and `Metro-North`.
 - For London, this means `Underground + DLR + London Overground + Elizabeth line`, and excludes `Thameslink` and other National Rail services.
+- For Portland, this means `MAX + Portland Streetcar` (including the merged Streetcar Loop), and excludes the `Portland Aerial Tram`.
 - For Mexico City, this means `STC Metro` only: Lines `1-9`, `A`, `B`, and `12`, including Metro-operated segments that extend into the State of Mexico such as `Line A`, `Line B`, and the `Cuatro Caminos` terminal on `Line 2`.
 - For Mexico City, exclude non-Metro city systems such as `Metrobus`, `Trolebus`, `Cablebus`, `Tren Ligero`, `RTP`, and `Pumabus`, plus regional systems such as `Ferrocarril Suburbano`, `Mexibus`, `Mexicable`, and `El Insurgente`.
 - If we ever want a broader comparison, it should be a separate mode rather than mixing definitions city by city.
@@ -76,4 +77,4 @@ Transit To Scale is a static web visualization that compares world metro systems
 ## Current Imported Dataset
 
 - The live manifest currently includes only normalized real-data cities.
-- Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, Los Angeles, Vancouver, Edmonton, St. Louis, Philadelphia, Pittsburgh, Toronto, Montreal, Stockholm, London, San Francisco Bay Area, San Jose / Santa Clara Valley, Atlanta, and Baltimore are imported from official agency feeds or APIs and rendered in the app.
+- Chicago, New York, Boston, Washington, DC, Minneapolis-St. Paul, Seattle, Portland, Los Angeles, Vancouver, Edmonton, St. Louis, Philadelphia, Pittsburgh, Toronto, Montreal, Stockholm, London, San Francisco Bay Area, San Jose / Santa Clara Valley, Atlanta, and Baltimore are imported from official agency feeds or APIs and rendered in the app.
