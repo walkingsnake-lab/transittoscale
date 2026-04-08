@@ -580,7 +580,6 @@ function createDetailCard(card, { requestId }) {
   const flagMarkup = card.flag
     ? `<img class="detail-card__flag" src="${card.flag.src}" alt="${card.flag.alt}" loading="lazy" decoding="async" />`
     : '';
-  const cornerMarkup = countryLocatorMarkup || flagMarkup;
 
   element.className = 'detail-card';
   applyThemeVars(element, card.theme);
@@ -623,7 +622,8 @@ function createDetailCard(card, { requestId }) {
         <h2>${card.city.name}</h2>
         <p class="detail-card__count">${card.lineLabel}</p>
       </div>
-      ${cornerMarkup}
+      ${countryLocatorMarkup}
+      ${flagMarkup}
     </div>
   `;
 
