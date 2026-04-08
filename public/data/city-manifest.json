@@ -34,7 +34,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/edmonton--wide.png",
+          "imagePath": "data/overview/edmonton--wide.webp",
           "width": 636,
           "height": 579,
           "referenceMarker": {
@@ -45,7 +45,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/edmonton--standard.png",
+          "imagePath": "data/overview/edmonton--standard.webp",
           "width": 770,
           "height": 701,
           "referenceMarker": {
@@ -56,7 +56,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/edmonton--close.png",
+          "imagePath": "data/overview/edmonton--close.webp",
           "width": 905,
           "height": 823,
           "referenceMarker": {
@@ -120,7 +120,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/montreal--wide.png",
+          "imagePath": "data/overview/montreal--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -131,7 +131,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/montreal--standard.png",
+          "imagePath": "data/overview/montreal--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -142,7 +142,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/montreal--close.png",
+          "imagePath": "data/overview/montreal--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -206,7 +206,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/toronto--wide.png",
+          "imagePath": "data/overview/toronto--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -217,7 +217,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/toronto--standard.png",
+          "imagePath": "data/overview/toronto--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -228,7 +228,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/toronto--close.png",
+          "imagePath": "data/overview/toronto--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -292,7 +292,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/vancouver--wide.png",
+          "imagePath": "data/overview/vancouver--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -303,7 +303,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/vancouver--standard.png",
+          "imagePath": "data/overview/vancouver--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -314,7 +314,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/vancouver--close.png",
+          "imagePath": "data/overview/vancouver--close.webp",
           "width": 363,
           "height": 440,
           "referenceMarker": {
@@ -378,7 +378,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/mexico-city--wide.png",
+          "imagePath": "data/overview/mexico-city--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -389,7 +389,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/mexico-city--standard.png",
+          "imagePath": "data/overview/mexico-city--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -400,7 +400,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/mexico-city--close.png",
+          "imagePath": "data/overview/mexico-city--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -464,7 +464,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/madrid--wide.png",
+          "imagePath": "data/overview/madrid--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -475,7 +475,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/madrid--standard.png",
+          "imagePath": "data/overview/madrid--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -486,7 +486,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/madrid--close.png",
+          "imagePath": "data/overview/madrid--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -550,7 +550,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/stockholm--wide.png",
+          "imagePath": "data/overview/stockholm--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -561,7 +561,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/stockholm--standard.png",
+          "imagePath": "data/overview/stockholm--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -572,7 +572,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/stockholm--close.png",
+          "imagePath": "data/overview/stockholm--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -636,7 +636,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/london--wide.png",
+          "imagePath": "data/overview/london--wide.webp",
           "width": 600,
           "height": 440,
           "referenceMarker": {
@@ -647,7 +647,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/london--standard.png",
+          "imagePath": "data/overview/london--standard.webp",
           "width": 726,
           "height": 450,
           "referenceMarker": {
@@ -658,7 +658,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/london--close.png",
+          "imagePath": "data/overview/london--close.webp",
           "width": 853,
           "height": 527,
           "referenceMarker": {
@@ -722,7 +722,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/atlanta--wide.png",
+          "imagePath": "data/overview/atlanta--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -733,7 +733,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/atlanta--standard.png",
+          "imagePath": "data/overview/atlanta--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -744,7 +744,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/atlanta--close.png",
+          "imagePath": "data/overview/atlanta--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -808,7 +808,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/baltimore--wide.png",
+          "imagePath": "data/overview/baltimore--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -819,7 +819,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/baltimore--standard.png",
+          "imagePath": "data/overview/baltimore--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -830,7 +830,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/baltimore--close.png",
+          "imagePath": "data/overview/baltimore--close.webp",
           "width": 360,
           "height": 445,
           "referenceMarker": {
@@ -894,7 +894,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/boston--wide.png",
+          "imagePath": "data/overview/boston--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -905,7 +905,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/boston--standard.png",
+          "imagePath": "data/overview/boston--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -916,7 +916,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/boston--close.png",
+          "imagePath": "data/overview/boston--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -980,7 +980,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/chicago--wide.png",
+          "imagePath": "data/overview/chicago--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -991,7 +991,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/chicago--standard.png",
+          "imagePath": "data/overview/chicago--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1002,7 +1002,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/chicago--close.png",
+          "imagePath": "data/overview/chicago--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1066,7 +1066,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/los-angeles--wide.png",
+          "imagePath": "data/overview/los-angeles--wide.webp",
           "width": 473,
           "height": 440,
           "referenceMarker": {
@@ -1077,7 +1077,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/los-angeles--standard.png",
+          "imagePath": "data/overview/los-angeles--standard.webp",
           "width": 572,
           "height": 482,
           "referenceMarker": {
@@ -1088,7 +1088,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/los-angeles--close.png",
+          "imagePath": "data/overview/los-angeles--close.webp",
           "width": 671,
           "height": 564,
           "referenceMarker": {
@@ -1152,7 +1152,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/minneapolis-st-paul--wide.png",
+          "imagePath": "data/overview/minneapolis-st-paul--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1163,7 +1163,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/minneapolis-st-paul--standard.png",
+          "imagePath": "data/overview/minneapolis-st-paul--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1174,7 +1174,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/minneapolis-st-paul--close.png",
+          "imagePath": "data/overview/minneapolis-st-paul--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1238,7 +1238,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/new-york--wide.png",
+          "imagePath": "data/overview/new-york--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1249,7 +1249,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/new-york--standard.png",
+          "imagePath": "data/overview/new-york--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1260,7 +1260,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/new-york--close.png",
+          "imagePath": "data/overview/new-york--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1324,7 +1324,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/philadelphia--wide.png",
+          "imagePath": "data/overview/philadelphia--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1335,7 +1335,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/philadelphia--standard.png",
+          "imagePath": "data/overview/philadelphia--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1346,7 +1346,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/philadelphia--close.png",
+          "imagePath": "data/overview/philadelphia--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1410,7 +1410,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/pittsburgh--wide.png",
+          "imagePath": "data/overview/pittsburgh--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1421,7 +1421,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/pittsburgh--standard.png",
+          "imagePath": "data/overview/pittsburgh--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1432,7 +1432,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/pittsburgh--close.png",
+          "imagePath": "data/overview/pittsburgh--close.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1496,7 +1496,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/san-francisco-bay-area--wide.png",
+          "imagePath": "data/overview/san-francisco-bay-area--wide.webp",
           "width": 578,
           "height": 586,
           "referenceMarker": {
@@ -1507,7 +1507,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/san-francisco-bay-area--standard.png",
+          "imagePath": "data/overview/san-francisco-bay-area--standard.webp",
           "width": 699,
           "height": 709,
           "referenceMarker": {
@@ -1518,7 +1518,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/san-francisco-bay-area--close.png",
+          "imagePath": "data/overview/san-francisco-bay-area--close.webp",
           "width": 820,
           "height": 833,
           "referenceMarker": {
@@ -1582,7 +1582,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/san-jose-santa-clara-valley--wide.png",
+          "imagePath": "data/overview/san-jose-santa-clara-valley--wide.webp",
           "width": 532,
           "height": 852,
           "referenceMarker": {
@@ -1593,7 +1593,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/san-jose-santa-clara-valley--standard.png",
+          "imagePath": "data/overview/san-jose-santa-clara-valley--standard.webp",
           "width": 643,
           "height": 1034,
           "referenceMarker": {
@@ -1604,7 +1604,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/san-jose-santa-clara-valley--close.png",
+          "imagePath": "data/overview/san-jose-santa-clara-valley--close.webp",
           "width": 755,
           "height": 1216,
           "referenceMarker": {
@@ -1668,7 +1668,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/seattle--wide.png",
+          "imagePath": "data/overview/seattle--wide.webp",
           "width": 360,
           "height": 495,
           "referenceMarker": {
@@ -1679,7 +1679,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/seattle--standard.png",
+          "imagePath": "data/overview/seattle--standard.webp",
           "width": 360,
           "height": 599,
           "referenceMarker": {
@@ -1690,7 +1690,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/seattle--close.png",
+          "imagePath": "data/overview/seattle--close.webp",
           "width": 360,
           "height": 702,
           "referenceMarker": {
@@ -1754,7 +1754,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/st-louis--wide.png",
+          "imagePath": "data/overview/st-louis--wide.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1765,7 +1765,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/st-louis--standard.png",
+          "imagePath": "data/overview/st-louis--standard.webp",
           "width": 360,
           "height": 440,
           "referenceMarker": {
@@ -1776,7 +1776,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/st-louis--close.png",
+          "imagePath": "data/overview/st-louis--close.webp",
           "width": 421,
           "height": 440,
           "referenceMarker": {
@@ -1840,7 +1840,7 @@
       "defaultVariant": "standard",
       "variants": {
         "wide": {
-          "imagePath": "data/overview/washington-dc--wide.png",
+          "imagePath": "data/overview/washington-dc--wide.webp",
           "width": 419,
           "height": 440,
           "referenceMarker": {
@@ -1851,7 +1851,7 @@
           }
         },
         "standard": {
-          "imagePath": "data/overview/washington-dc--standard.png",
+          "imagePath": "data/overview/washington-dc--standard.webp",
           "width": 506,
           "height": 440,
           "referenceMarker": {
@@ -1862,7 +1862,7 @@
           }
         },
         "close": {
-          "imagePath": "data/overview/washington-dc--close.png",
+          "imagePath": "data/overview/washington-dc--close.webp",
           "width": 593,
           "height": 475,
           "referenceMarker": {

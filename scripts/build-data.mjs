@@ -2,6 +2,7 @@ import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
 import { getCityTheme } from '../src/config.js';
 import { createCityDisplay } from '../src/lib/display-profiles.js';
 import {
@@ -54,7 +55,7 @@ await pruneGeneratedFiles(
   overviewDir,
   new Set(
     manifest.flatMap((city) => [
-      ...OVERVIEW_ZOOM_STEPS.map((step) => `${city.slug}--${step.key}.png`),
+      ...OVERVIEW_ZOOM_STEPS.map((step) => `${city.slug}--${step.key}.webp`),
       `${city.slug}--detail.png`
     ])
   )
@@ -146,7 +147,7 @@ async function attachOverviewAssets(city, index) {
   const variants = {};
 
   for (const step of OVERVIEW_ZOOM_STEPS) {
-    const fileName = `${city.slug}--${step.key}.png`;
+    const fileName = `${city.slug}--${step.key}.webp`;
     const layout = getOverviewDiagramLayout({
       city,
       minWidth: OVERVIEW_BASE_WIDTH,
@@ -169,8 +170,14 @@ async function attachOverviewAssets(city, index) {
         value: layout.width * OVERVIEW_RASTER_SCALE
       }
     }).render().asPng();
+    const webp = await sharp(png)
+      .webp({
+        lossless: true,
+        effort: 6
+      })
+      .toBuffer();
 
-    await writeFile(path.join(overviewDir, fileName), png);
+    await writeFile(path.join(overviewDir, fileName), webp);
     variants[step.key] = {
       imagePath: `data/overview/${fileName}`,
       width: layout.width,
