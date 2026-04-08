@@ -30,7 +30,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -116,7 +116,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -202,7 +202,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -288,7 +288,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -374,7 +374,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -460,7 +460,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -546,7 +546,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -632,7 +632,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -718,7 +718,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -804,7 +804,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -890,7 +890,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -976,7 +976,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1062,7 +1062,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1148,7 +1148,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1234,7 +1234,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1320,7 +1320,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1406,7 +1406,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1492,7 +1492,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1578,7 +1578,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1664,7 +1664,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1750,7 +1750,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {
@@ -1836,7 +1836,7 @@
     "overview": {
       "viewportWidth": 360,
       "viewportHeight": 440,
-      "rasterScale": 2,
+      "rasterScale": 3,
       "defaultVariant": "standard",
       "variants": {
         "wide": {

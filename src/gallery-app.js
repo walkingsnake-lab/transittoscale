@@ -106,6 +106,7 @@ export async function mountApp(root) {
 
       updateGridLayout(grid, cards.length, { chromeHeight });
       syncZoomControls();
+      cards.forEach((card) => card.syncDiagramPosition());
 
       if (selectedCard && detailCard) {
         applyFixedRect(detailCard, getDetailTargetRect(selectedCard));
@@ -273,6 +274,11 @@ function resolveAssetPath(relativePath) {
   return new URL(relativePath, document.baseURI).toString();
 }
 
+function snapToDevicePixels(value) {
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  return Math.round(value * devicePixelRatio) / devicePixelRatio;
+}
+
 function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   const theme = getCityTheme(city.slug, index);
   const lineLabel = formatLineLabel(city.lineCount);
@@ -345,18 +351,43 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   `;
 
   const openButton = element.querySelector('.card__select');
+  const canvasFrame = element.querySelector('.card__canvas-frame');
   const diagram = element.querySelector('.card__diagram');
   const overviewImage = element.querySelector('.card__canvas');
   const referenceCircleSvg = element.querySelector('.card__reference--circle');
   const referenceLabelSvg = element.querySelector('.card__reference--label');
+  let currentDiagramWidth = 0;
+  let currentDiagramHeight = 0;
+
+  function syncDiagramPosition() {
+    if (!diagram || !canvasFrame || !currentDiagramWidth || !currentDiagramHeight) {
+      return;
+    }
+
+    const frameRect = canvasFrame.getBoundingClientRect();
+
+    if (!frameRect.width || !frameRect.height) {
+      return;
+    }
+
+    const left = snapToDevicePixels((frameRect.width - currentDiagramWidth) / 2);
+    const top = snapToDevicePixels((frameRect.height - currentDiagramHeight) / 2);
+
+    diagram.style.setProperty('--diagram-left', `${left}px`);
+    diagram.style.setProperty('--diagram-top', `${top}px`);
+    diagram.style.setProperty('--diagram-offset-x', '0px');
+    diagram.style.setProperty('--diagram-offset-y', '0px');
+  }
 
   function setDiagramPresentation(asset) {
     const width = asset?.width ?? 0;
     const height = asset?.height ?? 0;
+    currentDiagramWidth = Math.round(width);
+    currentDiagramHeight = Math.round(height);
 
     if (diagram) {
-      diagram.style.setProperty('--diagram-width', `${Math.round(width)}px`);
-      diagram.style.setProperty('--diagram-height', `${Math.round(height)}px`);
+      diagram.style.setProperty('--diagram-width', `${currentDiagramWidth}px`);
+      diagram.style.setProperty('--diagram-height', `${currentDiagramHeight}px`);
     }
 
     renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
@@ -369,6 +400,8 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     if (overviewImage && asset?.imagePath) {
       setImageSource(overviewImage, asset.imagePath);
     }
+
+    syncDiagramPosition();
   }
 
   const card = {
@@ -397,6 +430,9 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
 
       this.currentOverviewVariant = variantKey;
       setDiagramPresentation(nextOverviewVariant);
+    },
+    syncDiagramPosition() {
+      syncDiagramPosition();
     },
     setSelected(isSelected, hasSelection) {
       element.classList.toggle('card--selected', isSelected);
