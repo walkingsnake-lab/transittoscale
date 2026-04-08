@@ -944,12 +944,6 @@ body.body--detail-open {
   animation-delay: calc(var(--stagger) + 280ms);
 }
 
-.is-ready .shell--soft-hover .card:not(.card--static),
-.is-ready .shell--soft-hover .card:not(.card--static) .card__paper,
-.is-ready .shell--soft-hover .card:not(.card--static) .card__canvas-frame::after {
-  animation: none;
-}
-
 @keyframes card-deal {
   from {
     opacity: 0;
