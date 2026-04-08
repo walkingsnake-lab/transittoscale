@@ -857,6 +857,7 @@ function formatSystemLabel(city) {
     baltimore: 'Metro SubwayLink + Light RailLink',
     chicago: 'Chicago "L"',
     dallas: 'DART Light Rail',
+    denver: 'RTD Light Rail',
     'new-york': 'Subway + Staten Island Railway',
     boston: 'MBTA rapid transit',
     'washington-dc': 'Washington Metro',

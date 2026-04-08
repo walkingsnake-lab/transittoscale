@@ -92,6 +92,29 @@
     "sourceUrl": "https://www.dart.org/transitdata/latest/google_transit.zip"
   },
   {
+    "slug": "denver",
+    "name": "Denver",
+    "region": "United States",
+    "dataPath": "data/cities/denver.geojson",
+    "centroid": [
+      -105.01066349999999,
+      39.642526000000004
+    ],
+    "focusPoint": [
+      -104.9903,
+      39.7392
+    ],
+    "bounds": [
+      -105.202276,
+      39.517404,
+      -104.819051,
+      39.767648
+    ],
+    "lineCount": 6,
+    "sourceName": "Regional Transportation District (RTD)",
+    "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
+  },
+  {
     "slug": "new-york",
     "name": "New York",
     "region": "United States",

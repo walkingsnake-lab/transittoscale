@@ -112,6 +112,36 @@
     }
   },
   {
+    "slug": "denver",
+    "name": "Denver",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Regional Transportation District (RTD)",
+    "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip",
+    "focusPoint": [-104.9903, 39.7392],
+    "routeTypes": ["0"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeShortNameAllowlist": ["D", "E", "H", "L", "R", "W"],
+    "routeIdAliases": {
+      "101D": "D",
+      "101E": "E",
+      "101H": "H",
+      "103W": "W",
+      "107R": "R",
+      "109L": "L"
+    },
+    "lineNameOverrides": {
+      "D": "D Line",
+      "E": "E Line",
+      "H": "H Line",
+      "L": "L Line",
+      "R": "R Line",
+      "W": "W Line"
+    }
+  },
+  {
     "slug": "new-york",
     "name": "New York",
     "region": "United States",

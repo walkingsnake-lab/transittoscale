@@ -1190,6 +1190,91 @@
     }
   },
   {
+    "slug": "denver",
+    "name": "Denver",
+    "region": "United States",
+    "dataPath": "data/cities/denver.geojson",
+    "centroid": [
+      -105.01066349999999,
+      39.642526000000004
+    ],
+    "focusPoint": [
+      -104.9903,
+      39.7392
+    ],
+    "bounds": [
+      -105.202276,
+      39.517404,
+      -104.819051,
+      39.767648
+    ],
+    "lineCount": 6,
+    "sourceName": "Regional Transportation District (RTD)",
+    "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip",
+    "display": {
+      "profile": "dense",
+      "lineWidth": 1.55,
+      "simplifyTolerance": 1.6
+    },
+    "overview": {
+      "viewportWidth": 360,
+      "viewportHeight": 440,
+      "rasterScale": 3,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": {
+          "imagePath": "data/overview/denver--wide.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
+        },
+        "standard": {
+          "imagePath": "data/overview/denver--standard.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
+        },
+        "close": {
+          "imagePath": "data/overview/denver--close.webp",
+          "width": 360,
+          "height": 478,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 239,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
+        }
+      }
+    },
+    "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
+      "width": 720,
+      "height": 880,
+      "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
+      "imagePath": "data/overview/denver--detail.png",
+      "referenceMarker": {
+        "centerX": 360,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
     "slug": "los-angeles",
     "name": "Los Angeles",
     "region": "United States",
