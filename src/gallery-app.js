@@ -1064,6 +1064,7 @@ function formatSystemLabel(city) {
     atlanta: 'MARTA rail',
     baltimore: 'Metro SubwayLink + Light RailLink',
     chicago: 'Chicago "L"',
+    dallas: 'DART Light Rail',
     'new-york': 'Subway + Staten Island Railway',
     boston: 'MBTA rapid transit',
     'washington-dc': 'Washington Metro',

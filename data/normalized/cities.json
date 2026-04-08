@@ -70,7 +70,7 @@
   },
   {
     "slug": "dallas",
-    "name": "Dallas (DART Light Rail)",
+    "name": "Dallas",
     "region": "United States",
     "dataPath": "data/cities/dallas.geojson",
     "centroid": [

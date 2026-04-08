@@ -87,7 +87,7 @@
   },
   {
     "slug": "dallas",
-    "name": "Dallas (DART Light Rail)",
+    "name": "Dallas",
     "region": "United States",
     "sourceType": "gtfs",
     "sourceName": "Dallas Area Rapid Transit (DART)",
