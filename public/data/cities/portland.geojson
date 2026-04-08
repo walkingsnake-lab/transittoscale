@@ -18,7 +18,7 @@
       -122.418438,
       45.605354
     ],
-    "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+    "sourceName": "TriMet (MAX + Streetcar)",
     "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
   },
   "features": [
@@ -28,7 +28,7 @@
         "lineId": "MAX-RED",
         "lineName": "MAX Red Line",
         "systemName": "Portland",
-        "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+        "sourceName": "TriMet (MAX + Streetcar)",
         "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
       },
       "geometry": {
@@ -24257,7 +24257,7 @@
         "lineId": "MAX-BLUE",
         "lineName": "MAX Blue Line",
         "systemName": "Portland",
-        "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+        "sourceName": "TriMet (MAX + Streetcar)",
         "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
       },
       "geometry": {
@@ -78100,7 +78100,7 @@
         "lineId": "MAX-YELLOW",
         "lineName": "MAX Yellow Line",
         "systemName": "Portland",
-        "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+        "sourceName": "TriMet (MAX + Streetcar)",
         "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
       },
       "geometry": {
@@ -86353,7 +86353,7 @@
         "lineId": "SC-NS",
         "lineName": "Portland Streetcar NS Line",
         "systemName": "Portland",
-        "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+        "sourceName": "TriMet (MAX + Streetcar)",
         "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
       },
       "geometry": {
@@ -90248,7 +90248,7 @@
         "lineId": "SC-LOOP",
         "lineName": "Portland Streetcar Loop",
         "systemName": "Portland",
-        "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+        "sourceName": "TriMet (MAX + Streetcar)",
         "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
       },
       "geometry": {
@@ -97407,7 +97407,7 @@
         "lineId": "MAX-GREEN",
         "lineName": "MAX Green Line",
         "systemName": "Portland",
-        "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+        "sourceName": "TriMet (MAX + Streetcar)",
         "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
       },
       "geometry": {
@@ -116484,7 +116484,7 @@
         "lineId": "MAX-ORANGE",
         "lineName": "MAX Orange Line",
         "systemName": "Portland",
-        "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+        "sourceName": "TriMet (MAX + Streetcar)",
         "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip"
       },
       "geometry": {

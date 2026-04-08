@@ -224,7 +224,7 @@
     "name": "Portland",
     "region": "United States",
     "sourceType": "gtfs",
-    "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+    "sourceName": "TriMet (MAX + Streetcar)",
     "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip",
     "focusPoint": [-122.6765, 45.5231],
     "routeTypes": ["0"],

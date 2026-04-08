@@ -1464,7 +1464,7 @@
       45.605354
     ],
     "lineCount": 7,
-    "sourceName": "TriMet (MAX + Streetcar, excluding Portland Aerial Tram)",
+    "sourceName": "TriMet (MAX + Streetcar)",
     "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip",
     "display": {
       "profile": "dense",
