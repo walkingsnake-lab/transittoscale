@@ -1125,13 +1125,23 @@ function getCountryLocator(city) {
   }
 
   const { minLon, maxLon, minLat, maxLat } = locator.bounds;
+  const lonScale = Number.isFinite(locator.lonScale) ? locator.lonScale : 1;
 
   if (!(maxLon > minLon) || !(maxLat > minLat)) {
     return null;
   }
 
+  const minProjectedLon = minLon * lonScale;
+  const maxProjectedLon = maxLon * lonScale;
+  const projectedLonSpan = maxProjectedLon - minProjectedLon;
+  const projectedLon = longitude * lonScale;
+
+  if (!(projectedLonSpan > 0)) {
+    return null;
+  }
+
   const markerX = clamp(
-    ((longitude - minLon) / (maxLon - minLon)) * locator.viewBoxWidth,
+    ((projectedLon - minProjectedLon) / projectedLonSpan) * locator.viewBoxWidth,
     6,
     locator.viewBoxWidth - 6
   );
