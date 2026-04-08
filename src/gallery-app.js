@@ -302,9 +302,6 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     OVERVIEW_ZOOM_STEPS[0] ??
     null;
   const overviewBaseDiagramScale = overviewAsset?.diagramScale ?? initialOverviewZoomStep?.diagramScale ?? 1;
-  const initialOverviewScaleFactor = initialOverviewZoomStep
-    ? initialOverviewZoomStep.diagramScale / overviewBaseDiagramScale
-    : 1;
   const referenceArcId = `reference-arc-${city.slug}-${index}`;
   const element = document.createElement('article');
   element.className = 'card';
@@ -354,32 +351,34 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   const referenceLabelSvg = element.querySelector('.card__reference--label');
 
   function setDiagramPresentation(asset) {
-    const width = asset?.width ?? 0;
-    const height = asset?.height ?? 0;
-
-    if (diagram) {
-      diagram.style.setProperty('--diagram-width', `${Math.round(width)}px`);
-      diagram.style.setProperty('--diagram-height', `${Math.round(height)}px`);
-    }
-
-    renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
-      marker: asset?.referenceMarker ?? null,
-      width,
-      height,
-      arcId: referenceArcId
-    });
-
     if (overviewImage && asset?.imagePath) {
       setImageSource(overviewImage, asset.imagePath);
     }
   }
 
-  function setOverviewZoomFactor(zoomFactor) {
+  function syncOverviewFrame() {
     if (!diagram) {
       return;
     }
 
-    diagram.style.setProperty('--diagram-scale-factor', zoomFactor.toFixed(4));
+    const zoomStep =
+      OVERVIEW_ZOOM_STEP_BY_KEY.get(card.currentOverviewVariant) ??
+      initialOverviewZoomStep ??
+      OVERVIEW_ZOOM_STEPS[0] ??
+      null;
+    const zoomFactor = zoomStep ? zoomStep.diagramScale / overviewBaseDiagramScale : 1;
+    const baseWidth = overviewAsset?.width ?? 0;
+    const baseHeight = overviewAsset?.height ?? 0;
+
+    diagram.style.setProperty('--diagram-width', `${Math.round(baseWidth * zoomFactor)}px`);
+    diagram.style.setProperty('--diagram-height', `${Math.round(baseHeight * zoomFactor)}px`);
+
+    renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
+      marker: overviewAsset?.referenceMarker ?? null,
+      width: baseWidth,
+      height: baseHeight,
+      arcId: referenceArcId
+    });
   }
 
   const card = {
@@ -402,7 +401,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
       }
 
       this.currentOverviewVariant = variantKey;
-      setOverviewZoomFactor(nextOverviewZoomStep.diagramScale / overviewBaseDiagramScale);
+      syncOverviewFrame();
     },
     setSelected(isSelected, hasSelection) {
       element.classList.toggle('card--selected', isSelected);
@@ -467,7 +466,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   }
 
   setDiagramPresentation(overviewAsset);
-  setOverviewZoomFactor(initialOverviewScaleFactor);
+  syncOverviewFrame();
 
   if (interactiveDepth) {
     element.addEventListener('pointerenter', (event) => {

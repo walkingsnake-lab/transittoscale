@@ -567,10 +567,11 @@ body.body--detail-open {
   left: 50%;
   width: var(--diagram-width, 360px);
   height: var(--diagram-height, 440px);
-  transform: translate(-50%, -50%) scale(var(--diagram-scale-factor, 1));
+  transform: translate(-50%, -50%);
   transform-origin: center center;
-  transition: transform 220ms var(--ease-out);
-  will-change: transform;
+  transition:
+    width 220ms var(--ease-out),
+    height 220ms var(--ease-out);
 }
 
 .card__canvas-frame::after {
