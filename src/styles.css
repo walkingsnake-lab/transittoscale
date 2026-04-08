@@ -869,7 +869,7 @@ body.body--detail-open {
 
 .detail-card__overlay {
   position: absolute;
-  inset: 24px 82px auto 24px;
+  inset: 24px 186px auto 24px;
   z-index: 1;
   display: grid;
   gap: 6px;
@@ -907,10 +907,60 @@ body.body--detail-open {
   letter-spacing: -0.05em;
 }
 
+.detail-card__country {
+  position: absolute;
+  top: 20px;
+  right: 72px;
+  z-index: 1;
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  width: clamp(96px, 12vw, 132px);
+  pointer-events: none;
+}
+
+.detail-card__country-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.detail-card__country-outline {
+  fill: rgba(255, 252, 247, 0.3);
+  stroke: rgba(17, 17, 17, 0.56);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.detail-card__country-marker-pin {
+  fill: rgba(var(--card-accent-rgb), 0.96);
+  stroke: rgba(17, 17, 17, 0.64);
+  stroke-width: 0.85;
+}
+
+.detail-card__country-marker-core {
+  fill: rgba(255, 252, 247, 0.95);
+}
+
+.detail-card__country-name {
+  margin: 0;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(17, 17, 17, 0.5);
+  font-family: var(--font-sans-tight);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: right;
+}
+
 .detail-card__flag {
   position: absolute;
   top: 22px;
-  right: 22px;
+  right: 72px;
   z-index: 1;
   width: 40px;
   height: 40px;
@@ -1218,7 +1268,7 @@ body.body--detail-open {
   }
 
   .detail-card__overlay {
-    inset: 16px 64px auto 16px;
+    inset: 16px 132px auto 16px;
     gap: 4px;
   }
 
@@ -1234,11 +1284,23 @@ body.body--detail-open {
     font-size: clamp(1.9rem, 7.6vw, 2.56rem);
   }
 
+  .detail-card__country {
+    top: 14px;
+    right: 50px;
+    width: 92px;
+    gap: 4px;
+  }
+
+  .detail-card__country-name {
+    font-size: 0.58rem;
+    letter-spacing: 0.11em;
+  }
+
   .detail-card__flag {
     top: 16px;
-    right: 16px;
-    width: 34px;
-    height: 34px;
+    right: 50px;
+    width: 32px;
+    height: 32px;
   }
 
   .detail-card__close {

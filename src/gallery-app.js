@@ -21,6 +21,48 @@ const DETAIL_MAX_ZOOM = 6;
 const DETAIL_BUTTON_ZOOM_FACTOR = 1.35;
 const DETAIL_WHEEL_ZOOM_SENSITIVITY = 0.0015;
 const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
+const COUNTRY_LOCATOR_BY_REGION = {
+  'United States': {
+    viewBoxWidth: 100,
+    viewBoxHeight: 62,
+    bounds: { minLon: -125, maxLon: -66, minLat: 24, maxLat: 50 },
+    outlinePath:
+      'M4 33 L8 27 L15 23 L22 23 L26 19 L34 17 L42 19 L50 18 L57 21 L64 20 L70 23 L77 24 L83 28 L90 31 L95 35 L94 41 L90 45 L84 48 L77 50 L69 52 L61 53 L54 51 L47 52 L40 50 L34 52 L27 50 L21 46 L16 45 L11 40 L7 36 Z'
+  },
+  Canada: {
+    viewBoxWidth: 100,
+    viewBoxHeight: 64,
+    bounds: { minLon: -141, maxLon: -52, minLat: 42, maxLat: 84 },
+    outlinePath:
+      'M3 35 L9 28 L16 24 L24 22 L31 18 L41 16 L52 15 L62 17 L73 20 L82 24 L90 29 L96 35 L94 39 L86 41 L79 45 L68 47 L58 49 L49 47 L42 48 L32 46 L23 44 L15 42 L8 39 Z'
+  },
+  Mexico: {
+    viewBoxWidth: 100,
+    viewBoxHeight: 70,
+    bounds: { minLon: -118, maxLon: -86, minLat: 14, maxLat: 33 },
+    outlinePath: 'M14 12 L26 10 L38 12 L51 17 L61 18 L72 23 L81 31 L83 39 L78 47 L70 53 L60 57 L51 55 L44 49 L37 46 L30 42 L24 35 L18 30 L12 22 Z'
+  },
+  Spain: {
+    viewBoxWidth: 100,
+    viewBoxHeight: 60,
+    bounds: { minLon: -9.5, maxLon: 4.5, minLat: 35.5, maxLat: 44.5 },
+    outlinePath: 'M7 29 L17 22 L32 20 L45 21 L58 18 L72 20 L86 25 L91 33 L86 39 L74 42 L61 43 L48 45 L36 43 L24 41 L13 38 L8 33 Z'
+  },
+  Sweden: {
+    viewBoxWidth: 84,
+    viewBoxHeight: 100,
+    bounds: { minLon: 11, maxLon: 24.5, minLat: 55, maxLat: 69.5 },
+    outlinePath:
+      'M36 5 L44 4 L52 7 L57 13 L56 21 L60 28 L59 35 L63 43 L60 50 L62 57 L58 64 L51 71 L46 81 L39 89 L31 93 L24 90 L23 83 L27 74 L32 67 L35 58 L32 49 L34 40 L31 31 L33 22 L31 13 Z'
+  },
+  'United Kingdom': {
+    viewBoxWidth: 84,
+    viewBoxHeight: 90,
+    bounds: { minLon: -8.8, maxLon: 2.5, minLat: 49.5, maxLat: 60.9 },
+    outlinePath:
+      'M55 10 L63 8 L70 13 L71 20 L68 27 L72 34 L68 43 L62 47 L57 55 L50 57 L46 63 L39 68 L31 68 L27 62 L28 55 L33 50 L36 43 L34 35 L39 28 L43 20 L50 14 Z M23 72 L29 71 L34 75 L32 81 L25 82 L21 77 Z'
+  }
+};
 
 export async function mountApp(root) {
   root.innerHTML = `
@@ -576,9 +618,11 @@ function createDetailCard(card, { requestId }) {
   const detailWidth = Math.round(detailPresentation?.width ?? DETAIL_BASE_WIDTH);
   const detailHeight = Math.round(detailPresentation?.height ?? DETAIL_BASE_HEIGHT);
   const element = document.createElement('article');
+  const countryLocatorMarkup = renderCountryLocatorMarkup(card.city);
   const flagMarkup = card.flag
     ? `<img class="detail-card__flag" src="${card.flag.src}" alt="${card.flag.alt}" loading="lazy" decoding="async" />`
     : '';
+  const cornerMarkup = countryLocatorMarkup || flagMarkup;
 
   element.className = 'detail-card';
   applyThemeVars(element, card.theme);
@@ -621,7 +665,7 @@ function createDetailCard(card, { requestId }) {
         <h2>${card.city.name}</h2>
         <p class="detail-card__count">${card.lineLabel}</p>
       </div>
-      ${flagMarkup}
+      ${cornerMarkup}
     </div>
   `;
 
@@ -1110,6 +1154,59 @@ function getCountryFlag(city) {
     src: `https://hatscripts.github.io/circle-flags/flags/${code}.svg`,
     alt: `${city.region} flag`
   };
+}
+
+function getCountryLocator(city) {
+  const locator = COUNTRY_LOCATOR_BY_REGION[city.region];
+  const [longitude, latitude] = city.focusPoint ?? city.centroid ?? [];
+
+  if (!locator || !Number.isFinite(longitude) || !Number.isFinite(latitude)) {
+    return null;
+  }
+
+  const { minLon, maxLon, minLat, maxLat } = locator.bounds;
+
+  if (!(maxLon > minLon) || !(maxLat > minLat)) {
+    return null;
+  }
+
+  const markerX = clamp(
+    ((longitude - minLon) / (maxLon - minLon)) * locator.viewBoxWidth,
+    6,
+    locator.viewBoxWidth - 6
+  );
+  const markerY = clamp(
+    (1 - (latitude - minLat) / (maxLat - minLat)) * locator.viewBoxHeight,
+    6,
+    locator.viewBoxHeight - 6
+  );
+
+  return {
+    ...locator,
+    markerX: Math.round(markerX * 10) / 10,
+    markerY: Math.round(markerY * 10) / 10
+  };
+}
+
+function renderCountryLocatorMarkup(city) {
+  const locator = getCountryLocator(city);
+
+  if (!locator) {
+    return '';
+  }
+
+  return `
+    <aside class="detail-card__country" role="img" aria-label="${city.region} outline map with a marker at ${city.name}">
+      <svg class="detail-card__country-map" viewBox="0 0 ${locator.viewBoxWidth} ${locator.viewBoxHeight}" aria-hidden="true" focusable="false">
+        <path class="detail-card__country-outline" d="${locator.outlinePath}"></path>
+        <g class="detail-card__country-marker" transform="translate(${locator.markerX} ${locator.markerY})">
+          <path class="detail-card__country-marker-pin" d="M0 -5.8C-2.95 -5.8 -5.35 -3.39 -5.35 -0.44c0 3.42 3.7 7.72 5.35 9.4 1.66-1.68 5.35-5.98 5.35-9.4C5.35-3.39 2.95-5.8 0-5.8Z"></path>
+          <circle class="detail-card__country-marker-core" cx="0" cy="-0.72" r="1.62"></circle>
+        </g>
+      </svg>
+      <p class="detail-card__country-name">${city.region}</p>
+    </aside>
+  `;
 }
 
 function applyThemeVars(element, theme) {
