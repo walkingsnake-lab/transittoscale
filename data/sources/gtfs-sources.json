@@ -677,41 +677,11 @@
     "name": "San Francisco Bay Area",
     "region": "United States",
     "sourceType": "gtfs-merge",
-    "sourceName": "BART + Muni Metro",
-    "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
+    "sourceName": "Muni Metro",
+    "sourceUrl": "https://muni-gtfs.apps.sfmta.com/data/muni_gtfs-current.zip",
     "focusPoint": [-122.4194, 37.7749],
     "minPointSpacingMeters": 20,
     "sources": [
-      {
-        "sourceName": "Bay Area Rapid Transit (BART)",
-        "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
-        "routeTypes": ["1"],
-        "minShapeTrips": 20,
-        "shapeTripShareThreshold": 0.08,
-        "routeIdAllowlist": ["1", "2", "3", "4", "5", "6", "7", "8", "11", "12", "19", "20"],
-        "routeIdAliases": {
-          "1": "Yellow",
-          "2": "Yellow",
-          "3": "Orange",
-          "4": "Orange",
-          "5": "Green",
-          "6": "Green",
-          "7": "Red",
-          "8": "Red",
-          "11": "Blue",
-          "12": "Blue",
-          "19": "Gray",
-          "20": "Gray"
-        },
-        "lineNameOverrides": {
-          "Yellow": "Yellow Line",
-          "Orange": "Orange Line",
-          "Green": "Green Line",
-          "Red": "Red Line",
-          "Blue": "Blue Line",
-          "Gray": "Oakland Airport Connector"
-        }
-      },
       {
         "sourceName": "San Francisco Municipal Transportation Agency (SFMTA)",
         "sourceUrl": "https://muni-gtfs.apps.sfmta.com/data/muni_gtfs-current.zip",
@@ -735,7 +705,7 @@
     "name": "San Jose / Santa Clara Valley",
     "region": "United States",
     "sourceType": "gtfs-merge",
-    "sourceName": "VTA Light Rail + BART",
+    "sourceName": "VTA Light Rail",
     "sourceUrl": "https://www.vta.org/go/routes",
     "focusPoint": [-121.8863, 37.3382],
     "minPointSpacingMeters": 20,
@@ -751,24 +721,6 @@
           "Blue": "Blue Line",
           "Green": "Green Line",
           "Ornge": "Orange Line"
-        }
-      },
-      {
-        "sourceName": "Bay Area Rapid Transit (BART)",
-        "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip",
-        "routeTypes": ["1"],
-        "minShapeTrips": 20,
-        "shapeTripShareThreshold": 0.08,
-        "routeIdAllowlist": ["3", "4", "5", "6"],
-        "routeIdAliases": {
-          "3": "Orange",
-          "4": "Orange",
-          "5": "Green",
-          "6": "Green"
-        },
-        "lineNameOverrides": {
-          "Orange": "BART Orange Line",
-          "Green": "BART Green Line"
         }
       }
     ]

@@ -395,8 +395,8 @@ function formatSystemLabel(city) {
     montreal: 'Montreal Metro',
     stockholm: 'Tunnelbana + Light Rail',
     london: 'Underground + DLR + Overground + Elizabeth',
-    'san-francisco-bay-area': 'BART + Muni Metro',
-    'san-jose-santa-clara-valley': 'VTA Light Rail + BART'
+    'san-francisco-bay-area': 'Muni Metro (excluded BART)',
+    'san-jose-santa-clara-valley': 'VTA Light Rail (excluded BART)'
   };
 
   if (explicitLabels[city.slug]) {

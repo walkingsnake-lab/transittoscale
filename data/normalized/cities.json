@@ -511,8 +511,8 @@
     "region": "United States",
     "dataPath": "data/cities/san-francisco-bay-area.geojson",
     "centroid": [
-      -122.14447966349951,
-      37.696167390000035
+      -122.4476745,
+      37.7519015
     ],
     "focusPoint": [
       -122.4194,
@@ -520,13 +520,13 @@
     ],
     "bounds": [
       -122.508525,
-      37.36848461900007,
-      -121.780434326999,
-      38.023850161
+      37.708858,
+      -122.386824,
+      37.794945
     ],
-    "lineCount": 12,
-    "sourceName": "BART + Muni Metro",
-    "sourceUrl": "https://www.bart.gov/dev/schedules/google_transit.zip"
+    "lineCount": 6,
+    "sourceName": "Muni Metro",
+    "sourceUrl": "https://muni-gtfs.apps.sfmta.com/data/muni_gtfs-current.zip"
   },
   {
     "slug": "san-jose-santa-clara-valley",
@@ -534,21 +534,21 @@
     "region": "United States",
     "dataPath": "data/cities/san-jose-santa-clara-valley.geojson",
     "centroid": [
-      -122.12890520549998,
-      37.586345396500015
+      -121.93325424,
+      37.325874325
     ],
     "focusPoint": [
       -121.8863,
       37.3382
     ],
     "bounds": [
-      -122.46890050099995,
+      -122.07759857,
       37.23595428,
       -121.78890991,
-      37.93673651300003
+      37.41579437
     ],
-    "lineCount": 5,
-    "sourceName": "VTA Light Rail + BART",
+    "lineCount": 3,
+    "sourceName": "VTA Light Rail",
     "sourceUrl": "https://www.vta.org/go/routes"
   },
   {
