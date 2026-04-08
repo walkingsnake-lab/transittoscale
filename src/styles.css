@@ -927,11 +927,8 @@ body.body--detail-open {
 }
 
 .detail-card__country-outline {
-  fill: rgba(255, 252, 247, 0.3);
-  stroke: rgba(17, 17, 17, 0.56);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  fill: rgba(17, 17, 17, 0.18);
+  stroke: none;
 }
 
 .detail-card__country-marker-pin {
