@@ -162,8 +162,7 @@ async function attachOverviewAssets(city, index) {
       theme,
       idPrefix: `${city.slug}-${step.key}`,
       includeReferenceMarker: false,
-      layout,
-      rasterHintScale: OVERVIEW_RASTER_SCALE
+      layout
     });
     const png = new Resvg(svg, {
       fitTo: {
