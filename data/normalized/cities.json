@@ -69,6 +69,29 @@
     "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip"
   },
   {
+    "slug": "dallas",
+    "name": "Dallas",
+    "region": "United States",
+    "dataPath": "data/cities/dallas.geojson",
+    "centroid": [
+      -96.80021500000001,
+      32.844969500000005
+    ],
+    "focusPoint": [
+      -96.797,
+      32.7767
+    ],
+    "bounds": [
+      -97.03952,
+      32.65317,
+      -96.56091,
+      33.036769
+    ],
+    "lineCount": 4,
+    "sourceName": "Dallas Area Rapid Transit (DART)",
+    "sourceUrl": "https://www.dart.org/transitdata/latest/google_transit.zip"
+  },
+  {
     "slug": "new-york",
     "name": "New York",
     "region": "United States",

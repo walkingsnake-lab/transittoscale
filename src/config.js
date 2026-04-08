@@ -30,6 +30,7 @@ const CITY_THEME_BY_SLUG = {
   baltimore: { accent: '#2e8a63' },
   'new-york': { accent: '#2e5ea8' },
   chicago: { accent: '#d05d2a' },
+  dallas: { accent: '#2b7a78' },
   boston: { accent: '#62944a' },
   'washington-dc': { accent: '#c44b47' },
   'minneapolis-st-paul': { accent: '#8354ae' },

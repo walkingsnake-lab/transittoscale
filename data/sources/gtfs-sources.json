@@ -86,6 +86,32 @@
     }
   },
   {
+    "slug": "dallas",
+    "name": "Dallas",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "Dallas Area Rapid Transit (DART)",
+    "sourceUrl": "https://www.dart.org/transitdata/latest/google_transit.zip",
+    "focusPoint": [-96.797, 32.7767],
+    "routeTypes": ["0"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeShortNameAllowlist": ["RED", "BLUE", "GREEN", "ORANGE"],
+    "routeIdAliases": {
+      "26982": "BLUE",
+      "26983": "GREEN",
+      "26984": "ORANGE",
+      "26985": "RED"
+    },
+    "lineNameOverrides": {
+      "RED": "Red Line",
+      "BLUE": "Blue Line",
+      "GREEN": "Green Line",
+      "ORANGE": "Orange Line"
+    }
+  },
+  {
     "slug": "new-york",
     "name": "New York",
     "region": "United States",
