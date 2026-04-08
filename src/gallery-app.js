@@ -11,7 +11,6 @@ import { shouldUseSoftHoverEffects, supportsInteractiveDepthEffects } from './li
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
 const IMAGE_LOAD_CACHE = new Map();
 const MAX_OVERVIEW_CARD_HEIGHT = 560;
-const OVERVIEW_ZOOM_STEP_BY_KEY = new Map(OVERVIEW_ZOOM_STEPS.map((step) => [step.key, step]));
 
 export async function mountApp(root) {
   root.innerHTML = `
@@ -279,12 +278,17 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   const lineLabel = formatLineLabel(city.lineCount);
   const systemLabel = formatSystemLabel(city);
   const flag = getCountryFlag(city);
-  const overviewAsset = city.overview?.asset
-    ? {
-        ...city.overview.asset,
-        imagePath: city.overview.asset.imagePath ? resolveAssetPath(city.overview.asset.imagePath) : null
-      }
-    : null;
+  const overviewVariants = Object.fromEntries(
+    Object.entries(city.overview?.variants ?? {}).map(([key, variant]) => [
+      key,
+      variant
+        ? {
+            ...variant,
+            imagePath: variant.imagePath ? resolveAssetPath(variant.imagePath) : null
+          }
+        : null
+    ])
+  );
   const detailAsset = city.detail?.imagePath
     ? {
         imagePath: resolveAssetPath(city.detail.imagePath),
@@ -294,14 +298,10 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
       }
     : null;
   const initialVariantKey =
-    OVERVIEW_ZOOM_STEP_BY_KEY.has(DEFAULT_OVERVIEW_VARIANT)
+    overviewVariants[DEFAULT_OVERVIEW_VARIANT]
       ? DEFAULT_OVERVIEW_VARIANT
-      : city.overview?.defaultVariant ?? OVERVIEW_ZOOM_STEPS[0]?.key ?? null;
-  const initialOverviewZoomStep =
-    (initialVariantKey ? OVERVIEW_ZOOM_STEP_BY_KEY.get(initialVariantKey) : null) ??
-    OVERVIEW_ZOOM_STEPS[0] ??
-    null;
-  const overviewBaseDiagramScale = overviewAsset?.diagramScale ?? initialOverviewZoomStep?.diagramScale ?? 1;
+      : city.overview?.defaultVariant ?? Object.keys(overviewVariants)[0] ?? null;
+  const initialOverviewVariant = initialVariantKey ? overviewVariants[initialVariantKey] ?? null : null;
   const referenceArcId = `reference-arc-${city.slug}-${index}`;
   const element = document.createElement('article');
   element.className = 'card';
@@ -328,7 +328,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
         <div class="card__canvas-frame">
           <div class="card__diagram-shell">
             <div class="card__diagram">
-              ${overviewAsset?.imagePath ? `<img class="card__canvas" src="${overviewAsset.imagePath}" alt="" loading="lazy" decoding="async" />` : ''}
+              ${initialOverviewVariant?.imagePath ? `<img class="card__canvas" src="${initialOverviewVariant.imagePath}" alt="" loading="lazy" decoding="async" />` : ''}
               <svg class="card__reference card__reference--circle" aria-hidden="true" focusable="false"></svg>
               <svg class="card__reference card__reference--label" aria-hidden="true" focusable="false"></svg>
             </div>
@@ -351,34 +351,24 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
   const referenceLabelSvg = element.querySelector('.card__reference--label');
 
   function setDiagramPresentation(asset) {
+    const width = asset?.width ?? 0;
+    const height = asset?.height ?? 0;
+
+    if (diagram) {
+      diagram.style.setProperty('--diagram-width', `${Math.round(width)}px`);
+      diagram.style.setProperty('--diagram-height', `${Math.round(height)}px`);
+    }
+
+    renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
+      marker: asset?.referenceMarker ?? null,
+      width,
+      height,
+      arcId: referenceArcId
+    });
+
     if (overviewImage && asset?.imagePath) {
       setImageSource(overviewImage, asset.imagePath);
     }
-  }
-
-  function syncOverviewFrame() {
-    if (!diagram) {
-      return;
-    }
-
-    const zoomStep =
-      OVERVIEW_ZOOM_STEP_BY_KEY.get(card.currentOverviewVariant) ??
-      initialOverviewZoomStep ??
-      OVERVIEW_ZOOM_STEPS[0] ??
-      null;
-    const zoomFactor = zoomStep ? zoomStep.diagramScale / overviewBaseDiagramScale : 1;
-    const baseWidth = overviewAsset?.width ?? 0;
-    const baseHeight = overviewAsset?.height ?? 0;
-
-    diagram.style.setProperty('--diagram-width', `${Math.round(baseWidth * zoomFactor)}px`);
-    diagram.style.setProperty('--diagram-height', `${Math.round(baseHeight * zoomFactor)}px`);
-
-    renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
-      marker: overviewAsset?.referenceMarker ?? null,
-      width: baseWidth,
-      height: baseHeight,
-      arcId: referenceArcId
-    });
   }
 
   const card = {
@@ -391,17 +381,22 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     detailAsset,
     currentOverviewVariant: initialVariantKey,
     getDetailPresentationAsset() {
-      return detailAsset ?? overviewAsset;
+      const fallbackVariantKey =
+        overviewVariants.close
+          ? 'close'
+          : this.currentOverviewVariant ?? initialVariantKey;
+
+      return detailAsset ?? overviewVariants[fallbackVariantKey] ?? initialOverviewVariant;
     },
     setOverviewVariant(variantKey) {
-      const nextOverviewZoomStep = OVERVIEW_ZOOM_STEP_BY_KEY.get(variantKey);
+      const nextOverviewVariant = overviewVariants[variantKey];
 
-      if (!nextOverviewZoomStep || variantKey === this.currentOverviewVariant) {
+      if (!nextOverviewVariant || variantKey === this.currentOverviewVariant) {
         return;
       }
 
       this.currentOverviewVariant = variantKey;
-      syncOverviewFrame();
+      setDiagramPresentation(nextOverviewVariant);
     },
     setSelected(isSelected, hasSelection) {
       element.classList.toggle('card--selected', isSelected);
@@ -461,12 +456,11 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     }
   };
 
-  if (overviewImage && overviewAsset?.imagePath) {
-    overviewImage.dataset.loadedSrc = overviewAsset.imagePath;
+  if (overviewImage && initialOverviewVariant?.imagePath) {
+    overviewImage.dataset.loadedSrc = initialOverviewVariant.imagePath;
   }
 
-  setDiagramPresentation(overviewAsset);
-  syncOverviewFrame();
+  setDiagramPresentation(initialOverviewVariant);
 
   if (interactiveDepth) {
     element.addEventListener('pointerenter', (event) => {

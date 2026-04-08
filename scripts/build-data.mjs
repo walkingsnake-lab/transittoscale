@@ -10,9 +10,9 @@ import {
   DETAIL_DIAGRAM_SCALE,
   DETAIL_RASTER_SCALE,
   DETAIL_SAFE_INSET,
-  OVERVIEW_ASSET_VARIANT,
   OVERVIEW_BASE_HEIGHT,
   OVERVIEW_BASE_WIDTH,
+  OVERVIEW_RASTER_SCALE,
   OVERVIEW_SAFE_INSET,
   OVERVIEW_ZOOM_STEPS
 } from '../src/lib/overview-config.js';
@@ -54,7 +54,7 @@ await pruneGeneratedFiles(
   overviewDir,
   new Set(
     manifest.flatMap((city) => [
-      `${city.slug}--overview.svg`,
+      ...OVERVIEW_ZOOM_STEPS.map((step) => `${city.slug}--${step.key}.png`),
       `${city.slug}--detail.png`
     ])
   )
@@ -143,27 +143,41 @@ function attachDisplaySettings(city) {
 
 async function attachOverviewAssets(city, index) {
   const theme = getCityTheme(city.slug, index);
-  const overviewAssetStep =
-    OVERVIEW_ZOOM_STEPS.find((step) => step.key === OVERVIEW_ASSET_VARIANT) ??
-    OVERVIEW_ZOOM_STEPS[0];
-  const overviewFileName = `${city.slug}--overview.svg`;
-  const overviewLayout = getOverviewDiagramLayout({
-    city,
-    minWidth: OVERVIEW_BASE_WIDTH,
-    minHeight: OVERVIEW_BASE_HEIGHT,
-    diagramScale: overviewAssetStep.diagramScale,
-    planePadding: OVERVIEW_SAFE_INSET
-  });
-  const overviewSvg = createOverviewDiagramSvg({
-    city,
-    width: overviewLayout.width,
-    height: overviewLayout.height,
-    theme,
-    idPrefix: `${city.slug}-overview`,
-    includeReferenceMarker: false,
-    layout: overviewLayout
-  });
-  await writeFile(path.join(overviewDir, overviewFileName), overviewSvg);
+  const variants = {};
+
+  for (const step of OVERVIEW_ZOOM_STEPS) {
+    const fileName = `${city.slug}--${step.key}.png`;
+    const layout = getOverviewDiagramLayout({
+      city,
+      minWidth: OVERVIEW_BASE_WIDTH,
+      minHeight: OVERVIEW_BASE_HEIGHT,
+      diagramScale: step.diagramScale,
+      planePadding: OVERVIEW_SAFE_INSET
+    });
+    const svg = createOverviewDiagramSvg({
+      city,
+      width: layout.width,
+      height: layout.height,
+      theme,
+      idPrefix: `${city.slug}-${step.key}`,
+      includeReferenceMarker: false,
+      layout
+    });
+    const png = new Resvg(svg, {
+      fitTo: {
+        mode: 'width',
+        value: layout.width * OVERVIEW_RASTER_SCALE
+      }
+    }).render().asPng();
+
+    await writeFile(path.join(overviewDir, fileName), png);
+    variants[step.key] = {
+      imagePath: `data/overview/${fileName}`,
+      width: layout.width,
+      height: layout.height,
+      referenceMarker: serializeReferenceMarker(layout)
+    };
+  }
 
   const detailFileName = `${city.slug}--detail.png`;
   const detailLayout = getOverviewDiagramLayout({
@@ -196,14 +210,9 @@ async function attachOverviewAssets(city, index) {
     overview: {
       viewportWidth: OVERVIEW_BASE_WIDTH,
       viewportHeight: OVERVIEW_BASE_HEIGHT,
+      rasterScale: OVERVIEW_RASTER_SCALE,
       defaultVariant: 'standard',
-      asset: {
-        imagePath: `data/overview/${overviewFileName}`,
-        width: overviewLayout.width,
-        height: overviewLayout.height,
-        referenceMarker: serializeReferenceMarker(overviewLayout),
-        diagramScale: overviewAssetStep.diagramScale
-      }
+      variants
     },
     detail: {
       viewportWidth: DETAIL_BASE_WIDTH,
