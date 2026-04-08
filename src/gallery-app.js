@@ -1079,6 +1079,7 @@ function formatSystemLabel(city) {
     pittsburgh: 'PRT light rail',
     toronto: 'TTC subway + light metro',
     montreal: 'Montreal Metro',
+    'hong-kong': 'MTR + Light Rail',
     madrid: 'Metro de Madrid + Metro Ligero',
     stockholm: 'Tunnelbana + Light Rail',
     london: 'Underground + DLR + Overground + Elizabeth',
@@ -1142,13 +1143,13 @@ function getCountryLocator(city) {
 
   const markerX = clamp(
     ((projectedLon - minProjectedLon) / projectedLonSpan) * locator.viewBoxWidth,
-    6,
-    locator.viewBoxWidth - 6
+    0.75,
+    locator.viewBoxWidth - 0.75
   );
   const markerY = clamp(
     (1 - (latitude - minLat) / (maxLat - minLat)) * locator.viewBoxHeight,
-    6,
-    locator.viewBoxHeight - 6
+    0.75,
+    locator.viewBoxHeight - 0.75
   );
 
   return {
@@ -1170,8 +1171,8 @@ function renderCountryLocatorMarkup(city) {
       <svg class="detail-card__country-map" viewBox="0 0 ${locator.viewBoxWidth} ${locator.viewBoxHeight}" aria-hidden="true" focusable="false">
         <path class="detail-card__country-outline" d="${locator.outlinePath}"></path>
         <g class="detail-card__country-marker" transform="translate(${locator.markerX} ${locator.markerY})">
-          <path class="detail-card__country-marker-pin" d="M0 -5.8C-2.95 -5.8 -5.35 -3.39 -5.35 -0.44c0 3.42 3.7 7.72 5.35 9.4 1.66-1.68 5.35-5.98 5.35-9.4C5.35-3.39 2.95-5.8 0-5.8Z"></path>
-          <circle class="detail-card__country-marker-core" cx="0" cy="-0.72" r="1.62"></circle>
+          <path class="detail-card__country-marker-pin" d="M0 0C-2.9-3.43-5.25-6.38-5.25-9.25c0-2.89 2.36-5.25 5.25-5.25 2.89 0 5.25 2.36 5.25 5.25C5.25-6.38 2.9-3.43 0 0Z"></path>
+          <circle class="detail-card__country-marker-core" cx="0" cy="-9.12" r="1.56"></circle>
         </g>
       </svg>
       <p class="detail-card__country-name">${city.region}</p>

@@ -393,6 +393,7 @@ function formatSystemLabel(city) {
     pittsburgh: 'PRT light rail',
     toronto: 'TTC subway + light metro',
     montreal: 'Montreal Metro',
+    'hong-kong': 'MTR + Light Rail',
     stockholm: 'Tunnelbana + Light Rail',
     london: 'Underground + DLR + Overground + Elizabeth',
     'san-francisco-bay-area': 'Muni Metro (excluded BART)',

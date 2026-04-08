@@ -869,7 +869,7 @@ body.body--detail-open {
 
 .detail-card__overlay {
   position: absolute;
-  inset: 24px 186px auto 24px;
+  inset: 24px 82px auto 24px;
   z-index: 1;
   display: grid;
   gap: 6px;
@@ -909,8 +909,8 @@ body.body--detail-open {
 
 .detail-card__country {
   position: absolute;
-  top: 20px;
-  right: 72px;
+  right: 22px;
+  bottom: 22px;
   z-index: 1;
   display: grid;
   justify-items: end;
@@ -946,8 +946,7 @@ body.body--detail-open {
 
 .detail-card__country-name {
   margin: 0;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(17, 17, 17, 0.5);
+  color: rgba(17, 17, 17, 0.72);
   font-family: var(--font-sans-tight);
   font-size: 0.66rem;
   font-weight: 700;
@@ -959,8 +958,8 @@ body.body--detail-open {
 
 .detail-card__flag {
   position: absolute;
-  top: 22px;
-  right: 72px;
+  right: 22px;
+  bottom: 22px;
   z-index: 1;
   width: 40px;
   height: 40px;
@@ -1268,7 +1267,7 @@ body.body--detail-open {
   }
 
   .detail-card__overlay {
-    inset: 16px 132px auto 16px;
+    inset: 16px 64px auto 16px;
     gap: 4px;
   }
 
@@ -1285,8 +1284,8 @@ body.body--detail-open {
   }
 
   .detail-card__country {
-    top: 14px;
-    right: 50px;
+    right: 16px;
+    bottom: 16px;
     width: 92px;
     gap: 4px;
   }
@@ -1297,8 +1296,8 @@ body.body--detail-open {
   }
 
   .detail-card__flag {
-    top: 16px;
-    right: 50px;
+    right: 16px;
+    bottom: 16px;
     width: 32px;
     height: 32px;
   }
