@@ -579,7 +579,7 @@ function drawCard({
   ctx.strokeStyle = theme.ink;
   // Keep shared corridors from compounding into visibly darker knots.
   ctx.globalCompositeOperation = 'darken';
-  ctx.globalAlpha = display.lineAlpha * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
+  ctx.globalAlpha = 1 * (1 - dimmed) + CARD_STYLE.dimmedAlpha * dimmed;
   ctx.lineWidth = scaledLineWidth;
   drawProjectedLines(ctx, projectedLines);
 

@@ -95,7 +95,6 @@ export function createOverviewDiagramSvg({
     ${referenceMarkerMarkup}
     <g
       stroke="${theme.ink}"
-      stroke-opacity="${city.display.lineAlpha}"
       stroke-width="${formatLineNumber(strokeWidth)}"
       stroke-linecap="round"
       stroke-linejoin="round"

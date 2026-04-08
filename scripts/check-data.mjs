@@ -36,13 +36,6 @@ for (const city of manifest) {
     typeof city.display.lineWidth === 'number' && city.display.lineWidth > 0,
     `${city.slug} display.lineWidth must be a positive number.`
   );
-  assert(
-    typeof city.display.lineAlpha === 'number' &&
-      city.display.lineAlpha > 0 &&
-      city.display.lineAlpha <= 1,
-    `${city.slug} display.lineAlpha must be between 0 and 1.`
-  );
-
   const cityPath = path.join(repoRoot, 'public', city.dataPath);
   const geojson = JSON.parse(stripBom(await readFile(cityPath, 'utf8')));
 

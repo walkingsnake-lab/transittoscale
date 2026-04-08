@@ -24,8 +24,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -110,8 +109,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -196,8 +194,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -282,8 +279,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -368,8 +364,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
@@ -454,8 +449,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
@@ -540,8 +534,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
@@ -626,8 +619,7 @@
     "display": {
       "profile": "mega",
       "lineWidth": 1.45,
-      "simplifyTolerance": 2.4,
-      "lineAlpha": 0.7
+      "simplifyTolerance": 2.4
     },
     "overview": {
       "viewportWidth": 360,
@@ -712,8 +704,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -798,8 +789,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -884,8 +874,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
@@ -970,8 +959,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
@@ -1056,8 +1044,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
@@ -1142,8 +1129,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -1228,8 +1214,7 @@
     "display": {
       "profile": "mega",
       "lineWidth": 1.45,
-      "simplifyTolerance": 2.4,
-      "lineAlpha": 0.7
+      "simplifyTolerance": 2.4
     },
     "overview": {
       "viewportWidth": 360,
@@ -1314,8 +1299,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
@@ -1400,8 +1384,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -1486,8 +1469,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
@@ -1572,8 +1554,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -1658,8 +1639,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -1744,8 +1724,7 @@
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
-      "simplifyTolerance": 1,
-      "lineAlpha": 0.94
+      "simplifyTolerance": 1
     },
     "overview": {
       "viewportWidth": 360,
@@ -1830,8 +1809,7 @@
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
-      "simplifyTolerance": 1.6,
-      "lineAlpha": 0.8
+      "simplifyTolerance": 1.6
     },
     "overview": {
       "viewportWidth": 360,
