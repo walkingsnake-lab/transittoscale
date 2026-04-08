@@ -68,6 +68,7 @@ export async function mountApp(root) {
   let detailCard = null;
   let detailHideTimeoutId = 0;
   let lastActiveTrigger = null;
+  let layoutFrameId = 0;
 
   try {
     const cities = await loadCities();
@@ -111,6 +112,17 @@ export async function mountApp(root) {
       if (selectedCard && detailCard) {
         applyFixedRect(detailCard, getDetailTargetRect(selectedCard));
       }
+    }
+
+    function requestLayoutSync() {
+      if (layoutFrameId) {
+        cancelAnimationFrame(layoutFrameId);
+      }
+
+      layoutFrameId = requestAnimationFrame(() => {
+        layoutFrameId = 0;
+        applyLayout();
+      });
     }
 
     function setZoomIndex(nextZoomIndex) {
@@ -231,7 +243,7 @@ export async function mountApp(root) {
     zoomInButton.addEventListener('click', () => setZoomIndex(zoomIndex + 1));
     detailBackdrop.addEventListener('click', closeDetail);
     detailCloseButton.addEventListener('click', closeDetail);
-    window.addEventListener('resize', applyLayout);
+    window.addEventListener('resize', requestLayoutSync);
     window.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && selectedCard) {
         event.preventDefault();
@@ -239,9 +251,17 @@ export async function mountApp(root) {
       }
     });
 
+    requestLayoutSync();
+
+    document.fonts?.ready
+      ?.then(() => {
+        requestLayoutSync();
+      })
+      .catch(() => {});
+
     requestAnimationFrame(() => {
       root.classList.add('is-ready');
-      applyLayout();
+      requestLayoutSync();
     });
   } catch (error) {
     console.error(error);

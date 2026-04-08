@@ -15,6 +15,9 @@ const REFERENCE_LABEL_PADDING = 26;
 const ARC_LABEL_START_ANGLE = Math.PI + 0.08;
 const ARC_LABEL_END_ANGLE = Math.PI * 1.5 - 0.08;
 const ARC_LABEL_FONT_FAMILY = 'Arial, sans-serif';
+const RASTER_HINT_AXIS_RATIO = 0.08;
+const MIN_RASTER_HINT_RUN_PIXELS = 4;
+const GEOMETRY_EPSILON = 0.0001;
 
 export function createOverviewDiagramSvg({
   city,
@@ -25,8 +28,10 @@ export function createOverviewDiagramSvg({
   idPrefix = 'overview',
   safeInset = OVERVIEW_SAFE_INSET,
   includeReferenceMarker = true,
-  layout = null
+  layout = null,
+  rasterHintScale = null
 }) {
+  const hasRasterHinting = Number.isFinite(rasterHintScale) && rasterHintScale > 0;
   const resolvedLayout =
     layout ??
     getOverviewDiagramLayout({
@@ -45,8 +50,13 @@ export function createOverviewDiagramSvg({
     referenceRadius,
     referenceLabelRadius
   } = resolvedLayout;
-  const lineMarkup = displayPaths
-    .map((path) => `<path d="${toSvgPathData(path)}" />`)
+  const { paths: rasterPaths, strokeWidth } =
+    hasRasterHinting
+      ? applyRasterHinting(displayPaths, rasterHintScale, CARD_STYLE.baseLineWidth)
+      : { paths: displayPaths, strokeWidth: CARD_STYLE.baseLineWidth };
+  const formatLineNumber = hasRasterHinting ? formatHintedNumber : formatNumber;
+  const lineMarkup = rasterPaths
+    .map((path) => `<path d="${toSvgPathData(path, formatLineNumber)}" />`)
     .join('');
   let referenceMarkerMarkup = '';
 
@@ -86,7 +96,7 @@ export function createOverviewDiagramSvg({
     <g
       stroke="${theme.ink}"
       stroke-opacity="${city.display.lineAlpha}"
-      stroke-width="${CARD_STYLE.baseLineWidth}"
+      stroke-width="${formatLineNumber(strokeWidth)}"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -229,6 +239,67 @@ function mergeOverlappingPaths(paths, snapPrecision = SEGMENT_SNAP_PRECISION) {
   };
 }
 
+function applyRasterHinting(paths, rasterScale, strokeWidth) {
+  const hintedStrokeWidth = quantizeStrokeWidth(strokeWidth, rasterScale);
+
+  return {
+    paths: paths.map((path) => hintPathForRaster(path, rasterScale, hintedStrokeWidth)),
+    strokeWidth: hintedStrokeWidth
+  };
+}
+
+function hintPathForRaster(path, rasterScale, strokeWidth) {
+  if (path.length < 2) {
+    return path;
+  }
+
+  const hintedPath = path.map(([x, y]) => [x, y]);
+  let runStartIndex = 0;
+
+  while (runStartIndex < hintedPath.length - 1) {
+    const axis = classifyAxisSegment(hintedPath[runStartIndex], hintedPath[runStartIndex + 1]);
+
+    if (!axis) {
+      runStartIndex += 1;
+      continue;
+    }
+
+    let runEndIndex = runStartIndex + 1;
+    let runLength = getSegmentLength(hintedPath[runStartIndex], hintedPath[runEndIndex]);
+
+    while (runEndIndex < hintedPath.length - 1) {
+      const nextAxis = classifyAxisSegment(hintedPath[runEndIndex], hintedPath[runEndIndex + 1]);
+
+      if (nextAxis !== axis) {
+        break;
+      }
+
+      runLength += getSegmentLength(hintedPath[runEndIndex], hintedPath[runEndIndex + 1]);
+      runEndIndex += 1;
+    }
+
+    if (runLength * rasterScale >= MIN_RASTER_HINT_RUN_PIXELS) {
+      const snappedCoordinate = snapStrokeCenter(
+        getAxisRunAverage(hintedPath, runStartIndex, runEndIndex, axis),
+        rasterScale,
+        strokeWidth
+      );
+
+      for (let pointIndex = runStartIndex; pointIndex <= runEndIndex; pointIndex += 1) {
+        const [x, y] = hintedPath[pointIndex];
+        hintedPath[pointIndex] =
+          axis === 'vertical'
+            ? [snappedCoordinate, y]
+            : [x, snappedCoordinate];
+      }
+    }
+
+    runStartIndex = runEndIndex;
+  }
+
+  return hintedPath;
+}
+
 function scalePathAroundPoint(path, centerX, centerY, scale) {
   return path.map(([x, y]) => [
     centerX + (x - centerX) * scale,
@@ -307,10 +378,82 @@ function walkMergedPath(startPointKey, firstSegmentKey, unusedSegmentKeys, adjac
   return path;
 }
 
-function toSvgPathData(path) {
+function classifyAxisSegment([x1, y1], [x2, y2]) {
+  const deltaX = Math.abs(x2 - x1);
+  const deltaY = Math.abs(y2 - y1);
+
+  if (deltaX <= GEOMETRY_EPSILON && deltaY <= GEOMETRY_EPSILON) {
+    return null;
+  }
+
+  if (deltaX <= GEOMETRY_EPSILON) {
+    return 'vertical';
+  }
+
+  if (deltaY <= GEOMETRY_EPSILON) {
+    return 'horizontal';
+  }
+
+  if (deltaX <= deltaY * RASTER_HINT_AXIS_RATIO) {
+    return 'vertical';
+  }
+
+  if (deltaY <= deltaX * RASTER_HINT_AXIS_RATIO) {
+    return 'horizontal';
+  }
+
+  return null;
+}
+
+function getAxisRunAverage(path, runStartIndex, runEndIndex, axis) {
+  let weightedCoordinateSum = 0;
+  let totalLength = 0;
+
+  for (let pointIndex = runStartIndex + 1; pointIndex <= runEndIndex; pointIndex += 1) {
+    const startPoint = path[pointIndex - 1];
+    const endPoint = path[pointIndex];
+    const length = getSegmentLength(startPoint, endPoint);
+
+    if (length <= GEOMETRY_EPSILON) {
+      continue;
+    }
+
+    const midpointCoordinate =
+      axis === 'vertical'
+        ? (startPoint[0] + endPoint[0]) / 2
+        : (startPoint[1] + endPoint[1]) / 2;
+
+    weightedCoordinateSum += midpointCoordinate * length;
+    totalLength += length;
+  }
+
+  if (totalLength <= GEOMETRY_EPSILON) {
+    return axis === 'vertical' ? path[runStartIndex][0] : path[runStartIndex][1];
+  }
+
+  return weightedCoordinateSum / totalLength;
+}
+
+function getSegmentLength([x1, y1], [x2, y2]) {
+  return Math.hypot(x2 - x1, y2 - y1);
+}
+
+function quantizeStrokeWidth(strokeWidth, rasterScale) {
+  return Math.max(1, Math.round(strokeWidth * rasterScale)) / rasterScale;
+}
+
+function snapStrokeCenter(value, rasterScale, strokeWidth) {
+  const physicalStrokeWidth = Math.max(1, Math.round(strokeWidth * rasterScale));
+  const offset = physicalStrokeWidth % 2 === 0 ? 0 : 0.5;
+  const physicalValue = value * rasterScale;
+
+  return (Math.round(physicalValue - offset) + offset) / rasterScale;
+}
+
+function toSvgPathData(path, formatPoint = formatNumber) {
   const [start, ...rest] = path;
-  return [`M ${formatNumber(start[0])} ${formatNumber(start[1])}`]
-    .concat(rest.map(([x, y]) => `L ${formatNumber(x)} ${formatNumber(y)}`))
+  return [`M ${formatPoint(start[0])} ${formatPoint(start[1])}`]
+    .concat(rest.map(([x, y]) => `L ${formatPoint(x)} ${formatPoint(y)}`))
     .join(' ');
 }
 
@@ -323,6 +466,10 @@ function polarToCartesian(centerX, centerY, radius, angle) {
 
 function formatNumber(value) {
   return Number(value.toFixed(2));
+}
+
+function formatHintedNumber(value) {
+  return Number(value.toFixed(4));
 }
 
 function snapValue(value, precision) {

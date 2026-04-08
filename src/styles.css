@@ -454,6 +454,12 @@ body.body--detail-open {
   transform: none;
 }
 
+.shell--soft-hover .card__overlay,
+.shell--soft-hover .card__flag {
+  transform: none;
+  will-change: opacity;
+}
+
 .card:hover .card__paper,
 .card--hovered .card__paper {
   box-shadow:
@@ -936,6 +942,12 @@ body.body--detail-open {
 .is-ready .card:not(.card--static) .card__canvas-frame::after {
   animation: canvas-sweep 900ms cubic-bezier(0.18, 1, 0.28, 1) both;
   animation-delay: calc(var(--stagger) + 280ms);
+}
+
+.is-ready .shell--soft-hover .card:not(.card--static),
+.is-ready .shell--soft-hover .card:not(.card--static) .card__paper,
+.is-ready .shell--soft-hover .card:not(.card--static) .card__canvas-frame::after {
+  animation: none;
 }
 
 @keyframes card-deal {
