@@ -103,21 +103,21 @@ export async function mountApp(root) {
       zoomIndex = 1;
     }
 
-    function syncZoomControls() {
+    function syncZoomControls({ forcePresentation = false } = {}) {
       const zoomStep = OVERVIEW_ZOOM_STEPS[zoomIndex];
 
       zoomLabel.textContent = zoomStep.label;
       zoomSteps.forEach((step, index) => step.classList.toggle('zoom-controls__step--active', index === zoomIndex));
       zoomOutButton.disabled = zoomIndex === 0;
       zoomInButton.disabled = zoomIndex === OVERVIEW_ZOOM_STEPS.length - 1;
-      cards.forEach((card) => card.setOverviewVariant(zoomStep.key));
+      cards.forEach((card) => card.setOverviewVariant(zoomStep.key, { force: forcePresentation }));
     }
 
     function applyLayout() {
       const chromeHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) + 18 : 0;
 
       updateGridLayout(grid, cards.length, { chromeHeight });
-      syncZoomControls();
+      syncZoomControls({ forcePresentation: true });
       cards.forEach((card) => card.syncDiagramPosition());
 
       if (selectedCard && detailCard) {
@@ -460,10 +460,14 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
 
       return detailAsset ?? overviewVariants[fallbackVariantKey] ?? initialOverviewVariant;
     },
-    setOverviewVariant(variantKey) {
+    setOverviewVariant(variantKey, { force = false } = {}) {
       const nextOverviewVariant = overviewVariants[variantKey];
 
-      if (!nextOverviewVariant || variantKey === this.currentOverviewVariant) {
+      if (!nextOverviewVariant) {
+        return;
+      }
+
+      if (!force && variantKey === this.currentOverviewVariant) {
         return;
       }
 
