@@ -403,14 +403,21 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
       return;
     }
 
-    const frameRect = canvasFrame.getBoundingClientRect();
+    const frameWidth =
+      canvasFrame.clientWidth ||
+      canvasFrame.offsetWidth ||
+      Math.round(canvasFrame.getBoundingClientRect().width);
+    const frameHeight =
+      canvasFrame.clientHeight ||
+      canvasFrame.offsetHeight ||
+      Math.round(canvasFrame.getBoundingClientRect().height);
 
-    if (!frameRect.width || !frameRect.height) {
+    if (!frameWidth || !frameHeight) {
       return;
     }
 
-    const left = snapToDevicePixels((frameRect.width - currentDiagramWidth) / 2);
-    const top = snapToDevicePixels((frameRect.height - currentDiagramHeight) / 2);
+    const left = snapToDevicePixels((frameWidth - currentDiagramWidth) / 2);
+    const top = snapToDevicePixels((frameHeight - currentDiagramHeight) / 2);
 
     diagram.style.setProperty('--diagram-left', `${left}px`);
     diagram.style.setProperty('--diagram-top', `${top}px`);
