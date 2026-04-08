@@ -2,7 +2,7 @@
   "type": "FeatureCollection",
   "properties": {
     "slug": "dallas",
-    "name": "Dallas",
+    "name": "Dallas (DART Light Rail)",
     "region": "United States",
     "centroid": [
       -96.80021500000001,
@@ -27,7 +27,7 @@
       "properties": {
         "lineId": "BLUE",
         "lineName": "Blue Line",
-        "systemName": "Dallas",
+        "systemName": "Dallas (DART Light Rail)",
         "sourceName": "Dallas Area Rapid Transit (DART)",
         "sourceUrl": "https://www.dart.org/transitdata/latest/google_transit.zip"
       },
@@ -6260,7 +6260,7 @@
       "properties": {
         "lineId": "GREEN",
         "lineName": "Green Line",
-        "systemName": "Dallas",
+        "systemName": "Dallas (DART Light Rail)",
         "sourceName": "Dallas Area Rapid Transit (DART)",
         "sourceUrl": "https://www.dart.org/transitdata/latest/google_transit.zip"
       },
@@ -10717,7 +10717,7 @@
       "properties": {
         "lineId": "ORANGE",
         "lineName": "Orange Line",
-        "systemName": "Dallas",
+        "systemName": "Dallas (DART Light Rail)",
         "sourceName": "Dallas Area Rapid Transit (DART)",
         "sourceUrl": "https://www.dart.org/transitdata/latest/google_transit.zip"
       },
@@ -24958,7 +24958,7 @@
       "properties": {
         "lineId": "RED",
         "lineName": "Red Line",
-        "systemName": "Dallas",
+        "systemName": "Dallas (DART Light Rail)",
         "sourceName": "Dallas Area Rapid Transit (DART)",
         "sourceUrl": "https://www.dart.org/transitdata/latest/google_transit.zip"
       },

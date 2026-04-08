@@ -340,6 +340,91 @@
     }
   },
   {
+    "slug": "hong-kong",
+    "name": "Hong Kong",
+    "region": "China",
+    "dataPath": "data/cities/hong-kong.geojson",
+    "centroid": [
+      114.100674,
+      22.3840705
+    ],
+    "focusPoint": [
+      114.1694,
+      22.3193
+    ],
+    "bounds": [
+      113.936104,
+      22.240278,
+      114.265244,
+      22.527863
+    ],
+    "lineCount": 21,
+    "sourceName": "Just Use Wheels (Hong Kong)",
+    "sourceUrl": "https://storage.googleapis.com/storage/v1/b/mdb-latest/o/hk-just-use-wheels-gtfs-2933.zip?alt=media",
+    "display": {
+      "profile": "mega",
+      "lineWidth": 1.45,
+      "simplifyTolerance": 2.4
+    },
+    "overview": {
+      "viewportWidth": 360,
+      "viewportHeight": 440,
+      "rasterScale": 3,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": {
+          "imagePath": "data/overview/hong-kong--wide.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
+        },
+        "standard": {
+          "imagePath": "data/overview/hong-kong--standard.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
+        },
+        "close": {
+          "imagePath": "data/overview/hong-kong--close.webp",
+          "width": 365,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 182.5,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
+        }
+      }
+    },
+    "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
+      "width": 720,
+      "height": 880,
+      "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
+      "imagePath": "data/overview/hong-kong--detail.png",
+      "referenceMarker": {
+        "centerX": 360,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
     "slug": "mexico-city",
     "name": "Mexico City",
     "region": "Mexico",
@@ -1021,7 +1106,7 @@
   },
   {
     "slug": "dallas",
-    "name": "Dallas",
+    "name": "Dallas (DART Light Rail)",
     "region": "United States",
     "dataPath": "data/cities/dallas.geojson",
     "centroid": [

@@ -890,7 +890,8 @@ function getCountryFlag(city) {
     Canada: 'ca',
     Spain: 'es',
     Sweden: 'se',
-    'United Kingdom': 'gb'
+    'United Kingdom': 'gb',
+    China: 'cn'
   };
 
   const code = flagCodeByRegion[city.region];

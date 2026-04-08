@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "data:import": "node ./scripts/import-gtfs.mjs",
     "data:build": "node ./scripts/build-data.mjs",
-    "data:check": "node ./scripts/check-data.mjs"
+    "data:check": "node ./scripts/check-data.mjs",
+    "data:country-locators": "node ./scripts/build-country-locators.mjs"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",

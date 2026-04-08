@@ -8,6 +8,7 @@ import {
   OVERVIEW_ZOOM_STEPS
 } from './lib/overview-config.js';
 import { createOverviewDiagramSvg, getOverviewDiagramLayout } from './lib/overview-diagram.js';
+import { COUNTRY_LOCATOR_BY_REGION } from './lib/country-locators.js';
 import { clamp } from './lib/math.js';
 import { shouldUseSoftHoverEffects, supportsInteractiveDepthEffects } from './lib/platform.js';
 
@@ -21,49 +22,6 @@ const DETAIL_MAX_ZOOM = 6;
 const DETAIL_BUTTON_ZOOM_FACTOR = 1.35;
 const DETAIL_WHEEL_ZOOM_SENSITIVITY = 0.0015;
 const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
-const COUNTRY_LOCATOR_BY_REGION = {
-  'United States': {
-    viewBoxWidth: 100,
-    viewBoxHeight: 62,
-    bounds: { minLon: -125, maxLon: -66, minLat: 24, maxLat: 50 },
-    outlinePath:
-      'M4 33 L8 27 L15 23 L22 23 L26 19 L34 17 L42 19 L50 18 L57 21 L64 20 L70 23 L77 24 L83 28 L90 31 L95 35 L94 41 L90 45 L84 48 L77 50 L69 52 L61 53 L54 51 L47 52 L40 50 L34 52 L27 50 L21 46 L16 45 L11 40 L7 36 Z'
-  },
-  Canada: {
-    viewBoxWidth: 100,
-    viewBoxHeight: 64,
-    bounds: { minLon: -141, maxLon: -52, minLat: 42, maxLat: 84 },
-    outlinePath:
-      'M3 35 L9 28 L16 24 L24 22 L31 18 L41 16 L52 15 L62 17 L73 20 L82 24 L90 29 L96 35 L94 39 L86 41 L79 45 L68 47 L58 49 L49 47 L42 48 L32 46 L23 44 L15 42 L8 39 Z'
-  },
-  Mexico: {
-    viewBoxWidth: 100,
-    viewBoxHeight: 70,
-    bounds: { minLon: -118, maxLon: -86, minLat: 14, maxLat: 33 },
-    outlinePath: 'M14 12 L26 10 L38 12 L51 17 L61 18 L72 23 L81 31 L83 39 L78 47 L70 53 L60 57 L51 55 L44 49 L37 46 L30 42 L24 35 L18 30 L12 22 Z'
-  },
-  Spain: {
-    viewBoxWidth: 100,
-    viewBoxHeight: 60,
-    bounds: { minLon: -9.5, maxLon: 4.5, minLat: 35.5, maxLat: 44.5 },
-    outlinePath: 'M7 29 L17 22 L32 20 L45 21 L58 18 L72 20 L86 25 L91 33 L86 39 L74 42 L61 43 L48 45 L36 43 L24 41 L13 38 L8 33 Z'
-  },
-  Sweden: {
-    viewBoxWidth: 84,
-    viewBoxHeight: 100,
-    bounds: { minLon: 11, maxLon: 24.5, minLat: 55, maxLat: 69.5 },
-    outlinePath:
-      'M36 5 L44 4 L52 7 L57 13 L56 21 L60 28 L59 35 L63 43 L60 50 L62 57 L58 64 L51 71 L46 81 L39 89 L31 93 L24 90 L23 83 L27 74 L32 67 L35 58 L32 49 L34 40 L31 31 L33 22 L31 13 Z'
-  },
-  'United Kingdom': {
-    viewBoxWidth: 84,
-    viewBoxHeight: 90,
-    bounds: { minLon: -8.8, maxLon: 2.5, minLat: 49.5, maxLat: 60.9 },
-    outlinePath:
-      'M55 10 L63 8 L70 13 L71 20 L68 27 L72 34 L68 43 L62 47 L57 55 L50 57 L46 63 L39 68 L31 68 L27 62 L28 55 L33 50 L36 43 L34 35 L39 28 L43 20 L50 14 Z M23 72 L29 71 L34 75 L32 81 L25 82 L21 77 Z'
-  }
-};
-
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell" data-shell>
@@ -1141,7 +1099,8 @@ function getCountryFlag(city) {
     Mexico: 'mx',
     Spain: 'es',
     Sweden: 'se',
-    'United Kingdom': 'gb'
+    'United Kingdom': 'gb',
+    China: 'cn'
   };
 
   const code = flagCodeByRegion[city.region];

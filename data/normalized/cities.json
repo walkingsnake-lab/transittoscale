@@ -70,7 +70,7 @@
   },
   {
     "slug": "dallas",
-    "name": "Dallas",
+    "name": "Dallas (DART Light Rail)",
     "region": "United States",
     "dataPath": "data/cities/dallas.geojson",
     "centroid": [
@@ -412,6 +412,29 @@
     "lineCount": 4,
     "sourceName": "Societe de transport de Montreal (STM)",
     "sourceUrl": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip"
+  },
+  {
+    "slug": "hong-kong",
+    "name": "Hong Kong",
+    "region": "China",
+    "dataPath": "data/cities/hong-kong.geojson",
+    "centroid": [
+      114.100674,
+      22.3840705
+    ],
+    "focusPoint": [
+      114.1694,
+      22.3193
+    ],
+    "bounds": [
+      113.936104,
+      22.240278,
+      114.265244,
+      22.527863
+    ],
+    "lineCount": 21,
+    "sourceName": "Just Use Wheels (Hong Kong)",
+    "sourceUrl": "https://storage.googleapis.com/storage/v1/b/mdb-latest/o/hk-just-use-wheels-gtfs-2933.zip?alt=media"
   },
   {
     "slug": "madrid",
