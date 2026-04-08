@@ -1066,20 +1066,20 @@
         "standard": {
           "imagePath": "data/overview/los-angeles--standard.webp",
           "width": 572,
-          "height": 481,
+          "height": 482,
           "referenceMarker": {
             "centerX": 286,
-            "centerY": 240.5,
+            "centerY": 241,
             "radius": 48.28,
             "labelRadius": 58.28
           }
         },
         "close": {
           "imagePath": "data/overview/los-angeles--close.webp",
-          "width": 670,
+          "width": 671,
           "height": 564,
           "referenceMarker": {
-            "centerX": 335,
+            "centerX": 335.5,
             "centerY": 282,
             "radius": 56.97,
             "labelRadius": 66.97
@@ -1491,10 +1491,10 @@
         "standard": {
           "imagePath": "data/overview/san-francisco-bay-area--standard.webp",
           "width": 699,
-          "height": 710,
+          "height": 709,
           "referenceMarker": {
             "centerX": 349.5,
-            "centerY": 355,
+            "centerY": 354.5,
             "radius": 48.28,
             "labelRadius": 58.28
           }
@@ -1756,10 +1756,10 @@
         },
         "close": {
           "imagePath": "data/overview/st-louis--close.webp",
-          "width": 419,
+          "width": 421,
           "height": 440,
           "referenceMarker": {
-            "centerX": 209.5,
+            "centerX": 210.5,
             "centerY": 220,
             "radius": 56.97,
             "labelRadius": 66.97

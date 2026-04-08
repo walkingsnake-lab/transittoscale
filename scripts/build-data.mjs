@@ -153,8 +153,7 @@ async function attachOverviewAssets(city, index) {
       minWidth: OVERVIEW_BASE_WIDTH,
       minHeight: OVERVIEW_BASE_HEIGHT,
       diagramScale: step.diagramScale,
-      planePadding: OVERVIEW_SAFE_INSET,
-      normalizeForOverview: true
+      planePadding: OVERVIEW_SAFE_INSET
     });
     const svg = createOverviewDiagramSvg({
       city,
