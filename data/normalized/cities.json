@@ -604,7 +604,7 @@
     "dataPath": "data/cities/mexico-city.geojson",
     "centroid": [
       -99.08763,
-      19.46468
+      19.396915
     ],
     "focusPoint": [
       -99.1332,
@@ -614,9 +614,9 @@
       -99.21464,
       19.25939,
       -98.96062,
-      19.66997
+      19.53444
     ],
-    "lineCount": 14,
+    "lineCount": 13,
     "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
     "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
   }

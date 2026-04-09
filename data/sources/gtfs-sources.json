@@ -797,6 +797,7 @@
     "minShapeTrips": 20,
     "shapeTripShareThreshold": 0.08,
     "routeShortNameAllowlist": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "12", "TL 1"],
+    "routeIdDenylist": ["ROUTE_24309"],
     "lineNameOverrides": {
       "1": "Line 1",
       "2": "Line 2",

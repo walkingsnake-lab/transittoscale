@@ -577,16 +577,21 @@ function selectRoutes(routes, sourceConfig) {
   const allowedRouteIds = sourceConfig.routeIdAllowlist
     ? new Set(sourceConfig.routeIdAllowlist)
     : null;
+  const deniedRouteIds = sourceConfig.routeIdDenylist
+    ? new Set(sourceConfig.routeIdDenylist)
+    : null;
   const allowedShortNames = sourceConfig.routeShortNameAllowlist
     ? new Set(sourceConfig.routeShortNameAllowlist)
     : null;
 
   return routes.filter((route) => {
     const routeTypeMatch = allowedTypes.size === 0 || allowedTypes.has(String(route.route_type));
-    const routeIdMatch = !allowedRouteIds || allowedRouteIds.has(normalizeValue(route.route_id));
+    const routeId = normalizeValue(route.route_id);
+    const routeIdMatch = !allowedRouteIds || allowedRouteIds.has(routeId);
+    const routeIdDenied = deniedRouteIds && deniedRouteIds.has(routeId);
     const shortName = normalizeValue(route.route_short_name);
     const shortNameMatch = !allowedShortNames || allowedShortNames.has(shortName);
-    return routeTypeMatch && routeIdMatch && shortNameMatch;
+    return routeTypeMatch && routeIdMatch && shortNameMatch && !routeIdDenied;
   });
 }
 

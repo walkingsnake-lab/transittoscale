@@ -852,40 +852,7 @@ function formatLineLabel(lineCount) {
 }
 
 function formatSystemLabel(city) {
-  const explicitLabels = {
-    atlanta: 'MARTA rail',
-    baltimore: 'Metro SubwayLink + Light RailLink',
-    chicago: 'Chicago "L"',
-    dallas: 'DART Light Rail',
-    denver: 'RTD Light Rail',
-    'san-diego': 'MTS Trolley (Light Rail)',
-    'new-york': 'Subway + Staten Island Railway',
-    boston: 'MBTA rapid transit',
-    'washington-dc': 'Washington Metro',
-    'minneapolis-st-paul': 'Metro light rail',
-    seattle: 'Link light rail',
-    portland: 'MAX + Streetcar',
-    'los-angeles': 'Metro Rail',
-    vancouver: 'SkyTrain',
-    edmonton: 'ETS LRT',
-    'st-louis': 'MetroLink',
-    philadelphia: 'SEPTA Metro + trolley',
-    pittsburgh: 'PRT light rail',
-    toronto: 'TTC subway + light metro',
-    montreal: 'Montreal Metro',
-    'hong-kong': 'MTR + Light Rail',
-    madrid: 'Metro de Madrid + Metro Ligero',
-    stockholm: 'Tunnelbana + Light Rail',
-    london: 'Underground + DLR + Overground + Elizabeth',
-    'san-francisco-bay-area': 'Muni Metro (excluded BART)',
-    'san-jose-santa-clara-valley': 'VTA Light Rail (excluded BART)'
-  };
-
-  if (explicitLabels[city.slug]) {
-    return explicitLabels[city.slug];
-  }
-
-  return city.sourceName?.replace(/\s*\([^)]+\)/g, '').trim() ?? '';
+  return city.sourceName?.trim() ?? '';
 }
 
 function getCountryFlag(city) {
