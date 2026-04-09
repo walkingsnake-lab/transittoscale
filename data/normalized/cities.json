@@ -115,6 +115,29 @@
     "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
   },
   {
+    "slug": "san-diego",
+    "name": "San Diego",
+    "region": "United States",
+    "dataPath": "data/cities/san-diego.geojson",
+    "centroid": [
+      -117.105712895,
+      32.713365554999996
+    ],
+    "focusPoint": [
+      -117.1611,
+      32.7157
+    ],
+    "bounds": [
+      -117.23580933,
+      32.54440689,
+      -116.97561646,
+      32.88232422
+    ],
+    "lineCount": 5,
+    "sourceName": "San Diego Metropolitan Transit System (MTS)",
+    "sourceUrl": "https://www.sdmts.com/google_transit_files/google_transit.zip"
+  },
+  {
     "slug": "new-york",
     "name": "New York",
     "region": "United States",

@@ -858,6 +858,7 @@ function formatSystemLabel(city) {
     chicago: 'Chicago "L"',
     dallas: 'DART Light Rail',
     denver: 'RTD Light Rail',
+    'san-diego': 'MTS Trolley',
     'new-york': 'Subway + Staten Island Railway',
     boston: 'MBTA rapid transit',
     'washington-dc': 'Washington Metro',
@@ -946,3 +947,4 @@ class Animator {
     }
   }
 }
+

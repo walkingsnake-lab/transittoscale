@@ -142,6 +142,34 @@
     }
   },
   {
+    "slug": "san-diego",
+    "name": "San Diego",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "San Diego Metropolitan Transit System (MTS)",
+    "sourceUrl": "https://www.sdmts.com/google_transit_files/google_transit.zip",
+    "focusPoint": [-117.1611, 32.7157],
+    "routeTypes": ["0"],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": ["510", "520", "530", "535", "550"],
+    "routeIdAliases": {
+      "510": "BLUE",
+      "520": "ORANGE",
+      "530": "GREEN",
+      "535": "COPPER",
+      "550": "550"
+    },
+    "lineNameOverrides": {
+      "BLUE": "Blue Line",
+      "ORANGE": "Orange Line",
+      "GREEN": "Green Line",
+      "COPPER": "Copper Line",
+      "550": "Downtown Loop"
+    }
+  },
+  {
     "slug": "new-york",
     "name": "New York",
     "region": "United States",

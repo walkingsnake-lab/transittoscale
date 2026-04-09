@@ -1785,6 +1785,91 @@
     }
   },
   {
+    "slug": "san-diego",
+    "name": "San Diego",
+    "region": "United States",
+    "dataPath": "data/cities/san-diego.geojson",
+    "centroid": [
+      -117.105712895,
+      32.713365554999996
+    ],
+    "focusPoint": [
+      -117.1611,
+      32.7157
+    ],
+    "bounds": [
+      -117.23580933,
+      32.54440689,
+      -116.97561646,
+      32.88232422
+    ],
+    "lineCount": 5,
+    "sourceName": "San Diego Metropolitan Transit System (MTS)",
+    "sourceUrl": "https://www.sdmts.com/google_transit_files/google_transit.zip",
+    "display": {
+      "profile": "standard",
+      "lineWidth": 1.65,
+      "simplifyTolerance": 1
+    },
+    "overview": {
+      "viewportWidth": 360,
+      "viewportHeight": 440,
+      "rasterScale": 3,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": {
+          "imagePath": "data/overview/san-diego--wide.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
+        },
+        "standard": {
+          "imagePath": "data/overview/san-diego--standard.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
+        },
+        "close": {
+          "imagePath": "data/overview/san-diego--close.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
+        }
+      }
+    },
+    "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
+      "width": 720,
+      "height": 880,
+      "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
+      "imagePath": "data/overview/san-diego--detail.png",
+      "referenceMarker": {
+        "centerX": 360,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
     "slug": "san-francisco-bay-area",
     "name": "San Francisco Bay Area",
     "region": "United States",

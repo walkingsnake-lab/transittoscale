@@ -1,4 +1,4 @@
-﻿import { getCityTheme } from './config.js';
+import { getCityTheme } from './config.js';
 import {
   DEFAULT_OVERVIEW_VARIANT,
   DETAIL_BASE_HEIGHT,
@@ -1066,6 +1066,7 @@ function formatSystemLabel(city) {
     chicago: 'Chicago "L"',
     dallas: 'DART Light Rail',
     denver: 'RTD Light Rail',
+    'san-diego': 'MTS Trolley',
     'new-york': 'Subway + Staten Island Railway',
     boston: 'MBTA rapid transit',
     'washington-dc': 'Washington Metro',
@@ -1405,4 +1406,5 @@ function applyFixedRect(element, rect) {
   element.style.margin = '0';
   element.style.zIndex = '25';
 }
+
 

@@ -25,8 +25,8 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "101D",
-        "lineName": "18th&California Station to Mineral Station",
+        "lineId": "D",
+        "lineName": "D Line",
         "systemName": "Denver",
         "sourceName": "Regional Transportation District (RTD)",
         "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
@@ -3214,8 +3214,8 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "101E",
-        "lineName": "Union Station to RidgeGate Parkway Station",
+        "lineId": "E",
+        "lineName": "E Line",
         "systemName": "Denver",
         "sourceName": "Regional Transportation District (RTD)",
         "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
@@ -15155,8 +15155,8 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "101H",
-        "lineName": "18th&California Station to Florida Station",
+        "lineId": "H",
+        "lineName": "H Line",
         "systemName": "Denver",
         "sourceName": "Regional Transportation District (RTD)",
         "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
@@ -19922,8 +19922,8 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "103W",
-        "lineName": "Union Station to Jefferson County Government Center-Golden Station",
+        "lineId": "W",
+        "lineName": "W Line",
         "systemName": "Denver",
         "sourceName": "Regional Transportation District (RTD)",
         "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
@@ -30757,8 +30757,8 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "107R",
-        "lineName": "Lincoln Station to Peoria Station",
+        "lineId": "R",
+        "lineName": "R Line",
         "systemName": "Denver",
         "sourceName": "Regional Transportation District (RTD)",
         "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
@@ -36312,8 +36312,8 @@
     {
       "type": "Feature",
       "properties": {
-        "lineId": "109L",
-        "lineName": "30th & Downing to 16th & Stout",
+        "lineId": "L",
+        "lineName": "L Line",
         "systemName": "Denver",
         "sourceName": "Regional Transportation District (RTD)",
         "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
