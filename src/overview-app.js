@@ -10,34 +10,10 @@ export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell">
       <section class="shell__intro" data-intro>
-        <div class="shell__intro-bar">
-          <p class="shell__kicker">Transit Atlas</p>
-          <p class="shell__eyebrow">Shared-distance metro comparisons</p>
+        <div class="shell__intro-row">
+          <h1 class="shell__title">Transit to Scale</h1>
+          <p class="shell__intent">Compare metro systems from around the world at a shared, true-to-distance scale.</p>
         </div>
-        <div class="shell__intro-grid">
-          <div class="shell__intro-copy">
-            <h1 class="shell__title">
-              <span class="shell__title-line">Transit</span>
-              <span class="shell__title-line shell__title-line--accent">to Scale</span>
-            </h1>
-            <p class="shell__intent">Compare metro systems from around the world inside one common distance frame, so size, reach, and density read at a glance.</p>
-          </div>
-          <p class="shell__intro-note">Each portrait uses the same 5-mile reference ring. Open any card to inspect the live network drawing in more detail.</p>
-        </div>
-        <dl class="shell__metrics" aria-label="Atlas summary">
-          <div class="shell__metric">
-            <dt>Catalog</dt>
-            <dd data-intro-count>Loading...</dd>
-          </div>
-          <div class="shell__metric">
-            <dt>Footprint</dt>
-            <dd data-intro-region-count>Global</dd>
-          </div>
-          <div class="shell__metric">
-            <dt>Reference</dt>
-            <dd>5-mile ring</dd>
-          </div>
-        </dl>
       </section>
       <header class="shell__toolbar" data-toolbar>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
@@ -70,8 +46,6 @@ export async function mountApp(root) {
   const toolbar = root.querySelector('[data-toolbar]');
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
-  const introCount = root.querySelector('[data-intro-count]');
-  const introRegionCount = root.querySelector('[data-intro-region-count]');
   const zoomLabel = root.querySelector('[data-zoom-label]');
   const zoomSteps = Array.from(root.querySelectorAll('[data-zoom-step]'));
   const zoomOutButton = root.querySelector('[data-zoom-out]');
@@ -83,16 +57,6 @@ export async function mountApp(root) {
 
   try {
     const cities = await loadCities();
-    const regionCount = new Set(cities.map((city) => city.region).filter(Boolean)).size;
-
-    if (introCount) {
-      introCount.textContent = `${cities.length} ${cities.length === 1 ? 'system' : 'systems'}`;
-    }
-
-    if (introRegionCount) {
-      introRegionCount.textContent = `${regionCount} ${regionCount === 1 ? 'country' : 'countries'}`;
-    }
-
     status.textContent = `${cities.length} metro systems loaded.`;
 
     const cards = cities.map((city, index) => createCard(city, index, { reducedMotion, interactiveDepth }));
