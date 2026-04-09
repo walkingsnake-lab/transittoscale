@@ -2,6 +2,11 @@
   color-scheme: dark;
   --page-bg: #2a211b;
   --page-bg-strong: #15110f;
+  --tabletop-tone-top: #6f533c;
+  --tabletop-tone-mid: #543d2d;
+  --tabletop-tone-bottom: #3e2d22;
+  --tabletop-grain-light: rgba(255, 255, 255, 0.08);
+  --tabletop-grain-dark: rgba(0, 0, 0, 0.22);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --font-sans: 'Inter Tight', Inter, Arial, sans-serif;
   --font-sans-tight: 'Inter Tight', Inter, Arial, sans-serif;
@@ -60,6 +65,39 @@ body.body--detail-open {
     radial-gradient(circle at 50% -8%, rgba(255, 255, 255, 0.12), transparent 28%),
     linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.16) 100%);
   opacity: 0.7;
+}
+
+.shell::after {
+  content: '';
+  position: absolute;
+  inset: clamp(54px, 7vh, 86px) clamp(6px, 1.4vw, 18px) clamp(8px, 1.2vw, 16px);
+  z-index: 0;
+  pointer-events: none;
+  border-radius: clamp(16px, 2.2vw, 24px);
+  background:
+    radial-gradient(circle at 50% -18%, rgba(255, 245, 214, 0.18), transparent 52%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.02) 24%, rgba(0, 0, 0, 0.24) 100%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(84, 62, 45, 0.88) 0 150px,
+      rgba(74, 55, 40, 0.9) 150px 300px
+    ),
+    repeating-linear-gradient(
+      -4deg,
+      var(--tabletop-grain-light) 0 1px,
+      transparent 1px 8px
+    ),
+    repeating-linear-gradient(
+      8deg,
+      var(--tabletop-grain-dark) 0 1px,
+      transparent 1px 7px
+    ),
+    linear-gradient(180deg, var(--tabletop-tone-top) 0%, var(--tabletop-tone-mid) 56%, var(--tabletop-tone-bottom) 100%);
+  background-blend-mode: screen, normal, normal, soft-light, multiply, normal;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -28px 40px rgba(0, 0, 0, 0.24),
+    0 22px 42px rgba(0, 0, 0, 0.35);
 }
 
 .shell > * {
@@ -1171,6 +1209,11 @@ body.body--detail-open {
 @media (max-width: 720px) {
   .shell {
     padding: 10px;
+  }
+
+  .shell::after {
+    inset: 50px 2px 6px;
+    border-radius: 14px;
   }
 
   .shell__toolbar {
