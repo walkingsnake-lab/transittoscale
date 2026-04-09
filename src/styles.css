@@ -60,6 +60,29 @@ body.body--detail-open {
   z-index: 1;
 }
 
+.shell__intro {
+  display: grid;
+  gap: 4px;
+  width: min(680px, 100%);
+  padding: 2px 2px 0;
+}
+
+.shell__title {
+  margin: 0;
+  color: rgba(250, 244, 234, 0.96);
+  font-family: var(--font-sans-tight);
+  font-size: clamp(1.06rem, 1.6vw, 1.24rem);
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.shell__intent {
+  margin: 0;
+  color: rgba(246, 238, 226, 0.8);
+  font-size: clamp(0.8rem, 1.05vw, 0.9rem);
+  line-height: 1.35;
+}
+
 .shell__toolbar {
   position: sticky;
   top: 12px;
@@ -1169,6 +1192,15 @@ body.body--detail-open {
   .shell__toolbar {
     top: 10px;
     min-height: 38px;
+  }
+
+  .shell__intro {
+    gap: 3px;
+    padding: 0 1px;
+  }
+
+  .shell__intent {
+    max-width: 48ch;
   }
 
   .zoom-controls {

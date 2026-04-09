@@ -38,6 +38,10 @@ const MIN_CORRIDOR_COLLAPSE_SHARE = 0.12;
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell">
+      <section class="shell__intro" data-intro>
+        <h1 class="shell__title">Transit to Scale</h1>
+        <p class="shell__intent">A visual atlas for comparing metro systems at shared real-world scale.</p>
+      </section>
       <header class="shell__toolbar" data-toolbar>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
           <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">
@@ -64,6 +68,7 @@ export async function mountApp(root) {
     </main>
   `;
 
+  const intro = root.querySelector('[data-intro]');
   const toolbar = root.querySelector('[data-toolbar]');
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
@@ -96,7 +101,9 @@ export async function mountApp(root) {
     }
 
     function applyLayout() {
-      const chromeHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) + 18 : 0;
+      const introHeight = intro ? Math.ceil(intro.getBoundingClientRect().height) : 0;
+      const toolbarHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) : 0;
+      const chromeHeight = introHeight + toolbarHeight + 22;
 
       updateGridLayout(grid, cards.length, { chromeHeight });
       cards.forEach((card) => card.resize());
