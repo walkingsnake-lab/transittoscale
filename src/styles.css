@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap');
 
 :root {
   color-scheme: dark;
@@ -15,8 +15,8 @@
   --page-chip-border: rgba(249, 238, 221, 0.18);
   --page-shadow: 0 30px 70px rgba(0, 0, 0, 0.24);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --font-sans: 'Manrope', 'Aptos', 'Segoe UI', sans-serif;
-  --font-sans-tight: 'Manrope', 'Aptos', 'Segoe UI', sans-serif;
+  --font-sans: 'Inter Tight', Inter, 'Aptos', 'Segoe UI', sans-serif;
+  --font-sans-tight: 'Inter Tight', Inter, 'Aptos', 'Segoe UI', sans-serif;
 }
 
 * {
