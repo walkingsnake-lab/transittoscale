@@ -6,7 +6,7 @@
     "region": "Mexico",
     "centroid": [
       -99.08763,
-      19.41062
+      19.46468
     ],
     "focusPoint": [
       -99.1332,
@@ -14,11 +14,11 @@
     ],
     "bounds": [
       -99.21464,
-      19.2868,
+      19.25939,
       -98.96062,
-      19.53444
+      19.66997
     ],
-    "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+    "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
     "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
   },
   "features": [
@@ -28,7 +28,7 @@
         "lineId": "ROUTE_14243",
         "lineName": "Pantitlán - Observatorio",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -123,7 +123,7 @@
         "lineId": "ROUTE_14244",
         "lineName": "Cuatro Caminos - Tasqueña",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -234,7 +234,7 @@
         "lineId": "ROUTE_14245",
         "lineName": "Indios Verdes - Universidad",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -333,7 +333,7 @@
         "lineId": "ROUTE_14246",
         "lineName": "Santa Anita - Martín Carrera",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -388,7 +388,7 @@
         "lineId": "ROUTE_14247",
         "lineName": "Politécnico - Pantitlán",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -455,7 +455,7 @@
         "lineId": "ROUTE_14248",
         "lineName": "El Rosario - Martín Carrera",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -514,7 +514,7 @@
         "lineId": "ROUTE_14249",
         "lineName": "El Rosario - Barranca del Muerto",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -589,7 +589,7 @@
         "lineId": "ROUTE_14250",
         "lineName": "Garibaldi - Constitución de 1917",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -700,7 +700,7 @@
         "lineId": "ROUTE_14251",
         "lineName": "Pantitlán - Tacubaya",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -795,7 +795,7 @@
         "lineId": "ROUTE_14252",
         "lineName": "Pantitlán - La Paz",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -850,7 +850,7 @@
         "lineId": "ROUTE_14253",
         "lineName": "Ciudad Azteca - Buenavista",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -965,7 +965,7 @@
         "lineId": "ROUTE_14254",
         "lineName": "Tláhuac - Mixcoac",
         "systemName": "Mexico City",
-        "sourceName": "Sistema de Transporte Colectivo Metro (STC Metro)",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
         "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
       },
       "geometry": {
@@ -1050,6 +1050,436 @@
           [
             -99.01443,
             19.2868
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_35431",
+        "lineName": "Tasqueña - Xochimilco",
+        "systemName": "Mexico City",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.10788,
+            19.25939
+          ],
+          [
+            -99.1098,
+            19.26
+          ],
+          [
+            -99.11137,
+            19.2608
+          ],
+          [
+            -99.11806,
+            19.26413
+          ],
+          [
+            -99.12571,
+            19.26796
+          ],
+          [
+            -99.12762,
+            19.26894
+          ],
+          [
+            -99.12839,
+            19.26945
+          ],
+          [
+            -99.12898,
+            19.27025
+          ],
+          [
+            -99.12925,
+            19.27076
+          ],
+          [
+            -99.13011,
+            19.27291
+          ],
+          [
+            -99.1313,
+            19.2759
+          ],
+          [
+            -99.13213,
+            19.27798
+          ],
+          [
+            -99.13251,
+            19.27882
+          ],
+          [
+            -99.13285,
+            19.27922
+          ],
+          [
+            -99.13318,
+            19.27953
+          ],
+          [
+            -99.13393,
+            19.28019
+          ],
+          [
+            -99.1345,
+            19.28044
+          ],
+          [
+            -99.13607,
+            19.28082
+          ],
+          [
+            -99.13774,
+            19.2812
+          ],
+          [
+            -99.13829,
+            19.28152
+          ],
+          [
+            -99.13968,
+            19.28275
+          ],
+          [
+            -99.14719,
+            19.2891
+          ],
+          [
+            -99.14869,
+            19.29039
+          ],
+          [
+            -99.1501,
+            19.29162
+          ],
+          [
+            -99.15036,
+            19.29197
+          ],
+          [
+            -99.15057,
+            19.2924
+          ],
+          [
+            -99.15072,
+            19.29299
+          ],
+          [
+            -99.15072,
+            19.29372
+          ],
+          [
+            -99.15071,
+            19.2956
+          ],
+          [
+            -99.15071,
+            19.29749
+          ],
+          [
+            -99.15071,
+            19.29859
+          ],
+          [
+            -99.14945,
+            19.29971
+          ],
+          [
+            -99.14854,
+            19.30041
+          ],
+          [
+            -99.14771,
+            19.301
+          ],
+          [
+            -99.14748,
+            19.30123
+          ],
+          [
+            -99.14724,
+            19.30154
+          ],
+          [
+            -99.14314,
+            19.30718
+          ],
+          [
+            -99.14204,
+            19.30862
+          ],
+          [
+            -99.14144,
+            19.31008
+          ],
+          [
+            -99.14097,
+            19.31144
+          ],
+          [
+            -99.14057,
+            19.31256
+          ],
+          [
+            -99.13878,
+            19.31791
+          ],
+          [
+            -99.13788,
+            19.32074
+          ],
+          [
+            -99.13774,
+            19.32144
+          ],
+          [
+            -99.13776,
+            19.32247
+          ],
+          [
+            -99.13813,
+            19.32372
+          ],
+          [
+            -99.13932,
+            19.32747
+          ],
+          [
+            -99.13995,
+            19.32959
+          ],
+          [
+            -99.14062,
+            19.3317
+          ],
+          [
+            -99.14186,
+            19.33566
+          ],
+          [
+            -99.14264,
+            19.33825
+          ],
+          [
+            -99.14346,
+            19.34082
+          ],
+          [
+            -99.14382,
+            19.34204
+          ],
+          [
+            -99.14406,
+            19.34322
+          ],
+          [
+            -99.14384,
+            19.34368
+          ],
+          [
+            -99.1435,
+            19.34382
+          ],
+          [
+            -99.14314,
+            19.34388
+          ],
+          [
+            -99.14185,
+            19.34384
+          ],
+          [
+            -99.14116,
+            19.34376
+          ],
+          [
+            -99.14051,
+            19.34363
+          ],
+          [
+            -99.14051,
+            19.34363
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineId": "ROUTE_24309",
+        "lineName": "Buenavista - Cuautitlán",
+        "systemName": "Mexico City",
+        "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
+        "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -99.17606,
+            19.66997
+          ],
+          [
+            -99.17762,
+            19.65229
+          ],
+          [
+            -99.17805,
+            19.64623
+          ],
+          [
+            -99.18045,
+            19.63434
+          ],
+          [
+            -99.18238,
+            19.62565
+          ],
+          [
+            -99.18423,
+            19.61692
+          ],
+          [
+            -99.18629,
+            19.6077
+          ],
+          [
+            -99.18654,
+            19.60588
+          ],
+          [
+            -99.1862,
+            19.59966
+          ],
+          [
+            -99.18564,
+            19.59384
+          ],
+          [
+            -99.18616,
+            19.59198
+          ],
+          [
+            -99.18702,
+            19.59032
+          ],
+          [
+            -99.19045,
+            19.58656
+          ],
+          [
+            -99.19268,
+            19.58397
+          ],
+          [
+            -99.19461,
+            19.58215
+          ],
+          [
+            -99.19646,
+            19.58053
+          ],
+          [
+            -99.19706,
+            19.57884
+          ],
+          [
+            -99.19732,
+            19.57665
+          ],
+          [
+            -99.19714,
+            19.57447
+          ],
+          [
+            -99.19646,
+            19.57216
+          ],
+          [
+            -99.19474,
+            19.56941
+          ],
+          [
+            -99.19502,
+            19.56398
+          ],
+          [
+            -99.19169,
+            19.55716
+          ],
+          [
+            -99.18998,
+            19.55542
+          ],
+          [
+            -99.18929,
+            19.55397
+          ],
+          [
+            -99.18809,
+            19.55045
+          ],
+          [
+            -99.18401,
+            19.5367
+          ],
+          [
+            -99.17908,
+            19.51951
+          ],
+          [
+            -99.17747,
+            19.51411
+          ],
+          [
+            -99.17442,
+            19.50234
+          ],
+          [
+            -99.17331,
+            19.49663
+          ],
+          [
+            -99.17094,
+            19.49153
+          ],
+          [
+            -99.16843,
+            19.48569
+          ],
+          [
+            -99.16646,
+            19.48027
+          ],
+          [
+            -99.16189,
+            19.469
+          ],
+          [
+            -99.15363,
+            19.45765
+          ],
+          [
+            -99.15234,
+            19.45559
+          ],
+          [
+            -99.15123,
+            19.45283
+          ],
+          [
+            -99.15283,
+            19.44647
           ]
         ]
       }
