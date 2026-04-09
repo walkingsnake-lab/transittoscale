@@ -81,13 +81,6 @@ body.body--detail-open {
   padding: 4px 2px 10px;
 }
 
-.shell__intro::after {
-  content: '';
-  width: min(180px, 28vw);
-  height: 1px;
-  background: linear-gradient(90deg, rgba(249, 238, 221, 0.4), rgba(249, 238, 221, 0));
-}
-
 .shell__intro-row {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.9fr);
