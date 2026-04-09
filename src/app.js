@@ -852,7 +852,7 @@ function formatLineLabel(lineCount) {
 }
 
 function formatSystemLabel(city) {
-  return city.sourceName?.trim() ?? '';
+  return city.serviceSummary?.trim() ?? city.sourceName?.trim() ?? '';
 }
 
 function getCountryFlag(city) {

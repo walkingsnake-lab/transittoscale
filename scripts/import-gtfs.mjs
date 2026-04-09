@@ -485,6 +485,7 @@ function openSourceArchive(buffer, sourceConfig) {
 function buildImportedCity(sourceConfig, features) {
   const bounds = computeBoundsFromFeatures(features);
   const centroid = computeCentroidFromBounds(bounds);
+  const serviceSummary = sourceConfig.serviceSummary ?? sourceConfig.sourceName;
 
   return {
     slug: sourceConfig.slug,
@@ -496,6 +497,7 @@ function buildImportedCity(sourceConfig, features) {
     bounds,
     lineCount: features.length,
     sourceName: sourceConfig.sourceName,
+    serviceSummary,
     sourceUrl: sourceConfig.sourceUrl,
     featureCollection: {
       type: 'FeatureCollection',
@@ -507,6 +509,7 @@ function buildImportedCity(sourceConfig, features) {
         focusPoint: sourceConfig.focusPoint ?? centroid,
         bounds,
         sourceName: sourceConfig.sourceName,
+        serviceSummary,
         sourceUrl: sourceConfig.sourceUrl
       },
       features

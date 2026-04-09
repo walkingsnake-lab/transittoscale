@@ -39,8 +39,8 @@ await mkdir(overviewDir, { recursive: true });
 
 const manifestSeed =
   normalized.size > 0
-    ? [...normalized.values()].map((city) => attachDisplaySettings(city))
-    : raw.map((city) => attachDisplaySettings(buildSeedCity(city)));
+    ? [...normalized.values()].map((city) => attachDisplaySettings(attachServiceMetadata(city)))
+    : raw.map((city) => attachDisplaySettings(attachServiceMetadata(buildSeedCity(city))));
 const manifest = await Promise.all(sortCitiesForDisplay(manifestSeed).map((city, index) => attachOverviewAssets(city, index)));
 
 for (const city of manifest) {
@@ -139,6 +139,18 @@ function attachDisplaySettings(city) {
   return {
     ...city,
     display: createCityDisplay(requestedProfile, city.lineCount)
+  };
+}
+
+function attachServiceMetadata(city) {
+  const sourceConfig = sourceConfigBySlug.get(city.slug);
+  const sourceName = city.sourceName ?? sourceConfig?.sourceName;
+  const serviceSummary = city.serviceSummary ?? sourceConfig?.serviceSummary ?? sourceName;
+
+  return {
+    ...city,
+    sourceName,
+    serviceSummary
   };
 }
 

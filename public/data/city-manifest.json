@@ -21,6 +21,7 @@
     "lineCount": 3,
     "sourceName": "Edmonton Transit Service (ETS)",
     "sourceUrl": "https://gtfs.edmonton.ca/TMGTFSRealTimeWebService/GTFS/gtfs.zip",
+    "serviceSummary": "ETS LRT",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -106,6 +107,7 @@
     "lineCount": 4,
     "sourceName": "Societe de transport de Montreal (STM)",
     "sourceUrl": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip",
+    "serviceSummary": "Montreal Metro",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -191,6 +193,7 @@
     "lineCount": 5,
     "sourceName": "Toronto Transit Commission (TTC)",
     "sourceUrl": "https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/7795b45e-e65a-4465-81fc-c36b9dfff169/resource/cfb6b2b8-6191-41e3-bda1-b175c51148cb/download/TTC%20Routes%20and%20Schedules%20Data.zip",
+    "serviceSummary": "TTC subway + light metro",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -276,6 +279,7 @@
     "lineCount": 3,
     "sourceName": "TransLink",
     "sourceUrl": "https://gtfs-static.translink.ca/gtfs/google_transit.zip",
+    "serviceSummary": "SkyTrain",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -361,6 +365,7 @@
     "lineCount": 21,
     "sourceName": "Just Use Wheels (Hong Kong)",
     "sourceUrl": "https://storage.googleapis.com/storage/v1/b/mdb-latest/o/hk-just-use-wheels-gtfs-2933.zip?alt=media",
+    "serviceSummary": "MTR + Light Rail",
     "display": {
       "profile": "mega",
       "lineWidth": 1.45,
@@ -446,6 +451,7 @@
     "lineCount": 13,
     "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
     "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip",
+    "serviceSummary": "Metro + Tren Ligero",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -531,6 +537,7 @@
     "lineCount": 17,
     "sourceName": "Consorcio Regional de Transportes de Madrid (CRTM)",
     "sourceUrl": "https://datos.crtm.es/",
+    "serviceSummary": "Metro de Madrid + Metro Ligero",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -616,6 +623,7 @@
     "lineCount": 12,
     "sourceName": "Storstockholms Lokaltrafik (SL)",
     "sourceUrl": "https://opendata.samtrafiken.se/gtfs/sl/sl.zip",
+    "serviceSummary": "Tunnelbana + Light Rail",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -701,6 +709,7 @@
     "lineCount": 19,
     "sourceName": "Transport for London (TfL)",
     "sourceUrl": "https://api.tfl.gov.uk",
+    "serviceSummary": "Underground + DLR + Overground + Elizabeth",
     "display": {
       "profile": "mega",
       "lineWidth": 1.45,
@@ -786,6 +795,7 @@
     "lineCount": 4,
     "sourceName": "Metropolitan Atlanta Rapid Transit Authority (MARTA)",
     "sourceUrl": "https://itsmarta.com/google_transit_feed/google_transit.zip",
+    "serviceSummary": "MARTA rail",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -871,6 +881,7 @@
     "lineCount": 2,
     "sourceName": "Maryland Transit Administration (MTA Maryland)",
     "sourceUrl": "https://www.mta.maryland.gov/content/developer-resources",
+    "serviceSummary": "Metro SubwayLink + Light RailLink",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -956,6 +967,7 @@
     "lineCount": 8,
     "sourceName": "Massachusetts Bay Transportation Authority (MBTA)",
     "sourceUrl": "https://cdn.mbta.com/MBTA_GTFS.zip",
+    "serviceSummary": "MBTA rapid transit",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -1041,6 +1053,7 @@
     "lineCount": 8,
     "sourceName": "Chicago Transit Authority (CTA)",
     "sourceUrl": "https://www.transitchicago.com/downloads/sch_data/google_transit.zip",
+    "serviceSummary": "Chicago \"L\"",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -1126,6 +1139,7 @@
     "lineCount": 4,
     "sourceName": "Dallas Area Rapid Transit (DART)",
     "sourceUrl": "https://www.dart.org/transitdata/latest/google_transit.zip",
+    "serviceSummary": "DART Light Rail",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -1211,6 +1225,7 @@
     "lineCount": 6,
     "sourceName": "Regional Transportation District (RTD)",
     "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip",
+    "serviceSummary": "RTD Light Rail",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -1296,6 +1311,7 @@
     "lineCount": 6,
     "sourceName": "Los Angeles County Metropolitan Transportation Authority (LA Metro)",
     "sourceUrl": "https://gitlab.com/LACMTA/gtfs_rail/raw/master/gtfs_rail.zip",
+    "serviceSummary": "Metro Rail",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -1381,6 +1397,7 @@
     "lineCount": 2,
     "sourceName": "Metro Transit",
     "sourceUrl": "https://svc.metrotransit.org/mtgtfs/gtfs.zip",
+    "serviceSummary": "Metro light rail",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -1466,6 +1483,7 @@
     "lineCount": 26,
     "sourceName": "MTA New York City Transit",
     "sourceUrl": "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip",
+    "serviceSummary": "Subway + Staten Island Railway",
     "display": {
       "profile": "mega",
       "lineWidth": 1.45,
@@ -1551,6 +1569,7 @@
     "lineCount": 9,
     "sourceName": "Southeastern Pennsylvania Transportation Authority (SEPTA)",
     "sourceUrl": "https://github.com/septadev/GTFS/releases/latest/download/gtfs_public.zip",
+    "serviceSummary": "SEPTA Metro + trolley",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -1636,6 +1655,7 @@
     "lineCount": 3,
     "sourceName": "Pittsburgh Regional Transit (PRT)",
     "sourceUrl": "https://www.rideprt.org/developerresources/GTFS.zip",
+    "serviceSummary": "PRT light rail",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -1721,6 +1741,7 @@
     "lineCount": 7,
     "sourceName": "TriMet (MAX + Streetcar)",
     "sourceUrl": "http://developer.trimet.org/schedule/gtfs.zip",
+    "serviceSummary": "MAX + Streetcar",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -1806,6 +1827,7 @@
     "lineCount": 5,
     "sourceName": "San Diego Metropolitan Transit System (MTS)",
     "sourceUrl": "https://www.sdmts.com/google_transit_files/google_transit.zip",
+    "serviceSummary": "MTS Trolley (Light Rail)",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -1891,6 +1913,7 @@
     "lineCount": 6,
     "sourceName": "Muni Metro",
     "sourceUrl": "https://muni-gtfs.apps.sfmta.com/data/muni_gtfs-current.zip",
+    "serviceSummary": "Muni Metro (excluding BART)",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
@@ -1976,6 +1999,7 @@
     "lineCount": 3,
     "sourceName": "VTA Light Rail",
     "sourceUrl": "https://www.vta.org/go/routes",
+    "serviceSummary": "VTA Light Rail (excluding BART)",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -2061,6 +2085,7 @@
     "lineCount": 2,
     "sourceName": "Sound Transit",
     "sourceUrl": "https://www.soundtransit.org/GTFS-rail/40_gtfs.zip",
+    "serviceSummary": "Link light rail",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -2146,6 +2171,7 @@
     "lineCount": 2,
     "sourceName": "Metro Transit - St. Louis",
     "sourceUrl": "https://www.metrostlouis.org/Transit/google_transit.zip",
+    "serviceSummary": "MetroLink",
     "display": {
       "profile": "standard",
       "lineWidth": 1.65,
@@ -2231,6 +2257,7 @@
     "lineCount": 6,
     "sourceName": "Washington Metropolitan Area Transit Authority (WMATA)",
     "sourceUrl": "https://api.wmata.com/gtfs/rail-gtfs-static.zip",
+    "serviceSummary": "Washington Metro",
     "display": {
       "profile": "dense",
       "lineWidth": 1.55,
