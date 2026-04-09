@@ -1066,7 +1066,7 @@ function formatSystemLabel(city) {
     chicago: 'Chicago "L"',
     dallas: 'DART Light Rail',
     denver: 'RTD Light Rail',
-    'san-diego': 'MTS Trolley',
+    'san-diego': 'MTS Trolley (Light Rail)',
     'new-york': 'Subway + Staten Island Railway',
     boston: 'MBTA rapid transit',
     'washington-dc': 'Washington Metro',
@@ -1406,5 +1406,6 @@ function applyFixedRect(element, rect) {
   element.style.margin = '0';
   element.style.zIndex = '25';
 }
+
 
 
