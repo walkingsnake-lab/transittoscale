@@ -61,26 +61,50 @@ body.body--detail-open {
 }
 
 .shell__intro {
+  position: relative;
   display: grid;
-  gap: 4px;
+  gap: 5px;
   width: min(680px, 100%);
-  padding: 2px 2px 0;
+  padding: 4px 2px 12px;
+}
+
+.shell__intro::after {
+  content: '';
+  width: min(120px, 26vw);
+  height: 1px;
+  margin-top: 4px;
+  background: linear-gradient(90deg, rgba(246, 236, 216, 0.44), rgba(246, 236, 216, 0));
+}
+
+.shell__kicker {
+  margin: 0;
+  color: rgba(249, 239, 220, 0.62);
+  font-family: var(--font-sans-tight);
+  font-size: 0.68rem;
+  font-weight: 640;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .shell__title {
   margin: 0;
   color: rgba(250, 244, 234, 0.96);
   font-family: var(--font-sans-tight);
-  font-size: clamp(1.06rem, 1.6vw, 1.24rem);
-  font-weight: 650;
-  letter-spacing: 0.01em;
+  font-size: clamp(1.14rem, 1.9vw, 1.44rem);
+  font-weight: 680;
+  letter-spacing: -0.01em;
+  line-height: 1.04;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.28);
 }
 
 .shell__intent {
   margin: 0;
   color: rgba(246, 238, 226, 0.8);
-  font-size: clamp(0.8rem, 1.05vw, 0.9rem);
-  line-height: 1.35;
+  max-width: 62ch;
+  font-size: clamp(0.8rem, 1.05vw, 0.92rem);
+  line-height: 1.36;
+  text-wrap: pretty;
 }
 
 .shell__toolbar {
@@ -1196,7 +1220,12 @@ body.body--detail-open {
 
   .shell__intro {
     gap: 3px;
-    padding: 0 1px;
+    padding: 0 1px 10px;
+  }
+
+  .shell__kicker {
+    font-size: 0.64rem;
+    letter-spacing: 0.15em;
   }
 
   .shell__intent {

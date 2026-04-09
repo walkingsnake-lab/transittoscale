@@ -26,8 +26,9 @@ export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell" data-shell>
       <section class="shell__intro" data-intro>
+        <p class="shell__kicker">Transit Atlas</p>
         <h1 class="shell__title">Transit to Scale</h1>
-        <p class="shell__intent">A visual atlas for comparing metro systems at shared real-world scale.</p>
+        <p class="shell__intent">Compare metro systems from around the world at a shared, true-to-distance scale.</p>
       </section>
       <header class="shell__toolbar" data-toolbar>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
