@@ -18,6 +18,7 @@ const CITY_GEOJSON_CACHE = new Map();
 const DETAIL_DIAGRAM_CACHE = new Map();
 const MAX_OVERVIEW_CARD_HEIGHT = 560;
 const DETAIL_MIN_ZOOM = 1;
+const DETAIL_INITIAL_ZOOM = 1.14;
 const DETAIL_MAX_ZOOM = 6;
 const DETAIL_BUTTON_ZOOM_FACTOR = 1.35;
 const DETAIL_WHEEL_ZOOM_SENSITIVITY = 0.0015;
@@ -706,7 +707,7 @@ function createDetailCard(card, { requestId }) {
     viewportHeight: 0,
     contentWidth: detailWidth,
     contentHeight: detailHeight,
-    zoom: DETAIL_MIN_ZOOM,
+    zoom: DETAIL_INITIAL_ZOOM,
     panX: 0,
     panY: 0,
     dragging: false

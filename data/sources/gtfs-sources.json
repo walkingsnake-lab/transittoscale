@@ -1175,5 +1175,78 @@
       "B": "Line B"
     },
     "serviceSummary": "Metro + Tren Ligero"
+  },
+  {
+    "slug": "prague",
+    "name": "Prague",
+    "region": "Czech Republic",
+    "sourceType": "gtfs",
+    "sourceName": "Pražská integrovaná doprava (PID)",
+    "sourceUrl": "https://data.pid.cz/PID_GTFS.zip",
+    "focusPoint": [
+      14.4214,
+      50.087
+    ],
+    "routeTypes": [
+      "1"
+    ],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 20,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": [
+      "L991",
+      "L992",
+      "L993"
+    ],
+    "routeIdAliases": {
+      "L991": "A",
+      "L992": "B",
+      "L993": "C"
+    },
+    "lineNameOverrides": {
+      "A": "Line A",
+      "B": "Line B",
+      "C": "Line C"
+    },
+    "serviceSummary": "Prague Metro"
+  },
+  {
+    "slug": "buenos-aires",
+    "name": "Buenos Aires",
+    "region": "Argentina",
+    "sourceType": "geojson",
+    "sourceName": "Subterráneos de Buenos Aires (SBASE)",
+    "sourceUrl": "https://cdn.buenosaires.gob.ar/datosabiertos/datasets/sbase/subte-estaciones/red_subte.geojson",
+    "focusPoint": [
+      -58.3816,
+      -34.6037
+    ],
+    "lineIdProperty": "nombre",
+    "lineIdAllowlist": [
+      "Linea A",
+      "Linea B",
+      "Linea C",
+      "Linea D",
+      "Linea E",
+      "Linea H"
+    ],
+    "lineIdAliases": {
+      "Linea A": "A",
+      "Linea B": "B",
+      "Linea C": "C",
+      "Linea D": "D",
+      "Linea E": "E",
+      "Linea H": "H"
+    },
+    "lineNameOverrides": {
+      "A": "Line A",
+      "B": "Line B",
+      "C": "Line C",
+      "D": "Line D",
+      "E": "Line E",
+      "H": "Line H"
+    },
+    "minPointSpacingMeters": 20,
+    "serviceSummary": "Subte"
   }
 ]

@@ -1,5 +1,91 @@
 [
   {
+    "slug": "buenos-aires",
+    "name": "Buenos Aires",
+    "region": "Argentina",
+    "dataPath": "data/cities/buenos-aires.geojson",
+    "centroid": [
+      -58.42815952399293,
+      -34.59947661280535
+    ],
+    "focusPoint": [
+      -58.3816,
+      -34.6037
+    ],
+    "bounds": [
+      -58.486384921333105,
+      -34.64331081026237,
+      -58.36993412665276,
+      -34.555642415348316
+    ],
+    "lineCount": 6,
+    "sourceName": "Subterráneos de Buenos Aires (SBASE)",
+    "serviceSummary": "Subte",
+    "sourceUrl": "https://cdn.buenosaires.gob.ar/datosabiertos/datasets/sbase/subte-estaciones/red_subte.geojson",
+    "display": {
+      "profile": "dense",
+      "lineWidth": 1.55,
+      "simplifyTolerance": 1.6
+    },
+    "overview": {
+      "viewportWidth": 360,
+      "viewportHeight": 440,
+      "rasterScale": 3,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": {
+          "imagePath": "data/overview/buenos-aires--wide.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
+        },
+        "standard": {
+          "imagePath": "data/overview/buenos-aires--standard.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
+        },
+        "close": {
+          "imagePath": "data/overview/buenos-aires--close.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
+        }
+      }
+    },
+    "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
+      "width": 720,
+      "height": 880,
+      "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
+      "imagePath": "data/overview/buenos-aires--detail.png",
+      "referenceMarker": {
+        "centerX": 360,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
     "slug": "edmonton",
     "name": "Edmonton",
     "region": "Canada",
@@ -421,6 +507,92 @@
       "imageWidth": 720,
       "imageHeight": 880,
       "imagePath": "data/overview/hong-kong--detail.png",
+      "referenceMarker": {
+        "centerX": 360,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
+    "slug": "prague",
+    "name": "Prague",
+    "region": "Czech Republic",
+    "dataPath": "data/cities/prague.geojson",
+    "centroid": [
+      14.433959999999999,
+      50.078177499999995
+    ],
+    "focusPoint": [
+      14.4214,
+      50.087
+    ],
+    "bounds": [
+      14.291139,
+      50.027452,
+      14.576781,
+      50.128903
+    ],
+    "lineCount": 3,
+    "sourceName": "Pražská integrovaná doprava (PID)",
+    "serviceSummary": "Prague Metro",
+    "sourceUrl": "https://data.pid.cz/PID_GTFS.zip",
+    "display": {
+      "profile": "standard",
+      "lineWidth": 1.65,
+      "simplifyTolerance": 1
+    },
+    "overview": {
+      "viewportWidth": 360,
+      "viewportHeight": 440,
+      "rasterScale": 3,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": {
+          "imagePath": "data/overview/prague--wide.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
+        },
+        "standard": {
+          "imagePath": "data/overview/prague--standard.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
+        },
+        "close": {
+          "imagePath": "data/overview/prague--close.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
+        }
+      }
+    },
+    "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
+      "width": 720,
+      "height": 880,
+      "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
+      "imagePath": "data/overview/prague--detail.png",
       "referenceMarker": {
         "centerX": 360,
         "centerY": 440,

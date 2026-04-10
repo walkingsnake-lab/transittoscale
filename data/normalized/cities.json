@@ -619,5 +619,53 @@
     "lineCount": 13,
     "sourceName": "Secretaría de Movilidad de la Ciudad de México (SEMOVI)",
     "sourceUrl": "https://datos.cdmx.gob.mx/dataset/75538d96-3ade-4bc5-ae7d-d85595e4522d/resource/32ed1b6b-41cd-49b3-b7f0-b57acb0eb819/download/gtfs-2.zip"
+  },
+  {
+    "slug": "prague",
+    "name": "Prague",
+    "region": "Czech Republic",
+    "dataPath": "data/cities/prague.geojson",
+    "centroid": [
+      14.433959999999999,
+      50.078177499999995
+    ],
+    "focusPoint": [
+      14.4214,
+      50.087
+    ],
+    "bounds": [
+      14.291139,
+      50.027452,
+      14.576781,
+      50.128903
+    ],
+    "lineCount": 3,
+    "sourceName": "Pražská integrovaná doprava (PID)",
+    "serviceSummary": "Prague Metro",
+    "sourceUrl": "https://data.pid.cz/PID_GTFS.zip"
+  },
+  {
+    "slug": "buenos-aires",
+    "name": "Buenos Aires",
+    "region": "Argentina",
+    "dataPath": "data/cities/buenos-aires.geojson",
+    "centroid": [
+      -58.42815952399293,
+      -34.59947661280535
+    ],
+    "focusPoint": [
+      -58.3816,
+      -34.6037
+    ],
+    "bounds": [
+      -58.486384921333105,
+      -34.64331081026237,
+      -58.36993412665276,
+      -34.555642415348316
+    ],
+    "lineCount": 6,
+    "sourceName": "Subterráneos de Buenos Aires (SBASE)",
+    "serviceSummary": "Subte",
+    "sourceUrl": "https://cdn.buenosaires.gob.ar/datosabiertos/datasets/sbase/subte-estaciones/red_subte.geojson"
   }
 ]
