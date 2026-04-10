@@ -3,6 +3,7 @@
 :root {
   color-scheme: light;
   --page-bg: #efeee8;
+  --page-tile-size: 124px;
   --page-grout: rgba(27, 27, 27, 0.11);
   --page-panel: #111111;
   --page-panel-line: rgba(255, 255, 255, 0.88);
@@ -36,11 +37,24 @@ body {
   color: var(--page-copy-dark);
   background-color: var(--page-bg);
   background-image:
-    repeating-linear-gradient(180deg, var(--page-grout) 0 1px, transparent 1px 106px),
-    linear-gradient(90deg, var(--page-grout) 0 1px, transparent 1px),
-    linear-gradient(90deg, var(--page-grout) 0 1px, transparent 1px);
-  background-size: auto, 168px 106px, 168px 106px;
-  background-position: 0 0, 0 0, 84px 53px;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 24%, rgba(0, 0, 0, 0.025) 100%),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.24), transparent 30%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 calc(var(--page-tile-size) - 1px),
+      var(--page-grout) calc(var(--page-tile-size) - 1px) var(--page-tile-size)
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 calc(var(--page-tile-size) - 1px),
+      var(--page-grout) calc(var(--page-tile-size) - 1px) var(--page-tile-size)
+    );
+  background-size:
+    auto,
+    auto,
+    var(--page-tile-size) var(--page-tile-size),
+    var(--page-tile-size) var(--page-tile-size);
+  background-position: 0 0, 0 0, 0 0, 0 0;
 }
 
 body.body--detail-open {
@@ -66,9 +80,7 @@ body.body--detail-open {
   z-index: 1;
 }
 
-.shell__intro,
-.shell__toolbar,
-.shell__gallery-header {
+.shell__intro {
   position: relative;
   overflow: hidden;
   background: var(--page-panel);
@@ -77,11 +89,7 @@ body.body--detail-open {
 }
 
 .shell__intro::before,
-.shell__intro::after,
-.shell__toolbar::before,
-.shell__toolbar::after,
-.shell__gallery-header::before,
-.shell__gallery-header::after {
+.shell__intro::after {
   content: '';
   position: absolute;
   left: 14px;
@@ -91,15 +99,11 @@ body.body--detail-open {
   pointer-events: none;
 }
 
-.shell__intro::before,
-.shell__toolbar::before,
-.shell__gallery-header::before {
+.shell__intro::before {
   top: 12px;
 }
 
-.shell__intro::after,
-.shell__toolbar::after,
-.shell__gallery-header::after {
+.shell__intro::after {
   bottom: 12px;
 }
 
@@ -112,8 +116,7 @@ body.body--detail-open {
 }
 
 .shell__intro-copy,
-.shell__intro-panel,
-.shell__gallery-heading {
+.shell__intro-panel {
   position: relative;
   z-index: 1;
 }
@@ -125,9 +128,7 @@ body.body--detail-open {
 }
 
 .shell__eyebrow,
-.shell__panel-kicker,
-.shell__toolbar-kicker,
-.shell__gallery-kicker {
+.shell__panel-kicker {
   margin: 0;
   color: var(--page-copy-muted);
   font-family: var(--font-signage);
@@ -138,8 +139,7 @@ body.body--detail-open {
   text-transform: uppercase;
 }
 
-.shell__title,
-.shell__gallery-title {
+.shell__title {
   margin: 0;
   color: var(--page-copy);
   font-family: var(--font-signage);
@@ -154,8 +154,7 @@ body.body--detail-open {
 
 .shell__intent,
 .shell__panel-text,
-.shell__toolbar-note,
-.shell__gallery-copy {
+.shell__toolbar-note {
   margin: 0;
   font-family: var(--font-signage);
   line-height: 1.45;
@@ -168,49 +167,21 @@ body.body--detail-open {
   font-size: clamp(1rem, 1.1vw, 1.08rem);
 }
 
-.shell__routes {
+.shell__flags {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
 }
 
-.shell__route {
-  display: inline-grid;
-  place-items: center;
+.shell__flag {
+  display: block;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  color: #ffffff;
-  font-family: var(--font-signage);
-  font-size: 1.28rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.shell__route--red {
-  background: #ee352e;
-}
-
-.shell__route--blue {
-  background: #0039a6;
-}
-
-.shell__route--yellow {
-  background: #fccc0a;
-  color: #111111;
-}
-
-.shell__route--green {
-  background: #00933c;
-}
-
-.shell__route--orange {
-  background: #ff6319;
-}
-
-.shell__route--gray {
-  background: #a7a9ac;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 4px 10px rgba(0, 0, 0, 0.22);
 }
 
 .shell__intro-panel {
@@ -270,8 +241,7 @@ body.body--detail-open {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 18px 18px 16px;
-  border-radius: 4px;
+  padding: 2px 2px 4px;
   transition:
     opacity 180ms var(--ease-out),
     transform 180ms var(--ease-out);
@@ -288,14 +258,8 @@ body.body--detail-open {
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  color: var(--page-copy-muted);
+  color: var(--page-copy-subtle);
   font-size: 0.94rem;
-}
-
-.shell__toolbar-separator {
-  width: 18px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.38);
 }
 
 .shell__sr-only {
@@ -342,10 +306,12 @@ body.body--detail-open {
   align-items: center;
   gap: 0;
   padding: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(17, 17, 17, 0.12);
   border-radius: 999px;
-  background: transparent;
-  color: var(--page-copy);
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--page-copy-dark);
+  box-shadow: var(--page-shadow-soft);
+  backdrop-filter: blur(6px);
 }
 
 .zoom-controls__button {
@@ -366,11 +332,11 @@ body.body--detail-open {
 
 .zoom-controls__button:hover:not(:disabled),
 .zoom-controls__button:focus-visible {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(17, 17, 17, 0.06);
 }
 
 .zoom-controls__button:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.88);
+  outline: 2px solid rgba(17, 17, 17, 0.76);
   outline-offset: 2px;
 }
 
@@ -388,7 +354,7 @@ body.body--detail-open {
 
 .zoom-controls__step {
   flex: none;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(17, 17, 17, 0.2);
   transition:
     background-color 180ms var(--ease-out),
     opacity 180ms var(--ease-out);
@@ -410,7 +376,7 @@ body.body--detail-open {
 }
 
 .zoom-controls__step--active {
-  background: #ffffff;
+  background: #111111;
 }
 
 .zoom-controls__icon {
@@ -427,32 +393,7 @@ body.body--detail-open {
 
 .shell__gallery {
   display: grid;
-  gap: 14px;
-}
-
-.shell__gallery-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.95fr);
-  gap: 18px 28px;
-  align-items: end;
-  padding: 18px 20px 16px;
-  border-radius: 4px;
-}
-
-.shell__gallery-heading {
-  display: grid;
-  gap: 8px;
-}
-
-.shell__gallery-title {
-  font-size: clamp(1.86rem, 3vw, 2.5rem);
-}
-
-.shell__gallery-copy {
-  max-width: 32rem;
-  color: var(--page-copy-muted);
-  font-size: 0.94rem;
-  justify-self: end;
+  gap: 10px;
 }
 
 .grid {
@@ -469,8 +410,7 @@ body.body--detail-open {
 }
 
 .shell--detail-open .shell__intro,
-.shell--detail-open .shell__toolbar,
-.shell--detail-open .shell__gallery-header {
+.shell--detail-open .shell__toolbar {
   opacity: 0.24;
 }
 
@@ -1425,8 +1365,7 @@ body.body--detail-open {
 }
 
 @media (max-width: 1080px) {
-  .shell__intro,
-  .shell__gallery-header {
+  .shell__intro {
     grid-template-columns: 1fr;
   }
 
@@ -1435,10 +1374,6 @@ body.body--detail-open {
     padding-left: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
     border-left: 0;
-  }
-
-  .shell__gallery-copy {
-    justify-self: start;
   }
 }
 
@@ -1452,8 +1387,7 @@ body.body--detail-open {
     top: 10px;
     flex-direction: column;
     align-items: stretch;
-    padding: 16px 12px 14px;
-    border-radius: 4px;
+    padding: 0;
   }
 
   .shell__intro {
@@ -1464,11 +1398,7 @@ body.body--detail-open {
   }
 
   .shell__intro::before,
-  .shell__intro::after,
-  .shell__toolbar::before,
-  .shell__toolbar::after,
-  .shell__gallery-header::before,
-  .shell__gallery-header::after {
+  .shell__intro::after {
     left: 10px;
     right: 10px;
   }
@@ -1482,14 +1412,13 @@ body.body--detail-open {
     font-size: 0.96rem;
   }
 
-  .shell__routes {
+  .shell__flags {
     gap: 8px;
   }
 
-  .shell__route {
+  .shell__flag {
     width: 38px;
     height: 38px;
-    font-size: 1.08rem;
   }
 
   .shell__metrics {
@@ -1509,10 +1438,6 @@ body.body--detail-open {
     font-size: 0.9rem;
   }
 
-  .shell__toolbar-separator {
-    width: 18px;
-  }
-
   .zoom-controls {
     padding: 3px;
     width: 100%;
@@ -1530,23 +1455,7 @@ body.body--detail-open {
   }
 
   .shell__gallery {
-    gap: 12px;
-  }
-
-  .shell__gallery-header {
-    grid-template-columns: 1fr;
-    padding: 16px;
-    gap: 12px;
-    border-radius: 4px;
-  }
-
-  .shell__gallery-title {
-    font-size: clamp(1.56rem, 9vw, 2.06rem);
-  }
-
-  .shell__gallery-copy {
-    font-size: 0.92rem;
-    justify-self: start;
+    gap: 10px;
   }
 
   .grid {

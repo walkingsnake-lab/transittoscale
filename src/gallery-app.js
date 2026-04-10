@@ -33,14 +33,7 @@ export async function mountApp(root) {
             Compare metro systems from around the world using one shared distance reference and one consistent viewing
             frame.
           </p>
-          <div class="shell__routes" aria-label="Transit line markers">
-            <span class="shell__route shell__route--red">1</span>
-            <span class="shell__route shell__route--blue">A</span>
-            <span class="shell__route shell__route--yellow">N</span>
-            <span class="shell__route shell__route--green">4</span>
-            <span class="shell__route shell__route--orange">D</span>
-            <span class="shell__route shell__route--gray">L</span>
-          </div>
+          <div class="shell__flags" data-intro-flags aria-label="Countries represented in the collection"></div>
         </div>
         <div class="shell__intro-panel">
           <p class="shell__panel-kicker">Shared Reference</p>
@@ -66,11 +59,8 @@ export async function mountApp(root) {
       </section>
       <header class="shell__toolbar" data-toolbar>
         <div class="shell__toolbar-copy">
-          <p class="shell__toolbar-kicker">Station Control</p>
           <p class="shell__toolbar-note">
             <span data-catalog-summary>Loading catalog...</span>
-            <span class="shell__toolbar-separator" aria-hidden="true"></span>
-            <span data-toolbar-zoom>Standard</span>
           </p>
         </div>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
@@ -95,16 +85,6 @@ export async function mountApp(root) {
       </header>
       <section class="shell__status" data-status>Loading network catalog...</section>
       <section class="shell__gallery" data-gallery>
-        <div class="shell__gallery-header" data-gallery-header>
-          <div class="shell__gallery-heading">
-            <p class="shell__gallery-kicker">System Map</p>
-            <h2 class="shell__gallery-title">All lines, one wall.</h2>
-          </div>
-          <p class="shell__gallery-copy">
-            Browse the full collection, then open a card when you want a larger diagram and a closer read on the
-            network footprint.
-          </p>
-        </div>
         <section class="grid" data-grid aria-live="polite"></section>
       </section>
       <aside class="detail-view" data-detail-view hidden aria-hidden="true">
@@ -120,11 +100,10 @@ export async function mountApp(root) {
   const shell = root.querySelector('[data-shell]');
   const intro = root.querySelector('[data-intro]');
   const toolbar = root.querySelector('[data-toolbar]');
-  const galleryHeader = root.querySelector('[data-gallery-header]');
+  const introFlags = root.querySelector('[data-intro-flags]');
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
   const zoomLabel = root.querySelector('[data-zoom-label]');
-  const toolbarZoom = root.querySelector('[data-toolbar-zoom]');
   const catalogSummary = root.querySelector('[data-catalog-summary]');
   const statCities = root.querySelector('[data-stat-cities]');
   const statRegions = root.querySelector('[data-stat-regions]');
@@ -157,6 +136,7 @@ export async function mountApp(root) {
     statRegions.textContent = String(regionCount);
     statLines.textContent = String(totalLineCount);
     catalogSummary.textContent = `${cities.length} systems across ${regionCount} regions`;
+    introFlags.innerHTML = getIntroFlagsMarkup(cities);
 
     const cards = cities.map((city, index) =>
       createCard(city, index, {
@@ -180,7 +160,6 @@ export async function mountApp(root) {
       const zoomStep = OVERVIEW_ZOOM_STEPS[zoomIndex];
 
       zoomLabel.textContent = zoomStep.label;
-      toolbarZoom.textContent = `${zoomStep.label} view`;
       zoomSteps.forEach((step, index) => step.classList.toggle('zoom-controls__step--active', index === zoomIndex));
       zoomOutButton.disabled = zoomIndex === 0;
       zoomInButton.disabled = zoomIndex === OVERVIEW_ZOOM_STEPS.length - 1;
@@ -190,8 +169,7 @@ export async function mountApp(root) {
     function applyLayout() {
       const introHeight = intro ? Math.ceil(intro.getBoundingClientRect().height) : 0;
       const toolbarHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) : 0;
-      const galleryHeaderHeight = galleryHeader ? Math.ceil(galleryHeader.getBoundingClientRect().height) : 0;
-      const chromeHeight = introHeight + toolbarHeight + galleryHeaderHeight + 32;
+      const chromeHeight = introHeight + toolbarHeight + 24;
 
       updateGridLayout(grid, cards.length, { chromeHeight });
       syncZoomControls({ forcePresentation: true });
@@ -1096,15 +1074,15 @@ function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
   const isMobile = viewportWidth < 720;
   const availableHeight = Math.max(320, viewportHeight - chromeHeight);
   const rowTarget =
-    columns >= 5 ? 2.16 :
-    columns === 4 ? 1.98 :
+    columns >= 5 ? 1.84 :
+    columns === 4 ? 1.82 :
     columns === 3 ? 1.8 :
     columns === 2 ? 1.56 :
     1.34;
   const cardHeight =
     isMobile
       ? clamp(Math.min(availableHeight * 0.52, viewportWidth * 1.08), 250, 360)
-      : clamp(availableHeight / rowTarget, 250, MAX_OVERVIEW_CARD_HEIGHT);
+      : clamp(availableHeight / rowTarget, columns >= 5 ? 280 : 250, MAX_OVERVIEW_CARD_HEIGHT);
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
@@ -1112,10 +1090,11 @@ function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
 
 function chooseColumnCount(viewportWidth, cardCount) {
   const minCardWidth = viewportWidth < 720 ? 250 : viewportWidth < 1100 ? 300 : 340;
-  const idealCardWidth = viewportWidth >= 1600 ? 420 : viewportWidth >= 1100 ? 390 : 340;
+  const idealCardWidth = viewportWidth >= 1600 ? 440 : viewportWidth >= 1100 ? 400 : 340;
   let best = 1;
+  const maxColumns = viewportWidth >= 1500 ? 5 : cardCount;
 
-  for (let columns = 1; columns <= cardCount; columns += 1) {
+  for (let columns = 1; columns <= Math.min(cardCount, maxColumns); columns += 1) {
     const candidateWidth = viewportWidth / columns;
 
     if (candidateWidth < minCardWidth) {
@@ -1141,6 +1120,19 @@ function formatSystemLabel(city) {
 }
 
 function getCountryFlag(city) {
+  const flag = getRegionFlag(city.region);
+
+  if (!flag) {
+    return null;
+  }
+
+  return {
+    src: flag.src,
+    alt: `${city.region} flag`
+  };
+}
+
+function getRegionFlag(region) {
   const flagCodeByRegion = {
     'United States': 'us',
     Canada: 'ca',
@@ -1150,8 +1142,7 @@ function getCountryFlag(city) {
     'United Kingdom': 'gb',
     China: 'cn'
   };
-
-  const code = flagCodeByRegion[city.region];
+  const code = flagCodeByRegion[region];
 
   if (!code) {
     return null;
@@ -1159,8 +1150,31 @@ function getCountryFlag(city) {
 
   return {
     src: `https://hatscripts.github.io/circle-flags/flags/${code}.svg`,
-    alt: `${city.region} flag`
+    alt: `${region} flag`
   };
+}
+
+function getIntroFlagsMarkup(cities, limit = 6) {
+  const regionCounts = new Map();
+
+  cities.forEach((city) => {
+    if (!city.region) {
+      return;
+    }
+
+    regionCounts.set(city.region, (regionCounts.get(city.region) ?? 0) + 1);
+  });
+
+  return [...regionCounts.entries()]
+    .sort((left, right) => right[1] - left[1] || CITY_ORDER_COLLATOR.compare(left[0], right[0]))
+    .map(([region]) => region)
+    .filter((region) => getRegionFlag(region))
+    .slice(0, limit)
+    .map((region) => {
+      const flag = getRegionFlag(region);
+      return `<img class="shell__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />`;
+    })
+    .join('');
 }
 
 function getCountryLocator(city) {
