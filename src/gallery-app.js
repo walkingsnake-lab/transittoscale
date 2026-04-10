@@ -25,43 +25,25 @@ const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell" data-shell>
-      <div class="shell__backdrop" aria-hidden="true">
-        <div class="shell__backdrop-orb shell__backdrop-orb--north"></div>
-        <div class="shell__backdrop-orb shell__backdrop-orb--east"></div>
-        <div class="shell__backdrop-orb shell__backdrop-orb--south"></div>
-        <div class="shell__backdrop-grid"></div>
-      </div>
       <section class="shell__intro" data-intro>
         <div class="shell__intro-copy">
-          <p class="shell__eyebrow">Global Metro Atlas</p>
-          <h1 class="shell__title">Transit systems, measured on the same page.</h1>
+          <p class="shell__eyebrow">World Metro Gallery</p>
+          <h1 class="shell__title">Transit to Scale</h1>
           <p class="shell__intent">
-            A gallery of urban rail networks rendered at true distance, so size, spread, and structure can be compared
-            without diagram shortcuts.
+            Compare metro systems from around the world using one shared distance reference and one consistent viewing
+            frame.
           </p>
-          <div class="shell__signals" aria-label="Atlas highlights">
-            <div class="shell__signal">
-              <span class="shell__signal-label">Reference</span>
-              <strong>Shared 5-mile marker</strong>
-            </div>
-            <div class="shell__signal">
-              <span class="shell__signal-label">Browse</span>
-              <strong>Sorted across regions</strong>
-            </div>
-            <div class="shell__signal">
-              <span class="shell__signal-label">Inspect</span>
-              <strong>Open any card for detail</strong>
-            </div>
+          <div class="shell__routes" aria-label="Transit line markers">
+            <span class="shell__route shell__route--red">1</span>
+            <span class="shell__route shell__route--blue">A</span>
+            <span class="shell__route shell__route--yellow">N</span>
+            <span class="shell__route shell__route--green">4</span>
+            <span class="shell__route shell__route--orange">D</span>
+            <span class="shell__route shell__route--gray">L</span>
           </div>
         </div>
         <div class="shell__intro-panel">
-          <div class="shell__intro-panel-copy">
-            <p class="shell__panel-kicker">Live Catalog</p>
-            <p class="shell__panel-text">
-              Every card sits in a common viewing frame, which makes the differences between systems feel earned rather
-              than stylized.
-            </p>
-          </div>
+          <p class="shell__panel-kicker">Shared Reference</p>
           <dl class="shell__metrics" aria-label="Catalog metrics">
             <div>
               <dt data-stat-cities>0</dt>
@@ -76,11 +58,15 @@ export async function mountApp(root) {
               <dd>lines</dd>
             </div>
           </dl>
+          <p class="shell__panel-text">
+            Every card keeps the same five-mile marker, so differences in size and spread read clearly instead of
+            decoratively.
+          </p>
         </div>
       </section>
       <header class="shell__toolbar" data-toolbar>
         <div class="shell__toolbar-copy">
-          <p class="shell__toolbar-kicker">Atlas Scale</p>
+          <p class="shell__toolbar-kicker">Station Control</p>
           <p class="shell__toolbar-note">
             <span data-catalog-summary>Loading catalog...</span>
             <span class="shell__toolbar-separator" aria-hidden="true"></span>
@@ -111,12 +97,12 @@ export async function mountApp(root) {
       <section class="shell__gallery" data-gallery>
         <div class="shell__gallery-header" data-gallery-header>
           <div class="shell__gallery-heading">
-            <p class="shell__gallery-kicker">Collection</p>
-            <h2 class="shell__gallery-title">Networks at shared scale</h2>
+            <p class="shell__gallery-kicker">System Map</p>
+            <h2 class="shell__gallery-title">All lines, one wall.</h2>
           </div>
           <p class="shell__gallery-copy">
-            Sweep across the full field, then open a card when you want a larger diagram and a closer read on how a
-            system occupies space.
+            Browse the full collection, then open a card when you want a larger diagram and a closer read on the
+            network footprint.
           </p>
         </div>
         <section class="grid" data-grid aria-live="polite"></section>
