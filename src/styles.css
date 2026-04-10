@@ -1129,8 +1129,7 @@ body.body--detail-open {
 
 .detail-card__country-marker-pin {
   fill: rgba(var(--card-accent-rgb), 0.96);
-  stroke: rgba(17, 17, 17, 0.64);
-  stroke-width: 0.85;
+  stroke: none;
 }
 
 .detail-card__country-marker-core {

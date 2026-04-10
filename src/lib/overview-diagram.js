@@ -101,13 +101,29 @@ export function getOverviewDiagramLayout({
   minWidth = OVERVIEW_BASE_WIDTH,
   minHeight = OVERVIEW_BASE_HEIGHT,
   diagramScale = 1,
-  planePadding = OVERVIEW_SAFE_INSET
+  planePadding = OVERVIEW_SAFE_INSET,
+  centerContent = false
 }) {
   const targetScale = diagramScale * OVERVIEW_SCALE_BIAS;
-  const { paths: localPaths } = getOverviewDisplayPaths({
+  let { paths: localPaths } = getOverviewDisplayPaths({
     city,
     diagramScale: targetScale
   });
+
+  if (centerContent) {
+    const contentBounds = getPathBounds(localPaths);
+
+    if (contentBounds) {
+      localPaths = localPaths.map((path) =>
+        translatePath(
+          path,
+          -((contentBounds.minX + contentBounds.maxX) / 2),
+          -((contentBounds.minY + contentBounds.maxY) / 2)
+        )
+      );
+    }
+  }
+
   const referenceRadius = REFERENCE_RADIUS_PIXELS * targetScale;
   const bounds = getPathBounds(localPaths);
   const halfWidth = Math.max(
