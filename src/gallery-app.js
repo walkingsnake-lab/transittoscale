@@ -53,10 +53,29 @@ export async function mountApp(root) {
               <dd>lines</dd>
             </div>
           </dl>
-          <p class="shell__panel-text">
-            Every card keeps the same five-mile marker, so differences in size and spread read clearly instead of
-            decoratively.
-          </p>
+          <div class="shell__credits" aria-label="Project credits">
+            <p class="shell__panel-kicker">Credits</p>
+            <ul class="shell__credits-list">
+              <li>
+                <span class="shell__credits-label">App</span>
+                <span class="shell__credits-value">Built with Vite and vanilla JavaScript.</span>
+              </li>
+              <li>
+                <span class="shell__credits-label">Data</span>
+                <span class="shell__credits-value">
+                  Transit networks come from official GTFS feeds and other open agency data, then get rebuilt into a
+                  shared GeoJSON catalog.
+                </span>
+              </li>
+              <li>
+                <span class="shell__credits-label">Open Source</span>
+                <span class="shell__credits-value">
+                  d3-geo, csv-parse, adm-zip, sharp, @resvg/resvg-js, and Hatscripts&apos; circle-flags power the
+                  projection math, import pipeline, and generated assets.
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
       <header class="shell__toolbar" data-toolbar>

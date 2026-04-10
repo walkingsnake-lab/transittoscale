@@ -153,7 +153,7 @@ body.body--detail-open {
 }
 
 .shell__intent,
-.shell__panel-text,
+.shell__credits-value,
 .shell__toolbar-note {
   margin: 0;
   font-family: var(--font-signage);
@@ -227,10 +227,38 @@ body.body--detail-open {
   text-transform: uppercase;
 }
 
-.shell__panel-text {
+.shell__credits {
+  display: grid;
+  gap: 12px;
+}
+
+.shell__credits-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shell__credits-list li {
+  display: grid;
+  gap: 3px;
+}
+
+.shell__credits-label {
+  color: var(--page-copy);
+  font-family: var(--font-signage);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.shell__credits-value {
   max-width: 24rem;
   color: var(--page-copy-muted);
-  font-size: 0.96rem;
+  font-size: 0.93rem;
 }
 
 .shell__toolbar {
