@@ -22,6 +22,8 @@ const DETAIL_MAX_ZOOM = 6;
 const DETAIL_BUTTON_ZOOM_FACTOR = 1.35;
 const DETAIL_WHEEL_ZOOM_SENSITIVITY = 0.0015;
 const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
+const DETAIL_TRANSITION_MS = 300;
+const COUNTRY_MARKER_NUDGE_Y = 1;
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell" data-shell>
@@ -310,7 +312,7 @@ export async function mountApp(root) {
         return;
       }
 
-      detailHideTimeoutId = window.setTimeout(finalizeClose, 260);
+      detailHideTimeoutId = window.setTimeout(finalizeClose, DETAIL_TRANSITION_MS);
     }
 
     zoomOutButton.addEventListener('click', () => setZoomIndex(zoomIndex - 1));
@@ -650,7 +652,6 @@ function createDetailCard(card, { requestId }) {
             aria-label="${card.city.name} transit network diagram. Use wheel or pinch to zoom, drag to pan, and Fit to reset."
           >
             <div class="detail-card__scene" data-detail-scene>
-              ${detailPresentation?.imagePath ? `<img class="detail-card__canvas" src="${detailPresentation.imagePath}" alt="" decoding="async" />` : ''}
               <div class="detail-card__fallback-reference">
                 <svg class="card__reference card__reference--circle" aria-hidden="true" focusable="false"></svg>
                 <svg class="card__reference card__reference--label" aria-hidden="true" focusable="false"></svg>
@@ -684,7 +685,6 @@ function createDetailCard(card, { requestId }) {
 
   const viewport = element.querySelector('[data-detail-viewport]');
   const scene = element.querySelector('[data-detail-scene]');
-  const detailImage = element.querySelector('.detail-card__canvas');
   const referenceCircleSvg = element.querySelector('.card__reference--circle');
   const referenceLabelSvg = element.querySelector('.card__reference--label');
   const vectorLayer = element.querySelector('[data-detail-vector]');
@@ -708,10 +708,6 @@ function createDetailCard(card, { requestId }) {
   let destroyed = false;
   let resizeObserver = null;
 
-  if (detailImage && detailPresentation?.imagePath) {
-    detailImage.dataset.loadedSrc = detailPresentation.imagePath;
-  }
-
   renderReferenceMarker(referenceCircleSvg, referenceLabelSvg, {
     marker: detailPresentation?.referenceMarker ?? null,
     width: detailWidth,
@@ -729,7 +725,7 @@ function createDetailCard(card, { requestId }) {
     fitButton.disabled = isAtFit;
     zoomLabel.textContent = `${Math.round(state.zoom * 100)}% zoom`;
     element.classList.toggle('detail-card--vector-ready', vectorLayer.childElementCount > 0);
-    element.classList.toggle('detail-card--can-pan', state.zoom > DETAIL_MIN_ZOOM + 0.01);
+    element.classList.toggle('detail-card--can-pan', canPanAtZoom());
     element.classList.toggle('detail-card--dragging', state.dragging);
   }
 
@@ -739,6 +735,16 @@ function createDetailCard(card, { requestId }) {
     }
 
     return Math.min(state.viewportWidth / state.contentWidth, state.viewportHeight / state.contentHeight);
+  }
+
+  function canPanAtZoom(zoom = state.zoom) {
+    if (!state.viewportWidth || !state.viewportHeight || !state.contentWidth || !state.contentHeight) {
+      return false;
+    }
+
+    const scale = getFitScale() * zoom;
+
+    return state.contentWidth * scale > state.viewportWidth + 0.5 || state.contentHeight * scale > state.viewportHeight + 0.5;
   }
 
   function clampPan(nextPanX, nextPanY, zoom = state.zoom) {
@@ -847,7 +853,7 @@ function createDetailCard(card, { requestId }) {
   }
 
   function setDragStateFromPointer(pointerId, point) {
-    if (!point || state.zoom <= DETAIL_MIN_ZOOM + 0.01) {
+    if (!point || !canPanAtZoom()) {
       dragState = null;
       return;
     }
@@ -934,7 +940,7 @@ function createDetailCard(card, { requestId }) {
       return;
     }
 
-    if (!dragState || dragState.pointerId !== event.pointerId || state.zoom <= DETAIL_MIN_ZOOM + 0.01) {
+    if (!dragState || dragState.pointerId !== event.pointerId || !canPanAtZoom()) {
       return;
     }
 
@@ -1207,7 +1213,7 @@ function getCountryLocator(city) {
     locator.viewBoxWidth - 0.75
   );
   const markerY = clamp(
-    (1 - (latitude - minLat) / (maxLat - minLat)) * locator.viewBoxHeight,
+    (1 - (latitude - minLat) / (maxLat - minLat)) * locator.viewBoxHeight - COUNTRY_MARKER_NUDGE_Y,
     0.75,
     locator.viewBoxHeight - 0.75
   );
