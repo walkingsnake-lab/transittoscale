@@ -228,37 +228,34 @@ body.body--detail-open {
 }
 
 .shell__credits {
-  display: grid;
-  gap: 12px;
-}
-
-.shell__credits-list {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.shell__credits-list li {
-  display: grid;
-  gap: 3px;
-}
-
-.shell__credits-label {
-  color: var(--page-copy);
-  font-family: var(--font-signage);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  line-height: 1.2;
-  text-transform: uppercase;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .shell__credits-value {
   max-width: 24rem;
   color: var(--page-copy-muted);
-  font-size: 0.93rem;
+  font-size: 0.9rem;
+}
+
+.shell__credits-link {
+  color: var(--page-copy);
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+  transition:
+    color 180ms var(--ease-out),
+    text-decoration-color 180ms var(--ease-out);
+}
+
+.shell__credits-link:hover {
+  color: #ffffff;
+  text-decoration-color: rgba(255, 255, 255, 0.82);
+}
+
+.shell__credits-link:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.48);
+  outline-offset: 2px;
 }
 
 .shell__toolbar {

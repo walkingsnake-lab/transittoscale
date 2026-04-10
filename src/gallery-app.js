@@ -38,7 +38,7 @@ export async function mountApp(root) {
           <div class="shell__flags" data-intro-flags aria-label="Countries represented in the collection"></div>
         </div>
         <div class="shell__intro-panel">
-          <p class="shell__panel-kicker">Shared Reference</p>
+          <p class="shell__panel-kicker">Catalog</p>
           <dl class="shell__metrics" aria-label="Catalog metrics">
             <div>
               <dt data-stat-cities>0</dt>
@@ -54,27 +54,16 @@ export async function mountApp(root) {
             </div>
           </dl>
           <div class="shell__credits" aria-label="Project credits">
-            <p class="shell__panel-kicker">Credits</p>
-            <ul class="shell__credits-list">
-              <li>
-                <span class="shell__credits-label">App</span>
-                <span class="shell__credits-value">Built with Vite and vanilla JavaScript.</span>
-              </li>
-              <li>
-                <span class="shell__credits-label">Data</span>
-                <span class="shell__credits-value">
-                  Transit networks come from official GTFS feeds and other open agency data, then get rebuilt into a
-                  shared GeoJSON catalog.
-                </span>
-              </li>
-              <li>
-                <span class="shell__credits-label">Open Source</span>
-                <span class="shell__credits-value">
-                  d3-geo, csv-parse, adm-zip, sharp, @resvg/resvg-js, and Hatscripts&apos; circle-flags power the
-                  projection math, import pipeline, and generated assets.
-                </span>
-              </li>
-            </ul>
+            <p class="shell__credits-value">
+              Built from official GTFS feeds and other open agency data using Vite, vanilla JavaScript, and open-source
+              tools like d3-geo, Sharp, and Resvg. Country flags use
+              <a
+                class="shell__credits-link"
+                href="https://github.com/HatScripts/circle-flags"
+                target="_blank"
+                rel="noreferrer"
+              >HatScripts&apos; circle-flags</a>.
+            </p>
           </div>
         </div>
       </section>
@@ -761,14 +750,14 @@ function createDetailCard(card, { requestId }) {
       return false;
     }
 
-    const scale = getFitScale() * zoom;
+    const { maxPanX, maxPanY } = getPanLimits(zoom);
 
-    return state.contentWidth * scale > state.viewportWidth + 0.5 || state.contentHeight * scale > state.viewportHeight + 0.5;
+    return maxPanX > 0.5 || maxPanY > 0.5;
   }
 
-  function clampPan(nextPanX, nextPanY, zoom = state.zoom) {
-    if (!state.viewportWidth || !state.viewportHeight) {
-      return { panX: nextPanX, panY: nextPanY };
+  function getPanLimits(zoom = state.zoom) {
+    if (!state.viewportWidth || !state.viewportHeight || !state.contentWidth || !state.contentHeight) {
+      return { maxPanX: 0, maxPanY: 0 };
     }
 
     const scale = getFitScale() * zoom;
@@ -776,8 +765,19 @@ function createDetailCard(card, { requestId }) {
     const scaledHeight = state.contentHeight * scale;
     const gutterX = Math.min(140, state.viewportWidth * DETAIL_PAN_OVERSCROLL_FRACTION);
     const gutterY = Math.min(140, state.viewportHeight * DETAIL_PAN_OVERSCROLL_FRACTION);
-    const maxPanX = scaledWidth <= state.viewportWidth ? 0 : Math.max(0, (scaledWidth - state.viewportWidth) / 2 + gutterX);
-    const maxPanY = scaledHeight <= state.viewportHeight ? 0 : Math.max(0, (scaledHeight - state.viewportHeight) / 2 + gutterY);
+
+    return {
+      maxPanX: Math.max(0, (scaledWidth - state.viewportWidth) / 2) + gutterX,
+      maxPanY: Math.max(0, (scaledHeight - state.viewportHeight) / 2) + gutterY
+    };
+  }
+
+  function clampPan(nextPanX, nextPanY, zoom = state.zoom) {
+    if (!state.viewportWidth || !state.viewportHeight) {
+      return { panX: nextPanX, panY: nextPanY };
+    }
+
+    const { maxPanX, maxPanY } = getPanLimits(zoom);
 
     return {
       panX: clamp(nextPanX, -maxPanX, maxPanX),
