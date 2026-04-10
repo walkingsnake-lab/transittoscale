@@ -74,11 +74,11 @@
       "width": 720,
       "height": 880,
       "rasterScale": 2,
-      "imageWidth": 720,
+      "imageWidth": 917,
       "imageHeight": 880,
       "imagePath": "data/overview/edmonton--detail.png",
       "referenceMarker": {
-        "centerX": 360,
+        "centerX": 458.5,
         "centerY": 440,
         "radius": 56.97,
         "labelRadius": 66.97
@@ -762,11 +762,11 @@
       "width": 720,
       "height": 880,
       "rasterScale": 2,
-      "imageWidth": 720,
+      "imageWidth": 865,
       "imageHeight": 880,
       "imagePath": "data/overview/london--detail.png",
       "referenceMarker": {
-        "centerX": 360,
+        "centerX": 432.5,
         "centerY": 440,
         "radius": 56.97,
         "labelRadius": 66.97

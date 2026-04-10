@@ -1350,8 +1350,7 @@ function loadDetailDiagram(card, requestId) {
         minWidth: DETAIL_BASE_WIDTH,
         minHeight: DETAIL_BASE_HEIGHT,
         diagramScale: DETAIL_DIAGRAM_SCALE,
-        planePadding: DETAIL_SAFE_INSET,
-        centerContent: true
+        planePadding: DETAIL_SAFE_INSET
       });
 
       return {
@@ -1363,7 +1362,7 @@ function loadDetailDiagram(card, requestId) {
           height: layout.height,
           theme: card.theme,
           idPrefix: `detail-live-${card.city.slug}-${requestId}`,
-          includeReferenceMarker: true,
+          includeReferenceMarker: false,
           layout
         })
       };
