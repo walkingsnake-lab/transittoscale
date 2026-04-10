@@ -25,13 +25,68 @@ const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell" data-shell>
+      <div class="shell__backdrop" aria-hidden="true">
+        <div class="shell__backdrop-orb shell__backdrop-orb--north"></div>
+        <div class="shell__backdrop-orb shell__backdrop-orb--east"></div>
+        <div class="shell__backdrop-orb shell__backdrop-orb--south"></div>
+        <div class="shell__backdrop-grid"></div>
+      </div>
       <section class="shell__intro" data-intro>
-        <div class="shell__intro-row">
-          <h1 class="shell__title">Transit to Scale</h1>
-          <p class="shell__intent">Compare metro systems from around the world at a shared, true-to-distance scale.</p>
+        <div class="shell__intro-copy">
+          <p class="shell__eyebrow">Global Metro Atlas</p>
+          <h1 class="shell__title">Transit systems, measured on the same page.</h1>
+          <p class="shell__intent">
+            A gallery of urban rail networks rendered at true distance, so size, spread, and structure can be compared
+            without diagram shortcuts.
+          </p>
+          <div class="shell__signals" aria-label="Atlas highlights">
+            <div class="shell__signal">
+              <span class="shell__signal-label">Reference</span>
+              <strong>Shared 5-mile marker</strong>
+            </div>
+            <div class="shell__signal">
+              <span class="shell__signal-label">Browse</span>
+              <strong>Sorted across regions</strong>
+            </div>
+            <div class="shell__signal">
+              <span class="shell__signal-label">Inspect</span>
+              <strong>Open any card for detail</strong>
+            </div>
+          </div>
+        </div>
+        <div class="shell__intro-panel">
+          <div class="shell__intro-panel-copy">
+            <p class="shell__panel-kicker">Live Catalog</p>
+            <p class="shell__panel-text">
+              Every card sits in a common viewing frame, which makes the differences between systems feel earned rather
+              than stylized.
+            </p>
+          </div>
+          <dl class="shell__metrics" aria-label="Catalog metrics">
+            <div>
+              <dt data-stat-cities>0</dt>
+              <dd>systems</dd>
+            </div>
+            <div>
+              <dt data-stat-regions>0</dt>
+              <dd>regions</dd>
+            </div>
+            <div>
+              <dt data-stat-lines>0</dt>
+              <dd>lines</dd>
+            </div>
+          </dl>
         </div>
       </section>
       <header class="shell__toolbar" data-toolbar>
+        <div class="shell__toolbar-copy">
+          <p class="shell__toolbar-kicker">Atlas Scale</p>
+          <p class="shell__toolbar-note">
+            <span data-catalog-summary>Loading catalog...</span>
+            <span class="shell__toolbar-separator" aria-hidden="true"></span>
+            <span data-toolbar-zoom>Standard</span>
+          </p>
+        </div>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
           <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">
             <svg class="zoom-controls__icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -53,7 +108,19 @@ export async function mountApp(root) {
         </div>
       </header>
       <section class="shell__status" data-status>Loading network catalog...</section>
-      <section class="grid" data-grid aria-live="polite"></section>
+      <section class="shell__gallery" data-gallery>
+        <div class="shell__gallery-header" data-gallery-header>
+          <div class="shell__gallery-heading">
+            <p class="shell__gallery-kicker">Collection</p>
+            <h2 class="shell__gallery-title">Networks at shared scale</h2>
+          </div>
+          <p class="shell__gallery-copy">
+            Sweep across the full field, then open a card when you want a larger diagram and a closer read on how a
+            system occupies space.
+          </p>
+        </div>
+        <section class="grid" data-grid aria-live="polite"></section>
+      </section>
       <aside class="detail-view" data-detail-view hidden aria-hidden="true">
         <button type="button" class="detail-view__backdrop" data-detail-backdrop aria-label="Close selected transit system"></button>
         <div class="detail-view__slot" data-detail-slot></div>
@@ -67,9 +134,15 @@ export async function mountApp(root) {
   const shell = root.querySelector('[data-shell]');
   const intro = root.querySelector('[data-intro]');
   const toolbar = root.querySelector('[data-toolbar]');
+  const galleryHeader = root.querySelector('[data-gallery-header]');
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
   const zoomLabel = root.querySelector('[data-zoom-label]');
+  const toolbarZoom = root.querySelector('[data-toolbar-zoom]');
+  const catalogSummary = root.querySelector('[data-catalog-summary]');
+  const statCities = root.querySelector('[data-stat-cities]');
+  const statRegions = root.querySelector('[data-stat-regions]');
+  const statLines = root.querySelector('[data-stat-lines]');
   const zoomSteps = Array.from(root.querySelectorAll('[data-zoom-step]'));
   const zoomOutButton = root.querySelector('[data-zoom-out]');
   const zoomInButton = root.querySelector('[data-zoom-in]');
@@ -90,7 +163,14 @@ export async function mountApp(root) {
 
   try {
     const cities = await loadCities();
+    const regionCount = new Set(cities.map((city) => city.region).filter(Boolean)).size;
+    const totalLineCount = cities.reduce((sum, city) => sum + (Number.isFinite(city.lineCount) ? city.lineCount : 0), 0);
+
     status.textContent = `${cities.length} metro systems loaded. Select a card to inspect a larger diagram.`;
+    statCities.textContent = String(cities.length);
+    statRegions.textContent = String(regionCount);
+    statLines.textContent = String(totalLineCount);
+    catalogSummary.textContent = `${cities.length} systems across ${regionCount} regions`;
 
     const cards = cities.map((city, index) =>
       createCard(city, index, {
@@ -114,6 +194,7 @@ export async function mountApp(root) {
       const zoomStep = OVERVIEW_ZOOM_STEPS[zoomIndex];
 
       zoomLabel.textContent = zoomStep.label;
+      toolbarZoom.textContent = `${zoomStep.label} view`;
       zoomSteps.forEach((step, index) => step.classList.toggle('zoom-controls__step--active', index === zoomIndex));
       zoomOutButton.disabled = zoomIndex === 0;
       zoomInButton.disabled = zoomIndex === OVERVIEW_ZOOM_STEPS.length - 1;
@@ -123,7 +204,8 @@ export async function mountApp(root) {
     function applyLayout() {
       const introHeight = intro ? Math.ceil(intro.getBoundingClientRect().height) : 0;
       const toolbarHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) : 0;
-      const chromeHeight = introHeight + toolbarHeight + 22;
+      const galleryHeaderHeight = galleryHeader ? Math.ceil(galleryHeader.getBoundingClientRect().height) : 0;
+      const chromeHeight = introHeight + toolbarHeight + galleryHeaderHeight + 32;
 
       updateGridLayout(grid, cards.length, { chromeHeight });
       syncZoomControls({ forcePresentation: true });
