@@ -904,11 +904,17 @@ body.body--detail-open {
   contain: layout style;
   overflow: visible;
   pointer-events: auto;
+  opacity: 0;
   transition:
     top 300ms cubic-bezier(0.22, 1, 0.36, 1),
     left 300ms cubic-bezier(0.22, 1, 0.36, 1),
     width 300ms cubic-bezier(0.22, 1, 0.36, 1),
-    height 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    height 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms var(--ease-out);
+}
+
+.detail-card--active {
+  opacity: 1;
 }
 
 .detail-card__paper {

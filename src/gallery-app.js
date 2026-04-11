@@ -262,6 +262,7 @@ export async function mountApp(root) {
           return;
         }
 
+        detailCard.element.classList.add('detail-card--active');
         detailView.classList.add('detail-view--open');
         applyFixedRect(detailCard.element, getDetailTargetRect(card));
         detailCard.syncViewerLayout();
@@ -294,6 +295,7 @@ export async function mountApp(root) {
 
       detailView.classList.remove('detail-view--open');
       detailView.setAttribute('aria-hidden', 'true');
+      activeDetailCard.element.classList.remove('detail-card--active');
       applyFixedRect(activeDetailCard.element, card.element.getBoundingClientRect());
 
       if (detailHideTimeoutId) {
