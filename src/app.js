@@ -866,8 +866,11 @@ function formatSystemLabel(city) {
 
 function getCountryFlag(city) {
   const flagCodeByRegion = {
+    Argentina: 'ar',
     'United States': 'us',
     Canada: 'ca',
+    'Czech Republic': 'cz',
+    Mexico: 'mx',
     Spain: 'es',
     Sweden: 'se',
     'United Kingdom': 'gb',

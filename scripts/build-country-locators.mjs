@@ -7,8 +7,10 @@ const NATURAL_EARTH_PRIMARY_URL =
 const NATURAL_EARTH_FALLBACK_URL =
   'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson';
 const LOCATOR_SPECS = [
+  { region: 'Argentina', adminName: 'Argentina', pickTop: 1 },
   { region: 'United States', adminName: 'United States of America', pickTop: 1 },
   { region: 'Canada', adminName: 'Canada', pickTop: 1 },
+  { region: 'Czech Republic', adminName: 'Czechia', pickTop: 1 },
   { region: 'Mexico', adminName: 'Mexico', pickTop: 1 },
   { region: 'Spain', adminName: 'Spain', pickTop: 1 },
   { region: 'Sweden', adminName: 'Sweden', pickTop: 1 },
