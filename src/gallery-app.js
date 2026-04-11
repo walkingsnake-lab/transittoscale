@@ -26,6 +26,12 @@ const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
 const DETAIL_TRANSITION_MS = 300;
 const COUNTRY_MARKER_NUDGE_Y = 0;
 const MERCATOR_LATITUDE_LIMIT = 85;
+// Optional visual corrections for locator insets when country geometry is too coarse.
+const COUNTRY_LOCATOR_OVERRIDE_BY_CITY = {
+  chicago: {
+    markerOffsetX: 5.2
+  }
+};
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell" data-shell>
@@ -1210,7 +1216,10 @@ function getIntroFlagsMarkup(cities, limit = 6) {
 
 function getCountryLocator(city) {
   const locator = COUNTRY_LOCATOR_BY_REGION[city.region];
-  const [longitude, latitude] = city.focusPoint ?? city.centroid ?? [];
+  const locatorOverride = COUNTRY_LOCATOR_OVERRIDE_BY_CITY[city.slug] ?? null;
+  const [longitude, latitude] = locatorOverride?.coordinate ?? city.focusPoint ?? city.centroid ?? [];
+  const markerOffsetX = Number.isFinite(locatorOverride?.markerOffsetX) ? locatorOverride.markerOffsetX : 0;
+  const markerOffsetY = Number.isFinite(locatorOverride?.markerOffsetY) ? locatorOverride.markerOffsetY : 0;
 
   if (!locator || !Number.isFinite(longitude) || !Number.isFinite(latitude)) {
     return null;
@@ -1239,12 +1248,12 @@ function getCountryLocator(city) {
     }
 
     const markerX = clamp(
-      ((projectedX - projectedBounds.minX) / projectedWidth) * locator.viewBoxWidth,
+      ((projectedX - projectedBounds.minX) / projectedWidth) * locator.viewBoxWidth + markerOffsetX,
       0.75,
       locator.viewBoxWidth - 0.75
     );
     const markerY = clamp(
-      ((projectedBounds.maxY - projectedY) / projectedHeight) * locator.viewBoxHeight - COUNTRY_MARKER_NUDGE_Y,
+      ((projectedBounds.maxY - projectedY) / projectedHeight) * locator.viewBoxHeight - COUNTRY_MARKER_NUDGE_Y + markerOffsetY,
       0.75,
       locator.viewBoxHeight - 0.75
     );
@@ -1267,12 +1276,12 @@ function getCountryLocator(city) {
   }
 
   const markerX = clamp(
-    ((projectedLon - minProjectedLon) / projectedLonSpan) * locator.viewBoxWidth,
+    ((projectedLon - minProjectedLon) / projectedLonSpan) * locator.viewBoxWidth + markerOffsetX,
     0.75,
     locator.viewBoxWidth - 0.75
   );
   const markerY = clamp(
-    (1 - (latitude - minLat) / (maxLat - minLat)) * locator.viewBoxHeight - COUNTRY_MARKER_NUDGE_Y,
+    (1 - (latitude - minLat) / (maxLat - minLat)) * locator.viewBoxHeight - COUNTRY_MARKER_NUDGE_Y + markerOffsetY,
     0.75,
     locator.viewBoxHeight - 0.75
   );
