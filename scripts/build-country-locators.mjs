@@ -24,6 +24,7 @@ const SIMPLIFY_TOLERANCE = 0.14;
 const COORDINATE_DECIMALS = 2;
 const LOCATOR_PROJECTION = 'mercator';
 const MERCATOR_LATITUDE_LIMIT = 85;
+const DEG_TO_RAD = Math.PI / 180;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -356,14 +357,18 @@ function clamp(value, min, max) {
 
 function projectCoordinate(longitude, latitude, projection) {
   if (projection === 'mercator') {
-    return [longitude, projectLatitudeMercator(latitude)];
+    return [projectLongitudeMercator(longitude), projectLatitudeMercator(latitude)];
   }
 
   throw new Error(`Unsupported locator projection: ${projection}`);
 }
 
+function projectLongitudeMercator(longitude) {
+  return longitude * DEG_TO_RAD;
+}
+
 function projectLatitudeMercator(latitude) {
   const safeLatitude = clamp(latitude, -MERCATOR_LATITUDE_LIMIT, MERCATOR_LATITUDE_LIMIT);
-  const radians = (safeLatitude * Math.PI) / 180;
+  const radians = safeLatitude * DEG_TO_RAD;
   return Math.log(Math.tan(Math.PI / 4 + radians / 2));
 }

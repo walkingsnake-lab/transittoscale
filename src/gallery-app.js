@@ -26,6 +26,7 @@ const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
 const DETAIL_TRANSITION_MS = 300;
 const COUNTRY_MARKER_NUDGE_Y = 0;
 const MERCATOR_LATITUDE_LIMIT = 85;
+const DEG_TO_RAD = Math.PI / 180;
 // Optional visual corrections for locator insets when country geometry is too coarse.
 const COUNTRY_LOCATOR_OVERRIDE_BY_CITY = {
   chicago: {
@@ -1295,16 +1296,20 @@ function getCountryLocator(city) {
 
 function projectLocatorCoordinate(locator, longitude, latitude) {
   if (locator.projection === 'mercator') {
-    return [longitude, projectLatitudeMercator(latitude)];
+    return [projectLongitudeMercator(longitude), projectLatitudeMercator(latitude)];
   }
 
   const lonScale = Number.isFinite(locator.lonScale) ? locator.lonScale : 1;
   return [longitude * lonScale, latitude];
 }
 
+function projectLongitudeMercator(longitude) {
+  return longitude * DEG_TO_RAD;
+}
+
 function projectLatitudeMercator(latitude) {
   const safeLatitude = clamp(latitude, -MERCATOR_LATITUDE_LIMIT, MERCATOR_LATITUDE_LIMIT);
-  const radians = (safeLatitude * Math.PI) / 180;
+  const radians = safeLatitude * DEG_TO_RAD;
   return Math.log(Math.tan(Math.PI / 4 + radians / 2));
 }
 
