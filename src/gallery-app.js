@@ -24,7 +24,8 @@ const DETAIL_BUTTON_ZOOM_FACTOR = 1.35;
 const DETAIL_WHEEL_ZOOM_SENSITIVITY = 0.0015;
 const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
 const DETAIL_TRANSITION_MS = 300;
-const COUNTRY_MARKER_NUDGE_Y = 1;
+const COUNTRY_MARKER_NUDGE_Y = 0;
+const MERCATOR_LATITUDE_LIMIT = 85;
 export async function mountApp(root) {
   root.innerHTML = `
     <main class="shell" data-shell>
@@ -1215,13 +1216,47 @@ function getCountryLocator(city) {
     return null;
   }
 
-  const { minLon, maxLon, minLat, maxLat } = locator.bounds;
-  const lonScale = Number.isFinite(locator.lonScale) ? locator.lonScale : 1;
+  const { minLon, maxLon, minLat, maxLat } = locator.bounds ?? {};
+  const projectedBounds = locator.projectedBounds;
 
   if (!(maxLon > minLon) || !(maxLat > minLat)) {
     return null;
   }
 
+  if (
+    projectedBounds &&
+    Number.isFinite(projectedBounds.minX) &&
+    Number.isFinite(projectedBounds.maxX) &&
+    Number.isFinite(projectedBounds.minY) &&
+    Number.isFinite(projectedBounds.maxY)
+  ) {
+    const [projectedX, projectedY] = projectLocatorCoordinate(locator, longitude, latitude);
+    const projectedWidth = projectedBounds.maxX - projectedBounds.minX;
+    const projectedHeight = projectedBounds.maxY - projectedBounds.minY;
+
+    if (!(projectedWidth > 0) || !(projectedHeight > 0)) {
+      return null;
+    }
+
+    const markerX = clamp(
+      ((projectedX - projectedBounds.minX) / projectedWidth) * locator.viewBoxWidth,
+      0.75,
+      locator.viewBoxWidth - 0.75
+    );
+    const markerY = clamp(
+      ((projectedBounds.maxY - projectedY) / projectedHeight) * locator.viewBoxHeight - COUNTRY_MARKER_NUDGE_Y,
+      0.75,
+      locator.viewBoxHeight - 0.75
+    );
+
+    return {
+      ...locator,
+      markerX: Math.round(markerX * 10) / 10,
+      markerY: Math.round(markerY * 10) / 10
+    };
+  }
+
+  const lonScale = Number.isFinite(locator.lonScale) ? locator.lonScale : 1;
   const minProjectedLon = minLon * lonScale;
   const maxProjectedLon = maxLon * lonScale;
   const projectedLonSpan = maxProjectedLon - minProjectedLon;
@@ -1247,6 +1282,21 @@ function getCountryLocator(city) {
     markerX: Math.round(markerX * 10) / 10,
     markerY: Math.round(markerY * 10) / 10
   };
+}
+
+function projectLocatorCoordinate(locator, longitude, latitude) {
+  if (locator.projection === 'mercator') {
+    return [longitude, projectLatitudeMercator(latitude)];
+  }
+
+  const lonScale = Number.isFinite(locator.lonScale) ? locator.lonScale : 1;
+  return [longitude * lonScale, latitude];
+}
+
+function projectLatitudeMercator(latitude) {
+  const safeLatitude = clamp(latitude, -MERCATOR_LATITUDE_LIMIT, MERCATOR_LATITUDE_LIMIT);
+  const radians = (safeLatitude * Math.PI) / 180;
+  return Math.log(Math.tan(Math.PI / 4 + radians / 2));
 }
 
 function renderCountryLocatorMarkup(city) {

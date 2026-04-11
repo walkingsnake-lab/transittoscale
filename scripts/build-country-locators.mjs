@@ -22,6 +22,8 @@ const MIN_VIEWBOX_HEIGHT = 56;
 const MAX_VIEWBOX_HEIGHT = 112;
 const SIMPLIFY_TOLERANCE = 0.14;
 const COORDINATE_DECIMALS = 2;
+const LOCATOR_PROJECTION = 'mercator';
+const MERCATOR_LATITUDE_LIMIT = 85;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -42,15 +44,13 @@ const countryLocators = Object.fromEntries(
     const polygons = extractOuterRings(feature.geometry);
     const selectedPolygons = pickLargestPolygons(polygons, spec.pickTop);
     const bounds = computeBounds(selectedPolygons);
-    const lonScale = resolveLongitudeScale(bounds);
-    const projectedBounds = computeProjectedBounds(selectedPolygons, lonScale);
-    const viewBoxHeight = resolveViewBoxHeight(bounds, projectedBounds);
+    const projectedBounds = computeProjectedBounds(selectedPolygons, LOCATOR_PROJECTION);
+    const viewBoxHeight = resolveViewBoxHeight(projectedBounds);
     const outlinePath = selectedPolygons
       .map((ring) =>
         buildSvgPathForRing(ring, {
-          bounds,
           projectedBounds,
-          lonScale,
+          projection: LOCATOR_PROJECTION,
           viewBoxWidth: VIEWBOX_WIDTH,
           viewBoxHeight
         })
@@ -63,12 +63,18 @@ const countryLocators = Object.fromEntries(
       {
         viewBoxWidth: VIEWBOX_WIDTH,
         viewBoxHeight,
-        lonScale: roundTo(lonScale, 5),
+        projection: LOCATOR_PROJECTION,
         bounds: {
           minLon: roundTo(bounds.minLon, 4),
           maxLon: roundTo(bounds.maxLon, 4),
           minLat: roundTo(bounds.minLat, 4),
           maxLat: roundTo(bounds.maxLat, 4)
+        },
+        projectedBounds: {
+          minX: roundTo(projectedBounds.minX, 5),
+          maxX: roundTo(projectedBounds.maxX, 5),
+          minY: roundTo(projectedBounds.minY, 5),
+          maxY: roundTo(projectedBounds.maxY, 5)
         },
         outlinePath
       }
@@ -187,45 +193,45 @@ function computeBounds(polygons) {
   return { minLon, maxLon, minLat, maxLat };
 }
 
-function computeProjectedBounds(polygons, lonScale) {
+function computeProjectedBounds(polygons, projection) {
   let minX = Infinity;
   let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
 
   for (const ring of polygons) {
-    for (const [lon] of ring) {
-      const x = projectLongitude(lon, lonScale);
+    for (const [lon, lat] of ring) {
+      const [x, y] = projectCoordinate(lon, lat, projection);
       minX = Math.min(minX, x);
       maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y);
+      maxY = Math.max(maxY, y);
     }
   }
 
-  if (!Number.isFinite(minX) || !Number.isFinite(maxX)) {
+  if (!Number.isFinite(minX) || !Number.isFinite(maxX) || !Number.isFinite(minY) || !Number.isFinite(maxY)) {
     throw new Error('Unable to compute projected bounds for country geometry.');
   }
 
-  return { minX, maxX };
+  return { minX, maxX, minY, maxY };
 }
 
-function resolveLongitudeScale(bounds) {
-  const centerLat = (bounds.minLat + bounds.maxLat) / 2;
-  return clamp(Math.cos((centerLat * Math.PI) / 180), 0.35, 1);
-}
-
-function resolveViewBoxHeight(bounds, projectedBounds) {
+function resolveViewBoxHeight(projectedBounds) {
   const lonRange = Math.max(projectedBounds.maxX - projectedBounds.minX, 1e-6);
-  const latRange = Math.max(bounds.maxLat - bounds.minLat, 1e-6);
+  const latRange = Math.max(projectedBounds.maxY - projectedBounds.minY, 1e-6);
   const ratio = latRange / lonRange;
   const preferredHeight = VIEWBOX_WIDTH * ratio;
   return clamp(roundTo(preferredHeight, 1), MIN_VIEWBOX_HEIGHT, MAX_VIEWBOX_HEIGHT);
 }
 
-function buildSvgPathForRing(ring, { bounds, projectedBounds, lonScale, viewBoxWidth, viewBoxHeight }) {
+function buildSvgPathForRing(ring, { projectedBounds, projection, viewBoxWidth, viewBoxHeight }) {
   const projectedWidth = Math.max(projectedBounds.maxX - projectedBounds.minX, 1e-6);
-  const latHeight = Math.max(bounds.maxLat - bounds.minLat, 1e-6);
+  const projectedHeight = Math.max(projectedBounds.maxY - projectedBounds.minY, 1e-6);
   const projected = ring
     .map(([lon, lat]) => {
-      const x = ((projectLongitude(lon, lonScale) - projectedBounds.minX) / projectedWidth) * viewBoxWidth;
-      const y = ((bounds.maxLat - lat) / latHeight) * viewBoxHeight;
+      const [projectedLon, projectedLat] = projectCoordinate(lon, lat, projection);
+      const x = ((projectedLon - projectedBounds.minX) / projectedWidth) * viewBoxWidth;
+      const y = ((projectedBounds.maxY - projectedLat) / projectedHeight) * viewBoxHeight;
       return [x, y];
     })
     .filter(([x, y]) => Number.isFinite(x) && Number.isFinite(y));
@@ -348,6 +354,16 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
-function projectLongitude(longitude, lonScale) {
-  return longitude * lonScale;
+function projectCoordinate(longitude, latitude, projection) {
+  if (projection === 'mercator') {
+    return [longitude, projectLatitudeMercator(latitude)];
+  }
+
+  throw new Error(`Unsupported locator projection: ${projection}`);
+}
+
+function projectLatitudeMercator(latitude) {
+  const safeLatitude = clamp(latitude, -MERCATOR_LATITUDE_LIMIT, MERCATOR_LATITUDE_LIMIT);
+  const radians = (safeLatitude * Math.PI) / 180;
+  return Math.log(Math.tan(Math.PI / 4 + radians / 2));
 }
