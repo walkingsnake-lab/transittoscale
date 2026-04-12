@@ -153,8 +153,7 @@ body.body--detail-open {
 }
 
 .shell__intent,
-.shell__credits-value,
-.shell__toolbar-note {
+.shell__credits-value {
   margin: 0;
   font-family: var(--font-signage);
   line-height: 1.45;
@@ -235,7 +234,7 @@ body.body--detail-open {
 
 .shell__metrics dt {
   color: var(--page-copy);
-  font-size: clamp(1.5rem, 2.5vw, 2.15rem);
+  font-size: clamp(1.28rem, 2vw, 1.78rem);
   font-weight: 700;
   letter-spacing: -0.05em;
   line-height: 0.94;
@@ -243,7 +242,7 @@ body.body--detail-open {
 
 .shell__metrics dd {
   color: var(--page-copy-muted);
-  font-size: 0.74rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   line-height: 1.2;
@@ -289,27 +288,11 @@ body.body--detail-open {
   z-index: 3;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: flex-end;
   padding: 2px 2px 4px;
   transition:
     opacity 180ms var(--ease-out),
     transform 180ms var(--ease-out);
-}
-
-.shell__toolbar-copy {
-  display: grid;
-  gap: 4px;
-  min-width: 0;
-}
-
-.shell__toolbar-note {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  color: var(--page-copy-subtle);
-  font-size: 0.94rem;
 }
 
 .shell__sr-only {
@@ -1492,11 +1475,6 @@ body.body--detail-open {
 
   .shell__intro-panel {
     padding-top: 16px;
-  }
-
-  .shell__toolbar-note {
-    gap: 8px;
-    font-size: 0.9rem;
   }
 
   .zoom-controls {

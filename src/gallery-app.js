@@ -82,11 +82,6 @@ export async function mountApp(root) {
         </div>
       </section>
       <header class="shell__toolbar" data-toolbar>
-        <div class="shell__toolbar-copy">
-          <p class="shell__toolbar-note">
-            <span data-catalog-summary>Loading catalog...</span>
-          </p>
-        </div>
         <div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
           <button type="button" class="zoom-controls__button" data-zoom-out aria-label="Zoom out network diagrams">
             <svg class="zoom-controls__icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -127,7 +122,6 @@ export async function mountApp(root) {
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
   const zoomLabel = root.querySelector('[data-zoom-label]');
-  const catalogSummary = root.querySelector('[data-catalog-summary]');
   const statCities = root.querySelector('[data-stat-cities]');
   const statRegions = root.querySelector('[data-stat-regions]');
   const statLines = root.querySelector('[data-stat-lines]');
@@ -158,7 +152,6 @@ export async function mountApp(root) {
     statCities.textContent = String(cities.length);
     statRegions.textContent = String(regionCount);
     statLines.textContent = String(totalLineCount);
-    catalogSummary.textContent = `${cities.length} systems across ${regionCount} regions`;
 
     const cards = cities.map((city, index) =>
       createCard(city, index, {
