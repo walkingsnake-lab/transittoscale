@@ -206,6 +206,40 @@
     "serviceSummary": "RTD Light Rail"
   },
   {
+    "slug": "houston",
+    "name": "Houston",
+    "region": "United States",
+    "sourceType": "gtfs",
+    "sourceName": "METRO Houston",
+    "sourceUrl": "https://metro.resourcespace.com/pages/download.php?ref=4835&ext=zip",
+    "focusPoint": [
+      -95.3698,
+      29.7604
+    ],
+    "routeTypes": [
+      "0"
+    ],
+    "minPointSpacingMeters": 20,
+    "minShapeTrips": 12,
+    "shapeTripShareThreshold": 0.08,
+    "routeIdAllowlist": [
+      "700",
+      "800",
+      "900"
+    ],
+    "routeIdAliases": {
+      "700": "RED",
+      "800": "GREEN",
+      "900": "PURPLE"
+    },
+    "lineNameOverrides": {
+      "RED": "Red Line",
+      "GREEN": "Green Line",
+      "PURPLE": "Purple Line"
+    },
+    "serviceSummary": "METRORail"
+  },
+  {
     "slug": "san-diego",
     "name": "San Diego",
     "region": "United States",

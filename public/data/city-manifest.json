@@ -1462,6 +1462,92 @@
     }
   },
   {
+    "slug": "houston",
+    "name": "Houston",
+    "region": "United States",
+    "dataPath": "data/cities/houston.geojson",
+    "centroid": [
+      -95.3542555,
+      29.753031999999997
+    ],
+    "focusPoint": [
+      -95.3698,
+      29.7604
+    ],
+    "bounds": [
+      -95.405608,
+      29.673599,
+      -95.302903,
+      29.832465
+    ],
+    "lineCount": 3,
+    "sourceName": "METRO Houston",
+    "serviceSummary": "METRORail",
+    "sourceUrl": "https://metro.resourcespace.com/pages/download.php?ref=4835&ext=zip",
+    "display": {
+      "profile": "standard",
+      "lineWidth": 1.65,
+      "simplifyTolerance": 1
+    },
+    "overview": {
+      "viewportWidth": 360,
+      "viewportHeight": 440,
+      "rasterScale": 3,
+      "defaultVariant": "standard",
+      "variants": {
+        "wide": {
+          "imagePath": "data/overview/houston--wide.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 39.59,
+            "labelRadius": 49.59
+          }
+        },
+        "standard": {
+          "imagePath": "data/overview/houston--standard.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 48.28,
+            "labelRadius": 58.28
+          }
+        },
+        "close": {
+          "imagePath": "data/overview/houston--close.webp",
+          "width": 360,
+          "height": 440,
+          "referenceMarker": {
+            "centerX": 180,
+            "centerY": 220,
+            "radius": 56.97,
+            "labelRadius": 66.97
+          }
+        }
+      }
+    },
+    "detail": {
+      "viewportWidth": 720,
+      "viewportHeight": 880,
+      "width": 720,
+      "height": 880,
+      "rasterScale": 2,
+      "imageWidth": 720,
+      "imageHeight": 880,
+      "imagePath": "data/overview/houston--detail.png",
+      "referenceMarker": {
+        "centerX": 360,
+        "centerY": 440,
+        "radius": 56.97,
+        "labelRadius": 66.97
+      }
+    }
+  },
+  {
     "slug": "los-angeles",
     "name": "Los Angeles",
     "region": "United States",

@@ -115,6 +115,30 @@
     "sourceUrl": "https://www.rtd-denver.com/files/gtfs/google_transit.zip"
   },
   {
+    "slug": "houston",
+    "name": "Houston",
+    "region": "United States",
+    "dataPath": "data/cities/houston.geojson",
+    "centroid": [
+      -95.3542555,
+      29.753031999999997
+    ],
+    "focusPoint": [
+      -95.3698,
+      29.7604
+    ],
+    "bounds": [
+      -95.405608,
+      29.673599,
+      -95.302903,
+      29.832465
+    ],
+    "lineCount": 3,
+    "sourceName": "METRO Houston",
+    "serviceSummary": "METRORail",
+    "sourceUrl": "https://metro.resourcespace.com/pages/download.php?ref=4835&ext=zip"
+  },
+  {
     "slug": "san-diego",
     "name": "San Diego",
     "region": "United States",
