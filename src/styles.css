@@ -1585,11 +1585,11 @@ body.body--detail-open {
   }
 
   .card__diagram {
-    --diagram-scale: 0.94;
+    --diagram-scale: 0.92;
   }
 
   .grid--mobile-two-up .card__diagram {
-    --diagram-scale: 0.9;
+    --diagram-scale: 0.82;
   }
 
   .card__back-copy {
