@@ -153,6 +153,7 @@ body.body--detail-open {
 }
 
 .shell__intent,
+.shell__credits-note,
 .shell__credits-value,
 .shell__toolbar-note {
   margin: 0;
@@ -227,8 +228,19 @@ body.body--detail-open {
 }
 
 .shell__credits {
+  display: grid;
+  gap: 10px;
   padding-top: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.shell__credits-note {
+  color: var(--page-copy);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
 }
 
 .shell__credits-value {
@@ -1147,6 +1159,7 @@ body.body--detail-open {
   justify-items: end;
   gap: 6px;
   width: clamp(96px, 12vw, 132px);
+  color: rgba(17, 17, 17, 0.18);
   pointer-events: none;
 }
 
@@ -1158,7 +1171,7 @@ body.body--detail-open {
 }
 
 .detail-card__country-outline {
-  fill: rgba(17, 17, 17, 0.18);
+  fill: currentColor;
   stroke: none;
 }
 
@@ -1173,7 +1186,7 @@ body.body--detail-open {
 
 .detail-card__country-name {
   margin: 0;
-  color: rgba(17, 17, 17, 0.72);
+  color: inherit;
   font-family: var(--font-sans-tight);
   font-size: 0.66rem;
   font-weight: 700;

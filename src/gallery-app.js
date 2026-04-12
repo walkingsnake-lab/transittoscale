@@ -38,16 +38,21 @@ export async function mountApp(root) {
     <main class="shell" data-shell>
       <section class="shell__intro" data-intro>
         <div class="shell__intro-copy">
-          <p class="shell__eyebrow">World Metro Gallery</p>
           <h1 class="shell__title">Transit to Scale</h1>
           <p class="shell__intent">
-            Compare metro systems from around the world using one shared distance reference and one consistent viewing
-            frame.
+            A high-level visual comparison of urban metro systems around the world, all at the same scale.
           </p>
-          <div class="shell__flags" data-intro-flags aria-label="Countries represented in the collection"></div>
+          <div class="shell__markers" aria-hidden="true">
+            <span class="shell__marker shell__marker--red"></span>
+            <span class="shell__marker shell__marker--blue"></span>
+            <span class="shell__marker shell__marker--yellow"></span>
+            <span class="shell__marker shell__marker--green"></span>
+            <span class="shell__marker shell__marker--orange"></span>
+            <span class="shell__marker shell__marker--gray"></span>
+          </div>
         </div>
         <div class="shell__intro-panel">
-          <p class="shell__panel-kicker">Catalog</p>
+          <p class="shell__panel-kicker">At a Glance</p>
           <dl class="shell__metrics" aria-label="Catalog metrics">
             <div>
               <dt data-stat-cities>0</dt>
@@ -63,6 +68,7 @@ export async function mountApp(root) {
             </div>
           </dl>
           <div class="shell__credits" aria-label="Project credits">
+            <p class="shell__credits-note">Trolleys and streetcars excluded except where noted.</p>
             <p class="shell__credits-value">
               Built from official GTFS feeds and other open agency data using Vite, vanilla JavaScript, and open-source
               tools like d3-geo, Sharp, and Resvg. Country flags use
@@ -119,7 +125,6 @@ export async function mountApp(root) {
   const shell = root.querySelector('[data-shell]');
   const intro = root.querySelector('[data-intro]');
   const toolbar = root.querySelector('[data-toolbar]');
-  const introFlags = root.querySelector('[data-intro-flags]');
   const status = root.querySelector('[data-status]');
   const grid = root.querySelector('[data-grid]');
   const zoomLabel = root.querySelector('[data-zoom-label]');
@@ -155,7 +160,6 @@ export async function mountApp(root) {
     statRegions.textContent = String(regionCount);
     statLines.textContent = String(totalLineCount);
     catalogSummary.textContent = `${cities.length} systems across ${regionCount} regions`;
-    introFlags.innerHTML = getIntroFlagsMarkup(cities);
 
     const cards = cities.map((city, index) =>
       createCard(city, index, {
@@ -1190,29 +1194,6 @@ function getRegionFlag(region) {
     src: `https://hatscripts.github.io/circle-flags/flags/${code}.svg`,
     alt: `${region} flag`
   };
-}
-
-function getIntroFlagsMarkup(cities, limit = 6) {
-  const regionCounts = new Map();
-
-  cities.forEach((city) => {
-    if (!city.region) {
-      return;
-    }
-
-    regionCounts.set(city.region, (regionCounts.get(city.region) ?? 0) + 1);
-  });
-
-  return [...regionCounts.entries()]
-    .sort((left, right) => right[1] - left[1] || CITY_ORDER_COLLATOR.compare(left[0], right[0]))
-    .map(([region]) => region)
-    .filter((region) => getRegionFlag(region))
-    .slice(0, limit)
-    .map((region) => {
-      const flag = getRegionFlag(region);
-      return `<img class="shell__flag" src="${flag.src}" alt="${flag.alt}" loading="lazy" decoding="async" />`;
-    })
-    .join('');
 }
 
 function getCountryLocator(city) {
