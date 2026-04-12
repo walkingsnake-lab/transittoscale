@@ -1504,6 +1504,10 @@ body.body--detail-open {
     gap: 10px;
   }
 
+  .grid.grid--mobile-two-up {
+    gap: 8px;
+  }
+
   .card__stage {
     min-height: var(--card-canvas-height, 280px);
   }
@@ -1519,15 +1523,19 @@ body.body--detail-open {
   }
 
   .card__overlay {
-    gap: 3px;
-    inset: 14px 58px auto 14px;
+    gap: 2px;
+    inset: 12px 64px auto 12px;
     width: auto;
     max-width: none;
-    padding: 0;
+    padding: 4px 8px 6px 6px;
+    border-radius: 10px;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.74) 64%, rgba(255, 255, 255, 0.1) 100%);
+    box-shadow: 0 6px 16px rgba(17, 17, 17, 0.09);
   }
 
   .card__overlay h2 {
-    font-size: 1.48rem;
+    font-size: clamp(1.34rem, 6.1vw, 1.56rem);
+    line-height: 0.95;
   }
 
   .card__flag {
@@ -1535,6 +1543,44 @@ body.body--detail-open {
     right: 14px;
     width: 28px;
     height: 28px;
+  }
+
+  .grid--mobile-two-up .card__paper,
+  .grid--mobile-two-up .card__select {
+    border-radius: 12px;
+  }
+
+  .grid--mobile-two-up .card__paper::after {
+    inset: 4px;
+    border-radius: 8px;
+  }
+
+  .grid--mobile-two-up .card__overlay {
+    gap: 1px;
+    inset: 10px 46px auto 10px;
+    padding: 3px 6px 5px 5px;
+    border-radius: 8px;
+  }
+
+  .grid--mobile-two-up .card__agency {
+    font-size: 0.64rem;
+  }
+
+  .grid--mobile-two-up .card__count {
+    font-size: 0.62rem;
+  }
+
+  .grid--mobile-two-up .card__overlay h2 {
+    font-size: clamp(1.02rem, 4.8vw, 1.24rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+
+  .grid--mobile-two-up .card__flag {
+    top: 10px;
+    right: 10px;
+    width: 22px;
+    height: 22px;
   }
 
   .card__back-copy {

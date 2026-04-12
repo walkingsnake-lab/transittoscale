@@ -1104,6 +1104,7 @@ function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
   const viewportHeight = window.innerHeight;
   const columns = chooseColumnCount(viewportWidth, cardCount);
   const isMobile = viewportWidth < 720;
+  const isMobileTwoUp = isMobile && columns >= 2;
   const availableHeight = Math.max(320, viewportHeight - chromeHeight);
   const rowTarget =
     columns >= 5 ? 1.84 :
@@ -1113,18 +1114,26 @@ function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
     1.34;
   const cardHeight =
     isMobile
-      ? clamp(Math.min(availableHeight * 0.52, viewportWidth * 1.08), 250, 360)
+      ? (
+        isMobileTwoUp
+          ? clamp(Math.min(availableHeight * 0.5, viewportWidth * 0.96), 230, 340)
+          : clamp(Math.min(availableHeight * 0.62, viewportWidth * 1.18), 280, 420)
+      )
       : clamp(availableHeight / rowTarget, columns >= 5 ? 280 : 250, MAX_OVERVIEW_CARD_HEIGHT);
 
+  grid.classList.toggle('grid--mobile-two-up', isMobileTwoUp);
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
 }
 
 function chooseColumnCount(viewportWidth, cardCount) {
-  const minCardWidth = viewportWidth < 720 ? 250 : viewportWidth < 1100 ? 300 : 340;
+  const minCardWidth =
+    viewportWidth < 420 ? 250 :
+    viewportWidth < 720 ? 200 :
+    viewportWidth < 1100 ? 300 : 340;
   const idealCardWidth = viewportWidth >= 1600 ? 440 : viewportWidth >= 1100 ? 400 : 340;
   let best = 1;
-  const maxColumns = viewportWidth >= 1500 ? 5 : cardCount;
+  const maxColumns = viewportWidth < 720 ? 2 : viewportWidth >= 1500 ? 5 : cardCount;
 
   for (let columns = 1; columns <= Math.min(cardCount, maxColumns); columns += 1) {
     const candidateWidth = viewportWidth / columns;
