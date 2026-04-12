@@ -153,7 +153,6 @@ body.body--detail-open {
 }
 
 .shell__intent,
-.shell__credits-note,
 .shell__credits-value,
 .shell__toolbar-note {
   margin: 0;
@@ -256,15 +255,6 @@ body.body--detail-open {
   gap: 10px;
   padding-top: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.shell__credits-note {
-  color: var(--page-copy);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1.35;
-  text-transform: uppercase;
 }
 
 .shell__credits-value {

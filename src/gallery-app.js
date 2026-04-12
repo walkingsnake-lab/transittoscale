@@ -52,7 +52,6 @@ export async function mountApp(root) {
           </div>
         </div>
         <div class="shell__intro-panel">
-          <p class="shell__panel-kicker">At a Glance</p>
           <dl class="shell__metrics" aria-label="Catalog metrics">
             <div>
               <dt data-stat-cities>0</dt>
@@ -68,7 +67,7 @@ export async function mountApp(root) {
             </div>
           </dl>
           <div class="shell__credits" aria-label="Project credits">
-            <p class="shell__credits-note">Trolleys and streetcars excluded except where noted.</p>
+            <p class="shell__credits-value">Trolleys and streetcars excluded except where noted.</p>
             <p class="shell__credits-value">
               Built from official GTFS feeds and other agency data using Vite, vanilla JavaScript, and open-source
               tools like d3-geo, Sharp, and Resvg. Country flags use
