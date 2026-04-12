@@ -40,7 +40,7 @@ export async function mountApp(root) {
         <div class="shell__intro-copy">
           <h1 class="shell__title">Transit to Scale</h1>
           <p class="shell__intent">
-            A high-level visual comparison of urban metro systems around the world, all at the same scale.
+            A high-level visual comparison of urban metro rail systems around the world, all at the same scale.
           </p>
           <div class="shell__markers" aria-hidden="true">
             <span class="shell__marker shell__marker--red"></span>
