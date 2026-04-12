@@ -1116,8 +1116,8 @@ function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
     isMobile
       ? (
         isMobileTwoUp
-          ? clamp(Math.min(availableHeight * 0.5, viewportWidth * 0.96), 230, 340)
-          : clamp(Math.min(availableHeight * 0.62, viewportWidth * 1.18), 280, 420)
+          ? clamp(Math.min(availableHeight * 0.56, viewportWidth * 1.04), 250, 370)
+          : clamp(Math.min(availableHeight * 0.66, viewportWidth * 1.24), 300, 460)
       )
       : clamp(availableHeight / rowTarget, columns >= 5 ? 280 : 250, MAX_OVERVIEW_CARD_HEIGHT);
 
