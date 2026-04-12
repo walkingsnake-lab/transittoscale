@@ -70,7 +70,7 @@ export async function mountApp(root) {
           <div class="shell__credits" aria-label="Project credits">
             <p class="shell__credits-note">Trolleys and streetcars excluded except where noted.</p>
             <p class="shell__credits-value">
-              Built from official GTFS feeds and other open agency data using Vite, vanilla JavaScript, and open-source
+              Built from official GTFS feeds and other agency data using Vite, vanilla JavaScript, and open-source
               tools like d3-geo, Sharp, and Resvg. Country flags use
               <a
                 class="shell__credits-link"
