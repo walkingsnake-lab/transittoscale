@@ -1156,14 +1156,17 @@ body.body--detail-open {
   justify-items: end;
   gap: 6px;
   width: clamp(96px, 12vw, 132px);
+  --country-locator-max-height: clamp(56px, 8.6vw, 84px);
   color: rgba(17, 17, 17, 0.18);
   pointer-events: none;
 }
 
 .detail-card__country-map {
   display: block;
-  width: 100%;
+  width: auto;
   height: auto;
+  max-width: 100%;
+  max-height: var(--country-locator-max-height);
   overflow: visible;
 }
 
@@ -1590,6 +1593,7 @@ body.body--detail-open {
     bottom: 16px;
     width: 92px;
     gap: 4px;
+    --country-locator-max-height: 54px;
   }
 
   .detail-card__country-name {
