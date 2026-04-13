@@ -24,9 +24,14 @@ const DETAIL_BUTTON_ZOOM_FACTOR = 1.35;
 const DETAIL_WHEEL_ZOOM_SENSITIVITY = 0.0015;
 const DETAIL_PAN_OVERSCROLL_FRACTION = 0.16;
 const DETAIL_TRANSITION_MS = 300;
+const DETAIL_PREFETCH_INTENT_DELAY_MS = 140;
+const DETAIL_PREFETCH_IDLE_TIMEOUT_MS = 1200;
 const COUNTRY_MARKER_NUDGE_Y = 0;
 const MERCATOR_LATITUDE_LIMIT = 85;
 const DEG_TO_RAD = Math.PI / 180;
+const VIEW_STATE_STORAGE_KEY = 'transit-to-scale:view-state:v1';
+const DETAIL_HINT_STORAGE_KEY = 'transit-to-scale:detail-hint-seen:v1';
+const DETAIL_PREFETCHED_SLUGS = new Set();
 // Optional visual corrections for locator insets when country geometry is too coarse.
 const COUNTRY_LOCATOR_OVERRIDE_BY_CITY = {
   chicago: {
@@ -142,6 +147,11 @@ export async function mountApp(root) {
   let lastActiveTrigger = null;
   let layoutFrameId = 0;
   let detailRequestId = 0;
+  const initialViewState = getInitialViewState();
+  const loadingSkeletonCount = getLoadingSkeletonCount();
+
+  renderLoadingSkeletons(grid, loadingSkeletonCount);
+  updateGridLayout(grid, loadingSkeletonCount, { chromeHeight: getChromeHeight(intro, toolbar) });
 
   try {
     const cities = await loadCities();
@@ -159,13 +169,23 @@ export async function mountApp(root) {
         interactiveDepth,
         onOpen(card, triggerElement) {
           openDetail(card, triggerElement);
+        },
+        onIntent(card) {
+          scheduleDetailPrefetch(card);
         }
       })
     );
 
-    cards.forEach(({ element }) => grid.append(element));
+    await appendCardsProgressively(grid, cards, {
+      batchSize: window.innerWidth < 720 ? 2 : 5
+    });
 
-    let zoomIndex = OVERVIEW_ZOOM_STEPS.findIndex((step) => step.key === DEFAULT_OVERVIEW_VARIANT);
+    const cardsBySlug = new Map(cards.map((card) => [card.city.slug, card]));
+    let zoomIndex = OVERVIEW_ZOOM_STEPS.findIndex((step) => step.key === initialViewState.zoomKey);
+
+    if (zoomIndex < 0) {
+      zoomIndex = OVERVIEW_ZOOM_STEPS.findIndex((step) => step.key === DEFAULT_OVERVIEW_VARIANT);
+    }
 
     if (zoomIndex < 0) {
       zoomIndex = 1;
@@ -207,7 +227,17 @@ export async function mountApp(root) {
       });
     }
 
-    function setZoomIndex(nextZoomIndex) {
+    function persistCurrentViewState({ updateUrl = true, updateStorage = true } = {}) {
+      persistViewState(
+        {
+          zoomKey: OVERVIEW_ZOOM_STEPS[zoomIndex]?.key ?? DEFAULT_OVERVIEW_VARIANT,
+          citySlug: selectedCard?.city?.slug ?? null
+        },
+        { updateUrl, updateStorage }
+      );
+    }
+
+    function setZoomIndex(nextZoomIndex, { syncState = true } = {}) {
       const boundedZoomIndex = clamp(nextZoomIndex, 0, OVERVIEW_ZOOM_STEPS.length - 1);
 
       if (boundedZoomIndex === zoomIndex) {
@@ -216,6 +246,10 @@ export async function mountApp(root) {
 
       zoomIndex = boundedZoomIndex;
       syncZoomControls();
+
+      if (syncState) {
+        persistCurrentViewState();
+      }
     }
 
     function syncSelection() {
@@ -236,14 +270,14 @@ export async function mountApp(root) {
       detailView.setAttribute('aria-hidden', 'false');
     }
 
-    function openDetail(card, triggerElement) {
+    function openDetail(card, triggerElement, { syncState = true, focusCloseButton = true } = {}) {
       if (selectedCard === card) {
-        closeDetail();
+        closeDetail({ syncState });
         return;
       }
 
       if (selectedCard) {
-        closeDetail({ instant: true, restoreFocus: false });
+        closeDetail({ instant: true, restoreFocus: false, syncState: false });
       }
 
       lastActiveTrigger = triggerElement;
@@ -273,11 +307,20 @@ export async function mountApp(root) {
       });
 
       detailCard.loadLiveDiagram(() => detailCard?.requestId === nextDetailRequestId && selectedCard === card);
+      if (shouldShowDetailHint()) {
+        detailCard.showInteractionHint();
+        markDetailHintSeen();
+      }
+      if (syncState) {
+        persistCurrentViewState();
+      }
 
-      detailCloseButton.focus({ preventScroll: true });
+      if (focusCloseButton) {
+        detailCloseButton.focus({ preventScroll: true });
+      }
     }
 
-    function closeDetail({ instant = false, restoreFocus = true } = {}) {
+    function closeDetail({ instant = false, restoreFocus = true, syncState = true } = {}) {
       if (!selectedCard && detailView.hidden) {
         return;
       }
@@ -294,6 +337,10 @@ export async function mountApp(root) {
         syncSelection();
         detailView.hidden = true;
         detailView.setAttribute('aria-hidden', 'true');
+
+        if (syncState) {
+          persistCurrentViewState();
+        }
         return;
       }
 
@@ -314,6 +361,9 @@ export async function mountApp(root) {
         syncSelection();
         detailView.hidden = true;
         detailHideTimeoutId = 0;
+        if (syncState) {
+          persistCurrentViewState();
+        }
 
         if (restoreFocus && focusTarget instanceof HTMLElement) {
           requestAnimationFrame(() => {
@@ -330,6 +380,111 @@ export async function mountApp(root) {
       detailHideTimeoutId = window.setTimeout(finalizeClose, DETAIL_TRANSITION_MS);
     }
 
+    function focusCardByIndex(nextIndex) {
+      const boundedIndex = clamp(nextIndex, 0, cards.length - 1);
+      const nextCard = cards[boundedIndex];
+
+      nextCard?.openButton?.focus({ preventScroll: true });
+    }
+
+    function getVerticalNeighborIndex(currentIndex, direction, columns) {
+      const candidate = currentIndex + direction * columns;
+
+      if (candidate >= 0 && candidate < cards.length) {
+        return candidate;
+      }
+
+      if (direction > 0) {
+        const currentColumn = currentIndex % columns;
+        const lastRowStart = Math.floor((cards.length - 1) / columns) * columns;
+        const fallback = Math.min(lastRowStart + currentColumn, cards.length - 1);
+        return fallback >= currentIndex ? fallback : currentIndex;
+      }
+
+      return currentIndex;
+    }
+
+    function handleCardNavigationKeydown(event) {
+      if (
+        event.key !== 'ArrowLeft' &&
+        event.key !== 'ArrowRight' &&
+        event.key !== 'ArrowUp' &&
+        event.key !== 'ArrowDown' &&
+        event.key !== 'Home' &&
+        event.key !== 'End'
+      ) {
+        return;
+      }
+
+      const currentIndex = cards.findIndex((card) => card.openButton === event.currentTarget);
+
+      if (currentIndex < 0) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (event.key === 'Home') {
+        focusCardByIndex(0);
+        return;
+      }
+
+      if (event.key === 'End') {
+        focusCardByIndex(cards.length - 1);
+        return;
+      }
+
+      const columns = getGridColumnCount(grid, cards.length);
+      let nextIndex = currentIndex;
+
+      if (
+        event.key === 'ArrowLeft' &&
+        ((columns === 1 && currentIndex > 0) || (columns > 1 && currentIndex % columns !== 0))
+      ) {
+        nextIndex = currentIndex - 1;
+      } else if (
+        event.key === 'ArrowRight' &&
+        currentIndex + 1 < cards.length &&
+        (columns === 1 || (currentIndex + 1) % columns !== 0)
+      ) {
+        nextIndex = currentIndex + 1;
+      } else if (event.key === 'ArrowUp') {
+        nextIndex = getVerticalNeighborIndex(currentIndex, -1, columns);
+      } else if (event.key === 'ArrowDown') {
+        nextIndex = getVerticalNeighborIndex(currentIndex, 1, columns);
+      }
+
+      focusCardByIndex(nextIndex);
+    }
+
+    function applyViewState(viewState, { updateUrl = true } = {}) {
+      const desiredZoomIndex = OVERVIEW_ZOOM_STEPS.findIndex((step) => step.key === viewState.zoomKey);
+
+      if (desiredZoomIndex >= 0 && desiredZoomIndex !== zoomIndex) {
+        setZoomIndex(desiredZoomIndex, { syncState: false });
+      }
+
+      const nextCard = viewState.citySlug ? cardsBySlug.get(viewState.citySlug) : null;
+
+      if (nextCard && nextCard !== selectedCard) {
+        openDetail(nextCard, nextCard.openButton, { syncState: false, focusCloseButton: false });
+      } else if (!nextCard && selectedCard) {
+        closeDetail({ instant: true, restoreFocus: false, syncState: false });
+      }
+
+      persistCurrentViewState({ updateUrl, updateStorage: true });
+    }
+
+    function handlePopstate() {
+      applyViewState(readUrlViewState(), { updateUrl: false });
+    }
+
+    cards.forEach((card) => {
+      card.openButton.addEventListener('keydown', handleCardNavigationKeydown);
+    });
+
+    primeDetailPrefetch(cards);
+
     zoomOutButton.addEventListener('click', () => setZoomIndex(zoomIndex - 1));
     zoomInButton.addEventListener('click', () => setZoomIndex(zoomIndex + 1));
     detailBackdrop.addEventListener('click', closeDetail);
@@ -341,6 +496,7 @@ export async function mountApp(root) {
         closeDetail();
       }
     });
+    window.addEventListener('popstate', handlePopstate);
 
     requestLayoutSync();
 
@@ -353,6 +509,8 @@ export async function mountApp(root) {
     requestAnimationFrame(() => {
       root.classList.add('is-ready');
       requestLayoutSync();
+
+      applyViewState(initialViewState, { updateUrl: true });
     });
   } catch (error) {
     console.error(error);
@@ -390,7 +548,7 @@ function snapToDevicePixels(value) {
   return Math.round(value * devicePixelRatio) / devicePixelRatio;
 }
 
-function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
+function createCard(city, index, { reducedMotion, interactiveDepth, onOpen, onIntent }) {
   const theme = getCityTheme(city.slug, index);
   const lineLabel = formatLineLabel(city.lineCount);
   const systemLabel = formatSystemLabel(city);
@@ -526,6 +684,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     city,
     theme,
     element,
+    openButton,
     systemLabel,
     lineLabel,
     flag,
@@ -622,6 +781,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
 
   if (interactiveDepth) {
     element.addEventListener('pointerenter', (event) => {
+      onIntent?.(card);
       card.setHovered(true);
       card.updateTilt(event.clientX, event.clientY);
     });
@@ -630,7 +790,10 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     });
     element.addEventListener('pointerleave', () => card.setHovered(false));
     element.addEventListener('pointercancel', () => card.setHovered(false));
-    element.addEventListener('focusin', () => card.setHovered(true));
+    element.addEventListener('focusin', () => {
+      card.setHovered(true);
+      onIntent?.(card);
+    });
     element.addEventListener('focusout', (event) => {
       if (!element.contains(event.relatedTarget)) {
         card.setHovered(false);
@@ -638,6 +801,8 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen }) {
     });
   }
 
+  openButton.addEventListener('pointerdown', () => onIntent?.(card));
+  openButton.addEventListener('focus', () => onIntent?.(card));
   openButton.addEventListener('click', () => onOpen(card, openButton));
 
   return card;
@@ -686,6 +851,7 @@ function createDetailCard(card, { requestId }) {
             </button>
             <span class="shell__sr-only" data-detail-zoom-label aria-live="polite">100% zoom</span>
           </div>
+          <p class="detail-card__hint" data-detail-hint hidden>Tip: Drag to pan. Scroll, pinch, or +/- to zoom.</p>
         </div>
       </div>
       <div class="detail-card__overlay">
@@ -707,6 +873,7 @@ function createDetailCard(card, { requestId }) {
   const zoomInButton = element.querySelector('[data-detail-zoom-in]');
   const fitButton = element.querySelector('[data-detail-fit]');
   const zoomLabel = element.querySelector('[data-detail-zoom-label]');
+  const interactionHint = element.querySelector('[data-detail-hint]');
   const pointerState = new Map();
   const state = {
     viewportWidth: 0,
@@ -720,6 +887,7 @@ function createDetailCard(card, { requestId }) {
   };
   let dragState = null;
   let pinchState = null;
+  let interactionHintTimeoutId = 0;
   let destroyed = false;
   let resizeObserver = null;
 
@@ -1089,14 +1257,283 @@ function createDetailCard(card, { requestId }) {
     element,
     syncViewerLayout,
     loadLiveDiagram,
+    showInteractionHint(durationMs = 2800) {
+      if (!interactionHint) {
+        return;
+      }
+
+      interactionHint.hidden = false;
+      interactionHint.classList.remove('detail-card__hint--visible');
+
+      requestAnimationFrame(() => {
+        interactionHint.classList.add('detail-card__hint--visible');
+      });
+
+      if (interactionHintTimeoutId) {
+        window.clearTimeout(interactionHintTimeoutId);
+      }
+
+      interactionHintTimeoutId = window.setTimeout(() => {
+        interactionHint.classList.remove('detail-card__hint--visible');
+        interactionHintTimeoutId = window.setTimeout(() => {
+          interactionHint.hidden = true;
+          interactionHintTimeoutId = 0;
+        }, 260);
+      }, durationMs);
+    },
     destroy() {
       destroyed = true;
       pointerState.clear();
       dragState = null;
       pinchState = null;
       resizeObserver?.disconnect();
+      if (interactionHintTimeoutId) {
+        window.clearTimeout(interactionHintTimeoutId);
+        interactionHintTimeoutId = 0;
+      }
     }
   };
+}
+
+function getChromeHeight(intro, toolbar) {
+  const introHeight = intro ? Math.ceil(intro.getBoundingClientRect().height) : 0;
+  const toolbarHeight = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) : 0;
+  return introHeight + toolbarHeight + 24;
+}
+
+function getLoadingSkeletonCount() {
+  const viewportWidth = Math.max(window.innerWidth || 0, 320);
+  const columns = chooseColumnCount(viewportWidth, 12);
+  return clamp(columns * 2, 4, 10);
+}
+
+function renderLoadingSkeletons(grid, count) {
+  const fragment = document.createDocumentFragment();
+
+  for (let index = 0; index < count; index += 1) {
+    fragment.append(createSkeletonCard(index));
+  }
+
+  grid.replaceChildren(fragment);
+}
+
+function createSkeletonCard(index) {
+  const card = document.createElement('article');
+  card.className = 'card card--static card--skeleton';
+  card.style.setProperty('--stagger', `${index * 60}ms`);
+  card.setAttribute('aria-hidden', 'true');
+  card.innerHTML = `
+    <div class="card__stage card__stage--static">
+      <div class="card__paper card__paper--static">
+        <div class="card__canvas-frame">
+          <div class="card__skeleton-shimmer"></div>
+          <div class="card__overlay card__overlay--skeleton">
+            <span class="card__skeleton-line card__skeleton-line--meta"></span>
+            <span class="card__skeleton-line card__skeleton-line--title"></span>
+            <span class="card__skeleton-line card__skeleton-line--count"></span>
+          </div>
+          <span class="card__skeleton-flag"></span>
+        </div>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function appendCardsProgressively(grid, cards, { batchSize = 5 } = {}) {
+  return new Promise((resolve) => {
+    if (!cards.length) {
+      grid.textContent = '';
+      resolve();
+      return;
+    }
+
+    grid.textContent = '';
+    const safeBatchSize = Math.max(1, Math.floor(batchSize));
+    let cursor = 0;
+
+    function appendBatch() {
+      const fragment = document.createDocumentFragment();
+      const appendedElements = [];
+      const nextCursor = Math.min(cards.length, cursor + safeBatchSize);
+
+      for (; cursor < nextCursor; cursor += 1) {
+        const element = cards[cursor].element;
+        element.classList.add('card--pending');
+        fragment.append(element);
+        appendedElements.push(element);
+      }
+
+      grid.append(fragment);
+
+      requestAnimationFrame(() => {
+        appendedElements.forEach((element) => element.classList.remove('card--pending'));
+      });
+
+      if (cursor < cards.length) {
+        requestAnimationFrame(appendBatch);
+        return;
+      }
+
+      resolve();
+    }
+
+    appendBatch();
+  });
+}
+
+function getGridColumnCount(grid, fallbackCount = 1) {
+  const rawColumns = getComputedStyle(grid).getPropertyValue('--card-columns').trim();
+  const parsedColumns = Number.parseInt(rawColumns, 10);
+
+  if (Number.isFinite(parsedColumns) && parsedColumns > 0) {
+    return parsedColumns;
+  }
+
+  const safeFallbackCount = Math.max(1, fallbackCount);
+  return chooseColumnCount(window.innerWidth, safeFallbackCount);
+}
+
+function normalizeCitySlug(value) {
+  const nextValue = typeof value === 'string' ? value.trim().toLowerCase() : '';
+  return nextValue && /^[a-z0-9-]+$/.test(nextValue) ? nextValue : null;
+}
+
+function normalizeZoomKey(value) {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  return OVERVIEW_ZOOM_STEPS.some((step) => step.key === value) ? value : null;
+}
+
+function readUrlViewState() {
+  try {
+    const url = new URL(window.location.href);
+
+    return {
+      zoomKey: normalizeZoomKey(url.searchParams.get('zoom')),
+      citySlug: normalizeCitySlug(url.searchParams.get('city'))
+    };
+  } catch {
+    return { zoomKey: null, citySlug: null };
+  }
+}
+
+function readStoredViewState() {
+  try {
+    const raw = window.localStorage.getItem(VIEW_STATE_STORAGE_KEY);
+
+    if (!raw) {
+      return { zoomKey: null, citySlug: null };
+    }
+
+    const parsed = JSON.parse(raw);
+
+    return {
+      zoomKey: normalizeZoomKey(parsed?.zoomKey),
+      citySlug: normalizeCitySlug(parsed?.citySlug)
+    };
+  } catch {
+    return { zoomKey: null, citySlug: null };
+  }
+}
+
+function getInitialViewState() {
+  const fromUrl = readUrlViewState();
+  const fromStorage = readStoredViewState();
+
+  return {
+    zoomKey: fromUrl.zoomKey ?? fromStorage.zoomKey ?? DEFAULT_OVERVIEW_VARIANT,
+    citySlug: fromUrl.citySlug ?? fromStorage.citySlug ?? null
+  };
+}
+
+function persistViewState(viewState, { updateUrl = true, updateStorage = true } = {}) {
+  const zoomKey = normalizeZoomKey(viewState.zoomKey) ?? DEFAULT_OVERVIEW_VARIANT;
+  const citySlug = normalizeCitySlug(viewState.citySlug);
+
+  if (updateStorage) {
+    try {
+      window.localStorage.setItem(
+        VIEW_STATE_STORAGE_KEY,
+        JSON.stringify({
+          zoomKey,
+          citySlug
+        })
+      );
+    } catch {}
+  }
+
+  if (!updateUrl) {
+    return;
+  }
+
+  try {
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set('zoom', zoomKey);
+
+    if (citySlug) {
+      currentUrl.searchParams.set('city', citySlug);
+    } else {
+      currentUrl.searchParams.delete('city');
+    }
+
+    history.replaceState(history.state, '', currentUrl);
+  } catch {}
+}
+
+function shouldShowDetailHint() {
+  try {
+    return window.localStorage.getItem(DETAIL_HINT_STORAGE_KEY) !== '1';
+  } catch {
+    return true;
+  }
+}
+
+function markDetailHintSeen() {
+  try {
+    window.localStorage.setItem(DETAIL_HINT_STORAGE_KEY, '1');
+  } catch {}
+}
+
+function scheduleWhenIdle(task) {
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(task, { timeout: DETAIL_PREFETCH_IDLE_TIMEOUT_MS });
+    return;
+  }
+
+  window.setTimeout(task, 180);
+}
+
+function scheduleDetailPrefetch(card) {
+  if (!card?.city?.slug) {
+    return;
+  }
+
+  const slug = card.city.slug;
+
+  if (DETAIL_PREFETCHED_SLUGS.has(slug)) {
+    return;
+  }
+
+  DETAIL_PREFETCHED_SLUGS.add(slug);
+
+  window.setTimeout(() => {
+    scheduleWhenIdle(() => {
+      loadDetailDiagram(card, 0).catch(() => {
+        DETAIL_PREFETCHED_SLUGS.delete(slug);
+      });
+    });
+  }, DETAIL_PREFETCH_INTENT_DELAY_MS);
+}
+
+function primeDetailPrefetch(cards) {
+  cards.slice(0, 3).forEach((card, index) => {
+    window.setTimeout(() => {
+      scheduleDetailPrefetch(card);
+    }, index * 220);
+  });
 }
 
 function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {

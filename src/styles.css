@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap');
-
 :root {
   color-scheme: light;
   --page-bg: #efeee8;
@@ -457,7 +455,9 @@ body.body--detail-open {
   background: transparent;
   text-align: left;
   transform-style: preserve-3d;
-  transition: opacity 240ms ease;
+  transition:
+    opacity 240ms ease,
+    transform 260ms var(--ease-out);
   color: var(--card-text);
   --card-intro-shadow: 0 28px 54px rgba(0, 0, 0, 0.16);
   --card-hover-lift: -4px;
@@ -466,6 +466,11 @@ body.body--detail-open {
   --card-hover-rotate-x: var(--hover-rotate-x, 0deg);
   --card-hover-rotate-y: var(--hover-rotate-y, 0deg);
   --card-hover-scale: 1.008;
+}
+
+.card--pending {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(0.992);
 }
 
 .card--muted {
@@ -781,6 +786,82 @@ body.body--detail-open {
   background:
     radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.16), transparent 42%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 24%);
+}
+
+.card--skeleton {
+  pointer-events: none;
+}
+
+.card--skeleton .card__paper {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), transparent 24%),
+    linear-gradient(180deg, rgba(234, 230, 221, 0.94), rgba(226, 221, 211, 0.96));
+}
+
+.card--skeleton .card__paper::before,
+.card--skeleton .card__paper::after {
+  display: none;
+}
+
+.card__overlay--skeleton {
+  gap: 8px;
+}
+
+.card__skeleton-line,
+.card__skeleton-flag,
+.card__skeleton-shimmer {
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.card__skeleton-line {
+  position: static;
+  display: block;
+  height: 10px;
+  width: 60%;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.card__skeleton-line--meta {
+  width: 44%;
+  height: 9px;
+  opacity: 0.86;
+}
+
+.card__skeleton-line--title {
+  width: 78%;
+  height: 18px;
+  border-radius: 10px;
+}
+
+.card__skeleton-line--count {
+  width: 34%;
+  height: 9px;
+  opacity: 0.82;
+}
+
+.card__skeleton-flag {
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.card__skeleton-shimmer {
+  inset: -14% -40%;
+  border-radius: 0;
+  background: linear-gradient(
+    104deg,
+    transparent 26%,
+    rgba(255, 255, 255, 0.14) 40%,
+    rgba(255, 255, 255, 0.56) 48%,
+    rgba(255, 255, 255, 0.16) 58%,
+    transparent 72%
+  );
+  animation: skeleton-sweep 1400ms linear infinite;
 }
 
 .card__diagram-shell {
@@ -1108,6 +1189,36 @@ body.body--detail-open {
   cursor: default;
 }
 
+.detail-card__hint {
+  position: absolute;
+  left: 18px;
+  bottom: 66px;
+  z-index: 4;
+  margin: 0;
+  max-width: min(78%, 320px);
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: rgba(14, 12, 10, 0.82);
+  color: rgba(250, 248, 242, 0.94);
+  font-family: var(--font-sans-tight);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+  opacity: 0;
+  transform: translate3d(0, 6px, 0);
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 220ms var(--ease-out);
+  pointer-events: none;
+}
+
+.detail-card__hint--visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
 .detail-card__overlay {
   position: absolute;
   inset: 24px 82px auto 24px;
@@ -1412,6 +1523,16 @@ body.body--detail-open {
   }
 }
 
+@keyframes skeleton-sweep {
+  0% {
+    transform: translate3d(-42%, 0, 0) rotate(8deg);
+  }
+
+  100% {
+    transform: translate3d(42%, 0, 0) rotate(8deg);
+  }
+}
+
 @media (max-width: 1080px) {
   .shell__intro {
     grid-template-columns: 1fr;
@@ -1575,6 +1696,13 @@ body.body--detail-open {
     bottom: 14px;
   }
 
+  .detail-card__hint {
+    left: 14px;
+    bottom: 56px;
+    max-width: min(84%, 250px);
+    font-size: 0.68rem;
+  }
+
   .detail-card__viewer-button {
     min-width: 34px;
     height: 34px;
@@ -1636,6 +1764,10 @@ body.body--detail-open {
   .card--hovered .card__stage,
   .is-ready .card {
     transform: none !important;
+  }
+
+  .card__skeleton-shimmer {
+    animation: none !important;
   }
 
   *,
