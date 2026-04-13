@@ -1503,10 +1503,11 @@ body.body--detail-open {
 
   .grid {
     gap: 10px;
+    justify-items: center;
   }
 
-  .grid.grid--mobile-two-up {
-    gap: 8px;
+  .card {
+    width: min(100%, 430px);
   }
 
   .card__stage {
@@ -1546,50 +1547,8 @@ body.body--detail-open {
     height: 28px;
   }
 
-  .grid--mobile-two-up .card__paper,
-  .grid--mobile-two-up .card__select {
-    border-radius: 12px;
-  }
-
-  .grid--mobile-two-up .card__paper::after {
-    inset: 4px;
-    border-radius: 8px;
-  }
-
-  .grid--mobile-two-up .card__overlay {
-    gap: 1px;
-    inset: 9px 40px auto 9px;
-    padding: 0;
-    border-radius: 0;
-  }
-
-  .grid--mobile-two-up .card__agency {
-    font-size: 0.64rem;
-  }
-
-  .grid--mobile-two-up .card__count {
-    font-size: 0.62rem;
-  }
-
-  .grid--mobile-two-up .card__overlay h2 {
-    font-size: clamp(1.02rem, 4.8vw, 1.24rem);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-  }
-
-  .grid--mobile-two-up .card__flag {
-    top: 10px;
-    right: 10px;
-    width: 22px;
-    height: 22px;
-  }
-
   .card__diagram {
-    --diagram-scale: 0.92;
-  }
-
-  .grid--mobile-two-up .card__diagram {
-    --diagram-scale: 0.82;
+    --diagram-scale: 0.9;
   }
 
   .card__back-copy {
