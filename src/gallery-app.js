@@ -15,7 +15,6 @@ import { clamp } from './lib/math.js';
 import { shouldUseSoftHoverEffects, supportsInteractiveDepthEffects } from './lib/platform.js';
 
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
-const LINE_NAME_COLLATOR = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
 const IMAGE_LOAD_CACHE = new Map();
 const CITY_GEOJSON_CACHE = new Map();
 const DETAIL_DIAGRAM_CACHE = new Map();
@@ -1671,7 +1670,7 @@ function getLineNamesFromFeatureCollection(featureCollection) {
     }
   }
 
-  return [...uniqueLineNames.values()].sort((left, right) => LINE_NAME_COLLATOR.compare(left, right));
+  return [...uniqueLineNames.values()];
 }
 
 function getCountryFlag(city) {
