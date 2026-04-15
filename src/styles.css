@@ -1308,6 +1308,61 @@ body.body--detail-open {
   text-align: right;
 }
 
+.detail-card__lines {
+  position: absolute;
+  right: calc(clamp(96px, 12vw, 132px) + 34px);
+  bottom: 22px;
+  z-index: 1;
+  display: grid;
+  gap: 6px;
+  width: clamp(136px, 20vw, 240px);
+  color: rgba(17, 17, 17, 0.74);
+  pointer-events: auto;
+}
+
+.detail-card__lines[hidden] {
+  display: none;
+}
+
+.detail-card__lines-title {
+  margin: 0;
+  color: rgba(17, 17, 17, 0.56);
+  font-family: var(--font-sans-tight);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.detail-card__lines-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 4px;
+  max-height: var(--country-locator-max-height);
+  overflow: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+}
+
+.detail-card__line-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  padding: 3px 8px;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: rgba(17, 17, 17, 0.78);
+  font-family: var(--font-sans-tight);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .detail-card__flag {
   position: absolute;
   top: 22px;
@@ -1736,6 +1791,28 @@ body.body--detail-open {
     width: 92px;
     gap: 4px;
     --country-locator-max-height: 54px;
+  }
+
+  .detail-card__lines {
+    right: 118px;
+    bottom: 16px;
+    gap: 4px;
+    width: clamp(116px, 38vw, 176px);
+  }
+
+  .detail-card__lines-title {
+    font-size: 0.56rem;
+    letter-spacing: 0.1em;
+  }
+
+  .detail-card__lines-list {
+    gap: 3px;
+  }
+
+  .detail-card__line-pill {
+    min-height: 16px;
+    padding: 2px 7px;
+    font-size: 0.56rem;
   }
 
   .detail-card__country-name {

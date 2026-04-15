@@ -15,6 +15,7 @@ import { clamp } from './lib/math.js';
 import { shouldUseSoftHoverEffects, supportsInteractiveDepthEffects } from './lib/platform.js';
 
 const CITY_ORDER_COLLATOR = new Intl.Collator('en', { sensitivity: 'base' });
+const LINE_NAME_COLLATOR = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
 const IMAGE_LOAD_CACHE = new Map();
 const CITY_GEOJSON_CACHE = new Map();
 const DETAIL_DIAGRAM_CACHE = new Map();
@@ -863,6 +864,10 @@ function createDetailCard(card, { requestId }) {
         <p class="detail-card__count">${card.lineLabel}</p>
       </div>
       ${countryLocatorMarkup}
+      <aside class="detail-card__lines" data-detail-lines-panel hidden>
+        <p class="detail-card__lines-title">Lines</p>
+        <div class="detail-card__lines-list" data-detail-lines-list role="list"></div>
+      </aside>
       ${flagMarkup}
     </div>
   `;
@@ -877,6 +882,8 @@ function createDetailCard(card, { requestId }) {
   const fitButton = element.querySelector('[data-detail-fit]');
   const zoomLabel = element.querySelector('[data-detail-zoom-label]');
   const interactionHint = element.querySelector('[data-detail-hint]');
+  const detailLinesPanel = element.querySelector('[data-detail-lines-panel]');
+  const detailLinesList = element.querySelector('[data-detail-lines-list]');
   const pointerState = new Map();
   const state = {
     viewportWidth: 0,
@@ -913,6 +920,32 @@ function createDetailCard(card, { requestId }) {
     element.classList.toggle('detail-card--vector-ready', vectorLayer.childElementCount > 0);
     element.classList.toggle('detail-card--can-pan', canPanAtZoom());
     element.classList.toggle('detail-card--dragging', state.dragging);
+  }
+
+  function setDetailLines(lineNames) {
+    if (!detailLinesPanel || !detailLinesList) {
+      return;
+    }
+
+    detailLinesList.textContent = '';
+
+    if (!Array.isArray(lineNames) || lineNames.length === 0) {
+      detailLinesPanel.hidden = true;
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    for (const lineName of lineNames) {
+      const chip = document.createElement('span');
+      chip.className = 'detail-card__line-pill';
+      chip.setAttribute('role', 'listitem');
+      chip.textContent = lineName;
+      fragment.append(chip);
+    }
+
+    detailLinesList.append(fragment);
+    detailLinesPanel.hidden = false;
   }
 
   function getFitScale() {
@@ -1224,6 +1257,7 @@ function createDetailCard(card, { requestId }) {
       state.contentWidth = detailDiagram.width;
       state.contentHeight = detailDiagram.height;
       vectorLayer.innerHTML = detailDiagram.svgMarkup;
+      setDetailLines(detailDiagram.lineNames);
       syncScene();
     } catch (error) {
       if (!destroyed && isCurrent()) {
@@ -1613,6 +1647,33 @@ function formatSystemLabel(city) {
   return city.serviceSummary?.trim() ?? city.sourceName?.trim() ?? '';
 }
 
+function getLineNamesFromFeatureCollection(featureCollection) {
+  const uniqueLineNames = new Map();
+
+  for (const feature of featureCollection?.features ?? []) {
+    const properties = feature?.properties ?? {};
+    const rawName = properties.lineName ?? properties.lineId;
+
+    if (rawName == null) {
+      continue;
+    }
+
+    const lineName = String(rawName).trim();
+
+    if (!lineName) {
+      continue;
+    }
+
+    const dedupeKey = lineName.toLocaleLowerCase('en');
+
+    if (!uniqueLineNames.has(dedupeKey)) {
+      uniqueLineNames.set(dedupeKey, lineName);
+    }
+  }
+
+  return [...uniqueLineNames.values()].sort((left, right) => LINE_NAME_COLLATOR.compare(left, right));
+}
+
 function getCountryFlag(city) {
   const flag = getRegionFlag(city.region);
 
@@ -1874,6 +1935,7 @@ function loadDetailDiagram(card, requestId) {
         ...card.city,
         featureCollection
       };
+      const lineNames = getLineNamesFromFeatureCollection(featureCollection);
       const layout = getOverviewDiagramLayout({
         city: renderCity,
         minWidth: DETAIL_BASE_WIDTH,
@@ -1885,6 +1947,7 @@ function loadDetailDiagram(card, requestId) {
       return {
         width: layout.width,
         height: layout.height,
+        lineNames,
         svgMarkup: createOverviewDiagramSvg({
           city: renderCity,
           width: layout.width,
