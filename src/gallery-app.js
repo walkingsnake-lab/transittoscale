@@ -5,6 +5,8 @@ import {
   DETAIL_BASE_WIDTH,
   DETAIL_DIAGRAM_SCALE,
   DETAIL_SAFE_INSET,
+  OVERVIEW_BASE_HEIGHT,
+  OVERVIEW_BASE_WIDTH,
   OVERVIEW_ZOOM_STEPS
 } from './lib/overview-config.js';
 import { createOverviewDiagramSvg, getOverviewDiagramLayout } from './lib/overview-diagram.js';
@@ -17,6 +19,7 @@ const IMAGE_LOAD_CACHE = new Map();
 const CITY_GEOJSON_CACHE = new Map();
 const DETAIL_DIAGRAM_CACHE = new Map();
 const MAX_OVERVIEW_CARD_HEIGHT = 560;
+const OVERVIEW_CARD_ASPECT_RATIO = OVERVIEW_BASE_HEIGHT / OVERVIEW_BASE_WIDTH;
 const DETAIL_MIN_ZOOM = 1;
 const DETAIL_INITIAL_ZOOM = 2;
 const DETAIL_MAX_ZOOM = 6;
@@ -1548,10 +1551,32 @@ function updateGridLayout(grid, cardCount, { chromeHeight = 0 } = {}) {
     columns === 3 ? 1.8 :
     columns === 2 ? 1.56 :
     1.34;
-  const cardHeight =
+  const baseCardHeight =
     isMobile
       ? clamp(Math.min(availableHeight * 0.66, viewportWidth * 1.24), 300, 460)
       : clamp(availableHeight / rowTarget, columns >= 5 ? 280 : 250, MAX_OVERVIEW_CARD_HEIGHT);
+  let cardHeight = baseCardHeight;
+
+  if (!isMobile) {
+    const gridWidth = Math.max(
+      grid.clientWidth || 0,
+      grid.getBoundingClientRect().width || 0,
+      viewportWidth
+    );
+    const gridStyle = window.getComputedStyle(grid);
+    const parsedColumnGap = Number.parseFloat(gridStyle.columnGap || gridStyle.gap || '0');
+    const columnGap = Number.isFinite(parsedColumnGap) ? parsedColumnGap : 0;
+    const estimatedCardWidth = Math.max(
+      0,
+      (gridWidth - columnGap * Math.max(columns - 1, 0)) / Math.max(columns, 1)
+    );
+    const minCardHeightFromAspect = estimatedCardWidth * OVERVIEW_CARD_ASPECT_RATIO;
+    cardHeight = clamp(
+      Math.max(baseCardHeight, minCardHeightFromAspect),
+      columns >= 5 ? 280 : 250,
+      MAX_OVERVIEW_CARD_HEIGHT
+    );
+  }
 
   grid.style.setProperty('--card-columns', String(columns));
   grid.style.setProperty('--card-canvas-height', `${Math.round(cardHeight)}px`);
