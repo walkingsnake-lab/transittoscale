@@ -117,6 +117,19 @@ export async function mountApp(root) {
       <aside class="detail-view" data-detail-view hidden aria-hidden="true">
         <button type="button" class="detail-view__backdrop" data-detail-backdrop aria-label="Close selected transit system"></button>
         <div class="detail-view__slot" data-detail-slot></div>
+        <div class="detail-card__viewer-controls" data-detail-viewer-controls role="group" aria-label="Detail diagram controls" hidden>
+          <button type="button" class="detail-card__viewer-button" data-detail-zoom-out aria-label="Zoom out detail diagram">
+            <span aria-hidden="true">-</span>
+          </button>
+          <button type="button" class="detail-card__viewer-button detail-card__viewer-button--fit" data-detail-fit>
+            Fit
+          </button>
+          <button type="button" class="detail-card__viewer-button" data-detail-zoom-in aria-label="Zoom in detail diagram">
+            <span aria-hidden="true">+</span>
+          </button>
+          <span class="shell__sr-only" data-detail-zoom-label aria-live="polite">100% zoom</span>
+        </div>
+        <p class="detail-card__hint" data-detail-hint hidden>Tip: Drag to pan. Scroll, pinch, or +/- to zoom.</p>
         <button type="button" class="detail-card__close" data-detail-close aria-label="Close selected transit system">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -139,6 +152,12 @@ export async function mountApp(root) {
   const detailView = root.querySelector('[data-detail-view]');
   const detailSlot = root.querySelector('[data-detail-slot]');
   const detailBackdrop = root.querySelector('[data-detail-backdrop]');
+  const detailViewerControls = root.querySelector('[data-detail-viewer-controls]');
+  const detailZoomOutButton = root.querySelector('[data-detail-zoom-out]');
+  const detailZoomInButton = root.querySelector('[data-detail-zoom-in]');
+  const detailFitButton = root.querySelector('[data-detail-fit]');
+  const detailZoomLabel = root.querySelector('[data-detail-zoom-label]');
+  const detailHint = root.querySelector('[data-detail-hint]');
   const detailCloseButton = root.querySelector('[data-detail-close]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const softHoverEffects = shouldUseSoftHoverEffects();
@@ -287,11 +306,24 @@ export async function mountApp(root) {
       selectedCard = card;
       const nextDetailRequestId = detailRequestId + 1;
       detailRequestId = nextDetailRequestId;
-      detailCard = createDetailCard(card, { requestId: nextDetailRequestId });
+      detailCard = createDetailCard(card, {
+        requestId: nextDetailRequestId,
+        controls: {
+          container: detailViewerControls,
+          zoomOutButton: detailZoomOutButton,
+          zoomInButton: detailZoomInButton,
+          fitButton: detailFitButton,
+          zoomLabel: detailZoomLabel,
+          interactionHint: detailHint
+        }
+      });
 
       const startRect = card.element.getBoundingClientRect();
 
       showDetailView();
+      if (detailViewerControls) {
+        detailViewerControls.hidden = false;
+      }
       detailSlot.replaceChildren(detailCard.element);
       card.setHovered(false);
       card.resetTilt();
@@ -340,6 +372,13 @@ export async function mountApp(root) {
         syncSelection();
         detailView.hidden = true;
         detailView.setAttribute('aria-hidden', 'true');
+        if (detailViewerControls) {
+          detailViewerControls.hidden = true;
+        }
+        if (detailHint) {
+          detailHint.classList.remove('detail-card__hint--visible');
+          detailHint.hidden = true;
+        }
 
         if (syncState) {
           persistCurrentViewState();
@@ -349,6 +388,13 @@ export async function mountApp(root) {
 
       detailView.classList.remove('detail-view--open');
       detailView.setAttribute('aria-hidden', 'true');
+      if (detailViewerControls) {
+        detailViewerControls.hidden = true;
+      }
+      if (detailHint) {
+        detailHint.classList.remove('detail-card__hint--visible');
+        detailHint.hidden = true;
+      }
       activeDetailCard.element.classList.remove('detail-card--active');
       applyFixedRect(activeDetailCard.element, card.element.getBoundingClientRect());
 
@@ -811,7 +857,7 @@ function createCard(city, index, { reducedMotion, interactiveDepth, onOpen, onIn
   return card;
 }
 
-function createDetailCard(card, { requestId }) {
+function createDetailCard(card, { requestId, controls = null } = {}) {
   const detailPresentation = card.getDetailPresentationAsset();
   const detailWidth = Math.round(detailPresentation?.width ?? DETAIL_BASE_WIDTH);
   const detailHeight = Math.round(detailPresentation?.height ?? DETAIL_BASE_HEIGHT);
@@ -842,19 +888,6 @@ function createDetailCard(card, { requestId }) {
               <div class="detail-card__vector" data-detail-vector aria-hidden="true"></div>
             </div>
           </div>
-          <div class="detail-card__viewer-controls" role="group" aria-label="Detail diagram controls">
-            <button type="button" class="detail-card__viewer-button" data-detail-zoom-out aria-label="Zoom out detail diagram">
-              <span aria-hidden="true">-</span>
-            </button>
-            <button type="button" class="detail-card__viewer-button detail-card__viewer-button--fit" data-detail-fit>
-              Fit
-            </button>
-            <button type="button" class="detail-card__viewer-button" data-detail-zoom-in aria-label="Zoom in detail diagram">
-              <span aria-hidden="true">+</span>
-            </button>
-            <span class="shell__sr-only" data-detail-zoom-label aria-live="polite">100% zoom</span>
-          </div>
-          <p class="detail-card__hint" data-detail-hint hidden>Tip: Drag to pan. Scroll, pinch, or +/- to zoom.</p>
         </div>
       </div>
       <div class="detail-card__overlay">
@@ -876,11 +909,11 @@ function createDetailCard(card, { requestId }) {
   const referenceCircleSvg = element.querySelector('.card__reference--circle');
   const referenceLabelSvg = element.querySelector('.card__reference--label');
   const vectorLayer = element.querySelector('[data-detail-vector]');
-  const zoomOutButton = element.querySelector('[data-detail-zoom-out]');
-  const zoomInButton = element.querySelector('[data-detail-zoom-in]');
-  const fitButton = element.querySelector('[data-detail-fit]');
-  const zoomLabel = element.querySelector('[data-detail-zoom-label]');
-  const interactionHint = element.querySelector('[data-detail-hint]');
+  const zoomOutButton = controls?.zoomOutButton ?? element.querySelector('[data-detail-zoom-out]');
+  const zoomInButton = controls?.zoomInButton ?? element.querySelector('[data-detail-zoom-in]');
+  const fitButton = controls?.fitButton ?? element.querySelector('[data-detail-fit]');
+  const zoomLabel = controls?.zoomLabel ?? element.querySelector('[data-detail-zoom-label]');
+  const interactionHint = controls?.interactionHint ?? element.querySelector('[data-detail-hint]');
   const detailLinesPanel = element.querySelector('[data-detail-lines-panel]');
   const detailLinesList = element.querySelector('[data-detail-lines-list]');
   const pointerState = new Map();
@@ -912,10 +945,18 @@ function createDetailCard(card, { requestId }) {
     const isAtMaxZoom = state.zoom >= DETAIL_MAX_ZOOM - 0.001;
     const isAtFit = isAtMinZoom && Math.abs(state.panX) < 0.5 && Math.abs(state.panY) < 0.5;
 
-    zoomOutButton.disabled = isAtMinZoom;
-    zoomInButton.disabled = isAtMaxZoom;
-    fitButton.disabled = isAtFit;
-    zoomLabel.textContent = `${Math.round(state.zoom * 100)}% zoom`;
+    if (zoomOutButton) {
+      zoomOutButton.disabled = isAtMinZoom;
+    }
+    if (zoomInButton) {
+      zoomInButton.disabled = isAtMaxZoom;
+    }
+    if (fitButton) {
+      fitButton.disabled = isAtFit;
+    }
+    if (zoomLabel) {
+      zoomLabel.textContent = `${Math.round(state.zoom * 100)}% zoom`;
+    }
     element.classList.toggle('detail-card--vector-ready', vectorLayer.childElementCount > 0);
     element.classList.toggle('detail-card--can-pan', canPanAtZoom());
     element.classList.toggle('detail-card--dragging', state.dragging);
@@ -1272,12 +1313,16 @@ function createDetailCard(card, { requestId }) {
   viewport.addEventListener('lostpointercapture', handlePointerEnd);
   viewport.addEventListener('wheel', handleWheel, { passive: false });
   viewport.addEventListener('keydown', handleKeydown);
-  zoomOutButton.addEventListener('click', () => zoomFromControls(-1));
-  zoomInButton.addEventListener('click', () => zoomFromControls(1));
-  fitButton.addEventListener('click', () => {
+  const handleZoomOutClick = () => zoomFromControls(-1);
+  const handleZoomInClick = () => zoomFromControls(1);
+  const handleFitClick = () => {
     setView(DETAIL_MIN_ZOOM, 0, 0);
     viewport.focus({ preventScroll: true });
-  });
+  };
+
+  zoomOutButton?.addEventListener('click', handleZoomOutClick);
+  zoomInButton?.addEventListener('click', handleZoomInClick);
+  fitButton?.addEventListener('click', handleFitClick);
 
   if (typeof ResizeObserver === 'function') {
     resizeObserver = new ResizeObserver(() => {
@@ -1322,10 +1367,17 @@ function createDetailCard(card, { requestId }) {
       pointerState.clear();
       dragState = null;
       pinchState = null;
+      zoomOutButton?.removeEventListener('click', handleZoomOutClick);
+      zoomInButton?.removeEventListener('click', handleZoomInClick);
+      fitButton?.removeEventListener('click', handleFitClick);
       resizeObserver?.disconnect();
       if (interactionHintTimeoutId) {
         window.clearTimeout(interactionHintTimeoutId);
         interactionHintTimeoutId = 0;
+      }
+      if (interactionHint) {
+        interactionHint.classList.remove('detail-card__hint--visible');
+        interactionHint.hidden = true;
       }
     }
   };
